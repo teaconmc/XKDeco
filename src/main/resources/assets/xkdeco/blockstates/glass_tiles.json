@@ -1,1 +1,16 @@
-{"variants": {"axis=x": {"model": "xkdeco:block/glass_tiles", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/glass_tiles"}, "axis=z": {"model": "xkdeco:block/glass_tiles", "x": 90}}}
+{
+    "variants": {
+        "axis=x": {
+            "model": "xkdeco:block/glass_tiles",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "xkdeco:block/glass_tiles"
+        },
+        "axis=z": {
+            "model": "xkdeco:block/glass_tiles",
+            "x": 90
+        }
+    }
+}

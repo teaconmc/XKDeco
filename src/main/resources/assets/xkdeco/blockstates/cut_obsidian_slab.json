@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/cut_obsidian_slab"}, "type=double": {"model": "xkdeco:block/cut_obsidian"}, "type=top": {"model": "xkdeco:block/cut_obsidian_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/cut_obsidian_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/cut_obsidian"
+        },
+        "type=top": {
+            "model": "xkdeco:block/cut_obsidian_slab_top"
+        }
+    }
+}

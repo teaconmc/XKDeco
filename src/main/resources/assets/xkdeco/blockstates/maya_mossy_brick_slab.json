@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/maya_mossy_brick_slab"}, "type=double": {"model": "xkdeco:block/maya_mossy_bricks"}, "type=top": {"model": "xkdeco:block/maya_mossy_brick_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/maya_mossy_brick_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/maya_mossy_bricks"
+        },
+        "type=top": {
+            "model": "xkdeco:block/maya_mossy_brick_slab_top"
+        }
+    }
+}

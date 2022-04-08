@@ -1,1 +1,16 @@
-{"variants": {"axis=x": {"model": "xkdeco:block/chiseled_bronze_block", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/chiseled_bronze_block"}, "axis=z": {"model": "xkdeco:block/chiseled_bronze_block", "x": 90}}}
+{
+    "variants": {
+        "axis=x": {
+            "model": "xkdeco:block/chiseled_bronze_block",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "xkdeco:block/chiseled_bronze_block"
+        },
+        "axis=z": {
+            "model": "xkdeco:block/chiseled_bronze_block",
+            "x": 90
+        }
+    }
+}

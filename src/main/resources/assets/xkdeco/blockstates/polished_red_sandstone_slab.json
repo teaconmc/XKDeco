@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/polished_red_sandstone_slab"}, "type=double": {"model": "xkdeco:block/polished_red_sandstone"}, "type=top": {"model": "xkdeco:block/polished_red_sandstone_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/polished_red_sandstone_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/polished_red_sandstone"
+        },
+        "type=top": {
+            "model": "xkdeco:block/polished_red_sandstone_slab_top"
+        }
+    }
+}

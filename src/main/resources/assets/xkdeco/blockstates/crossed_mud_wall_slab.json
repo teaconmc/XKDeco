@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/crossed_mud_wall_slab"}, "type=double": {"model": "xkdeco:block/lined_mud_wall_stairs"}, "type=top": {"model": "xkdeco:block/crossed_mud_wall_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/crossed_mud_wall_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/lined_mud_wall_stairs"
+        },
+        "type=top": {
+            "model": "xkdeco:block/crossed_mud_wall_slab_top"
+        }
+    }
+}

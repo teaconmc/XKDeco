@@ -1,1 +1,16 @@
-{"variants": {"axis=x": {"model": "xkdeco:block/mossy_deepstale_bricks", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/mossy_deepstale_bricks"}, "axis=z": {"model": "xkdeco:block/mossy_deepstale_bricks", "x": 90}}}
+{
+    "variants": {
+        "axis=x": {
+            "model": "xkdeco:block/mossy_deepstale_bricks",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "xkdeco:block/mossy_deepstale_bricks"
+        },
+        "axis=z": {
+            "model": "xkdeco:block/mossy_deepstale_bricks",
+            "x": 90
+        }
+    }
+}

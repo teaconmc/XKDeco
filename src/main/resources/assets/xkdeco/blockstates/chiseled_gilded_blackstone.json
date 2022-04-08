@@ -1,1 +1,16 @@
-{"variants": {"axis=x": {"model": "xkdeco:block/chiseled_gilded_blackstone", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/chiseled_gilded_blackstone"}, "axis=z": {"model": "xkdeco:block/chiseled_gilded_blackstone", "x": 90}}}
+{
+    "variants": {
+        "axis=x": {
+            "model": "xkdeco:block/chiseled_gilded_blackstone",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "xkdeco:block/chiseled_gilded_blackstone"
+        },
+        "axis=z": {
+            "model": "xkdeco:block/chiseled_gilded_blackstone",
+            "x": 90
+        }
+    }
+}

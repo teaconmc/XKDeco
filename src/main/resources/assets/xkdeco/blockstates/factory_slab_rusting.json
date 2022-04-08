@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/factory_slab_rusting"}, "type=double": {"model": "xkdeco:block/factory_block_rusting"}, "type=top": {"model": "xkdeco:block/factory_slab_rusting_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/factory_slab_rusting"
+        },
+        "type=double": {
+            "model": "xkdeco:block/factory_block_rusting"
+        },
+        "type=top": {
+            "model": "xkdeco:block/factory_slab_rusting_top"
+        }
+    }
+}

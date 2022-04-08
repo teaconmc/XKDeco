@@ -1,1 +1,16 @@
-{"variants": {"axis=x": {"model": "xkdeco:block/maya_chiseled_stonebricks", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/maya_chiseled_stonebricks"}, "axis=z": {"model": "xkdeco:block/maya_chiseled_stonebricks", "x": 90}}}
+{
+    "variants": {
+        "axis=x": {
+            "model": "xkdeco:block/maya_chiseled_stonebricks",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "xkdeco:block/maya_chiseled_stonebricks"
+        },
+        "axis=z": {
+            "model": "xkdeco:block/maya_chiseled_stonebricks",
+            "x": 90
+        }
+    }
+}

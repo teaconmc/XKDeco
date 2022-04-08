@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/copper_tile_slab"}, "type=double": {"model": "xkdeco:block/copper_tiles"}, "type=top": {"model": "xkdeco:block/copper_tile_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/copper_tile_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/copper_tiles"
+        },
+        "type=top": {
+            "model": "xkdeco:block/copper_tile_slab_top"
+        }
+    }
+}

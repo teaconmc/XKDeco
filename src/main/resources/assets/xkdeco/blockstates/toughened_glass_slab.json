@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/toughened_glass_slab"}, "type=double": {"model": "xkdeco:block/toughened_glass"}, "type=top": {"model": "xkdeco:block/toughened_glass_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/toughened_glass_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/toughened_glass"
+        },
+        "type=top": {
+            "model": "xkdeco:block/toughened_glass_slab_top"
+        }
+    }
+}

@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/cut_gold_block_slab"}, "type=double": {"model": "xkdeco:block/cut_gold_block"}, "type=top": {"model": "xkdeco:block/cut_gold_block_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/cut_gold_block_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/cut_gold_block"
+        },
+        "type=top": {
+            "model": "xkdeco:block/cut_gold_block_slab_top"
+        }
+    }
+}

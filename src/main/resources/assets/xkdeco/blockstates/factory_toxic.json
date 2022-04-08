@@ -1,1 +1,16 @@
-{"variants": {"axis=x": {"model": "xkdeco:block/factory_toxic", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/factory_toxic"}, "axis=z": {"model": "xkdeco:block/factory_toxic", "x": 90}}}
+{
+    "variants": {
+        "axis=x": {
+            "model": "xkdeco:block/factory_toxic",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "xkdeco:block/factory_toxic"
+        },
+        "axis=z": {
+            "model": "xkdeco:block/factory_toxic",
+            "x": 90
+        }
+    }
+}

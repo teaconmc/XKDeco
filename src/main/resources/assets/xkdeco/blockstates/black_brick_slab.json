@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/black_brick_slab"}, "type=double": {"model": "xkdeco:block/black_bricks"}, "type=top": {"model": "xkdeco:block/black_brick_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/black_brick_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/black_bricks"
+        },
+        "type=top": {
+            "model": "xkdeco:block/black_brick_slab_top"
+        }
+    }
+}

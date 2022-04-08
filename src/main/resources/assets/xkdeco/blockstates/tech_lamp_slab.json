@@ -1,1 +1,13 @@
-{"variants": {"type=bottom": {"model": "xkdeco:block/tech_lamp_slab"}, "type=double": {"model": "xkdeco:block/tech_lamp_block"}, "type=top": {"model": "xkdeco:block/tech_lamp_slab_top"}}}
+{
+    "variants": {
+        "type=bottom": {
+            "model": "xkdeco:block/tech_lamp_slab"
+        },
+        "type=double": {
+            "model": "xkdeco:block/tech_lamp_block"
+        },
+        "type=top": {
+            "model": "xkdeco:block/tech_lamp_slab_top"
+        }
+    }
+}
