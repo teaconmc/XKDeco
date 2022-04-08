@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/red_sandstone_small_bricks"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/red_sandstone_small_bricks", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/red_sandstone_small_bricks"}, "axis=z": {"model": "xkdeco:block/red_sandstone_small_bricks", "x": 90}}}

@@ -1,12 +1,1 @@
-{
-  "variants": {
-    "": [
-	{"model": "xkdeco:block/maya_pictogram_stone"},
-	{"model": "xkdeco:block/maya_pictogram_stone1"},
-	{"model": "xkdeco:block/maya_pictogram_stone2"},
-	{"model": "xkdeco:block/maya_pictogram_stone3"},
-	{"model": "xkdeco:block/maya_pictogram_stone4"},
-	{"model": "xkdeco:block/maya_pictogram_stone5"}
-	]
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/maya_pictogram_stone", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/maya_pictogram_stone"}, "axis=z": {"model": "xkdeco:block/maya_pictogram_stone", "x": 90}}}

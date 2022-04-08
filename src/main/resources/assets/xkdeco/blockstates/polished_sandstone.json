@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/polished_sandstone"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/polished_sandstone", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/polished_sandstone"}, "axis=z": {"model": "xkdeco:block/polished_sandstone", "x": 90}}}

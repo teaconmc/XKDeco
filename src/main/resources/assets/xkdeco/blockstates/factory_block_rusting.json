@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/factory_block_rusting"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/factory_block_rusting", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/factory_block_rusting"}, "axis=z": {"model": "xkdeco:block/factory_block_rusting", "x": 90}}}

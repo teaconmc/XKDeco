@@ -1,13 +1,1 @@
-{
-  "variants": {
-    "type=bottom": {
-      "model": "xkdeco:block/cyan_brick_slab"
-    },
-    "type=top": {
-      "model": "xkdeco:block/cyan_brick_slab_top"
-    },
-    "type=double": {
-      "model": "xkdeco:block/cyan_bricks"
-    }
-  }
-}
+{"variants": {"type=bottom": {"model": "xkdeco:block/cyan_brick_slab"}, "type=double": {"model": "xkdeco:block/cyan_bricks"}, "type=top": {"model": "xkdeco:block/cyan_brick_slab_top"}}}

@@ -1,13 +1,1 @@
-{
-  "variants": {
-    "type=bottom": {
-      "model": "xkdeco:block/red_tile_slab"
-    },
-    "type=top": {
-      "model": "xkdeco:block/red_tile_slab_top"
-    },
-    "type=double": {
-      "model": "xkdeco:block/red_tiles"
-    }
-  }
-}
+{"variants": {"type=bottom": {"model": "xkdeco:block/red_tile_slab"}, "type=double": {"model": "xkdeco:block/red_tiles"}, "type=top": {"model": "xkdeco:block/red_tile_slab_top"}}}

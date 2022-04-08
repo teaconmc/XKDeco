@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/cyan_tiles"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/cyan_tiles", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/cyan_tiles"}, "axis=z": {"model": "xkdeco:block/cyan_tiles", "x": 90}}}

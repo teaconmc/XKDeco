@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/varnished_planks"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/varnished_planks", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/varnished_planks"}, "axis=z": {"model": "xkdeco:block/varnished_planks", "x": 90}}}

@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/dirty_mud_wall_block"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/dirty_mud_wall_block", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/dirty_mud_wall_block"}, "axis=z": {"model": "xkdeco:block/dirty_mud_wall_block", "x": 90}}}

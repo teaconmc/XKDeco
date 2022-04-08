@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/steel_block"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/steel_block", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/steel_block"}, "axis=z": {"model": "xkdeco:block/steel_block", "x": 90}}}

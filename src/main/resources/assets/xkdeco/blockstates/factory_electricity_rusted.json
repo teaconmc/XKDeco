@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/factory_electricity_rusted"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/factory_electricity_rusted", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/factory_electricity_rusted"}, "axis=z": {"model": "xkdeco:block/factory_electricity_rusted", "x": 90}}}

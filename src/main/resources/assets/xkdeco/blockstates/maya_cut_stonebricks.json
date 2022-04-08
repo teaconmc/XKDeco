@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "xkdeco:block/maya_cut_stonebricks"
-    }
-  }
-}
+{"variants": {"axis=x": {"model": "xkdeco:block/maya_cut_stonebricks", "x": 90, "y": 90}, "axis=y": {"model": "xkdeco:block/maya_cut_stonebricks"}, "axis=z": {"model": "xkdeco:block/maya_cut_stonebricks", "x": 90}}}
