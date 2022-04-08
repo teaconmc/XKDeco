@@ -12,10 +12,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class XKDecoCreativeModTab extends CreativeModeTab {
-    private static final RegistryObject<Item> FISH_TANK_ITEM;
+    private static final RegistryObject<Item> BLACK_TILES_ITEM;
 
     static {
-        FISH_TANK_ITEM = RegistryObject.of(new ResourceLocation(XKDeco.ID, "fish_tank"), ForgeRegistries.ITEMS);
+        BLACK_TILES_ITEM = RegistryObject.of(new ResourceLocation(XKDeco.ID, "black_tiles"), ForgeRegistries.ITEMS);
     }
 
     public XKDecoCreativeModTab(String label) {
@@ -24,6 +24,6 @@ public class XKDecoCreativeModTab extends CreativeModeTab {
 
     @Override
     public ItemStack makeIcon() {
-        return FISH_TANK_ITEM.get().getDefaultInstance();
+        return BLACK_TILES_ITEM.get().getDefaultInstance();
     }
 }
