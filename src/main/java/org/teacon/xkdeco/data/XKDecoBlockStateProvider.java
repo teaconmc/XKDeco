@@ -18,7 +18,6 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 import java.util.stream.Stream;
 
 @MethodsReturnNonnullByDefault

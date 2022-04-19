@@ -26,6 +26,7 @@ import java.util.Arrays;
 @ParametersAreNonnullByDefault
 public final class XKDecoObjects {
     public static final CreativeModeTab TAB_BASIC = new XKDecoCreativeModTab(XKDeco.ID + "_basic", "black_tiles");
+    public static final CreativeModeTab TAB_NATURE = new XKDecoCreativeModTab(XKDeco.ID + "_nature", "grass_block_slab");
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, XKDeco.ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, XKDeco.ID);
@@ -47,25 +48,36 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_LIGHT = BlockBehaviour.Properties.of(Material.GLASS).noOcclusion().strength(2f, 10f).lightLevel(s -> 15);
     private static final BlockBehaviour.Properties BLOCK_SAND = BlockBehaviour.Properties.of(Material.SAND).strength(1f, 10f);
     private static final BlockBehaviour.Properties BLOCK_HARD_SAND = BlockBehaviour.Properties.of(Material.SAND).strength(1f, 12f);
-    private static final BlockBehaviour.Properties BLOCK_LEAVES = BlockBehaviour.Properties.of(Material.LEAVES).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_DIRT = BlockBehaviour.Properties.of(Material.DIRT).strength(0.5f, 1f).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_NETHER_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 1f).requiresCorrectToolForDrops();
+    private static final BlockBehaviour.Properties BLOCK_END_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(2f, 9f).requiresCorrectToolForDrops();
+    private static final BlockBehaviour.Properties BLOCK_LEAVES = BlockBehaviour.Properties.of(Material.LEAVES).strength(1f, 0.2f).noOcclusion();
 
     private static final Item.Properties ITEM_BASIC = new Item.Properties().tab(TAB_BASIC);
+    private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
 
+    public static final String GRASS_PREFIX = "grass_";
     public static final String GLASS_PREFIX = "glass_";
     public static final String LINED_PREFIX = "lined_";
+    public static final String WILLOW_PREFIX = "willow_";
     public static final String HOLLOW_PREFIX = "hollow_";
     public static final String LUXURY_PREFIX = "luxury_";
     public static final String PAINTED_PREFIX = "painted_";
     public static final String CHISELED_PREFIX = "chiseled_";
+    public static final String PLANTABLE_PREFIX = "plantable_";
     public static final String TRANSLUCENT_PREFIX = "translucent_";
     public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
 
     public static final String LOG_SUFFIX = "_log";
     public static final String WOOD_SUFFIX = "_wood";
     public static final String SLAB_SUFFIX = "_slab";
+    public static final String PATH_SUFFIX = "_path";
     public static final String GLASS_SUFFIX = "_glass";
     public static final String STAIRS_SUFFIX = "_stairs";
     public static final String PILLAR_SUFFIX = "_pillar";
+    public static final String LEAVES_SUFFIX = "_leaves";
+    public static final String BLOSSOM_SUFFIX = "_blossom";
+    public static final String LEAVES_DARK_SUFFIX = "_leaves_dark";
 
     private static void addBasic(String id, ShapeFunction shapeFunction,
                                  BlockBehaviour.Properties properties, Item.Properties itemProperties) {
@@ -87,11 +99,12 @@ public final class XKDecoObjects {
     private static void addIsotropic(String id,
                                      BlockBehaviour.Properties properties, Item.Properties itemProperties) {
         var isGlass = id.contains(GLASS_SUFFIX) || id.contains(TRANSLUCENT_PREFIX) || id.contains(GLASS_PREFIX);
+        var isPath = id.contains(PATH_SUFFIX);
         if (id.contains(SLAB_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicSlabBlock(properties, isGlass));
+            var block = BLOCKS.register(id, () -> new IsotropicSlabBlock(properties, isPath, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(STAIRS_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicStairBlock(properties, isGlass));
+            var block = BLOCKS.register(id, () -> new IsotropicStairBlock(properties, isPath, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
@@ -104,7 +117,7 @@ public final class XKDecoObjects {
             var block = BLOCKS.register(id, () -> new IsotropicHollowCubeBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
-            var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isGlass));
+            var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isPath, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         }
     }
@@ -436,5 +449,62 @@ public final class XKDecoObjects {
         addIsotropic("toughened_glass", BLOCK_LIGHT, ITEM_BASIC);
         addIsotropic("toughened_glass_slab", BLOCK_LIGHT, ITEM_BASIC);
         addIsotropic("toughened_glass_stairs", BLOCK_LIGHT, ITEM_BASIC);
+
+        addIsotropic("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
+        addIsotropic("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);
+        addIsotropic("grass_block_slab", BLOCK_DIRT, ITEM_NATURE);
+        addIsotropic("mycelium_slab", BLOCK_DIRT, ITEM_NATURE);
+        addIsotropic("podzol_slab", BLOCK_DIRT, ITEM_NATURE);
+
+        addIsotropic("netherrack_slab", BLOCK_NETHER_STONE, ITEM_NATURE);
+        addIsotropic("crimson_nylium_slab", BLOCK_NETHER_STONE, ITEM_NATURE);
+        addIsotropic("warped_nylium_slab", BLOCK_NETHER_STONE, ITEM_NATURE);
+        addIsotropic("end_stone_slab", BLOCK_END_STONE, ITEM_NATURE);
+
+        addIsotropic("dirt_cobblestone", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("grass_cobblestone", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("sandy_cobblestone", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("snowy_cobblestone", BLOCK_SANDSTONE, ITEM_NATURE);
+
+        addIsotropic("cobblestone_path", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("dirt_cobblestone_path", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("grass_cobblestone_path", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("sandy_cobblestone_path", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("snowy_cobblestone_path", BLOCK_SANDSTONE, ITEM_NATURE);
+
+        addIsotropic("dirt_cobblestone_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("grass_cobblestone_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("sandy_cobblestone_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("snowy_cobblestone_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+
+        addIsotropic("cobblestone_path_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("dirt_cobblestone_path_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("grass_cobblestone_path_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("sandy_cobblestone_path_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("snowy_cobblestone_path_slab", BLOCK_SANDSTONE, ITEM_NATURE);
+
+        addIsotropic("dirt_cobblestone_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("grass_cobblestone_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("sandy_cobblestone_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("snowy_cobblestone_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+
+        addIsotropic("cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("dirt_cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("grass_cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("sandy_cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+        addIsotropic("snowy_cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
+
+        addTree("ginkgo_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("orange_maple_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("red_maple_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("peach_blossom", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("peach_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("cherry_blossom", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("cherry_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("white_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("white_cherry_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("plantable_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("plantable_leaves_dark", BLOCK_LEAVES, ITEM_NATURE);
+        addTree("willow_leaves", BLOCK_LEAVES, ITEM_NATURE);
     }
 }
