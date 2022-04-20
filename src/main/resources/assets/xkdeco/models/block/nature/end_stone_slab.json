@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "minecraft:block/end_stone",
+    "top": "minecraft:block/end_stone",
+    "side": "minecraft:block/end_stone"
+  }
+}

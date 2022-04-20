@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "xkdeco:block/nature/white_cherry_blossom",
+    "particle": "xkdeco:block/nature/white_cherry_blossom"
+  }
+}

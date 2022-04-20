@@ -1,0 +1,7 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "xkdeco:block/nature/plantable_leaves_dark",
+    "particle": "xkdeco:block/nature/plantable_leaves_dark"
+  }
+}

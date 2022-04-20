@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "xkdeco:block/nature/orange_maple_leaves",
+    "particle": "xkdeco:block/nature/orange_maple_leaves"
+  }
+}

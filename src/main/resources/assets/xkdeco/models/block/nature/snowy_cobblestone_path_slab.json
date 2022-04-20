@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "xkdeco:block/nature/snowy_cobblestone_path",
+    "top": "xkdeco:block/nature/snowy_cobblestone_path",
+    "side": "xkdeco:block/nature/snowy_cobblestone_path"
+  }
+}
