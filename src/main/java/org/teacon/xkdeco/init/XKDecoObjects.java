@@ -48,7 +48,7 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_LIGHT = BlockBehaviour.Properties.of(Material.GLASS).noOcclusion().strength(2f, 10f).lightLevel(s -> 15);
     private static final BlockBehaviour.Properties BLOCK_SAND = BlockBehaviour.Properties.of(Material.SAND).strength(1f, 10f);
     private static final BlockBehaviour.Properties BLOCK_HARD_SAND = BlockBehaviour.Properties.of(Material.SAND).strength(1f, 12f);
-    private static final BlockBehaviour.Properties BLOCK_DIRT = BlockBehaviour.Properties.of(Material.DIRT).strength(0.5f, 1f).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_DIRT = BlockBehaviour.Properties.of(Material.DIRT).strength(0.5f, 1f);
     private static final BlockBehaviour.Properties BLOCK_NETHER_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 1f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_END_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(2f, 9f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_LEAVES = BlockBehaviour.Properties.of(Material.LEAVES).strength(1f, 0.2f).noOcclusion();
@@ -99,12 +99,11 @@ public final class XKDecoObjects {
     private static void addIsotropic(String id,
                                      BlockBehaviour.Properties properties, Item.Properties itemProperties) {
         var isGlass = id.contains(GLASS_SUFFIX) || id.contains(TRANSLUCENT_PREFIX) || id.contains(GLASS_PREFIX);
-        var isPath = id.contains(PATH_SUFFIX);
         if (id.contains(SLAB_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicSlabBlock(properties, isPath, isGlass));
+            var block = BLOCKS.register(id, () -> new IsotropicSlabBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(STAIRS_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicStairBlock(properties, isPath, isGlass));
+            var block = BLOCKS.register(id, () -> new IsotropicStairBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
@@ -117,15 +116,23 @@ public final class XKDecoObjects {
             var block = BLOCKS.register(id, () -> new IsotropicHollowCubeBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
-            var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isPath, isGlass));
+            var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         }
     }
 
-    private static void addTree(String id,
-                                BlockBehaviour.Properties properties, Item.Properties itemProperties) {
-        var block = BLOCKS.register(id, () -> new TreeLeavesBlock(properties));
-        ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+    private static void addPlant(String id,
+                                 BlockBehaviour.Properties properties, Item.Properties itemProperties) {
+        var isPath = id.contains(PATH_SUFFIX);
+        if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new PlantLeavesBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(SLAB_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new PlantSlabBlock(properties, isPath, "dirt_slab"));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else {
+            throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
+        }
     }
 
     @FunctionalInterface
@@ -450,11 +457,11 @@ public final class XKDecoObjects {
         addIsotropic("toughened_glass_slab", BLOCK_LIGHT, ITEM_BASIC);
         addIsotropic("toughened_glass_stairs", BLOCK_LIGHT, ITEM_BASIC);
 
-        addIsotropic("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
-        addIsotropic("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);
-        addIsotropic("grass_block_slab", BLOCK_DIRT, ITEM_NATURE);
-        addIsotropic("mycelium_slab", BLOCK_DIRT, ITEM_NATURE);
-        addIsotropic("podzol_slab", BLOCK_DIRT, ITEM_NATURE);
+        addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
+        addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);
+        addPlant("grass_block_slab", BLOCK_DIRT, ITEM_NATURE);
+        addPlant("mycelium_slab", BLOCK_DIRT, ITEM_NATURE);
+        addPlant("podzol_slab", BLOCK_DIRT, ITEM_NATURE);
 
         addIsotropic("netherrack_slab", BLOCK_NETHER_STONE, ITEM_NATURE);
         addIsotropic("crimson_nylium_slab", BLOCK_NETHER_STONE, ITEM_NATURE);
@@ -494,17 +501,17 @@ public final class XKDecoObjects {
         addIsotropic("sandy_cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
         addIsotropic("snowy_cobblestone_path_stairs", BLOCK_SANDSTONE, ITEM_NATURE);
 
-        addTree("ginkgo_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("orange_maple_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("red_maple_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("peach_blossom", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("peach_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("cherry_blossom", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("cherry_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("white_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("white_cherry_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("plantable_leaves", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("plantable_leaves_dark", BLOCK_LEAVES, ITEM_NATURE);
-        addTree("willow_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("ginkgo_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("orange_maple_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("red_maple_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("peach_blossom", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("peach_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("cherry_blossom", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("cherry_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("white_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("white_cherry_blossom_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("plantable_leaves", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("plantable_leaves_dark", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("willow_leaves", BLOCK_LEAVES, ITEM_NATURE);
     }
 }
