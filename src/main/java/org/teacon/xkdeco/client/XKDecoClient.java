@@ -49,7 +49,7 @@ public final class XKDecoClient {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
             } else if (id.contains(XKDecoObjects.GLASS_PREFIX) || id.contains(XKDecoObjects.HOLLOW_PREFIX)) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
-            } else if (id.contains(XKDecoObjects.LEAVES_SUFFIX) || id.contains(XKDecoObjects.BLOSSOM_SUFFIX)) {
+            } else if (id.contains(XKDecoObjects.GRASS_PREFIX) || id.contains(XKDecoObjects.LEAVES_SUFFIX) || id.contains(XKDecoObjects.BLOSSOM_SUFFIX)) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutoutMipped());
             }
         }
