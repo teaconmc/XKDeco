@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.block;
 
-public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotropic, XKDecoBlock.Plant {
+public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotropic, XKDecoBlock.Plant, XKDecoBlock.Special {
     // basic blocks which have directions
     sealed interface Basic extends XKDecoBlock permits BasicBlock, BasicCubeBlock, BasicFullDirectionBlock {
         // nothing here
@@ -13,6 +13,11 @@ public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotr
 
     // plant blocks which are related to grass and leaves
     sealed interface Plant extends XKDecoBlock permits PlantLeavesBlock, PlantSlabBlock {
+        // nothing here
+    }
+
+    // indexed blocks which have an index respectively
+    sealed interface Special extends XKDecoBlock permits SpecialCupBlock, SpecialDessert7Block, SpecialDessert8Block {
         // nothing here
     }
 }

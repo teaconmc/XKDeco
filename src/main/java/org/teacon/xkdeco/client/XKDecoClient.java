@@ -49,6 +49,8 @@ public final class XKDecoClient {
             var id = entry.getId().getPath();
             if (entry.get() instanceof XKDecoBlock.Basic) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+            } else if (entry.get() instanceof XKDecoBlock.Special) {
+                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
             } else if (id.contains(XKDecoObjects.GLASS_SUFFIX) || id.contains(XKDecoObjects.TRANSLUCENT_PREFIX)) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
             } else if (id.contains(XKDecoObjects.GLASS_PREFIX) || id.contains(XKDecoObjects.HOLLOW_PREFIX) || id.contains(XKDecoObjects.BIG_TABLE_SUFFIX) || id.contains(XKDecoObjects.TALL_TABLE_SUFFIX)) {

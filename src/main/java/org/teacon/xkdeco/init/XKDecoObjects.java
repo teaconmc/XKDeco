@@ -55,6 +55,9 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_LEAVES = BlockBehaviour.Properties.of(Material.LEAVES).strength(1f, 0.2f).noOcclusion();
     private static final BlockBehaviour.Properties BLOCK_WOOD_FURNITURE = BlockBehaviour.Properties.of(Material.WOOD).strength(2f, 2.5f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_MINIATURE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 0.5f).requiresCorrectToolForDrops();
+    private static final BlockBehaviour.Properties BLOCK_DESSERT = BlockBehaviour.Properties.of(Material.CAKE).strength(0.5f, 0.5f);
+    private static final BlockBehaviour.Properties BLOCK_CARPET = BlockBehaviour.Properties.of(Material.WOOL).strength(0.5f, 0.5f);
+    private static final BlockBehaviour.Properties BLOCK_BOARD = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f);
 
     private static final Item.Properties ITEM_BASIC = new Item.Properties().tab(TAB_BASIC);
     private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
@@ -86,10 +89,14 @@ public final class XKDecoObjects {
     public static final String TALL_TABLE_SUFFIX = "_tall_table";
     public static final String LEAVES_DARK_SUFFIX = "_leaves_dark";
 
-    private static void addBasic(String id, ShapeFunction shapeFunction,
+    public static final String CUP_SPECIAL = "cup";
+    public static final String REFRESHMENT_SPECIAL = "refreshments";
+    public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
+
+    private static void addBasic(String id, ShapeFunction shapeFunction, boolean isSupportNeeded,
                                  BlockBehaviour.Properties properties, Item.Properties itemProperties) {
         var horizontalShapes = Maps.toMap(Direction.Plane.HORIZONTAL, shapeFunction::getShape);
-        if (horizontalShapes.values().stream().anyMatch(s -> Block
+        if (!isSupportNeeded && horizontalShapes.values().stream().anyMatch(s -> Block
                 .isFaceFull(Shapes.join(Shapes.block(), s, BooleanOp.ONLY_FIRST), Direction.DOWN))) {
             var shapes = Maps.toMap(Arrays.stream(Direction.values()).toList(), shapeFunction::getShape);
             var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties, shapes));
@@ -98,7 +105,7 @@ public final class XKDecoObjects {
             var block = BLOCKS.register(id, () -> new BasicCubeBlock(properties, horizontalShapes));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
-            var block = BLOCKS.register(id, () -> new BasicBlock(properties, horizontalShapes));
+            var block = BLOCKS.register(id, () -> new BasicBlock(properties, isSupportNeeded, horizontalShapes));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         }
     }
@@ -145,6 +152,23 @@ public final class XKDecoObjects {
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
+        }
+    }
+
+    private static void addSpecial(String id,
+                                 BlockBehaviour.Properties properties, Item.Properties itemProperties) {
+        // noinspection IfCanBeSwitch
+        if (id.equals(CUP_SPECIAL)) {
+            var block = BLOCKS.register(id, () -> new SpecialCupBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.equals(REFRESHMENT_SPECIAL)) {
+            var block = BLOCKS.register(id, () -> new SpecialDessert7Block(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.equals(FRUIT_PLATTER_SPECIAL)) {
+            var block = BLOCKS.register(id, () -> new SpecialDessert8Block(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else {
+            throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
         }
     }
 
@@ -196,6 +220,14 @@ public final class XKDecoObjects {
 
         static ShapeFunction fromTeapot() {
             return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(4, 0, 4, 12, 6, 12) : Shapes.block();
+        }
+
+        static ShapeFunction fromCarpet() {
+            return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(0, 0, 0, 16, 1, 16) : Shapes.block();
+        }
+
+        static ShapeFunction fromBoard() {
+            return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(0, 0, 0, 15, 1, 15) : Shapes.block();
         }
     }
 
@@ -362,7 +394,7 @@ public final class XKDecoObjects {
         addIsotropic("maya_chiseled_stonebricks", BLOCK_HARD_STONE, ITEM_BASIC);
         addIsotropic("maya_cut_stonebricks", BLOCK_HARD_STONE, ITEM_BASIC);
 
-        addBasic("maya_single_screw_thread_stone", s -> Shapes.block(), BLOCK_HARD_STONE, ITEM_BASIC);
+        addBasic("maya_single_screw_thread_stone", s -> Shapes.block(), false, BLOCK_HARD_STONE, ITEM_BASIC);
         addIsotropic("maya_double_screw_thread_stone", BLOCK_HARD_STONE, ITEM_BASIC);
         addIsotropic("maya_quad_screw_thread_stone", BLOCK_HARD_STONE, ITEM_BASIC);
 
@@ -429,7 +461,7 @@ public final class XKDecoObjects {
         addIsotropic("cut_bronze_block_stairs", BLOCK_BRONZE, ITEM_BASIC);
 
         addIsotropic("chiseled_bronze_block", BLOCK_BRONZE, ITEM_BASIC);
-        addBasic("screw_thread_bronze_block", s -> Shapes.block(), BLOCK_BRONZE, ITEM_BASIC);
+        addBasic("screw_thread_bronze_block", s -> Shapes.block(), false, BLOCK_BRONZE, ITEM_BASIC);
         addIsotropic("bronze_pillar", BLOCK_BRONZE, ITEM_BASIC);
 
         addIsotropic("steel_block", BLOCK_HARD_IRON, ITEM_BASIC);
@@ -565,43 +597,51 @@ public final class XKDecoObjects {
         addIsotropic("varnished_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addIsotropic("varnished_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addIsotropic("varnished_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("varnished_desk", ShapeFunction.fromBigTable(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("varnished_stool", ShapeFunction.fromLongStool(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("varnished_chair", ShapeFunction.fromChair(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("varnished_empty_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("varnished_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("varnished_divided_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_desk", ShapeFunction.fromBigTable(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_stool", ShapeFunction.fromLongStool(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_chair", ShapeFunction.fromChair(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_empty_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_divided_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
 
         addIsotropic("ebony_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addIsotropic("ebony_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addIsotropic("ebony_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("ebony_desk", ShapeFunction.fromBigTable(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("ebony_stool", ShapeFunction.fromLongStool(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("ebony_chair", ShapeFunction.fromChair(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("ebony_empty_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("ebony_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("ebony_divided_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_desk", ShapeFunction.fromBigTable(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_stool", ShapeFunction.fromLongStool(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_chair", ShapeFunction.fromChair(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_empty_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_divided_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
 
         addIsotropic("mahogany_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addIsotropic("mahogany_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addIsotropic("mahogany_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("mahogany_desk", ShapeFunction.fromBigTable(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("mahogany_stool", ShapeFunction.fromLongStool(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("mahogany_chair", ShapeFunction.fromChair(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("mahogany_empty_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("mahogany_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
-        addBasic("mahogany_divided_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_desk", ShapeFunction.fromBigTable(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_stool", ShapeFunction.fromLongStool(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_chair", ShapeFunction.fromChair(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_empty_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_divided_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
 
-        addBasic("miniature_tree", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_cherry", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_ginkgo", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_maple", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_bamboo", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_coral", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_red_coral", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_mount", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("miniature_succulents", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_tree", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_cherry", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_ginkgo", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_maple", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_bamboo", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_coral", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_red_coral", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_mount", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_succulents", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE);
 
-        addBasic("teapot", ShapeFunction.fromTeapot(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("teapot", ShapeFunction.fromTeapot(), true, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addSpecial("cup", BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("tea_ware", ShapeFunction.fromTeapot(), true, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addSpecial("refreshments", BLOCK_DESSERT, ITEM_FURNITURE);
+        addSpecial("fruit_platter", BLOCK_DESSERT, ITEM_FURNITURE);
+        addBasic("calligraphy", ShapeFunction.fromCarpet(), true, BLOCK_CARPET, ITEM_FURNITURE);
+        addBasic("ink_painting", ShapeFunction.fromCarpet(), true, BLOCK_CARPET, ITEM_FURNITURE);
+        addBasic("weiqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
+        addBasic("xiangqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
     }
 }

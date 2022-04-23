@@ -7,10 +7,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,10 +30,12 @@ public final class BasicBlock extends Block implements SimpleWaterloggedBlock, X
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
+    private final boolean isSupportNeeded;
     private final ImmutableMap<Direction, VoxelShape> shapes;
 
-    public BasicBlock(Properties properties, Map<Direction, ? extends VoxelShape> shapes) {
+    public BasicBlock(Properties properties, boolean isSupportNeeded, Map<Direction, ? extends VoxelShape> shapes) {
         super(properties);
+        this.isSupportNeeded = isSupportNeeded;
         this.shapes = ImmutableMap.copyOf(shapes);
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(WATERLOGGED, false).setValue(FACING, Direction.NORTH));
@@ -73,6 +73,9 @@ public final class BasicBlock extends Block implements SimpleWaterloggedBlock, X
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction direction, BlockState prevState,
                                   LevelAccessor world, BlockPos pos, BlockPos prevPos) {
+        if (direction == Direction.DOWN && !state.canSurvive(world, pos)) {
+            return Blocks.AIR.defaultBlockState();
+        }
         if (state.getValue(WATERLOGGED)) {
             world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
@@ -88,5 +91,11 @@ public final class BasicBlock extends Block implements SimpleWaterloggedBlock, X
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+        return !this.isSupportNeeded || world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP);
     }
 }
