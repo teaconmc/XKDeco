@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "xkdeco:block/furniture/ebony_divided_shelf"
+    },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/ebony_divided_shelf",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/ebony_divided_shelf",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/ebony_divided_shelf",
+      "y": 270
+    }
+  }
+}

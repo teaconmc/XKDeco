@@ -1,0 +1,8 @@
+{
+	"parent": "xkdeco:block/furniture/ebony_big_table",
+	"textures": {
+		"top": "xkdeco:block/furniture/mahogany_big_table",
+		"particle": "xkdeco:block/furniture/mahogany_big_table_side",
+		"side": "xkdeco:block/furniture/mahogany_big_table_side"
+	}
+}
