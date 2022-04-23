@@ -24,7 +24,7 @@ import java.util.Objects;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BasicCubeBlock extends Block implements XKDecoBlock {
+public final class BasicCubeBlock extends Block implements XKDecoBlock.Basic {
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final ImmutableMap<Direction, VoxelShape> shapes;

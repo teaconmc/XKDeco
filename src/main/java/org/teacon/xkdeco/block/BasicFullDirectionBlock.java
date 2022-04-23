@@ -29,7 +29,7 @@ import java.util.Objects;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BasicFullDirectionBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock {
+public final class BasicFullDirectionBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Basic {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final DirectionProperty FACING = BlockStateProperties.FACING;
 

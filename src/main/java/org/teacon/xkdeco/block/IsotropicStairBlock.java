@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicStairBlock extends StairBlock implements XKDecoBlock {
+public final class IsotropicStairBlock extends StairBlock implements XKDecoBlock.Isotropic {
     private final boolean isGlass;
 
     public IsotropicStairBlock(Properties properties, boolean isGlass) {

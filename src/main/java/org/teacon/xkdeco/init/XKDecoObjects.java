@@ -113,7 +113,7 @@ public final class XKDecoObjects {
             var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(HOLLOW_PREFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicHollowCubeBlock(properties));
+            var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isGlass));

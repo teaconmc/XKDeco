@@ -24,7 +24,7 @@ import java.util.Random;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock {
+public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant {
     private static final VoxelShape PATH_TOP_AABB = Block.box(0, 8, 0, 16, 15, 16);
     private static final VoxelShape PATH_BOTTOM_AABB = Block.box(0, 0, 0, 16, 7, 16);
     private static final VoxelShape PATH_DOUBLE_AABB = Block.box(0, 0, 0, 16, 15, 16);
