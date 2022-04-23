@@ -27,6 +27,7 @@ import java.util.Arrays;
 public final class XKDecoObjects {
     public static final CreativeModeTab TAB_BASIC = new XKDecoCreativeModTab(XKDeco.ID + "_basic", "black_tiles");
     public static final CreativeModeTab TAB_NATURE = new XKDecoCreativeModTab(XKDeco.ID + "_nature", "grass_block_slab");
+    public static final CreativeModeTab TAB_FURNITURE = new XKDecoCreativeModTab(XKDeco.ID + "_furniture", "varnished_big_table");
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, XKDeco.ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, XKDeco.ID);
@@ -52,9 +53,12 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_NETHER_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 1f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_END_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(2f, 9f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_LEAVES = BlockBehaviour.Properties.of(Material.LEAVES).strength(1f, 0.2f).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_WOOD_FURNITURE = BlockBehaviour.Properties.of(Material.WOOD).strength(2f, 2.5f).requiresCorrectToolForDrops();
+    private static final BlockBehaviour.Properties BLOCK_MINIATURE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 0.5f).requiresCorrectToolForDrops();
 
     private static final Item.Properties ITEM_BASIC = new Item.Properties().tab(TAB_BASIC);
     private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
+    private static final Item.Properties ITEM_FURNITURE = new Item.Properties().tab(TAB_FURNITURE);
 
     public static final String GRASS_PREFIX = "grass_";
     public static final String GLASS_PREFIX = "glass_";
@@ -72,11 +76,14 @@ public final class XKDecoObjects {
     public static final String WOOD_SUFFIX = "_wood";
     public static final String SLAB_SUFFIX = "_slab";
     public static final String PATH_SUFFIX = "_path";
+    public static final String TABLE_SUFFIX = "_table";
     public static final String GLASS_SUFFIX = "_glass";
     public static final String STAIRS_SUFFIX = "_stairs";
     public static final String PILLAR_SUFFIX = "_pillar";
     public static final String LEAVES_SUFFIX = "_leaves";
     public static final String BLOSSOM_SUFFIX = "_blossom";
+    public static final String BIG_TABLE_SUFFIX = "_big_table";
+    public static final String TALL_TABLE_SUFFIX = "_tall_table";
     public static final String LEAVES_DARK_SUFFIX = "_leaves_dark";
 
     private static void addBasic(String id, ShapeFunction shapeFunction,
@@ -112,6 +119,12 @@ public final class XKDecoObjects {
                 || id.contains(CHISELED_PREFIX) || id.contains(DOUBLE_SCREW_PREFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, IsotropicHollowBlock.BIG_TABLE_SHAPE));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(TABLE_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, IsotropicHollowBlock.TABLE_SHAPE));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(HOLLOW_PREFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
@@ -139,15 +152,50 @@ public final class XKDecoObjects {
     private interface ShapeFunction {
         VoxelShape getShape(Direction direction);
 
-        static ShapeFunction fromSouth(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        static ShapeFunction fromBigTable() {
+            return d -> Direction.Plane.HORIZONTAL.test(d) ? IsotropicHollowBlock.BIG_TABLE_SHAPE : Shapes.block();
+        }
+
+        static ShapeFunction fromLongStool() {
             return d -> switch (d) {
-                case UP -> Block.box(minX, minZ, 16 - maxY, maxX, maxZ, 16 - minY);
-                case DOWN -> Block.box(minX, 16 - maxZ, minY, maxX, 16 - minZ, maxY);
-                case SOUTH -> Block.box(minX, minY, minZ, maxX, maxY, maxZ);
-                case EAST -> Block.box(minZ, minY, 16 - maxX, maxZ, maxY, 16 - minX);
-                case NORTH -> Block.box(16 - maxX, minY, 16 - maxZ, 16 - minX, maxY, 16 - minZ);
-                case WEST -> Block.box(16 - maxZ, minY, minX, 16 - minZ, maxY, maxX);
+                case EAST, WEST -> Block.box(3, 0, 0, 13, 10, 16);
+                case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 2, 13);
+                default -> Shapes.block();
             };
+        }
+
+        static ShapeFunction fromChair() {
+            return d -> switch (d) {
+                case EAST -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(2, 10, 2, 4, 16, 14));
+                case SOUTH -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(2, 10, 2, 14, 16, 4));
+                case WEST -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(12, 10, 2, 14, 16, 14));
+                case NORTH -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(2, 10, 12, 14, 16, 14));
+                default -> Shapes.block();
+            };
+        }
+
+        static ShapeFunction fromShelf() {
+            return d -> switch (d) {
+                case EAST, WEST -> Shapes.or(
+                        Block.box(0, 0, 0, 16, 1, 16), Block.box(0, 15, 0, 16, 16, 16),
+                        Block.box(0, 1, 0, 16, 15, 1), Block.box(0, 1, 15, 16, 15, 16));
+                case NORTH, SOUTH -> Shapes.or(
+                        Block.box(15, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 1, 16, 16),
+                        Block.box(1, 15, 0, 15, 16, 16), Block.box(1, 0, 0, 15, 1, 16));
+                default -> Shapes.block();
+            };
+        }
+
+        static ShapeFunction fromMiniature() {
+            return d -> switch (d) {
+                case EAST, WEST -> Block.box(3, 0, 0, 13, 6, 16);
+                case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 6, 13);
+                default -> Shapes.block();
+            };
+        }
+
+        static ShapeFunction fromTeapot() {
+            return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(4, 0, 4, 12, 6, 12) : Shapes.block();
         }
     }
 
@@ -513,5 +561,47 @@ public final class XKDecoObjects {
         addPlant("plantable_leaves", BLOCK_LEAVES, ITEM_NATURE);
         addPlant("plantable_leaves_dark", BLOCK_LEAVES, ITEM_NATURE);
         addPlant("willow_leaves", BLOCK_LEAVES, ITEM_NATURE);
+
+        addIsotropic("varnished_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addIsotropic("varnished_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addIsotropic("varnished_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_desk", ShapeFunction.fromBigTable(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_stool", ShapeFunction.fromLongStool(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_chair", ShapeFunction.fromChair(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_empty_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("varnished_divided_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+
+        addIsotropic("ebony_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addIsotropic("ebony_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addIsotropic("ebony_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_desk", ShapeFunction.fromBigTable(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_stool", ShapeFunction.fromLongStool(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_chair", ShapeFunction.fromChair(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_empty_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("ebony_divided_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+
+        addIsotropic("mahogany_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addIsotropic("mahogany_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addIsotropic("mahogany_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_desk", ShapeFunction.fromBigTable(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_stool", ShapeFunction.fromLongStool(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_chair", ShapeFunction.fromChair(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_empty_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("mahogany_divided_shelf", ShapeFunction.fromShelf(), BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+
+        addBasic("miniature_tree", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_cherry", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_ginkgo", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_maple", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_bamboo", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_coral", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_red_coral", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_mount", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("miniature_succulents", ShapeFunction.fromMiniature(), BLOCK_MINIATURE, ITEM_FURNITURE);
+
+        addBasic("teapot", ShapeFunction.fromTeapot(), BLOCK_MINIATURE, ITEM_FURNITURE);
     }
 }

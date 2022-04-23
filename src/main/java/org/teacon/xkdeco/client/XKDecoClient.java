@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
+import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.XKDecoBlock;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -45,9 +47,11 @@ public final class XKDecoClient {
     public static void setCutoutBlocks(FMLClientSetupEvent event) {
         for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
             var id = entry.getId().getPath();
-            if (id.contains(XKDecoObjects.GLASS_SUFFIX) || id.contains(XKDecoObjects.TRANSLUCENT_PREFIX)) {
+            if (entry.get() instanceof XKDecoBlock.Basic) {
+                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+            } else if (id.contains(XKDecoObjects.GLASS_SUFFIX) || id.contains(XKDecoObjects.TRANSLUCENT_PREFIX)) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
-            } else if (id.contains(XKDecoObjects.GLASS_PREFIX) || id.contains(XKDecoObjects.HOLLOW_PREFIX)) {
+            } else if (id.contains(XKDecoObjects.GLASS_PREFIX) || id.contains(XKDecoObjects.HOLLOW_PREFIX) || id.contains(XKDecoObjects.BIG_TABLE_SUFFIX) || id.contains(XKDecoObjects.TALL_TABLE_SUFFIX)) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
             } else if (id.contains(XKDecoObjects.GRASS_PREFIX) || id.contains(XKDecoObjects.LEAVES_SUFFIX) || id.contains(XKDecoObjects.BLOSSOM_SUFFIX)) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutoutMipped());
