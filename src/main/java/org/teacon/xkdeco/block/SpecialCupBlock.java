@@ -12,7 +12,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -24,6 +28,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public final class SpecialCupBlock extends Block implements XKDecoBlock.Special {
     private static final int MAXIMUM_COUNT = 4;
 
+    private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final IntegerProperty COUNT = IntegerProperty.create("count", 1, MAXIMUM_COUNT);
 
     private static final VoxelShape ONE_SHAPE = Block.box(6, 0, 6, 10, 6, 10);
@@ -33,7 +38,7 @@ public final class SpecialCupBlock extends Block implements XKDecoBlock.Special 
 
     public SpecialCupBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(COUNT, 1));
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(COUNT, 1));
     }
 
     @Override
@@ -53,15 +58,20 @@ public final class SpecialCupBlock extends Block implements XKDecoBlock.Special 
         if (state.is(this)) {
             return state.setValue(COUNT, Math.min(MAXIMUM_COUNT, state.getValue(COUNT) + 1));
         }
-        return super.getStateForPlacement(context);
+        var fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState().setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                   LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+        // noinspection DuplicatedCode
         if (direction == Direction.DOWN && !state.canSurvive(world, pos)) {
             return Blocks.AIR.defaultBlockState();
+        }
+        if (state.getValue(WATERLOGGED)) {
+            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
         return super.updateShape(state, direction, neighborState, world, pos, neighborPos);
     }
@@ -91,8 +101,14 @@ public final class SpecialCupBlock extends Block implements XKDecoBlock.Special 
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(COUNT);
+        builder.add(COUNT, WATERLOGGED);
     }
 
     @Override

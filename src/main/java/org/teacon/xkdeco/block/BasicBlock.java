@@ -73,6 +73,7 @@ public final class BasicBlock extends Block implements SimpleWaterloggedBlock, X
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction direction, BlockState prevState,
                                   LevelAccessor world, BlockPos pos, BlockPos prevPos) {
+        // noinspection DuplicatedCode
         if (direction == Direction.DOWN && !state.canSurvive(world, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
