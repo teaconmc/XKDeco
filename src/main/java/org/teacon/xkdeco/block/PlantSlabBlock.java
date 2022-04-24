@@ -40,7 +40,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
 
     @Override
     public boolean useShapeForLightOcclusion(BlockState state) {
-        return this.isPath || state.getValue(TYPE) != SlabType.DOUBLE;
+        return this.isPath || state.getValue(TYPE) != SlabType.TOP;
     }
 
     @Override
@@ -55,7 +55,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
     @Override
     public BlockState updateShape(BlockState state, Direction facing,
                                   BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos) {
-        if (facing == Direction.UP && state.canSurvive(world, pos)) {
+        if (facing.getAxis() == Direction.Axis.Y && !state.canSurvive(world, pos)) {
             world.scheduleTick(pos, this, 1);
         }
         return super.updateShape(state, facing, facingState, world, pos, facingPos);
@@ -64,7 +64,9 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
     @Override
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rng) {
-        this.turnToDirt(state, world, pos);
+        if (this.isPath) {
+            this.turnToDirt(state, world, pos);
+        }
     }
 
     @Override
@@ -75,6 +77,11 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
             return !aboveState.getMaterial().isSolid() || aboveState.getBlock() instanceof FenceGateBlock;
         }
         return true;
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState pState) {
+        return !this.isPath;
     }
 
     @Override
@@ -96,15 +103,18 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
     }
 
     private static boolean canBeGrass(BlockState state, LevelReader world, BlockPos pos) {
-        var abovePos = pos.above();
-        var aboveState = world.getBlockState(abovePos);
-        if (!aboveState.is(Blocks.SNOW) || aboveState.getValue(SnowLayerBlock.LAYERS) != 1) {
-            if (aboveState.getFluidState().getAmount() != 8) {
-                return LayerLightEngine.getLightBlockInto(world, state, pos, aboveState, abovePos,
-                        Direction.UP, aboveState.getLightBlock(world, abovePos)) < world.getMaxLightLevel();
+        if (state.getValue(TYPE) != SlabType.BOTTOM) {
+            var abovePos = pos.above();
+            var aboveState = world.getBlockState(abovePos);
+            if (!aboveState.is(Blocks.SNOW) || aboveState.getValue(SnowLayerBlock.LAYERS) != 1) {
+                if (aboveState.getFluidState().getAmount() != 8) {
+                    return LayerLightEngine.getLightBlockInto(world, state, pos, aboveState, abovePos,
+                            Direction.UP, aboveState.getLightBlock(world, abovePos)) < world.getMaxLightLevel();
+                }
+                return false;
             }
-            return false;
+            return true;
         }
-        return true;
+        return !state.getValue(WATERLOGGED);
     }
 }
