@@ -53,11 +53,11 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_NETHER_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 1f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_END_STONE = BlockBehaviour.Properties.of(Material.STONE).strength(2f, 9f).requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_LEAVES = BlockBehaviour.Properties.of(Material.LEAVES).strength(1f, 0.2f).noOcclusion();
-    private static final BlockBehaviour.Properties BLOCK_WOOD_FURNITURE = BlockBehaviour.Properties.of(Material.WOOD).strength(2f, 2.5f).requiresCorrectToolForDrops();
-    private static final BlockBehaviour.Properties BLOCK_MINIATURE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 0.5f).requiresCorrectToolForDrops();
+    private static final BlockBehaviour.Properties BLOCK_WOOD_FURNITURE = BlockBehaviour.Properties.of(Material.WOOD).strength(2f, 2.5f).noOcclusion().requiresCorrectToolForDrops();
+    private static final BlockBehaviour.Properties BLOCK_MINIATURE = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 0.5f).noOcclusion().requiresCorrectToolForDrops();
     private static final BlockBehaviour.Properties BLOCK_DESSERT = BlockBehaviour.Properties.of(Material.CAKE).strength(0.5f, 0.5f);
-    private static final BlockBehaviour.Properties BLOCK_CARPET = BlockBehaviour.Properties.of(Material.WOOL).strength(0.5f, 0.5f);
-    private static final BlockBehaviour.Properties BLOCK_BOARD = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f);
+    private static final BlockBehaviour.Properties BLOCK_CARPET = BlockBehaviour.Properties.of(Material.WOOL).strength(0.5f, 0.5f).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_BOARD = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f).noOcclusion();
 
     private static final Item.Properties ITEM_BASIC = new Item.Properties().tab(TAB_BASIC);
     private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
