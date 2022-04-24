@@ -25,14 +25,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialDessert7Block extends Block implements XKDecoBlock.Special {
+public final class SpecialDessertBlock extends Block implements XKDecoBlock.Special {
     private static final int MAXIMUM_COUNT = 7;
 
     private static final IntegerProperty COUNT = IntegerProperty.create("count", 1, MAXIMUM_COUNT);
 
     private static final VoxelShape DESSERT_SHAPE = Block.box(1, 0, 1, 15, 2, 15);
 
-    public SpecialDessert7Block(Properties properties) {
+    public SpecialDessertBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(COUNT, MAXIMUM_COUNT));
     }

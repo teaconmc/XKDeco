@@ -1,12 +1,6 @@
 {
     "multipart": [
         {
-		"when":{"count":"8"},
-		"apply": [
-             { "model": "xkdeco:block/furniture/fruit_platter", "weight": 1 }
-			]
-		},
-        {
 		"when":{"count":"7"},
 		"apply": [
              { "model": "xkdeco:block/furniture/fruit_platter", "weight": 1 }

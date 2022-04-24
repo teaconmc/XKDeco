@@ -156,16 +156,12 @@ public final class XKDecoObjects {
     }
 
     private static void addSpecial(String id,
-                                 BlockBehaviour.Properties properties, Item.Properties itemProperties) {
-        // noinspection IfCanBeSwitch
+                                   BlockBehaviour.Properties properties, Item.Properties itemProperties) {
         if (id.equals(CUP_SPECIAL)) {
             var block = BLOCKS.register(id, () -> new SpecialCupBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (id.equals(REFRESHMENT_SPECIAL)) {
-            var block = BLOCKS.register(id, () -> new SpecialDessert7Block(properties));
-            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (id.equals(FRUIT_PLATTER_SPECIAL)) {
-            var block = BLOCKS.register(id, () -> new SpecialDessert8Block(properties));
+        } else if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
+            var block = BLOCKS.register(id, () -> new SpecialDessertBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
