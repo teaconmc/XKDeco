@@ -179,7 +179,7 @@ public final class XKDecoObjects {
         static ShapeFunction fromLongStool() {
             return d -> switch (d) {
                 case EAST, WEST -> Block.box(3, 0, 0, 13, 10, 16);
-                case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 2, 13);
+                case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 10, 13);
                 default -> Shapes.block();
             };
         }
@@ -218,12 +218,20 @@ public final class XKDecoObjects {
             return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(4, 0, 4, 12, 6, 12) : Shapes.block();
         }
 
+        static ShapeFunction fromTeaWare() {
+            return d -> switch (d) {
+                case EAST, WEST -> Block.box(3, 0, 0, 13, 2, 16);
+                case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 2, 13);
+                default -> Shapes.block();
+            };
+        }
+
         static ShapeFunction fromCarpet() {
             return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(0, 0, 0, 16, 1, 16) : Shapes.block();
         }
 
         static ShapeFunction fromBoard() {
-            return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(0, 0, 0, 15, 1, 15) : Shapes.block();
+            return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(1, 0, 1, 15, 1, 15) : Shapes.block();
         }
     }
 
@@ -632,7 +640,7 @@ public final class XKDecoObjects {
 
         addBasic("teapot", ShapeFunction.fromTeapot(), true, BLOCK_MINIATURE, ITEM_FURNITURE);
         addSpecial("cup", BLOCK_MINIATURE, ITEM_FURNITURE);
-        addBasic("tea_ware", ShapeFunction.fromTeapot(), true, BLOCK_MINIATURE, ITEM_FURNITURE);
+        addBasic("tea_ware", ShapeFunction.fromTeaWare(), true, BLOCK_MINIATURE, ITEM_FURNITURE);
         addSpecial("refreshments", BLOCK_DESSERT, ITEM_FURNITURE);
         addSpecial("fruit_platter", BLOCK_DESSERT, ITEM_FURNITURE);
         addBasic("calligraphy", ShapeFunction.fromCarpet(), true, BLOCK_CARPET, ITEM_FURNITURE);
