@@ -1,5 +1,6 @@
 {
 	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/thin_block",
 	"textures": {
 		"0": "xkdeco:block/furniture/dish",
 		"1": "xkdeco:block/furniture/fruit_platter",

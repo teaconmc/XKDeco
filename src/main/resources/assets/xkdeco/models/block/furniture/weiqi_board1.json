@@ -1,6 +1,6 @@
 {
 	"credit": "Made by XeKr with Blockbench",
-	"parent": "block/cube",
+	"parent": "block/thin_block",
 	"textures": {
 		"0": "xkdeco:block/furniture/weiqi_board",
 		"particle": "xkdeco:block/furniture/weiqi_board"
