@@ -3,6 +3,9 @@ package org.teacon.xkdeco.init;
 import com.google.common.collect.Maps;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -17,6 +20,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.*;
+import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,6 +33,7 @@ public final class XKDecoObjects {
     public static final CreativeModeTab TAB_NATURE = new XKDecoCreativeModTab(XKDeco.ID + "_nature", "grass_block_slab");
     public static final CreativeModeTab TAB_FURNITURE = new XKDecoCreativeModTab(XKDeco.ID + "_furniture", "varnished_big_table");
 
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, XKDeco.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, XKDeco.ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, XKDeco.ID);
 
@@ -63,6 +68,8 @@ public final class XKDecoObjects {
     private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
     private static final Item.Properties ITEM_FURNITURE = new Item.Properties().tab(TAB_FURNITURE);
 
+    public static final String CUSHION_ENTITY = "cushion";
+
     public static final String GRASS_PREFIX = "grass_";
     public static final String GLASS_PREFIX = "glass_";
     public static final String LINED_PREFIX = "lined_";
@@ -79,6 +86,8 @@ public final class XKDecoObjects {
     public static final String WOOD_SUFFIX = "_wood";
     public static final String SLAB_SUFFIX = "_slab";
     public static final String PATH_SUFFIX = "_path";
+    public static final String STOOL_SUFFIX = "_stool";
+    public static final String CHAIR_SUFFIX = "_chair";
     public static final String TABLE_SUFFIX = "_table";
     public static final String GLASS_SUFFIX = "_glass";
     public static final String STAIRS_SUFFIX = "_stairs";
@@ -92,6 +101,12 @@ public final class XKDecoObjects {
     public static final String CUP_SPECIAL = "cup";
     public static final String REFRESHMENT_SPECIAL = "refreshments";
     public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
+
+    private static void addCushionEntity() {
+        ENTITIES.register(CUSHION_ENTITY, () -> EntityType.Builder
+                .<CushionEntity>of(CushionEntity::new, MobCategory.MISC).sized(1F / 256F, 1F / 256F)
+                .setTrackingRange(256).build(new ResourceLocation(XKDeco.ID, CUSHION_ENTITY).toString()));
+    }
 
     private static void addBasic(String id, ShapeFunction shapeFunction, boolean isSupportNeeded,
                                  BlockBehaviour.Properties properties, Item.Properties itemProperties) {
@@ -236,6 +251,8 @@ public final class XKDecoObjects {
     }
 
     static {
+        addCushionEntity();
+
         addIsotropic("black_tiles", BLOCK_STONE, ITEM_BASIC);
         addIsotropic("black_tile_slab", BLOCK_STONE, ITEM_BASIC);
         addIsotropic("black_tile_stairs", BLOCK_STONE, ITEM_BASIC);

@@ -6,15 +6,18 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.block.XKDecoBlock;
+import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -78,5 +81,9 @@ public final class XKDecoClient {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutoutMipped());
             }
         }
+    }
+
+    public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(CushionEntity.TYPE.get(), NoopRenderer::new);
     }
 }
