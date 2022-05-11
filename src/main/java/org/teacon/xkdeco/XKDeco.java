@@ -24,6 +24,7 @@ public final class XKDeco {
         XKDecoObjects.ENTITIES.register(modEventBus);
         XKDecoObjects.BLOCKS.register(modEventBus);
         XKDecoObjects.ITEMS.register(modEventBus);
+        XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
 
         modEventBus.addListener(XKDecoBlockStateProvider::register);
 
