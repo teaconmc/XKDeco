@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.init;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -18,13 +20,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.*;
+import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
+import java.util.Map;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -32,10 +37,12 @@ public final class XKDecoObjects {
     public static final CreativeModeTab TAB_BASIC = new XKDecoCreativeModTab(XKDeco.ID + "_basic", "black_tiles");
     public static final CreativeModeTab TAB_NATURE = new XKDecoCreativeModTab(XKDeco.ID + "_nature", "grass_block_slab");
     public static final CreativeModeTab TAB_FURNITURE = new XKDecoCreativeModTab(XKDeco.ID + "_furniture", "varnished_big_table");
+    public static final CreativeModeTab TAB_FUNCTIONAL = new XKDecoCreativeModTab(XKDeco.ID + "_functional", "tech_item_display");
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, XKDeco.ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, XKDeco.ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, XKDeco.ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, XKDeco.ID);
 
     private static final BlockBehaviour.Properties BLOCK_MUD = BlockBehaviour.Properties.of(Material.STONE).strength(1.5f, 3f);
     private static final BlockBehaviour.Properties BLOCK_SANDSTONE = BlockBehaviour.Properties.of(Material.STONE).strength(1.5f, 6f);
@@ -63,12 +70,25 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_DESSERT = BlockBehaviour.Properties.of(Material.CAKE).strength(0.5f, 0.5f);
     private static final BlockBehaviour.Properties BLOCK_CARPET = BlockBehaviour.Properties.of(Material.WOOL).strength(0.5f, 0.5f).noOcclusion();
     private static final BlockBehaviour.Properties BLOCK_BOARD = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_STONE_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
+    private static final BlockBehaviour.Properties BLOCK_METAL_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
 
     private static final Item.Properties ITEM_BASIC = new Item.Properties().tab(TAB_BASIC);
     private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
     private static final Item.Properties ITEM_FURNITURE = new Item.Properties().tab(TAB_FURNITURE);
+    private static final Item.Properties ITEM_FUNCTIONAL = new Item.Properties().tab(TAB_FUNCTIONAL);
 
     public static final String CUSHION_ENTITY = "cushion";
+
+    public static final Map<String, BlockBehaviour.Properties> ITEM_DISPLAY_MAP = ImmutableMap.of(
+            "plain_item_display", BLOCK_STONE_DISPLAY,
+            "gorgeous_item_display", BLOCK_STONE_DISPLAY,
+            "mechanical_item_display", BLOCK_METAL_DISPLAY,
+            "tech_item_display", BLOCK_METAL_DISPLAY
+    );
+
+
+    public static final String ITEM_DISPLAY_BLOCK_ENTITY = "item_display";
 
     public static final String GRASS_PREFIX = "grass_";
     public static final String GLASS_PREFIX = "glass_";
@@ -178,9 +198,21 @@ public final class XKDecoObjects {
         } else if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
             var block = BLOCKS.register(id, () -> new SpecialDessertBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (ITEM_DISPLAY_MAP.containsKey(id)) {
+            var block = BLOCKS.register(id, () -> new SpecialItemDisplayBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
         }
+    }
+
+    private static void addItemDisplayBlockEntity() {
+        BLOCK_ENTITY.register(ITEM_DISPLAY_BLOCK_ENTITY,
+                () -> BlockEntityType.Builder.of(ItemDisplayBlockEntity::new,
+                        ITEM_DISPLAY_MAP.keySet()
+                                .stream()
+                                .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
+                                .toArray(Block[]::new)).build(null));
     }
 
     @FunctionalInterface
@@ -664,5 +696,8 @@ public final class XKDecoObjects {
         addBasic("ink_painting", ShapeFunction.fromCarpet(), true, BLOCK_CARPET, ITEM_FURNITURE);
         addBasic("weiqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
         addBasic("xiangqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
+
+        ITEM_DISPLAY_MAP.forEach((id, property) -> addSpecial(id, property, ITEM_FUNCTIONAL));
+        addItemDisplayBlockEntity();
     }
 }
