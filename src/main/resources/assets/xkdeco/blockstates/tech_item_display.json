@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/tech_item_display"
+      "model": "xkdeco:block/functional/tech_item_display"
     }
   }
 }

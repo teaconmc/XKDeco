@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -19,11 +20,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
 public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XKDecoBlock.Special {
-
+    private static final VoxelShape SHAPE = Shapes.or(
+            Block.box(3, 0, 3, 13, 4, 13),
+            Block.box(5, 4, 5, 11, 11, 11),
+            Block.box(1, 11, 1, 15, 13, 15),
+            Block.box(0, 13, 0, 16, 16, 16)
+    );
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public SpecialItemDisplayBlock(Properties properties) {
@@ -35,6 +44,12 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return SHAPE;
     }
 
     @Override
