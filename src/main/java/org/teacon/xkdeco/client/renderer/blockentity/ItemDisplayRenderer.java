@@ -33,38 +33,30 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
     }
 
     @Override
-    public void render(ItemDisplayBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(ItemDisplayBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         // borrowed from ItemEntityRenderer
 
-        float timer = Objects.requireNonNull(pBlockEntity.getLevel()).getGameTime() + pPartialTick;
         int speed = 1;
         BlockPos pos = pBlockEntity.getBlockPos();
+        float spin = pBlockEntity.getSpin();
+        if (!pBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
+            spin += pPartialTick / 20;
+        }
 
         ItemStack itemstack = pBlockEntity.getItem();
         this.random.setSeed(itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue());
 
-        float bobOffs;
-        if (randomBobbing()) {
-            this.random.setSeed(((long) pos.getX() << 32) ^ ((long) pos.getY() << 16) ^ pos.getZ());
-            bobOffs = (float) (random.nextFloat() * Math.PI * 2);
-        } else {
-            bobOffs = 0;
-        }
-
         pPoseStack.pushPose();
         BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pBlockEntity.getLevel(), null, speed);
-        boolean flag = bakedmodel.isGui3d();
+        boolean gui3d = bakedmodel.isGui3d();
         int j = this.getRenderAmount(itemstack);
-        float f1 = Mth.sin(timer / 10.0F + bobOffs) * 0.1F + 0.1F;
+        float delta = Mth.sin(spin * 2) * 0.1F + 0.1F;
         @SuppressWarnings("deprecation")
-        float f2 = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
-        pPoseStack.translate(0.5, 1 + f1 + 0.25 * f2, 0.5);
+        float modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
+        pPoseStack.translate(0.5, 1 + delta + 0.25 * modelScale, 0.5);
+        pPoseStack.mulPose(Vector3f.YP.rotation(spin));
 
-        if (!pBlockEntity.getBlockState().getOptionalValue(SpecialItemDisplayBlock.POWERED).orElse(false)) {
-            pPoseStack.mulPose(Vector3f.YP.rotation(timer / 20 + bobOffs));
-        }
-
-        if (!flag) {
+        if (!gui3d) {
             pPoseStack.translate(
                     -0.0F * (float) (j - 1) * 0.5F,
                     -0.0F * (float) (j - 1) * 0.5F,
@@ -74,7 +66,7 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
         for (int k = 0; k < j; ++k) {
             pPoseStack.pushPose();
             if (k > 0) {
-                if (flag) pPoseStack.translate(
+                if (gui3d) pPoseStack.translate(
                             (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F,
                             (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F,
                             (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F);
@@ -84,11 +76,11 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
                             0.0D);
             }
 
-            Level level = pBlockEntity.getLevel();
+            Level level = Objects.requireNonNull(pBlockEntity.getLevel());
             int packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos.above()), level.getBrightness(LightLayer.SKY, pos.above()));
             this.itemRenderer.render(itemstack, ItemTransforms.TransformType.GROUND, false, pPoseStack, pBufferSource, packedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
             pPoseStack.popPose();
-            if (!flag) {
+            if (!gui3d) {
                 pPoseStack.translate(0.0, 0.0, 0.09375F);
             }
         }
@@ -110,9 +102,4 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
 
         return i;
     }
-
-    private boolean randomBobbing() {
-        return false;
-    }
-
 }

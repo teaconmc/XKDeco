@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.block;
 
-import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -13,11 +12,12 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -33,28 +33,24 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
 
     @SuppressWarnings("deprecation")
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         return new ItemDisplayBlockEntity(pPos, pState);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, BlockHitResult hit) {
         // must click on the upper surface
-        if (hit.getDirection() != Direction.UP
-//                || !containsInclusive(SHAPE_UP.getBoundingBox(),
-//                hit.getHitVec().subtract(pos.getX(), pos.getY(), pos.getZ()))
-        ) {
+        if (hit.getDirection() != Direction.UP) {
             return InteractionResult.PASS;
         }
 
         if (!worldIn.isClientSide()) {
-//        ItemStack heldItem = player.getItemInHand(handIn);
             BlockEntity te = worldIn.getBlockEntity(pos);
             if (te instanceof ItemDisplayBlockEntity tileEntity) {
                 ItemStack temp = player.getItemInHand(handIn).copy();
@@ -63,6 +59,11 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
+        return ItemDisplayBlockEntity::tick;
     }
 
     @Override
@@ -77,21 +78,11 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
 
     @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
+    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pBlock, @NotNull BlockPos pFromPos, boolean pIsMoving) {
         if (!pLevel.isClientSide) {
             if (pState.getValue(POWERED) != pLevel.hasNeighborSignal(pPos)) {
                 pLevel.setBlock(pPos, pState.cycle(POWERED), 2);
             }
         }
-    }
-
-    public static boolean containsInclusive(BoundingBox boundingBox, Vector3d vec) {
-        return containsInclusive(boundingBox, vec.x, vec.y, vec.z);
-    }
-
-    public static boolean containsInclusive(BoundingBox boundingBox, double x, double y, double z) {
-        return x >= boundingBox.minX() && x <= boundingBox.maxX()
-                && y >= boundingBox.minY() && y <= boundingBox.maxY()
-                && z >= boundingBox.minZ() && z <= boundingBox.maxZ();
     }
 }
