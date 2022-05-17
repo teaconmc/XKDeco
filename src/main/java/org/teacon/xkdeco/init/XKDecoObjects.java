@@ -23,6 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.*;
+import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
@@ -86,9 +87,16 @@ public final class XKDecoObjects {
             "mechanical_item_display", BLOCK_METAL_DISPLAY,
             "tech_item_display", BLOCK_METAL_DISPLAY
     );
+    public static final Map<String, BlockBehaviour.Properties> BLOCK_DISPLAY_MAP = ImmutableMap.of(
+            "plain_block_display", BLOCK_STONE_DISPLAY,
+            "gorgeous_block_display", BLOCK_STONE_DISPLAY,
+            "mechanical_block_display", BLOCK_METAL_DISPLAY,
+            "tech_block_display", BLOCK_METAL_DISPLAY
+    );
 
 
     public static final String ITEM_DISPLAY_BLOCK_ENTITY = "item_display";
+    public static final String BLOCK_DISPLAY_BLOCK_ENTITY = "block_display";
 
     public static final String GRASS_PREFIX = "grass_";
     public static final String GLASS_PREFIX = "glass_";
@@ -201,15 +209,24 @@ public final class XKDecoObjects {
         } else if (ITEM_DISPLAY_MAP.containsKey(id)) {
             var block = BLOCKS.register(id, () -> new SpecialItemDisplayBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (BLOCK_DISPLAY_MAP.containsKey(id)) {
+            var block = BLOCKS.register(id, () -> new SpecialBlockDisplayBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
         }
     }
 
-    private static void addItemDisplayBlockEntity() {
+    private static void addDisplayBlockEntity() {
         BLOCK_ENTITY.register(ITEM_DISPLAY_BLOCK_ENTITY,
                 () -> BlockEntityType.Builder.of(ItemDisplayBlockEntity::new,
                         ITEM_DISPLAY_MAP.keySet()
+                                .stream()
+                                .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
+                                .toArray(Block[]::new)).build(null));
+        BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY,
+                () -> BlockEntityType.Builder.of(BlockDisplayBlockEntity::new,
+                        BLOCK_DISPLAY_MAP.keySet()
                                 .stream()
                                 .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
                                 .toArray(Block[]::new)).build(null));
@@ -698,6 +715,7 @@ public final class XKDecoObjects {
         addBasic("xiangqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
 
         ITEM_DISPLAY_MAP.forEach((id, property) -> addSpecial(id, property, ITEM_FUNCTIONAL));
-        addItemDisplayBlockEntity();
+        BLOCK_DISPLAY_MAP.forEach((id, property) -> addSpecial(id, property, ITEM_FUNCTIONAL));
+        addDisplayBlockEntity();
     }
 }
