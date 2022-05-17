@@ -1,3 +1,7 @@
+/**
+ * block entity part of Item Display Block
+ * it should only be responsible for data storage, verification and sync
+ */
 package org.teacon.xkdeco.blockentity;
 
 import net.minecraft.core.BlockPos;
@@ -8,16 +12,16 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 
 import java.util.Objects;
 
@@ -29,11 +33,15 @@ public class ItemDisplayBlockEntity extends BlockEntity {
     private static final String ITEMSTACK_NBT_KEY = "Display";
     private static final String SPIN_NBT_KEY = "Spin";
     private ItemStack item = ItemStack.EMPTY;
-    private static final double TAU = Math.PI * 2;
     private float spin = 0;
 
     public ItemDisplayBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(RegistryObject.of(new ResourceLocation(XKDeco.ID, ITEM_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES).get(), blockPos, blockState);
+        super(TYPE.get(), blockPos, blockState);
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
     }
 
     public ItemStack getItem() {
@@ -41,27 +49,23 @@ public class ItemDisplayBlockEntity extends BlockEntity {
     }
 
     public void setItem(ItemStack item) {
+        boolean update = !item.isEmpty() || !this.item.isEmpty();
         this.item = item;
-        this.setChanged();
-        BlockState blockState = this.getBlockState();
-        Objects.requireNonNull(this.level).sendBlockUpdated(this.getBlockPos(), blockState, blockState, 0);
+        if (update) {
+            this.setChanged();
+            BlockState blockState = this.getBlockState();
+            Objects.requireNonNull(this.level).sendBlockUpdated(this.getBlockPos(), blockState, blockState, 0);
+        }
     }
 
     public float getSpin() {
         return spin;
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T blockEntity) {
-        if (blockEntity instanceof ItemDisplayBlockEntity itemDisplayBlockEntity) {
-            if (itemDisplayBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
-                itemDisplayBlockEntity.spin = (float) (Math.round(itemDisplayBlockEntity.spin / (TAU / 8)) * (TAU / 8));
-            } else {
-                itemDisplayBlockEntity.spin += 0.05f;
-                if (itemDisplayBlockEntity.spin >= TAU) {
-                    itemDisplayBlockEntity.spin -= TAU;
-                }
-            }
-        }
+    public void setSpin(float spin) {
+        this.spin = spin;
+        // do not send update packet to save network traffic for unimportant data
+        this.setChanged();
     }
 
     @Nullable
@@ -110,9 +114,7 @@ public class ItemDisplayBlockEntity extends BlockEntity {
 
     private CompoundTag writeNbt(@Nullable CompoundTag tag) {
         if (tag == null) tag = new CompoundTag();
-        if (!item.isEmpty()) {
-            tag.put(ITEMSTACK_NBT_KEY, item.save(new CompoundTag()));
-        }
+        tag.put(ITEMSTACK_NBT_KEY, item.save(new CompoundTag()));
         tag.putFloat(SPIN_NBT_KEY, spin);
         return tag;
     }
