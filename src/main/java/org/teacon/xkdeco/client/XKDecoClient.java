@@ -17,7 +17,9 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.block.XKDecoBlock;
+import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
+import org.teacon.xkdeco.client.renderer.blockentity.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.blockentity.ItemDisplayRenderer;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
@@ -89,5 +91,6 @@ public final class XKDecoClient {
         event.registerEntityRenderer(CushionEntity.TYPE.get(), NoopRenderer::new);
 
         event.registerBlockEntityRenderer(ItemDisplayBlockEntity.TYPE.get(), ItemDisplayRenderer::new);
+        event.registerBlockEntityRenderer(BlockDisplayBlockEntity.TYPE.get(), BlockDisplayRenderer::new);
     }
 }

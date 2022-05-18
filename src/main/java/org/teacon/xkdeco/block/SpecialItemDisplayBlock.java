@@ -20,18 +20,23 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
+import org.teacon.xkdeco.util.MathUtil;
+
+import static org.teacon.xkdeco.util.MathUtil.TAU;
 
 public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XKDecoBlock.Special {
+    private static final VoxelShape TOP = Block.box(0, 13, 0, 16, 16, 16);
     private static final VoxelShape SHAPE = Shapes.or(
             Block.box(3, 0, 3, 13, 4, 13),
             Block.box(5, 4, 5, 11, 11, 11),
             Block.box(1, 11, 1, 15, 13, 15),
-            Block.box(0, 13, 0, 16, 16, 16)
+            TOP
     );
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -61,7 +66,8 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, BlockHitResult hit) {
         // must click on the upper surface
-        if (hit.getDirection() != Direction.UP) {
+        if (hit.getDirection() != Direction.UP
+                || !MathUtil.containsInclusive(TOP.bounds(), hit.getLocation().subtract(Vec3.atLowerCornerOf(pos)))) {
             return InteractionResult.PASS;
         }
 
@@ -78,7 +84,20 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
-        return ItemDisplayBlockEntity::tick;
+        return (level, pos, blockState, blockEntity) -> {
+            if (blockEntity instanceof ItemDisplayBlockEntity itemDisplayBlockEntity) {
+                float spin = itemDisplayBlockEntity.getSpin();
+                if (itemDisplayBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
+                    spin = (float) (Math.round(spin / (TAU / 8)) * (TAU / 8));
+                } else {
+                    spin += 0.05f;
+                    if (spin >= TAU) {
+                        spin -= TAU;
+                    }
+                }
+                itemDisplayBlockEntity.setSpin(spin);
+            }
+        };
     }
 
     @Override

@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,6 +35,9 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
     public void render(ItemDisplayBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         // borrowed from ItemEntityRenderer
 
+        ItemStack itemstack = pBlockEntity.getItem();
+        if (itemstack.isEmpty()) return;
+
         int speed = 1;
         BlockPos pos = pBlockEntity.getBlockPos();
         float spin = pBlockEntity.getSpin();
@@ -43,17 +45,15 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
             spin += pPartialTick / 20;
         }
 
-        ItemStack itemstack = pBlockEntity.getItem();
         this.random.setSeed(itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue());
 
         pPoseStack.pushPose();
         BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pBlockEntity.getLevel(), null, speed);
         boolean gui3d = bakedmodel.isGui3d();
         int j = this.getRenderAmount(itemstack);
-        float delta = Mth.sin(spin * 2) * 0.1F + 0.1F;
         @SuppressWarnings("deprecation")
         float modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
-        pPoseStack.translate(0.5, 1 + delta + 0.25 * modelScale, 0.5);
+        pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale, 0.5);
         pPoseStack.mulPose(Vector3f.YP.rotation(spin));
 
         if (!gui3d) {
@@ -88,7 +88,7 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
         pPoseStack.popPose();
     }
 
-    protected int getRenderAmount(ItemStack pStack) {
+    private int getRenderAmount(ItemStack pStack) {
         int i = 1;
         if (pStack.getCount() > 48) {
             i = 5;
