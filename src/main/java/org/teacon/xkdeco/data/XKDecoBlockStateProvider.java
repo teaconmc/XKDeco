@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.data;
 
+import com.google.common.collect.Lists;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -18,12 +19,51 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoBlockStateProvider extends BlockStateProvider {
     private static final Logger LOGGER = LogManager.getLogger("XKDeco");
+
+    Set<ResourceLocation> skips = Lists.newArrayList(
+            "calligraphy",
+            "crimson_nylium_slab",
+            "crossed_mud_wall_slab",
+            "cup",
+            "dirt_path_slab",
+            "dirt_slab",
+            "ebony_shelf",
+            "ebony_slab",
+            "ebony_wood",
+            "end_stone_slab",
+            "fruit_platter",
+            "grass_block_slab",
+            "ink_painting",
+            "inscription_bronze_block",
+            "mahogany_shelf",
+            "mahogany_slab",
+            "mahogany_wood",
+            "maya_pictogram_stone",
+            "maya_polished_stonebrick_slab",
+            "maya_single_screw_thread_stone",
+            "mycelium_slab",
+            "netherrack_slab",
+            "podzol_slab",
+            "polished_red_sandstone_slab",
+            "polished_sandstone_slab",
+            "refreshments",
+            "screw_thread_bronze_block",
+            "varnished_slab",
+            "varnished_wood",
+            "varnished_shelf",
+            "warped_nylium_slab",
+            "weiqi_board",
+            "xiangqi_board"
+    ).stream().map(str -> new ResourceLocation(XKDeco.ID, str)).collect(Collectors.toUnmodifiableSet());
 
     private XKDecoBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, XKDeco.ID, existingFileHelper);
@@ -39,22 +79,34 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
             var block = entry.get();
+            if (skips.contains(block.getRegistryName())) continue;
+
             var id = entry.getId().getPath();
-            if (block instanceof SlabBlock slabBlock) {
-                this.slabBlock(slabBlock, unchecked(id, ""), unchecked(id, "_top"), unchecked(getDoubleSlabId(id), ""));
-                this.simpleBlockItem(slabBlock, unchecked(id, ""));
-            } else if (block instanceof StairBlock stairBlock) {
-                this.stairsBlock(stairBlock, unchecked(id, ""), unchecked(id, "_inner"), unchecked(id, "_outer"));
-                this.simpleBlockItem(stairBlock, unchecked(id, ""));
-            } else if (block instanceof RotatedPillarBlock rotatedPillarBlock) {
-                this.axisBlock(rotatedPillarBlock, unchecked(id, ""), unchecked(id, "_horizontal"));
-                this.simpleBlockItem(rotatedPillarBlock, unchecked(id, ""));
-            } else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-                this.horizontalBlock(block, unchecked(id, ""));
-                this.simpleBlockItem(block, unchecked(id, ""));
+            var tabs = block.asItem().getCreativeTabs();
+            String path;
+            if (tabs.contains(XKDecoObjects.TAB_NATURE)) {
+                path = "nature";
+            } else if (tabs.contains(XKDecoObjects.TAB_FURNITURE)) {
+                path = "furniture";
             } else {
-                this.simpleBlock(block, unchecked(id, ""));
-                this.simpleBlockItem(block, unchecked(id, ""));
+                path = "";
+            }
+
+            if (block instanceof SlabBlock slabBlock) {
+                this.slabBlock(slabBlock, unchecked(id, path, ""), unchecked(id, path, "_top"), unchecked(getDoubleSlabId(id), path, ""));
+//                this.simpleBlockItem(slabBlock, unchecked(id, path, ""));
+            } else if (block instanceof StairBlock stairBlock) {
+                this.stairsBlock(stairBlock, unchecked(id, path, ""), unchecked(id, path, "_inner"), unchecked(id, path, "_outer"));
+//                this.simpleBlockItem(stairBlock, unchecked(id, path, ""));
+            } else if (block instanceof RotatedPillarBlock rotatedPillarBlock) {
+                this.axisBlock(rotatedPillarBlock, unchecked(id, path, ""), unchecked(id, path, "_horizontal"));
+//                this.simpleBlockItem(rotatedPillarBlock, unchecked(id, path, ""));
+            } else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                this.horizontalBlock(block, unchecked(id, path, ""));
+//                this.simpleBlockItem(block, unchecked(id, path, ""));
+            } else {
+                this.simpleBlock(block, unchecked(id, path, ""));
+//                this.simpleBlockItem(block, unchecked(id, path, ""));
             }
             var blockClassName = block.getClass().getName();
             var propertyNames = block.defaultBlockState().getProperties().stream().map(Property::getName).toList();
@@ -73,7 +125,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         return doubleSlabs.get(doubleSlabs.size() - 1);
     }
 
-    private static ModelFile unchecked(String id, String suffix) {
-        return new ModelFile.UncheckedModelFile(new ResourceLocation(XKDeco.ID, "block/" + id + suffix));
+    private static ModelFile unchecked(String id, String path, String suffix) {
+        return new ModelFile.UncheckedModelFile(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + suffix).toString()));
     }
 }

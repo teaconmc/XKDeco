@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/ginkgo_leaves"
+      "model": "xkdeco:block/nature/ginkgo_leaves"
     }
   }
 }

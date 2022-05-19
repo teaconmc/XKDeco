@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/snowy_cobblestone"
+      "model": "xkdeco:block/nature/snowy_cobblestone"
     }
   }
 }

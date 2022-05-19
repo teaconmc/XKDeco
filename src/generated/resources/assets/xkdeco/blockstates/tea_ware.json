@@ -1,33 +1,33 @@
 {
   "variants": {
     "facing=north,waterlogged=false": {
-      "model": "xkdeco:block/tea_ware"
+      "model": "xkdeco:block/furniture/tea_ware"
     },
     "facing=south,waterlogged=false": {
-      "model": "xkdeco:block/tea_ware",
+      "model": "xkdeco:block/furniture/tea_ware",
       "y": 180
     },
     "facing=west,waterlogged=false": {
-      "model": "xkdeco:block/tea_ware",
+      "model": "xkdeco:block/furniture/tea_ware",
       "y": 270
     },
     "facing=east,waterlogged=false": {
-      "model": "xkdeco:block/tea_ware",
+      "model": "xkdeco:block/furniture/tea_ware",
       "y": 90
     },
     "facing=north,waterlogged=true": {
-      "model": "xkdeco:block/tea_ware"
+      "model": "xkdeco:block/furniture/tea_ware"
     },
     "facing=south,waterlogged=true": {
-      "model": "xkdeco:block/tea_ware",
+      "model": "xkdeco:block/furniture/tea_ware",
       "y": 180
     },
     "facing=west,waterlogged=true": {
-      "model": "xkdeco:block/tea_ware",
+      "model": "xkdeco:block/furniture/tea_ware",
       "y": 270
     },
     "facing=east,waterlogged=true": {
-      "model": "xkdeco:block/tea_ware",
+      "model": "xkdeco:block/furniture/tea_ware",
       "y": 90
     }
   }

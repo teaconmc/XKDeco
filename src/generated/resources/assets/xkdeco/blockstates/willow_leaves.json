@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/willow_leaves"
+      "model": "xkdeco:block/nature/willow_leaves"
     }
   }
 }
