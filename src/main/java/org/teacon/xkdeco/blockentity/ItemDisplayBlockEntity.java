@@ -32,16 +32,27 @@ public class ItemDisplayBlockEntity extends BlockEntity {
             RegistryObject.of(new ResourceLocation(XKDeco.ID, ITEM_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
     private static final String ITEMSTACK_NBT_KEY = "Display";
     private static final String SPIN_NBT_KEY = "Spin";
+
+    private final boolean isProjector;
     private ItemStack item = ItemStack.EMPTY;
     private float spin = 0;
 
     public ItemDisplayBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TYPE.get(), blockPos, blockState);
+        this.isProjector = blockState.is(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(XKDeco.ID, "item_projector"))));
     }
 
     @Override
     public AABB getRenderBoundingBox() {
-        return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
+        if (isProjector) {
+            return AABB.ofSize(Vec3.atBottomCenterOf(this.getBlockPos().above(9)), 16, 16, 16);
+        } else {
+            return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
+        }
+    }
+
+    public boolean isProjector() {
+        return isProjector;
     }
 
     public ItemStack getItem() {

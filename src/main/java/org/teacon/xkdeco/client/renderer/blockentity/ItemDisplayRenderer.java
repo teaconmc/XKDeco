@@ -50,20 +50,25 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
         pPoseStack.pushPose();
         BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pBlockEntity.getLevel(), null, speed);
         boolean gui3d = bakedmodel.isGui3d();
-        int j = this.getRenderAmount(itemstack);
+        int amount = this.getRenderAmount(itemstack);
         @SuppressWarnings("deprecation")
         float modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
-        pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale, 0.5);
+        pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale * (pBlockEntity.isProjector() ? 16 : 1), 0.5);
         pPoseStack.mulPose(Vector3f.YP.rotation(spin));
+
+        if (pBlockEntity.isProjector()) {
+            pPoseStack.scale(16, 16, 16);
+        }
 
         if (!gui3d) {
             pPoseStack.translate(
-                    -0.0F * (float) (j - 1) * 0.5F,
-                    -0.0F * (float) (j - 1) * 0.5F,
-                    -0.09375F * (float) (j - 1) * 0.5F);
+                    -0.0F * (float) (amount - 1) * 0.5F,
+                    -0.0F * (float) (amount - 1) * 0.5F,
+                    -0.09375F * (float) (amount - 1) * 0.5F);
         }
 
-        for (int k = 0; k < j; ++k) {
+
+        for (int k = 0; k < amount; ++k) {
             pPoseStack.pushPose();
             if (k > 0) {
                 if (gui3d) pPoseStack.translate(

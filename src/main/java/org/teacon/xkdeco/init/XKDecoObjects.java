@@ -85,7 +85,8 @@ public final class XKDecoObjects {
             "plain_item_display", BLOCK_STONE_DISPLAY,
             "gorgeous_item_display", BLOCK_STONE_DISPLAY,
             "mechanical_item_display", BLOCK_METAL_DISPLAY,
-            "tech_item_display", BLOCK_METAL_DISPLAY
+            "tech_item_display", BLOCK_METAL_DISPLAY,
+            "item_projector", BLOCK_METAL_DISPLAY
     );
     public static final Map<String, BlockBehaviour.Properties> BLOCK_DISPLAY_MAP = ImmutableMap.of(
             "plain_block_display", BLOCK_STONE_DISPLAY,
