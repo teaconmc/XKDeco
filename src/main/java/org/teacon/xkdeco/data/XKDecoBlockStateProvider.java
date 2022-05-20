@@ -36,17 +36,17 @@ import java.util.stream.Stream;
 public final class XKDecoBlockStateProvider extends BlockStateProvider {
     private static final Logger LOGGER = LogManager.getLogger("XKDeco");
 
-    Set<String> randomizedBlockStates = ImmutableSet.of(
+    private static final Set<String> BLOCK_STATES_RANDOMIZED = ImmutableSet.of(
             "calligraphy", "cup", "ebony_shelf", "ink_painting",
             "inscription_bronze_block", "mahogany_shelf",
             "maya_pictogram_stone", "refreshments",
             "varnished_shelf", "weiqi_board", "xiangqi_board"
     );
-    Set<String> skipBlockStates = ImmutableSet.of(
+    private static final Set<String> BLOCK_STATES_SKIP = ImmutableSet.of(
             "cup", "fruit_platter", "maya_single_screw_thread_stone",
             "refreshments", "screw_thread_bronze_block"
     );
-    Set<String> skipBlockItems = ImmutableSet.of("cup", "refreshments");
+    private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of("cup", "refreshments");
 
     private XKDecoBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, XKDeco.ID, existingFileHelper);
@@ -65,10 +65,10 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
             var id = entry.getId().getPath();
             var tabKey = ((TranslatableComponent) block.asItem().getCreativeTabs().iterator().next().getDisplayName()).getKey();
             var path = tabKey.endsWith("_basic") ? "" : tabKey.substring(tabKey.lastIndexOf('_') + 1);
-            var randomized = randomizedBlockStates.contains(id);
+            var randomized = BLOCK_STATES_RANDOMIZED.contains(id);
 
 
-            if (!skipBlockStates.contains(id)) {
+            if (!BLOCK_STATES_SKIP.contains(id)) {
                 if (block instanceof SlabBlock slabBlock) {
                     this.slabBlock(slabBlock, model(id, path, ""), model(id, path, "_top"), getDoubleSlabModel(id, path));
                 } else if (block instanceof StairBlock stairBlock) {
@@ -85,7 +85,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                 }
             }
 
-            if (!skipBlockItems.contains(id)) {
+            if (!BLOCK_ITEMS_SKIP.contains(id)) {
                 if (randomized) this.simpleBlockItem(block, collectRandomizedModels(id, path)[0]);
                 else this.simpleBlockItem(block, model(id, path, ""));
             }
