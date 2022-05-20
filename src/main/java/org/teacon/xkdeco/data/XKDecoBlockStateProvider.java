@@ -1,14 +1,18 @@
 package org.teacon.xkdeco.data;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -18,12 +22,31 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoBlockStateProvider extends BlockStateProvider {
     private static final Logger LOGGER = LogManager.getLogger("XKDeco");
+
+    private static final Set<String> BLOCK_STATES_RANDOMIZED = ImmutableSet.of(
+            "calligraphy", "cup", "ebony_shelf", "ink_painting",
+            "inscription_bronze_block", "mahogany_shelf",
+            "maya_pictogram_stone", "refreshments",
+            "varnished_shelf", "weiqi_board", "xiangqi_board"
+    );
+    private static final Set<String> BLOCK_STATES_SKIP = ImmutableSet.of(
+            "cup", "fruit_platter", "maya_single_screw_thread_stone",
+            "refreshments", "screw_thread_bronze_block"
+    );
+    private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of("cup", "refreshments");
 
     private XKDecoBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, XKDeco.ID, existingFileHelper);
@@ -40,40 +63,106 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
             var block = entry.get();
             var id = entry.getId().getPath();
-            if (block instanceof SlabBlock slabBlock) {
-                this.slabBlock(slabBlock, unchecked(id, ""), unchecked(id, "_top"), unchecked(getDoubleSlabId(id), ""));
-                this.simpleBlockItem(slabBlock, unchecked(id, ""));
-            } else if (block instanceof StairBlock stairBlock) {
-                this.stairsBlock(stairBlock, unchecked(id, ""), unchecked(id, "_inner"), unchecked(id, "_outer"));
-                this.simpleBlockItem(stairBlock, unchecked(id, ""));
-            } else if (block instanceof RotatedPillarBlock rotatedPillarBlock) {
-                this.axisBlock(rotatedPillarBlock, unchecked(id, ""), unchecked(id, "_horizontal"));
-                this.simpleBlockItem(rotatedPillarBlock, unchecked(id, ""));
-            } else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-                this.horizontalBlock(block, unchecked(id, ""));
-                this.simpleBlockItem(block, unchecked(id, ""));
-            } else {
-                this.simpleBlock(block, unchecked(id, ""));
-                this.simpleBlockItem(block, unchecked(id, ""));
+            var tabKey = ((TranslatableComponent) block.asItem().getCreativeTabs().iterator().next().getDisplayName()).getKey();
+            var path = tabKey.endsWith("_basic") ? "" : tabKey.substring(tabKey.lastIndexOf('_') + 1);
+            var randomized = BLOCK_STATES_RANDOMIZED.contains(id);
+
+
+            if (!BLOCK_STATES_SKIP.contains(id)) {
+                if (block instanceof SlabBlock slabBlock) {
+                    this.slabBlock(slabBlock, model(id, path, ""), model(id, path, "_top"), getDoubleSlabModel(id, path));
+                } else if (block instanceof StairBlock stairBlock) {
+                    this.stairsBlock(stairBlock, model(id, path, ""), model(id, path, "_inner"), model(id, path, "_outer"));
+                } else if (block instanceof RotatedPillarBlock rotatedPillarBlock) {
+                    this.axisBlock(rotatedPillarBlock, model(id, path, ""), model(getHorizontalPillarBlockId(id), path, ""));
+                } else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                    if (randomized) this.randomizedHorizontalBlock(block, collectRandomizedModels(id, path));
+                    else this.horizontalBlock(block, model(id, path, ""));
+                } else {
+                    if (randomized)
+                        this.simpleBlock(block, Arrays.stream(collectRandomizedModels(id, path)).map(ConfiguredModel::new).toArray(ConfiguredModel[]::new));
+                    else this.simpleBlock(block, model(id, path, ""));
+                }
             }
+
+            if (!BLOCK_ITEMS_SKIP.contains(id)) {
+                if (randomized) this.simpleBlockItem(block, collectRandomizedModels(id, path)[0]);
+                else this.simpleBlockItem(block, model(id, path, ""));
+            }
+
             var blockClassName = block.getClass().getName();
             var propertyNames = block.defaultBlockState().getProperties().stream().map(Property::getName).toList();
             LOGGER.info("Block [{}] uses [{}] with {} as state property collection", id, blockClassName, propertyNames);
         }
     }
 
-    private static String getDoubleSlabId(String slabId) {
-        var doubleSlabs = Stream.of("", "s", "_block").map(s -> slabId.replace(XKDecoObjects.SLAB_SUFFIX, s)).toList();
-        for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
-            var path = entry.getId().getPath();
-            if (doubleSlabs.contains(path)) {
-                return path;
-            }
-        }
-        return doubleSlabs.get(doubleSlabs.size() - 1);
+    private void randomizedHorizontalBlock(Block block, ModelFile... models) {
+        getVariantBuilder(block).forAllStates(
+                state -> Arrays.stream(models).map(m -> ConfiguredModel.builder().modelFile(m)
+                                .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                                .buildLast()
+                        )
+                        .toArray(ConfiguredModel[]::new)
+        );
     }
 
-    private static ModelFile unchecked(String id, String suffix) {
-        return new ModelFile.UncheckedModelFile(new ResourceLocation(XKDeco.ID, "block/" + id + suffix));
+    private ModelFile[] collectRandomizedModels(String id, String path) {
+        Collection<ModelFile> models = new ArrayList<>();
+        var m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id).toString()), this.models().existingFileHelper);
+        if (m.exists()) {
+            models.add(m);
+        }
+        for (int i = 1; ; i++) {
+            m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + i).toString()), this.models().existingFileHelper);
+            if (m.exists()) models.add(m);
+            else break;
+        }
+        return models.toArray(ModelFile[]::new);
+    }
+
+    private String getHorizontalPillarBlockId(String pillarId) {
+        if (pillarId.endsWith("_wood")) {
+            return pillarId;
+        } else {
+            return pillarId + "_horizontal";
+        }
+    }
+
+    private ModelFile getDoubleSlabModel(String slabId, String path) {
+        var helper = this.models().existingFileHelper;
+        // _slab_full has higher priority in searching
+        var searchTargets = Stream.of("_slab_full", "", "s", "_block", "_planks")
+                .map(s -> slabId.replace(XKDecoObjects.SLAB_SUFFIX, s))
+                .flatMap(s -> Stream.of( // search XKDeco models first
+                        new ResourceLocation(XKDeco.ID, Path.of("block/", path, s).toString()),
+                        new ResourceLocation("minecraft", "block/" + s)
+                ))
+                .toList();
+        return searchTargets.stream()
+                .map(location -> new ExistingModelFileProxy(location, helper))
+                .filter(ExistingModelFileProxy::exists)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException(new FileNotFoundException(
+                        searchTargets.stream().map(ResourceLocation::toString).collect(Collectors.joining(" or "))
+                )));
+    }
+
+    private ModelFile model(String id, String path, String suffix) {
+        return new ModelFile.ExistingModelFile(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + suffix).toString()), this.models().existingFileHelper);
+    }
+
+    private static class ExistingModelFileProxy extends ModelFile.ExistingModelFile {
+        public ExistingModelFileProxy(ResourceLocation location, ExistingFileHelper existingHelper) {
+            super(location, existingHelper);
+        }
+
+        @Override
+        protected boolean exists() {
+            return super.exists();
+        }
+
+        public static boolean modelExists(ResourceLocation location, ExistingFileHelper existingFileHelper) {
+            return new ExistingModelFileProxy(location, existingFileHelper).exists();
+        }
     }
 }

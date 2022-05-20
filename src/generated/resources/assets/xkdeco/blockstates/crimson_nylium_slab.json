@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "xkdeco:block/crimson_nylium_slab_top"
+      "model": "xkdeco:block/nature/crimson_nylium_slab_top"
     },
     "type=bottom": {
-      "model": "xkdeco:block/crimson_nylium_slab"
+      "model": "xkdeco:block/nature/crimson_nylium_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/crimson_nylium_block"
+      "model": "minecraft:block/crimson_nylium"
     }
   }
 }

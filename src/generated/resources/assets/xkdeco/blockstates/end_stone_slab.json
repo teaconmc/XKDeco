@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "xkdeco:block/end_stone_slab_top"
+      "model": "xkdeco:block/nature/end_stone_slab_top"
     },
     "type=bottom": {
-      "model": "xkdeco:block/end_stone_slab"
+      "model": "xkdeco:block/nature/end_stone_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/end_stone_block"
+      "model": "minecraft:block/end_stone"
     }
   }
 }

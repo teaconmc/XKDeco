@@ -7,7 +7,7 @@
       "model": "xkdeco:block/crossed_mud_wall_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/crossed_mud_wall_block"
+      "model": "xkdeco:block/crossed_mud_wall_slab_full"
     }
   }
 }

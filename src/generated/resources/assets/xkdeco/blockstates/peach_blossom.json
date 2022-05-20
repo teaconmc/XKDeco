@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/peach_blossom"
+      "model": "xkdeco:block/nature/peach_blossom"
     }
   }
 }

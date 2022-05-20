@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "xkdeco:block/grass_block_slab_top"
+      "model": "xkdeco:block/nature/grass_block_slab_top"
     },
     "type=bottom": {
-      "model": "xkdeco:block/grass_block_slab"
+      "model": "xkdeco:block/nature/grass_block_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/grass_block_block"
+      "model": "minecraft:block/grass_block"
     }
   }
 }

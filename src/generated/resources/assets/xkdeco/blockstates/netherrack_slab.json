@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "xkdeco:block/netherrack_slab_top"
+      "model": "xkdeco:block/nature/netherrack_slab_top"
     },
     "type=bottom": {
-      "model": "xkdeco:block/netherrack_slab"
+      "model": "xkdeco:block/nature/netherrack_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/netherrack_block"
+      "model": "minecraft:block/netherrack"
     }
   }
 }

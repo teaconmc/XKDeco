@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "xkdeco:block/grass_cobblestone_slab_top"
+      "model": "xkdeco:block/nature/grass_cobblestone_slab_top"
     },
     "type=bottom": {
-      "model": "xkdeco:block/grass_cobblestone_slab"
+      "model": "xkdeco:block/nature/grass_cobblestone_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/grass_cobblestone"
+      "model": "xkdeco:block/nature/grass_cobblestone"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/mahogany_tall_table"
+      "model": "xkdeco:block/furniture/mahogany_tall_table"
     }
   }
 }

@@ -7,7 +7,7 @@
       "model": "xkdeco:block/mahogany_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/mahogany_block"
+      "model": "xkdeco:block/mahogany_planks"
     }
   }
 }

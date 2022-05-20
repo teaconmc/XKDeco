@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "xkdeco:block/mycelium_slab_top"
+      "model": "xkdeco:block/nature/mycelium_slab_top"
     },
     "type=bottom": {
-      "model": "xkdeco:block/mycelium_slab"
+      "model": "xkdeco:block/nature/mycelium_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/mycelium_block"
+      "model": "minecraft:block/mycelium"
     }
   }
 }

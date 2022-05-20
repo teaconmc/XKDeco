@@ -7,7 +7,7 @@
       "model": "xkdeco:block/ebony_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/ebony_block"
+      "model": "xkdeco:block/ebony_planks"
     }
   }
 }

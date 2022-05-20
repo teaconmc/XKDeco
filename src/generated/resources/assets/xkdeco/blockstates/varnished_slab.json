@@ -7,7 +7,7 @@
       "model": "xkdeco:block/varnished_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/varnished_block"
+      "model": "xkdeco:block/varnished_planks"
     }
   }
 }

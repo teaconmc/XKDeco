@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/orange_maple_leaves"
+      "model": "xkdeco:block/nature/orange_maple_leaves"
     }
   }
 }

@@ -7,6 +7,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.teacon.xkdeco.client.XKDecoClient;
 import org.teacon.xkdeco.data.XKDecoBlockStateProvider;
+import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
@@ -27,6 +28,7 @@ public final class XKDeco {
         XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
 
         modEventBus.addListener(XKDecoBlockStateProvider::register);
+        modEventBus.addListener(XKDecoEnUsLangProvider::register);
 
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(XKDecoClient::setItemColors);

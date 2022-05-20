@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/cobblestone_path"
+      "model": "xkdeco:block/nature/cobblestone_path"
     }
   }
 }

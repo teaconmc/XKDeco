@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/plantable_leaves"
+      "model": "xkdeco:block/nature/plantable_leaves"
     }
   }
 }

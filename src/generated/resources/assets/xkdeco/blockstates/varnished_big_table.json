@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/varnished_big_table"
+      "model": "xkdeco:block/furniture/varnished_big_table"
     }
   }
 }

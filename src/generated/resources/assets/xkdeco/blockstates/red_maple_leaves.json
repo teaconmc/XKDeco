@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/red_maple_leaves"
+      "model": "xkdeco:block/nature/red_maple_leaves"
     }
   }
 }
