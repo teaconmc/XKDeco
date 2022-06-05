@@ -25,7 +25,7 @@ teacon {
     modVersion = '0.3.0'
     modLicense = 'BSD-3-Clause'
     modGitHubRepo = 'teaconmc/XKDeco'
-    modAuthors = ['xekr (XeKr)', 'ustc-zzzz']
+    modAuthors = ['xekr (XeKr)', 'ustc-zzzz', 'LucunJi']
     modDescription = 'XeKr\'s Decorations for Minecraft 1.18.'
 
     platform = 'forge-1.18.2-40.0.19'
