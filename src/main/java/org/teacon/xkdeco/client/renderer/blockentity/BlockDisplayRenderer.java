@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,9 +16,12 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 
-public class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity> {
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity> {
     private final BlockRenderDispatcher blockRenderer;
     private final float BLOCK_SCALE = 0.99f;
 

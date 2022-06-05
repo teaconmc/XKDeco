@@ -2,6 +2,7 @@ package org.teacon.xkdeco.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,10 +21,13 @@ import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.Random;
 
-public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity> {
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity> {
     private final ItemRenderer itemRenderer;
     private final Random random = new Random();
 

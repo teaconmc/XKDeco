@@ -4,6 +4,7 @@
  */
 package org.teacon.xkdeco.blockentity;
 
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -28,13 +29,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.teacon.xkdeco.init.XKDecoObjects.BLOCK_DISPLAY_BLOCK_ENTITY;
 
-public class BlockDisplayBlockEntity extends BlockEntity {
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public final class BlockDisplayBlockEntity extends BlockEntity {
     public static final RegistryObject<BlockEntityType<BlockDisplayBlockEntity>> TYPE =
             RegistryObject.of(new ResourceLocation(XKDeco.ID, BLOCK_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
     private static final String ITEMSTACK_NBT_KEY = "Display";

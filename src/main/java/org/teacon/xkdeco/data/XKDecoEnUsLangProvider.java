@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.data;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
@@ -19,13 +20,16 @@ import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class XKDecoEnUsLangProvider extends LanguageProvider {
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public final class XKDecoEnUsLangProvider extends LanguageProvider {
     public XKDecoEnUsLangProvider(DataGenerator gen, String modid, String locale) {
         super(gen, modid, locale);
     }

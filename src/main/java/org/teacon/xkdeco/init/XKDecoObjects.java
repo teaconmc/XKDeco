@@ -2,6 +2,7 @@ package org.teacon.xkdeco.init;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.datafixers.DSL;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -224,13 +225,13 @@ public final class XKDecoObjects {
                         ITEM_DISPLAY_MAP.keySet()
                                 .stream()
                                 .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
-                                .toArray(Block[]::new)).build(null));
+                                .toArray(Block[]::new)).build(DSL.remainderType()));
         BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY,
                 () -> BlockEntityType.Builder.of(BlockDisplayBlockEntity::new,
                         BLOCK_DISPLAY_MAP.keySet()
                                 .stream()
                                 .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
-                                .toArray(Block[]::new)).build(null));
+                                .toArray(Block[]::new)).build(DSL.remainderType()));
     }
 
     @FunctionalInterface
