@@ -25,7 +25,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -79,15 +78,20 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                     if (randomized) this.randomizedHorizontalBlock(block, collectRandomizedModels(id, path));
                     else this.horizontalBlock(block, model(id, path, ""));
                 } else {
-                    if (randomized)
-                        this.simpleBlock(block, Arrays.stream(collectRandomizedModels(id, path)).map(ConfiguredModel::new).toArray(ConfiguredModel[]::new));
-                    else this.simpleBlock(block, model(id, path, ""));
+                    if (randomized) {
+                        this.simpleBlock(block, collectRandomizedModels(id, path).map(ConfiguredModel::new).toArray(ConfiguredModel[]::new));
+                    } else {
+                        this.simpleBlock(block, model(id, path, ""));
+                    }
                 }
             }
 
             if (!BLOCK_ITEMS_SKIP.contains(id)) {
-                if (randomized) this.simpleBlockItem(block, collectRandomizedModels(id, path)[0]);
-                else this.simpleBlockItem(block, model(id, path, ""));
+                if (randomized) {
+                    this.simpleBlockItem(block, collectRandomizedModels(id, path).findFirst().orElseThrow());
+                } else {
+                    this.simpleBlockItem(block, model(id, path, ""));
+                }
             }
 
             var blockClassName = block.getClass().getName();
@@ -96,9 +100,9 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    private void randomizedHorizontalBlock(Block block, ModelFile... models) {
+    private void randomizedHorizontalBlock(Block block, Stream<ModelFile> models) {
         getVariantBuilder(block).forAllStates(
-                state -> Arrays.stream(models).map(m -> ConfiguredModel.builder().modelFile(m)
+                state -> models.map(m -> ConfiguredModel.builder().modelFile(m)
                                 .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
                                 .buildLast()
                         )
@@ -106,7 +110,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         );
     }
 
-    private ModelFile[] collectRandomizedModels(String id, String path) {
+    private Stream<ModelFile> collectRandomizedModels(String id, String path) {
         Collection<ModelFile> models = new ArrayList<>();
         var m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id).toString()), this.models().existingFileHelper);
         if (m.exists()) {
@@ -117,7 +121,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
             if (m.exists()) models.add(m);
             else break;
         }
-        return models.toArray(ModelFile[]::new);
+        return models.stream();
     }
 
     private String getHorizontalPillarBlockId(String pillarId) {
