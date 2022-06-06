@@ -40,7 +40,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
 
     @Override
     public boolean useShapeForLightOcclusion(BlockState state) {
-        return this.isPath || state.getValue(TYPE) != SlabType.TOP;
+        return this.isPath || state.getValue(TYPE) == SlabType.BOTTOM;
     }
 
     @Override
