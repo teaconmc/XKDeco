@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 @ParametersAreNonnullByDefault
 public final class XKDecoObjects {
     public static final CreativeModeTab TAB_BASIC = new XKDecoCreativeModTab(XKDeco.ID + "_basic", "black_tiles");
+    public static final CreativeModeTab TAB_STRUCTURE = new XKDecoCreativeModTab(XKDeco.ID + "_structure", "special_wall_minecraft_cobblestone_wall");
     public static final CreativeModeTab TAB_NATURE = new XKDecoCreativeModTab(XKDeco.ID + "_nature", "grass_block_slab");
     public static final CreativeModeTab TAB_FURNITURE = new XKDecoCreativeModTab(XKDeco.ID + "_furniture", "varnished_big_table");
     public static final CreativeModeTab TAB_FUNCTIONAL = new XKDecoCreativeModTab(XKDeco.ID + "_functional", "tech_item_display");
@@ -88,6 +89,7 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_METAL_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
 
     private static final Item.Properties ITEM_BASIC = new Item.Properties().tab(TAB_BASIC);
+    private static final Item.Properties ITEM_STRUCTURE = new Item.Properties().tab(TAB_STRUCTURE);
     private static final Item.Properties ITEM_NATURE = new Item.Properties().tab(TAB_NATURE);
     private static final Item.Properties ITEM_FURNITURE = new Item.Properties().tab(TAB_FURNITURE);
     private static final Item.Properties ITEM_FUNCTIONAL = new Item.Properties().tab(TAB_FUNCTIONAL);
@@ -264,7 +266,7 @@ public final class XKDecoObjects {
         for (var block : ForgeRegistries.BLOCKS.getValues()) {
             if (block instanceof SpecialWallBlock wall) {
                 var registryName = Objects.requireNonNull(block.getRegistryName());
-                items.add(new SpecialWallItem(wall, XKDecoObjects.ITEM_BASIC).setRegistryName(registryName));
+                items.add(new SpecialWallItem(wall, XKDecoObjects.ITEM_STRUCTURE).setRegistryName(registryName));
             }
         }
         event.getRegistry().registerAll(items.toArray(new Item[0]));

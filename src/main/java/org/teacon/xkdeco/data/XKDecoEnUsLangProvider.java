@@ -16,7 +16,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
@@ -24,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import static org.teacon.xkdeco.init.XKDecoObjects.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -87,12 +88,12 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        Stream.<DeferredRegister<?>>of(XKDecoObjects.BLOCKS, XKDecoObjects.ITEMS, XKDecoObjects.ENTITIES)
+        Stream.<DeferredRegister<?>>of(BLOCKS, ITEMS, ENTITIES)
                 .flatMap(deferredRegister -> deferredRegister.getEntries().stream())
                 .map(RegistryObject::get)
                 .filter(obj -> !(obj instanceof BlockItem))
                 .forEach(this::translate);
-        Stream.of(XKDecoObjects.TAB_FUNCTIONAL, XKDecoObjects.TAB_BASIC, XKDecoObjects.TAB_FURNITURE, XKDecoObjects.TAB_NATURE)
+        Stream.of(TAB_BASIC, TAB_FUNCTIONAL, TAB_FURNITURE, TAB_NATURE, TAB_STRUCTURE)
                 .map(tab -> ((TranslatableComponent) tab.getDisplayName()).getKey())
                 .forEach(this::translateCreativeTab);
         EXTRA_KEYS.forEach(this::translateKey);
