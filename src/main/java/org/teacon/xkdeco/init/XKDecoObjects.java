@@ -1,13 +1,11 @@
 package org.teacon.xkdeco.init;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.DSL;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -40,7 +38,10 @@ import org.teacon.xkdeco.item.SpecialWallItem;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -248,7 +249,7 @@ public final class XKDecoObjects {
 
     public static void addSpecialWallBlocks(Register<Block> event) {
         var blocks = new ArrayList<Block>();
-        for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+        for (var block : ForgeRegistries.BLOCKS.getValues()) {
             if (block instanceof WallBlock wall) {
                 var registryName = Objects.requireNonNull(block.getRegistryName());
                 var name = SPECIAL_WALL_PREFIX + registryName.toString().replace(':', '_');
@@ -260,7 +261,7 @@ public final class XKDecoObjects {
 
     public static void addSpecialWallItems(Register<Item> event) {
         var items = new ArrayList<Item>();
-        for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+        for (var block : ForgeRegistries.BLOCKS.getValues()) {
             if (block instanceof SpecialWallBlock wall) {
                 var registryName = Objects.requireNonNull(block.getRegistryName());
                 items.add(new SpecialWallItem(wall, XKDecoObjects.ITEM_BASIC).setRegistryName(registryName));
@@ -282,7 +283,7 @@ public final class XKDecoObjects {
         registry.bindTags(registry.getTagNames().collect(Collectors.toMap(Function.identity(), tagKey -> {
             var tags = Lists.newArrayList(registry.getTagOrEmpty(tagKey));
             if (BlockTags.WALLS.equals(tagKey)) {
-                for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+                for (var block : ForgeRegistries.BLOCKS.getValues()) {
                     if (block instanceof SpecialWallBlock) {
                         tags.add(ForgeRegistries.BLOCKS.getHolder(block).orElseThrow());
                     }

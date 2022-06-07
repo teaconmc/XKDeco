@@ -117,7 +117,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         if (m.exists()) {
             models.add(m);
         }
-        for (int i = 1; ; i++) {
+        for (var i = 1; ; i++) {
             m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + i).toString()), this.models().existingFileHelper);
             if (m.exists()) models.add(m);
             else break;

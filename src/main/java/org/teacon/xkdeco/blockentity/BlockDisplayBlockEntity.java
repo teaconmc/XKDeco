@@ -14,7 +14,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -68,15 +66,15 @@ public final class BlockDisplayBlockEntity extends BlockEntity {
 
     public void setItem(@NotNull ItemStack itemStack) {
         this.item = itemStack;
-        Item i = itemStack.getItem();
+        var i = itemStack.getItem();
         if (i instanceof BlockItem blockItem) {
             blockState = blockItem.getBlock().defaultBlockState();
         } else {
             blockState = EMPTY;
         }
-        Collection<Property<?>> properties = blockState.getProperties();
+        var properties = blockState.getProperties();
         selectedProperty = properties.isEmpty() ? null : properties.iterator().next();
-        BlockState blockState = this.getBlockState();
+        var blockState = this.getBlockState();
         this.setChanged();
         Objects.requireNonNull(this.level).sendBlockUpdated(this.getBlockPos(), blockState, blockState, 0);
     }
@@ -133,7 +131,7 @@ public final class BlockDisplayBlockEntity extends BlockEntity {
             this.blockState = NbtUtils.readBlockState(pTag.getCompound(BLOCKSTATE_NBT_KEY));
         }
         if (pTag.contains(SELECTED_PROPERTY_NBT_KEY)) {
-            String propertyName = pTag.getString(SELECTED_PROPERTY_NBT_KEY);
+            var propertyName = pTag.getString(SELECTED_PROPERTY_NBT_KEY);
             this.selectedProperty = this.blockState.getProperties()
                     .stream().filter(p -> p.getName().equals(propertyName)).findFirst()
                     .orElse(blockState.getProperties().stream().findFirst().orElse(null));

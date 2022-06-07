@@ -47,7 +47,8 @@ import static net.minecraft.client.renderer.block.BlockModelShaper.stateToModelL
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoClient {
-    private static final Method CACHE_AND_QUEUE_DEPS = ObfuscationReflectionHelper.findMethod(ModelBakery.class, "m_119352_", ResourceLocation.class, UnbakedModel.class);
+    private static final Method CACHE_AND_QUEUE_DEPS = ObfuscationReflectionHelper
+            .findMethod(ModelBakery.class, "m_119352_", ResourceLocation.class, UnbakedModel.class);
 
     public static void setItemColors(ColorHandlerEvent.Item event) {
         var blockColors = event.getBlockColors();
@@ -122,7 +123,7 @@ public final class XKDecoClient {
     public static void setAdditionalBakedModels(ModelRegistryEvent event) {
         var bakery = Objects.requireNonNull(ForgeModelBakery.instance());
         try {
-            for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+            for (var block : ForgeRegistries.BLOCKS.getValues()) {
                 if (block instanceof SpecialWallBlock wall) {
                     var name = Objects.requireNonNull(wall.getRegistryName());
                     for (var state : wall.getStateDefinition().getPossibleStates()) {

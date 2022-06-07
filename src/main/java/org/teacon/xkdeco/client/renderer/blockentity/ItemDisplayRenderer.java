@@ -11,11 +11,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
@@ -39,12 +36,12 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
     public void render(ItemDisplayBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         // borrowed from ItemEntityRenderer
 
-        ItemStack itemstack = pBlockEntity.getItem();
+        var itemstack = pBlockEntity.getItem();
         if (itemstack.isEmpty()) return;
 
-        int speed = 1;
-        BlockPos pos = pBlockEntity.getBlockPos();
-        float spin = pBlockEntity.getSpin();
+        var speed = 1;
+        var pos = pBlockEntity.getBlockPos();
+        var spin = pBlockEntity.getSpin();
         if (!pBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
             spin += pPartialTick / 20;
         }
@@ -52,11 +49,11 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
         this.random.setSeed(itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue());
 
         pPoseStack.pushPose();
-        BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pBlockEntity.getLevel(), null, speed);
-        boolean gui3d = bakedmodel.isGui3d();
-        int amount = this.getRenderAmount(itemstack);
+        var bakedmodel = this.itemRenderer.getModel(itemstack, pBlockEntity.getLevel(), null, speed);
+        var gui3d = bakedmodel.isGui3d();
+        var amount = this.getRenderAmount(itemstack);
         @SuppressWarnings("deprecation")
-        float modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
+        var modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
         pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale * (pBlockEntity.isProjector() ? 16 : 1), 0.5);
         pPoseStack.mulPose(Vector3f.YP.rotation(spin));
 
@@ -72,7 +69,7 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
         }
 
 
-        for (int k = 0; k < amount; ++k) {
+        for (var k = 0; k < amount; ++k) {
             pPoseStack.pushPose();
             if (k > 0) {
                 if (gui3d) pPoseStack.translate(
@@ -85,8 +82,8 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
                             0.0D);
             }
 
-            Level level = Objects.requireNonNull(pBlockEntity.getLevel());
-            int packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos.above()), level.getBrightness(LightLayer.SKY, pos.above()));
+            var level = Objects.requireNonNull(pBlockEntity.getLevel());
+            var packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos.above()), level.getBrightness(LightLayer.SKY, pos.above()));
             this.itemRenderer.render(itemstack, ItemTransforms.TransformType.GROUND, false, pPoseStack, pBufferSource, packedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
             pPoseStack.popPose();
             if (!gui3d) {
@@ -98,7 +95,7 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
     }
 
     private int getRenderAmount(ItemStack pStack) {
-        int i = 1;
+        var i = 1;
         if (pStack.getCount() > 48) {
             i = 5;
         } else if (pStack.getCount() > 32) {

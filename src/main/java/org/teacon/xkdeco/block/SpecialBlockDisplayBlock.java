@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -69,13 +68,13 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, BlockHitResult hit) {
-        BlockEntity be = worldIn.getBlockEntity(pos);
+        var be = worldIn.getBlockEntity(pos);
         if (!(be instanceof BlockDisplayBlockEntity blockEntity)) return InteractionResult.PASS;
 
-        boolean swapItem = hit.getDirection() == Direction.UP
+        var swapItem = hit.getDirection() == Direction.UP
                 && MathUtil.containsInclusive(TOP.bounds(), hit.getLocation().subtract(Vec3.atLowerCornerOf(pos)));
         if (swapItem) {
-            ItemStack handItem = player.getItemInHand(handIn);
+            var handItem = player.getItemInHand(handIn);
             if (!(handItem.getItem() instanceof BlockItem) && !handItem.isEmpty()) {
                 return InteractionResult.CONSUME_PARTIAL;
             }
@@ -84,20 +83,20 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
         if (worldIn.isClientSide()) return InteractionResult.SUCCESS;
 
         if (swapItem) {
-            ItemStack temp = player.getItemInHand(handIn).copy();
+            var temp = player.getItemInHand(handIn).copy();
             player.setItemInHand(handIn, blockEntity.getItem().copy());
             blockEntity.setItem(temp);
         } else if (blockEntity.getSelectedProperty().isEmpty()) {
             message(player, new TranslatableComponent("item.minecraft.debug_stick.empty",
                     Objects.requireNonNull(blockEntity.getStoredBlockState().getBlock().getRegistryName()).toString()));
         } else if (hit.getLocation().subtract(Vec3.atLowerCornerOf(pos)).y() > 0.5) {
-            Property<?> property = blockEntity.getSelectedProperty().get();
+            var property = blockEntity.getSelectedProperty().get();
             blockEntity.setStoredBlockState(cycleState(blockEntity.getStoredBlockState(), property, false));
             message(player, new TranslatableComponent("\"%s\" to %s",
                     property.getName(), getValueName(blockEntity.getStoredBlockState(), property)));
         } else {
-            BlockState blockState = blockEntity.getStoredBlockState();
-            Property<?> newProperty = getRelative(blockState.getProperties(), blockEntity.getSelectedProperty().get(), false);
+            var blockState = blockEntity.getStoredBlockState();
+            var newProperty = getRelative(blockState.getProperties(), blockEntity.getSelectedProperty().get(), false);
             blockEntity.setSelectedProperty(newProperty);
             message(player, new TranslatableComponent("selected \"%s\" (%s)",
                     newProperty.getName(), getValueName(blockState, newProperty)));

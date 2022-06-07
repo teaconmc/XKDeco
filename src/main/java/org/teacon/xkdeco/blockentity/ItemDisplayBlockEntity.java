@@ -64,11 +64,11 @@ public final class ItemDisplayBlockEntity extends BlockEntity {
     }
 
     public void setItem(ItemStack item) {
-        boolean update = !item.isEmpty() || !this.item.isEmpty();
+        var update = !item.isEmpty() || !this.item.isEmpty();
         this.item = item;
         if (update) {
             this.setChanged();
-            BlockState blockState = this.getBlockState();
+            var blockState = this.getBlockState();
             Objects.requireNonNull(this.level).sendBlockUpdated(this.getBlockPos(), blockState, blockState, 0);
         }
     }

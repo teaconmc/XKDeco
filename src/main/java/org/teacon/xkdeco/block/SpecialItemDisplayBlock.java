@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -77,9 +76,9 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
         }
 
         if (!worldIn.isClientSide()) {
-            BlockEntity te = worldIn.getBlockEntity(pos);
+            var te = worldIn.getBlockEntity(pos);
             if (te instanceof ItemDisplayBlockEntity tileEntity) {
-                ItemStack temp = player.getItemInHand(handIn).copy();
+                var temp = player.getItemInHand(handIn).copy();
                 player.setItemInHand(handIn, tileEntity.getItem().copy());
                 tileEntity.setItem(temp);
             }
@@ -91,7 +90,7 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
         return (level, pos, blockState, blockEntity) -> {
             if (blockEntity instanceof ItemDisplayBlockEntity itemDisplayBlockEntity) {
-                float spin = itemDisplayBlockEntity.getSpin();
+                var spin = itemDisplayBlockEntity.getSpin();
                 if (itemDisplayBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
                     spin = (float) (Math.round(spin / (TAU / 8)) * (TAU / 8));
                 } else {

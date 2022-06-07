@@ -8,10 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
@@ -31,17 +28,17 @@ public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisp
 
     @Override
     public void render(BlockDisplayBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-        BlockState state = pBlockEntity.getStoredBlockState();
+        var state = pBlockEntity.getStoredBlockState();
         if (state.isAir()) return;
 
-        BlockPos pos = pBlockEntity.getBlockPos();
-        Level level = Objects.requireNonNull(pBlockEntity.getLevel());
-        int packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos.above()), level.getBrightness(LightLayer.SKY, pos.above()));
+        var pos = pBlockEntity.getBlockPos();
+        var level = Objects.requireNonNull(pBlockEntity.getLevel());
+        var packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos.above()), level.getBrightness(LightLayer.SKY, pos.above()));
 
         pPoseStack.pushPose();
 
         pPoseStack.scale(BLOCK_SCALE, BLOCK_SCALE, BLOCK_SCALE);
-        float delta = (1 - BLOCK_SCALE) / 2;
+        var delta = (1 - BLOCK_SCALE) / 2;
         pPoseStack.translate(delta, 1, delta);
         blockRenderer.renderSingleBlock(state, pPoseStack, pBufferSource, packedLight, pPackedOverlay, EmptyModelData.INSTANCE);
 

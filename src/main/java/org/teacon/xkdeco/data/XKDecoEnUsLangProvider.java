@@ -133,9 +133,9 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 
     // borrowed from mod uusi-aurinko
     private static String snakeToSpace(String str) {
-        char[] chars = str.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
+        var chars = str.toCharArray();
+        for (var i = 0; i < chars.length; i++) {
+            var c = chars[i];
             if (c == '_') chars[i] = ' ';
             if ((i == 0 || chars[i - 1] == ' ') && c >= 'a' && c <= 'z') chars[i] -= 32;
         }
