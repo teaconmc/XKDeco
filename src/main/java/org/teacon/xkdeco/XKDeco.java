@@ -1,7 +1,11 @@
 package org.teacon.xkdeco;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -27,6 +31,10 @@ public final class XKDeco {
         XKDecoObjects.ITEMS.register(modEventBus);
         XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
 
+        modEventBus.addGenericListener(Block.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlocks);
+        modEventBus.addGenericListener(Item.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);
+        modEventBus.addGenericListener(BlockEntityType.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
+
         modEventBus.addListener(XKDecoBlockStateProvider::register);
         modEventBus.addListener(XKDecoEnUsLangProvider::register);
 
@@ -34,10 +42,14 @@ public final class XKDeco {
             modEventBus.addListener(XKDecoClient::setItemColors);
             modEventBus.addListener(XKDecoClient::setBlockColors);
             modEventBus.addListener(XKDecoClient::setCutoutBlocks);
+            modEventBus.addListener(XKDecoClient::setItemRenderers);
             modEventBus.addListener(XKDecoClient::setEntityRenderers);
+            modEventBus.addListener(XKDecoClient::setAdditionalBakedModels);
         }
 
         var forgeEventBus = MinecraftForge.EVENT_BUS;
+
+        forgeEventBus.addListener(XKDecoObjects::addSpecialWallTags);
 
         forgeEventBus.addListener(CushionEntity::onRightClickBlock);
         forgeEventBus.addListener(CushionEntity::onBreakBlock);

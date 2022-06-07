@@ -1,17 +1,23 @@
 package org.teacon.xkdeco.init;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.DSL;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -19,6 +25,8 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,12 +34,15 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.*;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
+import org.teacon.xkdeco.blockentity.WallBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
+import org.teacon.xkdeco.item.SpecialWallItem;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -96,7 +107,7 @@ public final class XKDecoObjects {
             "tech_block_display", BLOCK_METAL_DISPLAY
     );
 
-
+    public static final String WALL_BLOCK_ENTITY = "special_wall";
     public static final String ITEM_DISPLAY_BLOCK_ENTITY = "item_display";
     public static final String BLOCK_DISPLAY_BLOCK_ENTITY = "block_display";
 
@@ -111,6 +122,7 @@ public final class XKDecoObjects {
     public static final String PLANTABLE_PREFIX = "plantable_";
     public static final String TRANSLUCENT_PREFIX = "translucent_";
     public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
+    public static final String SPECIAL_WALL_PREFIX = "special_wall_";
 
     public static final String LOG_SUFFIX = "_log";
     public static final String WOOD_SUFFIX = "_wood";
@@ -232,6 +244,53 @@ public final class XKDecoObjects {
                                 .stream()
                                 .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
                                 .toArray(Block[]::new)).build(DSL.remainderType()));
+    }
+
+    public static void addSpecialWallBlocks(Register<Block> event) {
+        var blocks = new ArrayList<Block>();
+        for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+            if (block instanceof WallBlock wall) {
+                var registryName = Objects.requireNonNull(block.getRegistryName());
+                var name = SPECIAL_WALL_PREFIX + registryName.toString().replace(':', '_');
+                blocks.add(new SpecialWallBlock(wall).setRegistryName(new ResourceLocation(XKDeco.ID, name)));
+            }
+        }
+        event.getRegistry().registerAll(blocks.toArray(new Block[0]));
+    }
+
+    public static void addSpecialWallItems(Register<Item> event) {
+        var items = new ArrayList<Item>();
+        for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+            if (block instanceof SpecialWallBlock wall) {
+                var registryName = Objects.requireNonNull(block.getRegistryName());
+                items.add(new SpecialWallItem(wall, XKDecoObjects.ITEM_BASIC).setRegistryName(registryName));
+            }
+        }
+        event.getRegistry().registerAll(items.toArray(new Item[0]));
+    }
+
+    public static void addSpecialWallBlockEntity(Register<BlockEntityType<?>> event) {
+        var blocks = ForgeRegistries.BLOCKS.getValues().stream()
+                .filter(SpecialWallBlock.class::isInstance).toArray(Block[]::new);
+        var registryName = new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY);
+        event.getRegistry().register(BlockEntityType.Builder
+                .of(WallBlockEntity::new, blocks).build(DSL.remainderType()).setRegistryName(registryName));
+    }
+
+    public static void addSpecialWallTags(TagsUpdatedEvent event) {
+        var registry = event.getTagManager().registryOrThrow(ForgeRegistries.BLOCKS.getRegistryKey());
+        registry.bindTags(registry.getTagNames().collect(Collectors.toMap(Function.identity(), tagKey -> {
+            var tags = Lists.newArrayList(registry.getTagOrEmpty(tagKey));
+            if (BlockTags.WALLS.equals(tagKey)) {
+                for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+                    if (block instanceof SpecialWallBlock) {
+                        tags.add(ForgeRegistries.BLOCKS.getHolder(block).orElseThrow());
+                    }
+                }
+            }
+            return tags;
+        })));
+        Blocks.rebuildCache();
     }
 
     @FunctionalInterface

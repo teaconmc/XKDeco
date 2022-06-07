@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.data;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -11,7 +10,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,7 +34,6 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 
     // most of them have not been added into game yet
     private static final Collection<String> EXTRA_KEYS = List.of(
-            "block.xkdeco.item_projector",
             "block.xkdeco.varnished_wardrobe",
             "block.xkdeco.ebony_wardrobe",
             "block.xkdeco.mahogany_wardrobe",
@@ -79,7 +76,8 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
             "block.xkdeco.white_cherry_blossom_shatter"
     );
 
-    private static final Map<String, String> EXTRA_ENTRIES = ImmutableMap.of(
+    private static final Map<String, String> EXTRA_ENTRIES = Map.ofEntries(
+            Map.entry("block.xkdeco.special_wall", "%s (Column)")
     );
 
     public static void register(GatherDataEvent event) {

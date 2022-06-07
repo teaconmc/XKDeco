@@ -42,10 +42,10 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
             "varnished_shelf", "weiqi_board", "xiangqi_board"
     );
     private static final Set<String> BLOCK_STATES_SKIP = ImmutableSet.of(
-            "cup", "fruit_platter", "maya_single_screw_thread_stone",
+            "cup", "fruit_platter", "item_projector", "maya_single_screw_thread_stone",
             "refreshments", "screw_thread_bronze_block"
     );
-    private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of("cup", "refreshments");
+    private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of("cup", "item_projector", "refreshments");
 
     private XKDecoBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, XKDeco.ID, existingFileHelper);
@@ -101,8 +101,9 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
     }
 
     private void randomizedHorizontalBlock(Block block, Stream<ModelFile> models) {
+        var modelList = models.toList();
         getVariantBuilder(block).forAllStates(
-                state -> models.map(m -> ConfiguredModel.builder().modelFile(m)
+                state -> modelList.stream().map(m -> ConfiguredModel.builder().modelFile(m)
                                 .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
                                 .buildLast()
                         )
@@ -152,7 +153,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
     }
 
     private ModelFile model(String id, String path, String suffix) {
-        return new ModelFile.ExistingModelFile(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + suffix).toString()), this.models().existingFileHelper);
+        return new ModelFile.UncheckedModelFile(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + suffix).toString()));
     }
 
     private static class ExistingModelFileProxy extends ModelFile.ExistingModelFile {
