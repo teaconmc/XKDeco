@@ -44,7 +44,7 @@ public final class XKDeco {
             modEventBus.addListener(XKDecoClient::setCutoutBlocks);
             modEventBus.addListener(XKDecoClient::setItemRenderers);
             modEventBus.addListener(XKDecoClient::setEntityRenderers);
-            modEventBus.addListener(XKDecoClient::setAdditionalBakedModels);
+            modEventBus.addListener(XKDecoClient::setAdditionalPackFinder);
         }
 
         var forgeEventBus = MinecraftForge.EVENT_BUS;
