@@ -96,7 +96,7 @@ public final class SpecialWallResources implements PackResources {
 
     @Override
     public Set<String> getNamespaces(PackType pType) {
-        return Set.of(XKDeco.ID);
+        return pType == PackType.CLIENT_RESOURCES ? Set.of(XKDeco.ID) : Set.of();
     }
 
     @Nullable
