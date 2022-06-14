@@ -60,8 +60,11 @@ public final class CushionEntity extends Entity {
     }
 
     private Vec3 calculateStandingDiff(Entity entity) {
-        var diff = entity.position().add(0.0, 0.5, 0.0).subtract(this.position());
-        return diff.lengthSqr() > MAX_DISTANCE ? diff.normalize().scale(Math.sqrt(MAX_DISTANCE)) : diff;
+        if (!entity.isPassenger()) {
+            var diff = entity.position().add(0.0, 0.5, 0.0).subtract(this.position());
+            return diff.lengthSqr() > MAX_DISTANCE ? diff.normalize().scale(Math.sqrt(MAX_DISTANCE)) : diff;
+        }
+        return Vec3.ZERO;
     }
 
     public Vec3 getStandingDiffLocation() {
