@@ -22,7 +22,7 @@ import static org.teacon.xkdeco.init.XKDecoObjects.WALL_BLOCK_ENTITY;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class WallBlockEntity extends BlockEntity {
+public final class WallBlockEntity extends BlockEntity {
     public static final RegistryObject<BlockEntityType<WallBlockEntity>> TYPE =
             RegistryObject.of(new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
 
