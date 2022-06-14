@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IItemRenderProperties;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.SpecialWallBlock;
-import org.teacon.xkdeco.client.renderer.blockentity.XKDecoWithoutLevelRenderer;
+import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;

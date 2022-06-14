@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.client.renderer.blockentity;
+package org.teacon.xkdeco.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.MethodsReturnNonnullByDefault;
