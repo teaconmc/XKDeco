@@ -88,8 +88,8 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                             case OUTER -> "_outer";
                         };
                         var halfSuffix = switch (state.getValue(IsotropicRoofBlock.HALF)) {
-                            case BOTTOM -> "";
-                            case TOP -> "_top";
+                            case TIP -> "";
+                            case BASE -> "_top";
                         };
                         var model = model(prefix, path, shapeSuffix + halfSuffix);
                         var facing2d = state.getValue(IsotropicRoofBlock.FACING).get2DDataValue();

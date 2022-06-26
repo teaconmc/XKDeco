@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -33,84 +32,84 @@ import java.util.Locale;
 public final class IsotropicRoofBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
     public static final EnumProperty<RoofVariant> VARIANT = EnumProperty.create("variant", RoofVariant.class);
     public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
+    public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final VoxelShape ROOF_E = Shapes.or(Block.box(0, 8, 0, 8, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_INNER_EN = Shapes.or(Block.box(0, 8, 0, 8, 16, 8), Block.box(0, 8, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_INNER_NW = Shapes.or(Block.box(0, 8, 8, 8, 16, 16), Block.box(8, 8, 0, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_INNER_SE = Shapes.or(Block.box(8, 8, 0, 16, 16, 8), Block.box(0, 8, 0, 8, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape ROOF_INNER_TOP_EN = Shapes.or(Block.box(0, 16, 0, 8, 24, 8), Block.box(0, 16, 8, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_INNER_TOP_NW = Shapes.or(Block.box(0, 16, 8, 8, 24, 16), Block.box(8, 16, 0, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_INNER_TOP_SE = Shapes.or(Block.box(8, 16, 0, 16, 24, 8), Block.box(0, 16, 0, 8, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_INNER_TOP_WS = Shapes.or(Block.box(8, 16, 8, 16, 24, 16), Block.box(0, 16, 0, 16, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_INNER_BASE_EN = Shapes.or(Block.box(0, 16, 0, 8, 24, 8), Block.box(0, 16, 8, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_INNER_BASE_NW = Shapes.or(Block.box(0, 16, 8, 8, 24, 16), Block.box(8, 16, 0, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_INNER_BASE_SE = Shapes.or(Block.box(8, 16, 0, 16, 24, 8), Block.box(0, 16, 0, 8, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_INNER_BASE_WS = Shapes.or(Block.box(8, 16, 8, 16, 24, 16), Block.box(0, 16, 0, 16, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
     public static final VoxelShape ROOF_INNER_WS = Shapes.or(Block.box(8, 8, 8, 16, 16, 16), Block.box(0, 8, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_N = Shapes.or(Block.box(0, 8, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_OUTER_EN = Shapes.or(Block.box(0, 8, 8, 8, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_OUTER_NW = Shapes.or(Block.box(8, 8, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_OUTER_SE = Shapes.or(Block.box(0, 8, 0, 8, 16, 8), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape ROOF_OUTER_TOP_EN = Shapes.or(Block.box(0, 16, 8, 8, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_OUTER_TOP_NW = Shapes.or(Block.box(8, 16, 8, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_OUTER_TOP_SE = Shapes.or(Block.box(0, 16, 0, 8, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_OUTER_TOP_WS = Shapes.or(Block.box(8, 16, 0, 16, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_OUTER_BASE_EN = Shapes.or(Block.box(0, 16, 8, 8, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_OUTER_BASE_NW = Shapes.or(Block.box(8, 16, 8, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_OUTER_BASE_SE = Shapes.or(Block.box(0, 16, 0, 8, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_OUTER_BASE_WS = Shapes.or(Block.box(8, 16, 0, 16, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
     public static final VoxelShape ROOF_OUTER_WS = Shapes.or(Block.box(8, 8, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape ROOF_S = Shapes.or(Block.box(0, 8, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape ROOF_TOP_E = Shapes.or(Block.box(0, 16, 0, 8, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_TOP_N = Shapes.or(Block.box(0, 16, 8, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_TOP_S = Shapes.or(Block.box(0, 16, 0, 16, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
-    public static final VoxelShape ROOF_TOP_W = Shapes.or(Block.box(8, 16, 0, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_BASE_E = Shapes.or(Block.box(0, 16, 0, 8, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_BASE_N = Shapes.or(Block.box(0, 16, 8, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_BASE_S = Shapes.or(Block.box(0, 16, 0, 16, 24, 8), Block.box(0, 8, 0, 16, 16, 16));
+    public static final VoxelShape ROOF_BASE_W = Shapes.or(Block.box(8, 16, 0, 16, 24, 16), Block.box(0, 8, 0, 16, 16, 16));
     public static final VoxelShape ROOF_W = Shapes.or(Block.box(8, 8, 0, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape SLOW_ROOF_E = Shapes.or(Block.box(0, 4, 0, 8, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_INNER_EN = Shapes.or(Block.box(0, 4, 8, 16, 8, 16), Block.box(0, 4, 0, 8, 8, 8), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_INNER_NW = Shapes.or(Block.box(8, 4, 0, 16, 8, 16), Block.box(0, 4, 8, 8, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_INNER_SE = Shapes.or(Block.box(0, 4, 0, 8, 8, 16), Block.box(8, 4, 0, 16, 8, 8), Block.box(0, 0, 0, 16, 4, 16));
-    public static final VoxelShape SLOW_ROOF_INNER_TOP_EN = Shapes.or(Block.box(0, 12, 8, 16, 16, 16), Block.box(0, 12, 0, 8, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_INNER_TOP_NW = Shapes.or(Block.box(8, 12, 0, 16, 16, 16), Block.box(0, 12, 8, 8, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_INNER_TOP_SE = Shapes.or(Block.box(0, 12, 0, 8, 16, 16), Block.box(8, 12, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_INNER_TOP_WS = Shapes.or(Block.box(0, 12, 0, 16, 16, 8), Block.box(8, 12, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_INNER_BASE_EN = Shapes.or(Block.box(0, 12, 8, 16, 16, 16), Block.box(0, 12, 0, 8, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_INNER_BASE_NW = Shapes.or(Block.box(8, 12, 0, 16, 16, 16), Block.box(0, 12, 8, 8, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_INNER_BASE_SE = Shapes.or(Block.box(0, 12, 0, 8, 16, 16), Block.box(8, 12, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_INNER_BASE_WS = Shapes.or(Block.box(0, 12, 0, 16, 16, 8), Block.box(8, 12, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
     public static final VoxelShape SLOW_ROOF_INNER_WS = Shapes.or(Block.box(0, 4, 0, 16, 8, 8), Block.box(8, 4, 8, 16, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_N = Shapes.or(Block.box(0, 4, 8, 16, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_OUTER_EN = Shapes.or(Block.box(0, 4, 8, 8, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_OUTER_NW = Shapes.or(Block.box(8, 4, 8, 16, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_OUTER_SE = Shapes.or(Block.box(0, 4, 0, 8, 8, 8), Block.box(0, 0, 0, 16, 4, 16));
-    public static final VoxelShape SLOW_ROOF_OUTER_TOP_EN = Shapes.or(Block.box(0, 12, 8, 8, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_OUTER_TOP_NW = Shapes.or(Block.box(8, 12, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_OUTER_TOP_SE = Shapes.or(Block.box(0, 12, 0, 8, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_OUTER_TOP_WS = Shapes.or(Block.box(8, 12, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_OUTER_BASE_EN = Shapes.or(Block.box(0, 12, 8, 8, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_OUTER_BASE_NW = Shapes.or(Block.box(8, 12, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_OUTER_BASE_SE = Shapes.or(Block.box(0, 12, 0, 8, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_OUTER_BASE_WS = Shapes.or(Block.box(8, 12, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
     public static final VoxelShape SLOW_ROOF_OUTER_WS = Shapes.or(Block.box(8, 4, 0, 16, 8, 8), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape SLOW_ROOF_S = Shapes.or(Block.box(0, 4, 0, 16, 8, 8), Block.box(0, 0, 0, 16, 4, 16));
-    public static final VoxelShape SLOW_ROOF_TOP_E = Shapes.or(Block.box(0, 12, 0, 8, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_TOP_N = Shapes.or(Block.box(0, 12, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_TOP_S = Shapes.or(Block.box(0, 12, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
-    public static final VoxelShape SLOW_ROOF_TOP_W = Shapes.or(Block.box(8, 12, 0, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_BASE_E = Shapes.or(Block.box(0, 12, 0, 8, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_BASE_N = Shapes.or(Block.box(0, 12, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_BASE_S = Shapes.or(Block.box(0, 12, 0, 16, 16, 8), Block.box(0, 0, 0, 16, 12, 16));
+    public static final VoxelShape SLOW_ROOF_BASE_W = Shapes.or(Block.box(8, 12, 0, 16, 16, 16), Block.box(0, 0, 0, 16, 12, 16));
     public static final VoxelShape SLOW_ROOF_W = Shapes.or(Block.box(8, 4, 0, 16, 8, 16), Block.box(0, 0, 0, 16, 4, 16));
     public static final VoxelShape STEEP_ROOF_E = Shapes.or(Block.box(0, 8, 0, 4, 16, 16), Block.box(0, 0, 0, 8, 8, 16));
     public static final VoxelShape STEEP_ROOF_INNER_EN = Shapes.or(Block.box(0, 8, 12, 16, 16, 16), Block.box(0, 8, 0, 4, 16, 12));
     public static final VoxelShape STEEP_ROOF_INNER_NW = Shapes.or(Block.box(12, 8, 0, 16, 16, 16), Block.box(0, 8, 12, 12, 16, 16));
     public static final VoxelShape STEEP_ROOF_INNER_SE = Shapes.or(Block.box(0, 8, 0, 4, 16, 16), Block.box(4, 8, 0, 16, 16, 4));
-    public static final VoxelShape STEEP_ROOF_INNER_TOP_EN = Shapes.or(Block.box(0, 8, 4, 16, 16, 16), Block.box(0, 8, 0, 12, 16, 4), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_INNER_TOP_NW = Shapes.or(Block.box(4, 8, 0, 16, 16, 16), Block.box(0, 8, 4, 4, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_INNER_TOP_SE = Shapes.or(Block.box(0, 8, 0, 12, 16, 16), Block.box(12, 8, 0, 16, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_INNER_TOP_WS = Shapes.or(Block.box(0, 8, 0, 16, 16, 12), Block.box(4, 8, 12, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_INNER_BASE_EN = Shapes.or(Block.box(0, 8, 4, 16, 16, 16), Block.box(0, 8, 0, 12, 16, 4), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_INNER_BASE_NW = Shapes.or(Block.box(4, 8, 0, 16, 16, 16), Block.box(0, 8, 4, 4, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_INNER_BASE_SE = Shapes.or(Block.box(0, 8, 0, 12, 16, 16), Block.box(12, 8, 0, 16, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_INNER_BASE_WS = Shapes.or(Block.box(0, 8, 0, 16, 16, 12), Block.box(4, 8, 12, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape STEEP_ROOF_INNER_WS = Shapes.or(Block.box(0, 8, 0, 16, 16, 4), Block.box(12, 8, 4, 16, 16, 16));
     public static final VoxelShape STEEP_ROOF_N = Shapes.or(Block.box(0, 8, 12, 16, 16, 16), Block.box(0, 0, 8, 16, 8, 16));
     public static final VoxelShape STEEP_ROOF_OUTER_EN = Shapes.or(Block.box(0, 0, 8, 8, 8, 16), Block.box(0, 8, 12, 4, 16, 16));
     public static final VoxelShape STEEP_ROOF_OUTER_NW = Shapes.or(Block.box(8, 0, 8, 16, 8, 16), Block.box(12, 8, 12, 16, 16, 16));
     public static final VoxelShape STEEP_ROOF_OUTER_SE = Shapes.or(Block.box(0, 0, 0, 8, 8, 8), Block.box(0, 8, 0, 4, 16, 4));
-    public static final VoxelShape STEEP_ROOF_OUTER_TOP_EN = Shapes.or(Block.box(0, 8, 4, 12, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_OUTER_TOP_NW = Shapes.or(Block.box(4, 8, 4, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_OUTER_TOP_SE = Shapes.or(Block.box(0, 8, 0, 12, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_OUTER_TOP_WS = Shapes.or(Block.box(4, 8, 0, 16, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_OUTER_BASE_EN = Shapes.or(Block.box(0, 8, 4, 12, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_OUTER_BASE_NW = Shapes.or(Block.box(4, 8, 4, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_OUTER_BASE_SE = Shapes.or(Block.box(0, 8, 0, 12, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_OUTER_BASE_WS = Shapes.or(Block.box(4, 8, 0, 16, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape STEEP_ROOF_OUTER_WS = Shapes.or(Block.box(8, 0, 0, 16, 8, 8), Block.box(12, 8, 0, 16, 16, 4));
     public static final VoxelShape STEEP_ROOF_S = Shapes.or(Block.box(0, 8, 0, 16, 16, 4), Block.box(0, 0, 0, 16, 8, 8));
-    public static final VoxelShape STEEP_ROOF_TOP_E = Shapes.or(Block.box(0, 8, 0, 12, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_TOP_N = Shapes.or(Block.box(0, 8, 4, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_TOP_S = Shapes.or(Block.box(0, 8, 0, 16, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
-    public static final VoxelShape STEEP_ROOF_TOP_W = Shapes.or(Block.box(4, 8, 0, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_BASE_E = Shapes.or(Block.box(0, 8, 0, 12, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_BASE_N = Shapes.or(Block.box(0, 8, 4, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_BASE_S = Shapes.or(Block.box(0, 8, 0, 16, 16, 12), Block.box(0, 0, 0, 16, 8, 16));
+    public static final VoxelShape STEEP_ROOF_BASE_W = Shapes.or(Block.box(4, 8, 0, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
     public static final VoxelShape STEEP_ROOF_W = Shapes.or(Block.box(12, 8, 0, 16, 16, 16), Block.box(8, 0, 0, 16, 8, 16));
 
-    public static final List<VoxelShape> ROOFS = List.of(
+    public static final List<VoxelShape> ROOF_SHAPES = List.of(
             Shapes.block(), ROOF_OUTER_EN, ROOF_E, ROOF_INNER_SE,
             ROOF_INNER_WS, Shapes.block(), ROOF_OUTER_SE, ROOF_S,
             ROOF_W, ROOF_INNER_NW, Shapes.block(), ROOF_OUTER_WS,
@@ -123,25 +122,25 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             STEEP_ROOF_INNER_WS, Shapes.block(), STEEP_ROOF_OUTER_SE, STEEP_ROOF_S,
             STEEP_ROOF_W, STEEP_ROOF_INNER_NW, Shapes.block(), STEEP_ROOF_OUTER_WS,
             STEEP_ROOF_OUTER_NW, STEEP_ROOF_N, STEEP_ROOF_INNER_EN, Shapes.block());
-    public static final List<VoxelShape> ROOF_TOPS = List.of(
-            Shapes.block(), ROOF_OUTER_TOP_EN, ROOF_TOP_E, ROOF_INNER_TOP_SE,
-            ROOF_INNER_TOP_WS, Shapes.block(), ROOF_OUTER_TOP_SE, ROOF_TOP_S,
-            ROOF_TOP_W, ROOF_INNER_TOP_NW, Shapes.block(), ROOF_OUTER_TOP_WS,
-            ROOF_OUTER_TOP_NW, ROOF_TOP_N, ROOF_INNER_TOP_EN, Shapes.block(),
-            Shapes.block(), SLOW_ROOF_OUTER_TOP_EN, SLOW_ROOF_TOP_E, SLOW_ROOF_INNER_TOP_SE,
-            SLOW_ROOF_INNER_TOP_WS, Shapes.block(), SLOW_ROOF_OUTER_TOP_SE, SLOW_ROOF_TOP_S,
-            SLOW_ROOF_TOP_W, SLOW_ROOF_INNER_TOP_NW, Shapes.block(), SLOW_ROOF_OUTER_TOP_WS,
-            SLOW_ROOF_OUTER_TOP_NW, SLOW_ROOF_TOP_N, SLOW_ROOF_INNER_TOP_EN, Shapes.block(),
-            Shapes.block(), STEEP_ROOF_OUTER_TOP_EN, STEEP_ROOF_TOP_E, STEEP_ROOF_INNER_TOP_SE,
-            STEEP_ROOF_INNER_TOP_WS, Shapes.block(), STEEP_ROOF_OUTER_TOP_SE, STEEP_ROOF_TOP_S,
-            STEEP_ROOF_TOP_W, STEEP_ROOF_INNER_TOP_NW, Shapes.block(), STEEP_ROOF_OUTER_TOP_WS,
-            STEEP_ROOF_OUTER_TOP_NW, STEEP_ROOF_TOP_N, STEEP_ROOF_INNER_TOP_EN, Shapes.block());
+    public static final List<VoxelShape> ROOF_BASE_SHAPES = List.of(
+            Shapes.block(), ROOF_OUTER_BASE_EN, ROOF_BASE_E, ROOF_INNER_BASE_SE,
+            ROOF_INNER_BASE_WS, Shapes.block(), ROOF_OUTER_BASE_SE, ROOF_BASE_S,
+            ROOF_BASE_W, ROOF_INNER_BASE_NW, Shapes.block(), ROOF_OUTER_BASE_WS,
+            ROOF_OUTER_BASE_NW, ROOF_BASE_N, ROOF_INNER_BASE_EN, Shapes.block(),
+            Shapes.block(), SLOW_ROOF_OUTER_BASE_EN, SLOW_ROOF_BASE_E, SLOW_ROOF_INNER_BASE_SE,
+            SLOW_ROOF_INNER_BASE_WS, Shapes.block(), SLOW_ROOF_OUTER_BASE_SE, SLOW_ROOF_BASE_S,
+            SLOW_ROOF_BASE_W, SLOW_ROOF_INNER_BASE_NW, Shapes.block(), SLOW_ROOF_OUTER_BASE_WS,
+            SLOW_ROOF_OUTER_BASE_NW, SLOW_ROOF_BASE_N, SLOW_ROOF_INNER_BASE_EN, Shapes.block(),
+            Shapes.block(), STEEP_ROOF_OUTER_BASE_EN, STEEP_ROOF_BASE_E, STEEP_ROOF_INNER_BASE_SE,
+            STEEP_ROOF_INNER_BASE_WS, Shapes.block(), STEEP_ROOF_OUTER_BASE_SE, STEEP_ROOF_BASE_S,
+            STEEP_ROOF_BASE_W, STEEP_ROOF_INNER_BASE_NW, Shapes.block(), STEEP_ROOF_OUTER_BASE_WS,
+            STEEP_ROOF_OUTER_BASE_NW, STEEP_ROOF_BASE_N, STEEP_ROOF_INNER_BASE_EN, Shapes.block());
 
     public IsotropicRoofBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofShape.STRAIGHT)
-                .setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(WATERLOGGED, false));
+                .setValue(HALF, RoofHalf.TIP).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -156,8 +155,8 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
         var leftRight = getConnectionLeftRight(pState.getValue(FACING), pState.getValue(SHAPE));
         var leftRightIndex = leftRight.getLeft().get2DDataValue() * 4 + leftRight.getRight().get2DDataValue();
         return switch (pState.getValue(HALF)) {
-            case BOTTOM -> ROOFS.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
-            case TOP -> ROOF_TOPS.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
+            case TIP -> ROOF_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
+            case BASE -> ROOF_BASE_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
         };
     }
 
@@ -256,7 +255,7 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(VARIANT, SHAPE, FACING, HALF, WATERLOGGED);
+        pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
     }
 
     private BlockState updateHalfVariant(BlockState state, LevelAccessor level, BlockPos pos, boolean isPassive) {
@@ -265,28 +264,28 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
         switch (currentShape) {
             case STRAIGHT -> {
                 var isCurrentNormal = state.getValue(VARIANT).equals(RoofVariant.NORMAL);
-                if (isCurrentNormal ? isPassive : state.getValue(HALF).equals(Half.TOP)) {
+                if (isCurrentNormal ? isPassive : state.getValue(HALF).equals(RoofHalf.BASE)) {
                     var stateBackward = level.getBlockState(pos.relative(currentFacing.getOpposite()));
                     if (isRoof(stateBackward)) {
-                        var bottomHalf = stateBackward.getValue(HALF).equals(Half.BOTTOM);
+                        var bottomHalf = stateBackward.getValue(HALF).equals(RoofHalf.TIP);
                         var sameFacing = stateBackward.getValue(FACING).equals(currentFacing);
                         var sameShape = stateBackward.getValue(SHAPE).equals(RoofShape.STRAIGHT);
                         var slowVariant = stateBackward.getValue(VARIANT).equals(RoofVariant.SLOW);
                         if (bottomHalf && sameFacing && sameShape && slowVariant) {
-                            return state.setValue(HALF, Half.TOP).setValue(VARIANT, RoofVariant.SLOW);
+                            return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW);
                         }
                     }
                     var stateAbove = level.getBlockState(pos.above());
                     if (isRoof(stateAbove)) {
-                        var bottomHalf = stateAbove.getValue(HALF).equals(Half.BOTTOM);
+                        var bottomHalf = stateAbove.getValue(HALF).equals(RoofHalf.TIP);
                         var sameFacing = stateAbove.getValue(FACING).equals(currentFacing);
                         var sameShape = stateAbove.getValue(SHAPE).equals(RoofShape.STRAIGHT);
                         var steepVariant = stateAbove.getValue(VARIANT).equals(RoofVariant.STEEP);
                         if (bottomHalf && sameFacing && sameShape && steepVariant) {
-                            return state.setValue(HALF, Half.TOP).setValue(VARIANT, RoofVariant.STEEP);
+                            return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP);
                         }
                     }
-                    return state.setValue(HALF, Half.BOTTOM).setValue(VARIANT, RoofVariant.NORMAL);
+                    return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
                 } else {
                     var stateForward = level.getBlockState(pos.relative(currentFacing));
                     if (isRoof(stateForward)) {
@@ -298,7 +297,7 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                         var sameLeft = forwardLeftRight.getLeft().equals(currentLeftRight.getLeft());
                         var sameRight = forwardLeftRight.getRight().equals(currentLeftRight.getRight());
                         if ((sameLeft || sameRight) && !forwardVariant.equals(RoofVariant.STEEP)) {
-                            return state.setValue(HALF, Half.BOTTOM).setValue(VARIANT, RoofVariant.SLOW);
+                            return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW);
                         }
                     }
                     var stateBelow = level.getBlockState(pos.below());
@@ -307,10 +306,10 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                         var sameFacing = stateBelow.getValue(FACING).equals(currentFacing);
                         var sameShape = stateBelow.getValue(SHAPE).equals(RoofShape.STRAIGHT);
                         if (sameFacing && sameShape && !belowVariant.equals(RoofVariant.SLOW)) {
-                            return state.setValue(HALF, Half.BOTTOM).setValue(VARIANT, RoofVariant.STEEP);
+                            return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP);
                         }
                     }
-                    return state.setValue(HALF, Half.BOTTOM).setValue(VARIANT, RoofVariant.NORMAL);
+                    return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
                 }
             }
             case INNER, OUTER -> {
@@ -326,7 +325,7 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                         return state.setValue(HALF, leftHalf).setValue(VARIANT, rightVariant);
                     }
                 }
-                return state.setValue(HALF, Half.BOTTOM).setValue(VARIANT, RoofVariant.NORMAL);
+                return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
             }
         }
         return state;
@@ -360,6 +359,22 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
 
     private static boolean isRoof(BlockState state) {
         return state.getBlock() instanceof IsotropicRoofBlock;
+    }
+
+    @MethodsReturnNonnullByDefault
+    @ParametersAreNonnullByDefault
+    public enum RoofHalf implements StringRepresentable {
+        BASE, TIP;
+
+        @Override
+        public String getSerializedName() {
+            return this.name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public String toString() {
+            return this.name().toLowerCase(Locale.ROOT);
+        }
     }
 
     @MethodsReturnNonnullByDefault
