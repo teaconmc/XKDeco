@@ -19,6 +19,7 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.IsotropicRoofBlock;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -74,9 +75,32 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                     this.stairsBlock(stairBlock, model(id, path, ""), model(id, path, "_inner"), model(id, path, "_outer"));
                 } else if (block instanceof RotatedPillarBlock rotatedPillarBlock) {
                     this.axisBlock(rotatedPillarBlock, model(id, path, ""), model(getHorizontalPillarBlockId(id), path, ""));
+                } else if (block instanceof IsotropicRoofBlock roof) {
+                    this.getVariantBuilder(roof).forAllStatesExcept(state -> {
+                        var prefix = switch (state.getValue(IsotropicRoofBlock.VARIANT)) {
+                            case NORMAL -> id.replace(XKDecoObjects.ROOF_SUFFIX, "_roof");
+                            case SLOW -> id.replace(XKDecoObjects.ROOF_SUFFIX, "_slow_roof");
+                            case STEEP -> id.replace(XKDecoObjects.ROOF_SUFFIX, "_steep_roof");
+                        };
+                        var shapeSuffix = switch (state.getValue(IsotropicRoofBlock.SHAPE)) {
+                            case STRAIGHT -> "";
+                            case INNER -> "_inner";
+                            case OUTER -> "_outer";
+                        };
+                        var halfSuffix = switch (state.getValue(IsotropicRoofBlock.HALF)) {
+                            case BOTTOM -> "";
+                            case TOP -> "_top";
+                        };
+                        var model = model(prefix, path, shapeSuffix + halfSuffix);
+                        var facing2d = state.getValue(IsotropicRoofBlock.FACING).get2DDataValue();
+                        return ConfiguredModel.builder().modelFile(model).rotationY((1 + facing2d) % 4 * 90).build();
+                    }, IsotropicRoofBlock.WATERLOGGED);
                 } else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-                    if (randomized) this.randomizedHorizontalBlock(block, collectRandomizedModels(id, path));
-                    else this.horizontalBlock(block, model(id, path, ""));
+                    if (randomized) {
+                        this.randomizedHorizontalBlock(block, collectRandomizedModels(id, path));
+                    } else {
+                        this.horizontalBlock(block, model(id, path, ""));
+                    }
                 } else {
                     if (randomized) {
                         this.simpleBlock(block, collectRandomizedModels(id, path).map(ConfiguredModel::new).toArray(ConfiguredModel[]::new));

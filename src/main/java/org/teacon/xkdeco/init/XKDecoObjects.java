@@ -85,6 +85,7 @@ public final class XKDecoObjects {
     private static final BlockBehaviour.Properties BLOCK_DESSERT = BlockBehaviour.Properties.of(Material.CAKE).strength(0.5f, 0.5f);
     private static final BlockBehaviour.Properties BLOCK_CARPET = BlockBehaviour.Properties.of(Material.WOOL).strength(0.5f, 0.5f).noOcclusion();
     private static final BlockBehaviour.Properties BLOCK_BOARD = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f).noOcclusion();
+    private static final BlockBehaviour.Properties BLOCK_ROOF = BlockBehaviour.Properties.of(Material.STONE).strength(1.8f, 12f).noOcclusion();
     private static final BlockBehaviour.Properties BLOCK_STONE_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
     private static final BlockBehaviour.Properties BLOCK_METAL_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
 
@@ -131,6 +132,7 @@ public final class XKDecoObjects {
     public static final String WOOD_SUFFIX = "_wood";
     public static final String SLAB_SUFFIX = "_slab";
     public static final String PATH_SUFFIX = "_path";
+    public static final String ROOF_SUFFIX = "_roof";
     public static final String STOOL_SUFFIX = "_stool";
     public static final String CHAIR_SUFFIX = "_chair";
     public static final String TABLE_SUFFIX = "_table";
@@ -194,6 +196,9 @@ public final class XKDecoObjects {
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(HOLLOW_PREFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new IsotropicRoofBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isGlass));
@@ -670,6 +675,8 @@ public final class XKDecoObjects {
         addIsotropic("toughened_glass", BLOCK_LIGHT, ITEM_BASIC);
         addIsotropic("toughened_glass_slab", BLOCK_LIGHT, ITEM_BASIC);
         addIsotropic("toughened_glass_stairs", BLOCK_LIGHT, ITEM_BASIC);
+
+        addIsotropic("black_roof", BLOCK_ROOF, ITEM_STRUCTURE);
 
         addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
         addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);

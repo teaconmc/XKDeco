@@ -7,7 +7,7 @@ public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotr
     }
 
     // isotropic blocks which are directionless or uv locked (stairs, slabs, or pillars)
-    sealed interface Isotropic extends XKDecoBlock permits IsotropicCubeBlock, IsotropicHollowBlock, IsotropicPillarBlock, IsotropicSlabBlock, IsotropicStairBlock {
+    sealed interface Isotropic extends XKDecoBlock permits IsotropicCubeBlock, IsotropicHollowBlock, IsotropicPillarBlock, IsotropicRoofBlock, IsotropicSlabBlock, IsotropicStairBlock {
         // nothing here
     }
 
