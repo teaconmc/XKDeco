@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/functional/gorgeous_item_display"
+      "model": "xkdeco:block/functional/item_projector"
     }
   }
 }
