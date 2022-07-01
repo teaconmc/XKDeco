@@ -1,0 +1,7 @@
+{
+	"parent": "xkdeco:block/functional/template/wardrobe_left_bottom",
+	"textures": {
+		"body": "xkdeco:block/functional/varnished_wardrobe",
+		"door": "xkdeco:block/functional/varnished_wardrobe_door"
+	}
+}

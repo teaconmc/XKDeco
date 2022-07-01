@@ -1,0 +1,7 @@
+{
+	"parent": "xkdeco:block/functional/template/double_wardrobe_right_top_open",
+	"textures": {
+		"body": "xkdeco:block/functional/iron_wardrobe",
+		"door": "xkdeco:block/functional/iron_wardrobe_door"
+	}
+}
