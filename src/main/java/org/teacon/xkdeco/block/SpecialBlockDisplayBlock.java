@@ -4,14 +4,18 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -26,7 +30,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
+import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.util.MathUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -46,6 +52,50 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
     private static final VoxelShape SHAPE = Shapes.or(TOP, NECK, BOTTOM);
     public SpecialBlockDisplayBlock(Properties properties) {
         super(properties);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (!pState.is(pNewState.getBlock())) {
+            this.dropContent(pLevel, pPos);
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        }
+    }
+
+    /**
+     * Borrowed from JukeboxBlock#dropRecording
+     */
+    private void dropContent(Level pLevel, BlockPos pPos) {
+        if (!pLevel.isClientSide) {
+            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
+            if (blockentity instanceof BlockDisplayBlockEntity blockDisplayBlockEntity) {
+                ItemStack itemstack = blockDisplayBlockEntity.getItem();
+                if (!itemstack.isEmpty()) {
+                    pLevel.levelEvent(1010, pPos, 0);
+                    blockDisplayBlockEntity.clearContent();
+                    ItemEntity itementity = new ItemEntity(pLevel,
+                            pPos.getX() + pLevel.random.nextFloat() * 0.7F + 0.15F,
+                            pPos.getY() + pLevel.random.nextFloat() * 0.7F + 0.060000002F + 0.6D,
+                            pPos.getZ() + pLevel.random.nextFloat() * 0.7F + 0.15F,
+                            itemstack.copy());
+                    itementity.setDefaultPickUpDelay();
+                    pLevel.addFreshEntity(itementity);
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle special conditions when block is placed with NBT
+     */
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        CompoundTag compoundtag = BlockItem.getBlockEntityData(pStack);
+        if (compoundtag != null && compoundtag.contains(BlockDisplayBlockEntity.ITEMSTACK_NBT_KEY)) {
+            pLevel.setBlock(pPos, pState, 2);
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -112,7 +162,7 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
 
     // borrowed from DebugStickItem#getRelative
     private static <T> T getRelative(Iterable<T> pAllowedValues, @javax.annotation.Nullable T pCurrentValue, boolean pBackwards) {
-        return (T)(pBackwards ? Util.findPreviousInIterable(pAllowedValues, pCurrentValue) : Util.findNextInIterable(pAllowedValues, pCurrentValue));
+        return pBackwards ? Util.findPreviousInIterable(pAllowedValues, pCurrentValue) : Util.findNextInIterable(pAllowedValues, pCurrentValue);
     }
 
     // borrowed from DebugStickItem#message

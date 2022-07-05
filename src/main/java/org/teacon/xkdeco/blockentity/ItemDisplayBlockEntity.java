@@ -12,6 +12,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -31,10 +32,10 @@ import static org.teacon.xkdeco.init.XKDecoObjects.ITEM_DISPLAY_BLOCK_ENTITY;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class ItemDisplayBlockEntity extends BlockEntity {
+public final class ItemDisplayBlockEntity extends BlockEntity implements Clearable {
     public static final RegistryObject<BlockEntityType<ItemDisplayBlockEntity>> TYPE =
             RegistryObject.of(new ResourceLocation(XKDeco.ID, ITEM_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
-    private static final String ITEMSTACK_NBT_KEY = "Display";
+    public static final String ITEMSTACK_NBT_KEY = "Display";
     private static final String SPIN_NBT_KEY = "Spin";
 
     private final boolean isProjector;
@@ -109,6 +110,11 @@ public final class ItemDisplayBlockEntity extends BlockEntity {
     public void load(@NotNull CompoundTag pTag) {
         super.load(pTag);
         readNbt(pTag);
+    }
+
+    @Override
+    public void clearContent() {
+        this.setItem(ItemStack.EMPTY);
     }
 
     @Override
