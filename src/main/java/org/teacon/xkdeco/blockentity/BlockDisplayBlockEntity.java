@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -36,10 +37,10 @@ import static org.teacon.xkdeco.init.XKDecoObjects.BLOCK_DISPLAY_BLOCK_ENTITY;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BlockDisplayBlockEntity extends BlockEntity {
+public final class BlockDisplayBlockEntity extends BlockEntity implements Clearable {
     public static final RegistryObject<BlockEntityType<BlockDisplayBlockEntity>> TYPE =
             RegistryObject.of(new ResourceLocation(XKDeco.ID, BLOCK_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
-    private static final String ITEMSTACK_NBT_KEY = "Display";
+    public static final String ITEMSTACK_NBT_KEY = "Display";
     private static final String BLOCKSTATE_NBT_KEY = "State";
     private static final String SELECTED_PROPERTY_NBT_KEY = "Selected";
     private static final BlockState EMPTY = Blocks.AIR.defaultBlockState();
@@ -136,6 +137,11 @@ public final class BlockDisplayBlockEntity extends BlockEntity {
                     .stream().filter(p -> p.getName().equals(propertyName)).findFirst()
                     .orElse(blockState.getProperties().stream().findFirst().orElse(null));
         }
+    }
+
+    @Override
+    public void clearContent() {
+        this.setItem(ItemStack.EMPTY);
     }
 
     @Override

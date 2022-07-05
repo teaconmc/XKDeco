@@ -3,9 +3,14 @@ package org.teacon.xkdeco.block;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -15,6 +20,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,6 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.util.MathUtil;
 
@@ -47,6 +54,50 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
     public SpecialItemDisplayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (!pState.is(pNewState.getBlock())) {
+            this.dropContent(pLevel, pPos);
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        }
+    }
+
+    /**
+     * Borrowed from JukeboxBlock#dropRecording
+     */
+    private void dropContent(Level pLevel, BlockPos pPos) {
+        if (!pLevel.isClientSide) {
+            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
+            if (blockentity instanceof ItemDisplayBlockEntity itemDisplayBlockEntity) {
+                ItemStack itemstack = itemDisplayBlockEntity.getItem();
+                if (!itemstack.isEmpty()) {
+                    pLevel.levelEvent(1010, pPos, 0);
+                    itemDisplayBlockEntity.clearContent();
+                    ItemEntity itementity = new ItemEntity(pLevel,
+                            pPos.getX() + pLevel.random.nextFloat() * 0.7F + 0.15F,
+                            pPos.getY() + pLevel.random.nextFloat() * 0.7F + 0.060000002F + 0.6D,
+                            pPos.getZ() + pLevel.random.nextFloat() * 0.7F + 0.15F,
+                            itemstack.copy());
+                    itementity.setDefaultPickUpDelay();
+                    pLevel.addFreshEntity(itementity);
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle special conditions when block is placed with NBT
+     */
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        CompoundTag compoundtag = BlockItem.getBlockEntityData(pStack);
+        if (compoundtag != null && compoundtag.contains(ItemDisplayBlockEntity.ITEMSTACK_NBT_KEY)) {
+            pLevel.setBlock(pPos, pState.setValue(POWERED, Boolean.FALSE), 2);
+        }
     }
 
     @SuppressWarnings("deprecation")

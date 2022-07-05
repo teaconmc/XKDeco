@@ -54,7 +54,7 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
         var amount = this.getRenderAmount(itemstack);
         @SuppressWarnings("deprecation")
         var modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
-        pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale * (pBlockEntity.isProjector() ? 16 : 1), 0.5);
+        pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale * (pBlockEntity.isProjector() ? 24 : 1), 0.5);
         pPoseStack.mulPose(Vector3f.YP.rotation(spin));
 
         if (pBlockEntity.isProjector()) {
