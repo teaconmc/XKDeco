@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.init;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.DSL;
@@ -40,7 +39,6 @@ import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -97,20 +95,6 @@ public final class XKDecoObjects {
 
     public static final String CUSHION_ENTITY = "cushion";
 
-    public static final Map<String, BlockBehaviour.Properties> ITEM_DISPLAY_MAP = ImmutableMap.of(
-            "plain_item_display", BLOCK_STONE_DISPLAY,
-            "gorgeous_item_display", BLOCK_STONE_DISPLAY,
-            "mechanical_item_display", BLOCK_METAL_DISPLAY,
-            "tech_item_display", BLOCK_METAL_DISPLAY,
-            "item_projector", BLOCK_METAL_DISPLAY
-    );
-    public static final Map<String, BlockBehaviour.Properties> BLOCK_DISPLAY_MAP = ImmutableMap.of(
-            "plain_block_display", BLOCK_STONE_DISPLAY,
-            "gorgeous_block_display", BLOCK_STONE_DISPLAY,
-            "mechanical_block_display", BLOCK_METAL_DISPLAY,
-            "tech_block_display", BLOCK_METAL_DISPLAY
-    );
-
     public static final String WALL_BLOCK_ENTITY = "special_wall";
     public static final String ITEM_DISPLAY_BLOCK_ENTITY = "item_display";
     public static final String BLOCK_DISPLAY_BLOCK_ENTITY = "block_display";
@@ -144,10 +128,13 @@ public final class XKDecoObjects {
     public static final String BIG_TABLE_SUFFIX = "_big_table";
     public static final String TALL_TABLE_SUFFIX = "_tall_table";
     public static final String LEAVES_DARK_SUFFIX = "_leaves_dark";
+    public static final String ITEM_DISPLAY_SUFFIX = "_item_display";
+    public static final String BLOCK_DISPLAY_SUFFIX = "_block_display";
 
     public static final String CUP_SPECIAL = "cup";
     public static final String REFRESHMENT_SPECIAL = "refreshments";
     public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
+    public static final String ITEM_PROJECTOR_SPECIAL = "item_projector";
 
     private static void addCushionEntity() {
         ENTITIES.register(CUSHION_ENTITY, () -> EntityType.Builder
@@ -228,10 +215,10 @@ public final class XKDecoObjects {
         } else if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
             var block = BLOCKS.register(id, () -> new SpecialDessertBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (ITEM_DISPLAY_MAP.containsKey(id)) {
+        } else if (id.contains(ITEM_DISPLAY_SUFFIX) || id.equals(ITEM_PROJECTOR_SPECIAL)) {
             var block = BLOCKS.register(id, () -> new SpecialItemDisplayBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (BLOCK_DISPLAY_MAP.containsKey(id)) {
+        } else if (id.contains(BLOCK_DISPLAY_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new SpecialBlockDisplayBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
@@ -240,17 +227,15 @@ public final class XKDecoObjects {
     }
 
     private static void addDisplayBlockEntity() {
-        BLOCK_ENTITY.register(ITEM_DISPLAY_BLOCK_ENTITY,
-                () -> BlockEntityType.Builder.of(ItemDisplayBlockEntity::new,
-                        ITEM_DISPLAY_MAP.keySet()
-                                .stream()
-                                .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
+        BLOCK_ENTITY.register(ITEM_DISPLAY_BLOCK_ENTITY, () ->
+                BlockEntityType.Builder.of(ItemDisplayBlockEntity::new,
+                        BLOCKS.getEntries().stream().map(RegistryObject::get)
+                                .filter(b -> b instanceof SpecialItemDisplayBlock)
                                 .toArray(Block[]::new)).build(DSL.remainderType()));
-        BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY,
-                () -> BlockEntityType.Builder.of(BlockDisplayBlockEntity::new,
-                        BLOCK_DISPLAY_MAP.keySet()
-                                .stream()
-                                .map(id -> RegistryObject.of(new ResourceLocation(XKDeco.ID, id), ForgeRegistries.BLOCKS).get())
+        BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY, () ->
+                BlockEntityType.Builder.of(BlockDisplayBlockEntity::new,
+                        BLOCKS.getEntries().stream().map(RegistryObject::get)
+                                .filter(b -> b instanceof SpecialBlockDisplayBlock)
                                 .toArray(Block[]::new)).build(DSL.remainderType()));
     }
 
@@ -785,8 +770,17 @@ public final class XKDecoObjects {
         addBasic("weiqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
         addBasic("xiangqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE);
 
-        ITEM_DISPLAY_MAP.forEach((id, property) -> addSpecial(id, property, ITEM_FUNCTIONAL));
-        BLOCK_DISPLAY_MAP.forEach((id, property) -> addSpecial(id, property, ITEM_FUNCTIONAL));
+        addSpecial("plain_item_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("gorgeous_item_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("mechanical_item_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("tech_item_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("item_projector", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL);
+
+        addSpecial("plain_block_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("gorgeous_block_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("mechanical_block_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL);
+        addSpecial("tech_block_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL);
+
         addDisplayBlockEntity();
     }
 }
