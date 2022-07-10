@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.teacon.xkdeco.init.XKDecoObjects.*;
+import static org.teacon.xkdeco.item.XKDecoCreativeModTab.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
