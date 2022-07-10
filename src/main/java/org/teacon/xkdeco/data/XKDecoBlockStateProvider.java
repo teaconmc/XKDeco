@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.IsotropicRoofBlock;
+import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -46,7 +47,11 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
             "cup", "fruit_platter", "maya_single_screw_thread_stone",
             "refreshments", "screw_thread_bronze_block"
     );
-    private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of("cup", "item_projector", "refreshments");
+    private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of(
+            "cup", "item_projector", "refreshments",
+            "varnished_wardrobe", "ebony_wardrobe", "mahogany_wardrobe",
+            "iron_wardrobe", "glass_wardrobe", "full_glass_wardrobe"
+    );
 
     private XKDecoBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, XKDeco.ID, existingFileHelper);
@@ -95,11 +100,30 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                         var facing2d = state.getValue(IsotropicRoofBlock.FACING).get2DDataValue();
                         return ConfiguredModel.builder().modelFile(model).rotationY((1 + facing2d) % 4 * 90).build();
                     }, IsotropicRoofBlock.WATERLOGGED);
+                } else if (block instanceof SpecialWardrobeBlock) {
+                    this.getVariantBuilder(block).forAllStates(state -> {
+                        var modelName = new StringBuilder(id);
+                        if (state.getValue(SpecialWardrobeBlock.DOUBLE)) {
+                            modelName.insert(modelName.indexOf(XKDecoObjects.WARDROBE_SUFFIX), "_double" );
+                        }
+                        modelName.append("_").append(state.getValue(SpecialWardrobeBlock.HINGE).getSerializedName());
+                        modelName.append(switch (state.getValue(SpecialWardrobeBlock.HALF)){
+                            case UPPER -> "_top";
+                            case LOWER -> "_bottom";
+                        });
+                        if (state.getValue(SpecialWardrobeBlock.OPEN)) {
+                            modelName.append("_open");
+                        }
+
+                        var model = model(modelName.toString(), path, "");
+                        var facing2d = state.getValue(SpecialWardrobeBlock.FACING).get2DDataValue();
+                        return ConfiguredModel.builder().modelFile(model).rotationY(facing2d % 4 * 90 + 180).build();
+                    });
                 } else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
                     if (randomized) {
                         this.randomizedHorizontalBlock(block, collectRandomizedModels(id, path));
                     } else {
-                        this.horizontalBlock(block, model(id, path, ""));
+                        this.horizontalBlock(block, model(id, path, "" ));
                     }
                 } else {
                     if (randomized) {

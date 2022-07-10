@@ -36,12 +36,12 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 
     // most of them have not been added into game yet
     private static final Collection<String> EXTRA_KEYS = List.of(
-            "block.xkdeco.varnished_wardrobe",
-            "block.xkdeco.ebony_wardrobe",
-            "block.xkdeco.mahogany_wardrobe",
-            "block.xkdeco.iron_wardrobe",
-            "block.xkdeco.glass_wardrobe",
-            "block.xkdeco.full_glass_wardrobe",
+//            "block.xkdeco.varnished_wardrobe",
+//            "block.xkdeco.ebony_wardrobe",
+//            "block.xkdeco.mahogany_wardrobe",
+//            "block.xkdeco.iron_wardrobe",
+//            "block.xkdeco.glass_wardrobe",
+//            "block.xkdeco.full_glass_wardrobe",
             "block.xkdeco.gilded_blackstone_pillar",
             "block.xkdeco.blue_roof",
             "block.xkdeco.blue_roof_ridge",

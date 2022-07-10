@@ -29,6 +29,7 @@ import org.teacon.xkdeco.block.*;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
+import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.SpecialWallItem;
 
@@ -54,6 +55,7 @@ public final class XKDecoObjects {
     public static final String WALL_BLOCK_ENTITY = "special_wall";
     public static final String ITEM_DISPLAY_BLOCK_ENTITY = "item_display";
     public static final String BLOCK_DISPLAY_BLOCK_ENTITY = "block_display";
+    public static final String WARDROBE_BLOCK_ENTITY = "wardrobe";
 
     public static final String GRASS_PREFIX = "grass_";
     public static final String GLASS_PREFIX = "glass_";
@@ -86,6 +88,7 @@ public final class XKDecoObjects {
     public static final String LEAVES_DARK_SUFFIX = "_leaves_dark";
     public static final String ITEM_DISPLAY_SUFFIX = "_item_display";
     public static final String BLOCK_DISPLAY_SUFFIX = "_block_display";
+    public static final String WARDROBE_SUFFIX = "_wardrobe";
 
     public static final String CUP_SPECIAL = "cup";
     public static final String REFRESHMENT_SPECIAL = "refreshments";
@@ -177,6 +180,9 @@ public final class XKDecoObjects {
         } else if (id.contains(BLOCK_DISPLAY_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new SpecialBlockDisplayBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(WARDROBE_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new SpecialWardrobeBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
         }
@@ -192,6 +198,14 @@ public final class XKDecoObjects {
                 BlockEntityType.Builder.of(BlockDisplayBlockEntity::new,
                         BLOCKS.getEntries().stream().map(RegistryObject::get)
                                 .filter(b -> b instanceof SpecialBlockDisplayBlock)
+                                .toArray(Block[]::new)).build(DSL.remainderType()));
+    }
+
+    private static void addWardrobeBlockEntity() {
+        BLOCK_ENTITY.register(WARDROBE_BLOCK_ENTITY,
+                () -> BlockEntityType.Builder.of(WardrobeBlockEntity::new,
+                        BLOCKS.getEntries().stream().map(RegistryObject::get)
+                                .filter(b -> b instanceof SpecialWardrobeBlock)
                                 .toArray(Block[]::new)).build(DSL.remainderType()));
     }
 
@@ -738,5 +752,14 @@ public final class XKDecoObjects {
         addSpecial("tech_block_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL);
 
         addDisplayBlockEntity();
+
+        addSpecial("varnished_wardrobe", BLOCK_WOOD_WARDROBE, ITEM_FUNCTIONAL);
+        addSpecial("ebony_wardrobe", BLOCK_WOOD_WARDROBE, ITEM_FUNCTIONAL);
+        addSpecial("mahogany_wardrobe", BLOCK_WOOD_WARDROBE, ITEM_FUNCTIONAL);
+        addSpecial("iron_wardrobe", BLOCK_METAL_WARDROBE, ITEM_FUNCTIONAL);
+        addSpecial("glass_wardrobe", BLOCK_METAL_WARDROBE, ITEM_FUNCTIONAL);
+        addSpecial("full_glass_wardrobe", BLOCK_GLASS_WARDROBE, ITEM_FUNCTIONAL);
+
+        addWardrobeBlockEntity();
     }
 }
