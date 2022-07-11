@@ -42,4 +42,7 @@ public final class XKDecoProperties {
     public static final BlockBehaviour.Properties BLOCK_ROOF = BlockBehaviour.Properties.of(Material.STONE).strength(1.8f, 12f).noOcclusion();
     public static final BlockBehaviour.Properties BLOCK_STONE_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
     public static final BlockBehaviour.Properties BLOCK_METAL_DISPLAY = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).isRedstoneConductor((a, b, c) -> false);
+    public static final BlockBehaviour.Properties BLOCK_WOOD_WARDROBE = BlockBehaviour.Properties.of(Material.WOOD).strength(1.5f, 6f).noOcclusion();
+    public static final BlockBehaviour.Properties BLOCK_METAL_WARDROBE = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).noOcclusion();
+    public static final BlockBehaviour.Properties BLOCK_GLASS_WARDROBE = BlockBehaviour.Properties.of(Material.GLASS).strength(1.5f, 6f).noOcclusion();
 }
