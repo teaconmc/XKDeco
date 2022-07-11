@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.block;
 
+import com.google.common.collect.Sets;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,6 +27,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -259,80 +261,118 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
     }
 
     private BlockState updateHalfVariant(BlockState state, LevelAccessor level, BlockPos pos, boolean isPassive) {
-        var currentFacing = state.getValue(FACING);
-        var currentShape = state.getValue(SHAPE);
-        switch (currentShape) {
-            case STRAIGHT -> {
-                var isCurrentNormal = state.getValue(VARIANT).equals(RoofVariant.NORMAL);
-                if (isCurrentNormal ? isPassive : state.getValue(HALF).equals(RoofHalf.BASE)) {
-                    var stateBackward = level.getBlockState(pos.relative(currentFacing.getOpposite()));
-                    if (isRoof(stateBackward)) {
-                        var backwardShape = stateBackward.getValue(SHAPE);
-                        var backwardFacing = stateBackward.getValue(FACING);
-                        var backwardVariant = stateBackward.getValue(VARIANT);
-                        var tipHalf = stateBackward.getValue(HALF).equals(RoofHalf.TIP);
-                        var currentLeftRight = getConnectionLeftRight(currentFacing, currentShape);
-                        var backwardLeftRight = getConnectionLeftRight(backwardFacing, backwardShape);
-                        var sameLeft = backwardLeftRight.getLeft().equals(currentLeftRight.getLeft());
-                        var sameRight = backwardLeftRight.getRight().equals(currentLeftRight.getRight());
-                        if (tipHalf && (sameLeft || sameRight) && backwardVariant.equals(RoofVariant.SLOW)) {
-                            return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW);
-                        }
-                    }
-                    var stateAbove = level.getBlockState(pos.above());
-                    if (isRoof(stateAbove)) {
-                        var aboveVariant = stateAbove.getValue(VARIANT);
-                        var tipHalf = stateAbove.getValue(HALF).equals(RoofHalf.TIP);
-                        var sameFacing = stateAbove.getValue(FACING).equals(currentFacing);
-                        var sameShape = stateAbove.getValue(SHAPE).equals(RoofShape.STRAIGHT);
-                        if (tipHalf && sameFacing && sameShape && aboveVariant.equals(RoofVariant.STEEP)) {
-                            return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP);
-                        }
-                    }
-                    return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
-                } else {
-                    var stateForward = level.getBlockState(pos.relative(currentFacing));
-                    if (isRoof(stateForward)) {
-                        var forwardShape = stateForward.getValue(SHAPE);
-                        var forwardFacing = stateForward.getValue(FACING);
-                        var forwardVariant = stateForward.getValue(VARIANT);
-                        var currentLeftRight = getConnectionLeftRight(currentFacing, currentShape);
-                        var forwardLeftRight = getConnectionLeftRight(forwardFacing, forwardShape);
-                        var sameLeft = forwardLeftRight.getLeft().equals(currentLeftRight.getLeft());
-                        var sameRight = forwardLeftRight.getRight().equals(currentLeftRight.getRight());
-                        if ((sameLeft || sameRight) && !forwardVariant.equals(RoofVariant.STEEP)) {
-                            return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW);
-                        }
-                    }
-                    var stateBelow = level.getBlockState(pos.below());
-                    if (isRoof(stateBelow)) {
-                        var belowVariant = stateBelow.getValue(VARIANT);
-                        var sameFacing = stateBelow.getValue(FACING).equals(currentFacing);
-                        var sameShape = stateBelow.getValue(SHAPE).equals(RoofShape.STRAIGHT);
-                        if (sameFacing && sameShape && !belowVariant.equals(RoofVariant.SLOW)) {
-                            return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP);
-                        }
-                    }
-                    return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
-                }
+        var isNotStraight = !state.getValue(SHAPE).equals(RoofShape.STRAIGHT);
+        if (isNotStraight) {
+            if (this.isSideMatched(state, level, pos, RoofHalf.BASE, RoofVariant.SLOW)) {
+                return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW);
             }
-            case INNER, OUTER -> {
-                var currentLeftRight = getConnectionLeftRight(currentFacing, currentShape);
-                var stateLeft = level.getBlockState(pos.relative(currentLeftRight.getLeft()));
-                var stateRight = level.getBlockState(pos.relative(currentLeftRight.getRight()));
-                if (isConnected(stateLeft, state) && isConnected(state, stateRight)) {
-                    var leftHalf = stateLeft.getValue(HALF);
-                    var rightHalf = stateRight.getValue(HALF);
-                    var leftVariant = stateLeft.getValue(VARIANT);
-                    var rightVariant = stateRight.getValue(VARIANT);
-                    if (leftHalf.equals(rightHalf) && leftVariant.equals(rightVariant)) {
-                        return state.setValue(HALF, leftHalf).setValue(VARIANT, rightVariant);
-                    }
-                }
-                return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
+            if (this.isSideMatched(state, level, pos, RoofHalf.BASE, RoofVariant.STEEP)) {
+                return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP);
+            }
+            if (this.isSideMatched(state, level, pos, RoofHalf.TIP, RoofVariant.SLOW)) {
+                return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW);
+            }
+            if (this.isSideMatched(state, level, pos, RoofHalf.TIP, RoofVariant.STEEP)) {
+                return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP);
             }
         }
-        return state;
+        var isCurrentNormal = state.getValue(VARIANT).equals(RoofVariant.NORMAL);
+        if (isCurrentNormal ? isPassive : state.getValue(HALF).equals(RoofHalf.BASE)) {
+            if (this.isBackwardSlowTip(state, level, pos)) {
+                return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW);
+            }
+            if (this.isAboveSteepTip(state, level, pos)) {
+                return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP);
+            }
+        } else {
+            if (this.isForwardSlowBase(state, level, pos)) {
+                return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW);
+            }
+            if (this.isBelowSteepBase(state, level, pos)) {
+                return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP);
+            }
+        }
+        return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.NORMAL);
+    }
+
+    private boolean isSideMatched(BlockState state, LevelAccessor level, BlockPos pos, RoofHalf half, RoofVariant var) {
+        var currentLeftRight = getConnectionLeftRight(state.getValue(FACING), state.getValue(SHAPE));
+        var stateLeft = level.getBlockState(pos.relative(currentLeftRight.getLeft()));
+        var stateRight = level.getBlockState(pos.relative(currentLeftRight.getRight()));
+        if (stateLeft.getValue(SHAPE).equals(RoofShape.STRAIGHT) && this.isConnected(stateLeft, state)) {
+            if (stateRight.getValue(SHAPE).equals(RoofShape.STRAIGHT) && this.isConnected(state, stateRight)) {
+                var sameVariant = stateLeft.getValue(VARIANT).equals(var) && stateRight.getValue(VARIANT).equals(var);
+                var sameHalf = stateLeft.getValue(HALF).equals(half) && stateRight.getValue(HALF).equals(half);
+                return sameVariant && sameHalf;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAboveSteepTip(BlockState state, LevelAccessor level, BlockPos pos) {
+        var stateAbove = level.getBlockState(pos.above());
+        if (isRoof(stateAbove)) {
+            var aboveVariant = stateAbove.getValue(VARIANT);
+            var tipHalf = stateAbove.getValue(HALF).equals(RoofHalf.TIP);
+            var sameShape = stateAbove.getValue(SHAPE).equals(RoofShape.STRAIGHT);
+            var sameFacing = stateAbove.getValue(FACING).equals(state.getValue(FACING));
+            return tipHalf && sameShape && sameFacing && aboveVariant.equals(RoofVariant.STEEP);
+        }
+        return false;
+    }
+
+    private boolean isBelowSteepBase(BlockState state, LevelAccessor level, BlockPos pos) {
+        var stateBelow = level.getBlockState(pos.below());
+        if (isRoof(stateBelow)) {
+            var belowVariant = stateBelow.getValue(VARIANT);
+            var sameShape = stateBelow.getValue(SHAPE).equals(RoofShape.STRAIGHT);
+            var sameFacing = stateBelow.getValue(FACING).equals(state.getValue(FACING));
+            return sameShape && sameFacing && !belowVariant.equals(RoofVariant.SLOW);
+        }
+        return false;
+    }
+
+    private boolean isBackwardSlowTip(BlockState state, LevelAccessor level, BlockPos pos) {
+        var currentLeftRight = getConnectionLeftRight(state.getValue(FACING), state.getValue(SHAPE));
+        var leftBackward = currentLeftRight.getLeft().getCounterClockWise();
+        var rightBackward = currentLeftRight.getRight().getClockWise();
+        for (var facing : Set.of(leftBackward, rightBackward)) {
+            var stateBackward = level.getBlockState(pos.relative(facing));
+            if (isRoof(stateBackward)) {
+                var backwardShape = stateBackward.getValue(SHAPE);
+                var backwardFacing = stateBackward.getValue(FACING);
+                var backwardVariant = stateBackward.getValue(VARIANT);
+                var tipHalf = stateBackward.getValue(HALF).equals(RoofHalf.TIP);
+                var backwardLeftRight = getConnectionLeftRight(backwardFacing, backwardShape);
+                var sameLeft = backwardLeftRight.getLeft().equals(currentLeftRight.getLeft());
+                var sameRight = backwardLeftRight.getRight().equals(currentLeftRight.getRight());
+                if (tipHalf && (sameLeft || sameRight) && backwardVariant.equals(RoofVariant.SLOW)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isForwardSlowBase(BlockState state, LevelAccessor level, BlockPos pos) {
+        var currentLeftRight = getConnectionLeftRight(state.getValue(FACING), state.getValue(SHAPE));
+        var rightForward = currentLeftRight.getRight().getCounterClockWise();
+        var leftForward = currentLeftRight.getLeft().getClockWise();
+        for (var facing : Sets.newHashSet(rightForward, leftForward)) {
+            var stateForward = level.getBlockState(pos.relative(facing));
+            if (isRoof(stateForward)) {
+                var forwardShape = stateForward.getValue(SHAPE);
+                var forwardFacing = stateForward.getValue(FACING);
+                var forwardVariant = stateForward.getValue(VARIANT);
+                var forwardLeftRight = getConnectionLeftRight(forwardFacing, forwardShape);
+                var sameLeft = forwardLeftRight.getLeft().equals(currentLeftRight.getLeft());
+                var sameRight = forwardLeftRight.getRight().equals(currentLeftRight.getRight());
+                if ((sameLeft || sameRight) && !forwardVariant.equals(RoofVariant.STEEP)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static Pair<Direction, RoofShape> setConnectionLeftRight(Direction left, Direction right) {
