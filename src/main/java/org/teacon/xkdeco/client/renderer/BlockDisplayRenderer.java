@@ -20,7 +20,7 @@ import java.util.Objects;
 @ParametersAreNonnullByDefault
 public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity> {
     private final BlockRenderDispatcher blockRenderer;
-    private final float BLOCK_SCALE = 0.99f;
+    private static final float BLOCK_SCALE = 0.99f;
 
     public BlockDisplayRenderer(BlockEntityRendererProvider.Context context) {
         blockRenderer = Minecraft.getInstance().getBlockRenderer();
