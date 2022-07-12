@@ -265,13 +265,13 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             if (this.isSideMatched(state, level, pos, RoofHalf.BASE, RoofVariant.SLOW)) {
                 return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW);
             }
-            if (this.isSideMatched(state, level, pos, RoofHalf.BASE, RoofVariant.STEEP)) {
-                return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP);
-            }
             if (this.isSideMatched(state, level, pos, RoofHalf.TIP, RoofVariant.SLOW)) {
                 return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW);
             }
-            if (this.isSideMatched(state, level, pos, RoofHalf.TIP, RoofVariant.STEEP)) {
+            if (this.isAboveSteepTip(state, level, pos)) {
+                return state.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP);
+            }
+            if (this.isBelowSteepBase(state, level, pos)) {
                 return state.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP);
             }
         }
@@ -311,11 +311,10 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
     private boolean isAboveSteepTip(BlockState state, LevelAccessor level, BlockPos pos) {
         var stateAbove = level.getBlockState(pos.above());
         if (isRoof(stateAbove)) {
-            var aboveVariant = stateAbove.getValue(VARIANT);
             var tipHalf = stateAbove.getValue(HALF).equals(RoofHalf.TIP);
-            var sameShape = stateAbove.getValue(SHAPE).equals(RoofShape.STRAIGHT);
+            var sameShape = stateAbove.getValue(SHAPE).equals(state.getValue(SHAPE));
             var sameFacing = stateAbove.getValue(FACING).equals(state.getValue(FACING));
-            return tipHalf && sameShape && sameFacing && aboveVariant.equals(RoofVariant.STEEP);
+            return tipHalf && sameShape && sameFacing && stateAbove.getValue(VARIANT).equals(RoofVariant.STEEP);
         }
         return false;
     }
@@ -323,10 +322,9 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
     private boolean isBelowSteepBase(BlockState state, LevelAccessor level, BlockPos pos) {
         var stateBelow = level.getBlockState(pos.below());
         if (isRoof(stateBelow)) {
-            var belowVariant = stateBelow.getValue(VARIANT);
-            var sameShape = stateBelow.getValue(SHAPE).equals(RoofShape.STRAIGHT);
+            var sameShape = stateBelow.getValue(SHAPE).equals(state.getValue(SHAPE));
             var sameFacing = stateBelow.getValue(FACING).equals(state.getValue(FACING));
-            return sameShape && sameFacing && !belowVariant.equals(RoofVariant.SLOW);
+            return sameShape && sameFacing && !stateBelow.getValue(VARIANT).equals(RoofVariant.SLOW);
         }
         return false;
     }
