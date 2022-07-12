@@ -298,8 +298,8 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
         var currentLeftRight = getConnectionLeftRight(state.getValue(FACING), state.getValue(SHAPE));
         var stateLeft = level.getBlockState(pos.relative(currentLeftRight.getLeft()));
         var stateRight = level.getBlockState(pos.relative(currentLeftRight.getRight()));
-        if (stateLeft.getValue(SHAPE).equals(RoofShape.STRAIGHT) && this.isConnected(stateLeft, state)) {
-            if (stateRight.getValue(SHAPE).equals(RoofShape.STRAIGHT) && this.isConnected(state, stateRight)) {
+        if (this.isConnected(stateLeft, state) && stateLeft.getValue(SHAPE).equals(RoofShape.STRAIGHT)) {
+            if (this.isConnected(state, stateRight) && stateRight.getValue(SHAPE).equals(RoofShape.STRAIGHT)) {
                 var sameVariant = stateLeft.getValue(VARIANT).equals(var) && stateRight.getValue(VARIANT).equals(var);
                 var sameHalf = stateLeft.getValue(HALF).equals(half) && stateRight.getValue(HALF).equals(half);
                 return sameVariant && sameHalf;
