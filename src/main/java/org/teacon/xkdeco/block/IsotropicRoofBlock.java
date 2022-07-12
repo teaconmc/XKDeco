@@ -27,7 +27,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -336,7 +335,7 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
         var currentLeftRight = getConnectionLeftRight(state.getValue(FACING), state.getValue(SHAPE));
         var leftBackward = currentLeftRight.getLeft().getCounterClockWise();
         var rightBackward = currentLeftRight.getRight().getClockWise();
-        for (var facing : Set.of(leftBackward, rightBackward)) {
+        for (var facing : Sets.newHashSet(leftBackward, rightBackward)) {
             var stateBackward = level.getBlockState(pos.relative(facing));
             if (isRoof(stateBackward)) {
                 var backwardShape = stateBackward.getValue(SHAPE);
