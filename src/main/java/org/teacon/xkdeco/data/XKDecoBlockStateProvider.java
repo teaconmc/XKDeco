@@ -104,10 +104,10 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                     this.getVariantBuilder(block).forAllStates(state -> {
                         var modelName = new StringBuilder(id);
                         if (state.getValue(SpecialWardrobeBlock.DOUBLE)) {
-                            modelName.insert(modelName.indexOf(XKDecoObjects.WARDROBE_SUFFIX), "_double" );
+                            modelName.insert(modelName.indexOf(XKDecoObjects.WARDROBE_SUFFIX), "_double");
                         }
                         modelName.append("_").append(state.getValue(SpecialWardrobeBlock.HINGE).getSerializedName());
-                        modelName.append(switch (state.getValue(SpecialWardrobeBlock.HALF)){
+                        modelName.append(switch (state.getValue(SpecialWardrobeBlock.HALF)) {
                             case UPPER -> "_top";
                             case LOWER -> "_bottom";
                         });
@@ -123,7 +123,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                     if (randomized) {
                         this.randomizedHorizontalBlock(block, collectRandomizedModels(id, path));
                     } else {
-                        this.horizontalBlock(block, model(id, path, "" ));
+                        this.horizontalBlock(block, model(id, path, ""));
                     }
                 } else {
                     if (randomized) {
@@ -161,12 +161,12 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
 
     private Stream<ModelFile> collectRandomizedModels(String id, String path) {
         Collection<ModelFile> models = new ArrayList<>();
-        var m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id).toString()), this.models().existingFileHelper);
+        var m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id).toString().replace('\\', '/')), this.models().existingFileHelper);
         if (m.exists()) {
             models.add(m);
         }
         for (var i = 1; ; i++) {
-            m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + i).toString()), this.models().existingFileHelper);
+            m = new ExistingModelFileProxy(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + i).toString().replace('\\', '/')), this.models().existingFileHelper);
             if (m.exists()) models.add(m);
             else break;
         }
@@ -187,7 +187,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         var searchTargets = Stream.of("_slab_full", "", "s", "_block", "_planks")
                 .map(s -> slabId.replace(XKDecoObjects.SLAB_SUFFIX, s))
                 .flatMap(s -> Stream.of( // search XKDeco models first
-                        new ResourceLocation(XKDeco.ID, Path.of("block/", path, s).toString()),
+                        new ResourceLocation(XKDeco.ID, Path.of("block/", path, s).toString().replace('\\', '/')),
                         new ResourceLocation("minecraft", "block/" + s)
                 ))
                 .toList();
@@ -201,7 +201,7 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
     }
 
     private ModelFile model(String id, String path, String suffix) {
-        return new ModelFile.UncheckedModelFile(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + suffix).toString()));
+        return new ModelFile.UncheckedModelFile(new ResourceLocation(XKDeco.ID, Path.of("block/", path, id + suffix).toString().replace('\\', '/')));
     }
 
     private static class ExistingModelFileProxy extends ModelFile.ExistingModelFile {
