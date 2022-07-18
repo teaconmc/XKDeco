@@ -45,4 +45,6 @@ public final class XKDecoProperties {
     public static final BlockBehaviour.Properties BLOCK_WOOD_WARDROBE = BlockBehaviour.Properties.of(Material.WOOD).strength(1.5f, 6f).noOcclusion();
     public static final BlockBehaviour.Properties BLOCK_METAL_WARDROBE = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).noOcclusion();
     public static final BlockBehaviour.Properties BLOCK_GLASS_WARDROBE = BlockBehaviour.Properties.of(Material.GLASS).strength(1.5f, 6f).noOcclusion();
+    public static final BlockBehaviour.Properties BLOCK_PORCELAIN = BlockBehaviour.Properties.of(Material.GLASS).strength(0.5f, 0.5f);
+
 }

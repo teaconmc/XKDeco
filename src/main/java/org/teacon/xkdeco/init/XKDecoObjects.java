@@ -131,7 +131,7 @@ public final class XKDecoObjects {
             var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(LINED_PREFIX) || id.contains(LUXURY_PREFIX) || id.contains(PAINTED_PREFIX)
-                   || id.contains(CHISELED_PREFIX) || id.contains(DOUBLE_SCREW_PREFIX)) {
+                || id.contains(CHISELED_PREFIX) || id.contains(DOUBLE_SCREW_PREFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
@@ -320,6 +320,14 @@ public final class XKDecoObjects {
 
         static ShapeFunction fromBoard() {
             return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(1, 0, 1, 15, 1, 15) : Shapes.block();
+        }
+
+        static ShapeFunction fromPorcelain() {
+            return d -> Block.box(2, 0, 2, 14, 16, 14);
+        }
+
+        static ShapeFunction fromPorcelainSmall() {
+            return d -> Block.box(5, 0, 5, 11, 12, 11);
         }
     }
 
@@ -761,5 +769,15 @@ public final class XKDecoObjects {
         addSpecial("full_glass_wardrobe", BLOCK_GLASS_WARDROBE, ITEM_FUNCTIONAL);
 
         addWardrobeBlockEntity();
+
+        addBasic("white_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("white_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("white_porcelain_small", ShapeFunction.fromPorcelainSmall(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("bluewhite_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("bluewhite_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("bluewhite_porcelain_small", ShapeFunction.fromPorcelainSmall(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("celadon_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("celadon_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+        addBasic("celadon_porcelain_small", ShapeFunction.fromPorcelainSmall(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
     }
 }
