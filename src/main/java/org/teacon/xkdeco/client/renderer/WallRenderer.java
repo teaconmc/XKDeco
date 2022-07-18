@@ -31,6 +31,11 @@ public final class WallRenderer implements BlockEntityRenderer<WallBlockEntity> 
     }
 
     @Override
+    public int getViewDistance() {
+        return 256;
+    }
+
+    @Override
     public void render(WallBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack,
                        MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         var level = pBlockEntity.getLevel();
