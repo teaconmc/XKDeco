@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -30,6 +31,14 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 
     public ItemDisplayRenderer(BlockEntityRendererProvider.Context context) {
         this.itemRenderer = Minecraft.getInstance().getItemRenderer();
+    }
+
+    @Override
+    public boolean shouldRender(ItemDisplayBlockEntity pBlockEntity, Vec3 pCameraPos) {
+        return pBlockEntity.isProjector()
+                ? Vec3.atCenterOf(pBlockEntity.getBlockPos()).closerThan(pCameraPos,
+                Minecraft.getInstance().options.getEffectiveRenderDistance() * 16)
+                : BlockEntityRenderer.super.shouldRender(pBlockEntity, pCameraPos);
     }
 
     @Override
