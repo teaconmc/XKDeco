@@ -214,6 +214,9 @@ public final class XKDecoObjects {
         for (var block : ForgeRegistries.BLOCKS.getValues()) {
             if (block instanceof WallBlock wall) {
                 var registryName = Objects.requireNonNull(block.getRegistryName());
+                if (!"minecraft".equals(registryName.getNamespace())) {
+                    continue;
+                }
                 var name = SPECIAL_WALL_PREFIX + registryName.toString().replace(':', '_');
                 blocks.add(new SpecialWallBlock(wall).setRegistryName(new ResourceLocation(XKDeco.ID, name)));
             }
