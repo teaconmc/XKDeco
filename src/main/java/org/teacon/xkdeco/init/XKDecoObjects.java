@@ -183,6 +183,9 @@ public final class XKDecoObjects {
         } else if (id.contains(WARDROBE_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new SpecialWardrobeBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new SpecialRoofRidgeBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
         }
@@ -643,6 +646,7 @@ public final class XKDecoObjects {
         addIsotropic("toughened_glass_stairs", BLOCK_LIGHT, ITEM_BASIC);
 
         addIsotropic("black_roof", BLOCK_ROOF, ITEM_STRUCTURE);
+        addSpecial("black_roof_ridge", BLOCK_ROOF, ITEM_STRUCTURE);
 
         addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
         addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);
