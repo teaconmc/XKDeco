@@ -46,5 +46,12 @@ public final class XKDecoProperties {
     public static final BlockBehaviour.Properties BLOCK_METAL_WARDROBE = BlockBehaviour.Properties.of(Material.METAL).strength(1.5f, 6f).noOcclusion();
     public static final BlockBehaviour.Properties BLOCK_GLASS_WARDROBE = BlockBehaviour.Properties.of(Material.GLASS).strength(1.5f, 6f).noOcclusion();
     public static final BlockBehaviour.Properties BLOCK_PORCELAIN = BlockBehaviour.Properties.of(Material.GLASS).strength(0.5f, 0.5f);
+    public static final BlockBehaviour.Properties BLOCK_LANTERN = BlockBehaviour.Properties.of(Material.WOOL).strength(0.5f, 0.5f).lightLevel(s -> 15);
+    public static final BlockBehaviour.Properties BLOCK_CANDLESTICK = BlockBehaviour.Properties.of(Material.METAL).strength(0.5f, 0.5f).lightLevel(s -> 15);
+    public static final BlockBehaviour.Properties BLOCK_EMPTY_CANDLESTICK = BlockBehaviour.Properties.of(Material.METAL).strength(0.5f, 0.5f);
+    public static final BlockBehaviour.Properties BLOCK_LAMP = BlockBehaviour.Properties.of(Material.STONE).strength(0.5f, 0.5f).lightLevel(s -> 15);
+    public static final BlockBehaviour.Properties BLOCK_WOOD_LAMP = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f).lightLevel(s -> 15);
+    public static final BlockBehaviour.Properties BLOCK_STONE_TANK = BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(0.5f, 0.5f);
+    public static final BlockBehaviour.Properties BLOCK_GLASS_TANK = BlockBehaviour.Properties.of(Material.GLASS).noOcclusion().strength(0.5f, 0.5f);
 
 }
