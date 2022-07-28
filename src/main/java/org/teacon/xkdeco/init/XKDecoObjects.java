@@ -335,6 +335,70 @@ public final class XKDecoObjects {
         static ShapeFunction fromPorcelainSmall() {
             return d -> Block.box(5, 0, 5, 11, 12, 11);
         }
+
+        static ShapeFunction fromLantern() {
+            return d -> Shapes.or(Block.box(2, 2, 2, 14, 14, 14),
+                    Block.box(5, 0, 5, 11, 16, 11));
+        }
+
+        static ShapeFunction fromFestivalLantern() {
+            return d -> Shapes.or(Block.box(2, 2, 2, 14, 14, 14),
+                    Block.box(5, 0, 5, 11, 16, 11),
+                    Block.box(0, 3, 0, 16, 13, 16));
+        }
+
+        static ShapeFunction fromCandlestick() {
+            return d -> Block.box(5, 0, 5, 11, 13, 11);
+        }
+
+        static ShapeFunction fromBigCandlestick() {
+            return d -> Block.box(2, 0, 2, 14, 14, 14);
+        }
+
+        static ShapeFunction fromCoveredLamp() {
+            return d -> Block.box(4, 0, 4, 12, 16, 12);
+        }
+
+        static ShapeFunction fromStoneLamp() {
+            return d -> Block.box(3, 0, 3, 13, 16, 13);
+        }
+
+        static ShapeFunction fromWaterBowl() {
+            return d -> Block.box(0, 0, 0, 16, 5, 16);
+        }
+
+        static ShapeFunction fromFishBowl() {
+            return d -> Block.box(1, 0, 1, 15, 6, 15);
+        }
+
+        static ShapeFunction fromFishTank() {
+            return d -> Shapes.join(Shapes.block(), Block.box(1, 1, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
+        }
+
+        static ShapeFunction fromWaterTank() {
+            return d -> Shapes.join(Block.box(1, 0, 1, 15, 16, 15), Block.box(3, 3, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
+        }
+
+        static ShapeFunction fromOilLamp() {
+            return d -> switch (d) {
+                case SOUTH -> Block.box(5, 4, 0, 11, 12, 8);
+                case EAST -> Block.box(0, 4, 5, 8, 12, 11);
+                case NORTH -> Block.box(5, 4, 8, 11, 12, 16);
+                case WEST -> Block.box(8, 4, 5, 16, 12, 11);
+                case DOWN -> Block.box(5, 5, 5, 11, 16, 11);
+                case UP -> Block.box(5, 0, 5, 11, 8, 11);
+            };
+        }
+
+        static ShapeFunction fromEmptyCandlestick() {
+            return d -> switch (d) {
+                case SOUTH -> Block.box(5, 5, 0, 11, 16, 11);
+                case EAST -> Block.box(0, 5, 5, 11, 16, 11);
+                case NORTH -> Block.box(5, 5, 5, 11, 16, 16);
+                case WEST -> Block.box(5, 5, 5, 16, 16, 11);
+                default -> Block.box(5, 0, 5, 11, 16, 11);
+            };
+        }
     }
 
     static {
@@ -786,5 +850,24 @@ public final class XKDecoObjects {
         addBasic("celadon_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
         addBasic("celadon_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
         addBasic("celadon_porcelain_small", ShapeFunction.fromPorcelainSmall(), false, BLOCK_PORCELAIN, ITEM_FURNITURE);
+
+        addBasic("paper_lantern", ShapeFunction.fromLantern(), false, BLOCK_LANTERN, ITEM_FURNITURE);
+        addBasic("red_lantern", ShapeFunction.fromLantern(), false, BLOCK_LANTERN, ITEM_FURNITURE);
+        addBasic("festival_lantern", ShapeFunction.fromFestivalLantern(), false, BLOCK_LANTERN, ITEM_FURNITURE);
+        addBasic("oil_lamp", ShapeFunction.fromOilLamp(), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("candlestick", ShapeFunction.fromCandlestick(), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("big_candlestick", ShapeFunction.fromBigCandlestick(), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("empty_candlestick", ShapeFunction.fromEmptyCandlestick(), false, BLOCK_EMPTY_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("covered_lamp", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_LAMP, ITEM_FURNITURE);
+        addBasic("roofed_lamp", ShapeFunction.fromBigCandlestick(), false, BLOCK_LAMP, ITEM_FURNITURE);
+        addBasic("stone_lamp", ShapeFunction.fromStoneLamp(), false, BLOCK_LAMP, ITEM_FURNITURE);
+        addBasic("deepslate_lamp", ShapeFunction.fromStoneLamp(), false, BLOCK_LAMP, ITEM_FURNITURE);
+        addBasic("blackstone_lamp", ShapeFunction.fromStoneLamp(), false, BLOCK_LAMP, ITEM_FURNITURE);
+        addBasic("fish_bowl", ShapeFunction.fromFishBowl(), false, BLOCK_STONE_TANK, ITEM_FURNITURE);
+        addBasic("dark_fish_bowl", ShapeFunction.fromFishBowl(), false, BLOCK_STONE_TANK, ITEM_FURNITURE);
+        addBasic("stone_water_bowl", ShapeFunction.fromWaterBowl(), false, BLOCK_STONE_TANK, ITEM_FURNITURE);
+        addBasic("stone_water_tank", ShapeFunction.fromWaterTank(), false, BLOCK_STONE_TANK, ITEM_FURNITURE);
+        addBasic("fish_tank", ShapeFunction.fromFishTank(), false, BLOCK_GLASS_TANK, ITEM_FURNITURE);
+        addBasic("empty_fish_tank", ShapeFunction.fromFishTank(), false, BLOCK_GLASS_TANK, ITEM_FURNITURE);
     }
 }

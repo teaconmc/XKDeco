@@ -1,5 +1,5 @@
 {
-  "parent": "xkdeco:block/fish_bowl",
+  "parent": "xkdeco:block/furniture/fish_bowl",
 	"textures": {
 		"particle": "xkdeco:block/furniture/dark_fish_bowl_top",
 		"top": "xkdeco:block/furniture/dark_fish_bowl_top",
