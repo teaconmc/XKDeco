@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "xkdeco:block/furniture/empty_candlestick_wall"
+    },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/empty_candlestick_wall",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/empty_candlestick_wall",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/empty_candlestick_wall",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "xkdeco:block/furniture/empty_candlestick"
+    },
+    "facing=down": {
+      "model": "xkdeco:block/furniture/empty_candlestick"
+    }
+  }
+}

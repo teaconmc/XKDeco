@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "xkdeco:block/furniture/oil_lamp"
+    },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/oil_lamp",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/oil_lamp",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/oil_lamp",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "xkdeco:block/furniture/oil_lamp_floor"
+    },
+    "facing=down": {
+      "model": "xkdeco:block/furniture/oil_lamp_ceiling"
+    }
+  }
+}
