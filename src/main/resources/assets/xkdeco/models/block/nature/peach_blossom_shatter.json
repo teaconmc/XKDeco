@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/nature/shatter",
+  "textures": {
+    "all": "xkdeco:block/nature/peach_blossom",
+    "particle": "xkdeco:block/nature/peach_blossom"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/nature/shatter",
+  "textures": {
+    "all": "xkdeco:block/nature/red_maple_leaves",
+    "particle": "xkdeco:block/nature/red_maple_leaves"
+  }
+}
