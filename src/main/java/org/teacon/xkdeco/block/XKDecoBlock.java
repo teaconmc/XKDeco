@@ -12,7 +12,7 @@ public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotr
     }
 
     // plant blocks which are related to grass and leaves
-    sealed interface Plant extends XKDecoBlock permits PlantLeavesBlock, PlantSlabBlock {
+    sealed interface Plant extends XKDecoBlock permits PlantLeavesBlock, PlantSlabBlock, PlantLeavesShatterBlock {
         // nothing here
     }
 

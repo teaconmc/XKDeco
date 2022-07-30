@@ -90,6 +90,7 @@ public final class XKDecoObjects {
     public static final String ITEM_DISPLAY_SUFFIX = "_item_display";
     public static final String BLOCK_DISPLAY_SUFFIX = "_block_display";
     public static final String WARDROBE_SUFFIX = "_wardrobe";
+    public static final String SHATTER_SUFFIX = "_shatter";
 
     public static final String CUP_SPECIAL = "cup";
     public static final String REFRESHMENT_SPECIAL = "refreshments";
@@ -157,6 +158,11 @@ public final class XKDecoObjects {
                                  BlockBehaviour.Properties properties, Item.Properties itemProperties) {
         var isPath = id.contains(PATH_SUFFIX);
         if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
+            if (id.endsWith(SHATTER_SUFFIX)) {
+                var block = BLOCKS.register(id, () -> new PlantLeavesShatterBlock(properties));
+                ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+                return;
+            }
             var block = BLOCKS.register(id, () -> new PlantLeavesBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(SLAB_SUFFIX)) {
@@ -880,5 +886,12 @@ public final class XKDecoObjects {
         addBasic("solar_system_model", s -> Block.box(0, 0, 0, 16, 10, 16), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addBasic("big_solar_system_model", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
         addBasic("telescope", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+
+        addPlant("ginkgo_leaves_shatter", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("orange_maple_leaves_shatter", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("red_maple_leaves_shatter", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("peach_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("cherry_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE);
+        addPlant("white_cherry_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE);
     }
 }
