@@ -69,13 +69,13 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
             "block.xkdeco.red_roof_small_eave",
             "block.xkdeco.red_roof_small_end",
             "block.xkdeco.red_roof_deco",
-            "block.xkdeco.red_roof_tip",
-            "block.xkdeco.ginkgo_leaves_shatter",
-            "block.xkdeco.orange_maple_leaves_shatter",
-            "block.xkdeco.red_maple_leaves_shatter",
-            "block.xkdeco.peach_blossom_shatter",
-            "block.xkdeco.cherry_blossom_shatter",
-            "block.xkdeco.white_cherry_blossom_shatter"
+            "block.xkdeco.red_roof_tip"
+//            "block.xkdeco.ginkgo_leaves_shatter",
+//            "block.xkdeco.orange_maple_leaves_shatter",
+//            "block.xkdeco.red_maple_leaves_shatter",
+//            "block.xkdeco.peach_blossom_shatter",
+//            "block.xkdeco.cherry_blossom_shatter",
+//            "block.xkdeco.white_cherry_blossom_shatter"
     );
 
     private static final Map<String, String> EXTRA_ENTRIES = Map.ofEntries(
