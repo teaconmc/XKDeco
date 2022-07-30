@@ -18,12 +18,10 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
-import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.block.XKDecoBlock;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
-import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.WallRenderer;
@@ -52,6 +50,8 @@ public final class XKDecoClient {
                 .getPath().contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
         itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Item[]::new));
+        itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+                .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
     }
 
     public static void setBlockColors(ColorHandlerEvent.Block event) {
@@ -76,6 +76,8 @@ public final class XKDecoClient {
                 .getPath().contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
         blockColors.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Block[]::new));
+        blockColors.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+                .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
     }
 
     public static void setCutoutBlocks(FMLClientSetupEvent event) {
