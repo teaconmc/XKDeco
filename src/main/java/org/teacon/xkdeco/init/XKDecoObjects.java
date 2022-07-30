@@ -69,6 +69,7 @@ public final class XKDecoObjects {
     public static final String TRANSLUCENT_PREFIX = "translucent_";
     public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
     public static final String SPECIAL_WALL_PREFIX = "special_wall_";
+    public static final String STONE_WATER_PREFIX = "stone_water_";
 
     public static final String LOG_SUFFIX = "_log";
     public static final String WOOD_SUFFIX = "_wood";
