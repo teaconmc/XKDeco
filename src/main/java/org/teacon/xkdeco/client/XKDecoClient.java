@@ -41,6 +41,7 @@ public final class XKDecoClient {
             var state = ((BlockItem) stack.getItem()).getBlock().defaultBlockState();
             return blockColors.getColor(state, null, null, tintIndex);
         };
+        var waterItemColor = (ItemColor) (stack, tintIndex) -> 0x3f76e4;
         var itemColors = event.getItemColors();
         itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.GRASS_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
@@ -50,7 +51,7 @@ public final class XKDecoClient {
                 .getPath().contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
         itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Item[]::new));
-        itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+        itemColors.register(waterItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
     }
 
@@ -67,6 +68,12 @@ public final class XKDecoClient {
             }
             return FoliageColor.getDefaultColor();
         };
+        var waterBlockColor = (BlockColor) (state, world, pos, tintIndex) -> {
+            if (pos != null && world != null) {
+                return BiomeColors.getAverageWaterColor(world, pos);
+            }
+            return 0x3f76e4;
+        };
         var blockColors = event.getBlockColors();
         blockColors.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.GRASS_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
@@ -76,7 +83,7 @@ public final class XKDecoClient {
                 .getPath().contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
         blockColors.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+        blockColors.register(waterBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
     }
 

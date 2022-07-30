@@ -870,5 +870,15 @@ public final class XKDecoObjects {
         addBasic("stone_water_tank", ShapeFunction.fromWaterTank(), false, BLOCK_STONE_TANK, ITEM_FURNITURE);
         addBasic("fish_tank", ShapeFunction.fromFishTank(), false, BLOCK_GLASS_TANK, ITEM_FURNITURE);
         addBasic("empty_fish_tank", ShapeFunction.fromFishTank(), false, BLOCK_GLASS_TANK, ITEM_FURNITURE);
+
+        addBasic("small_book_stack", s -> Block.box(2, 0, 2, 14, 8, 14), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("big_book_stack", s -> Block.box(0, 0, 0, 16, 10, 16), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("empty_bottle_stack", s -> Block.box(2, 0, 2, 14, 8, 14), false, BLOCK_GLASS_TANK, ITEM_FURNITURE);
+        addBasic("bottle_stack", s -> Block.box(2, 0, 2, 14, 8, 14), false, BLOCK_GLASS_TANK, ITEM_FURNITURE);
+        addBasic("wood_globe", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("globe", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("solar_system_model", s -> Block.box(0, 0, 0, 16, 10, 16), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("big_solar_system_model", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        addBasic("telescope", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
     }
 }
