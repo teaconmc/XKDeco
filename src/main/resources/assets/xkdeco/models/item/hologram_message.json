@@ -1,0 +1,44 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/furniture/hologram",
+		"base": "xkdeco:block/furniture/hologram",
+		"message": "xkdeco:block/furniture/hologram_message"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 8],
+			"to": [16, 8, 8],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#base"},
+				"south": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#base"}
+			}
+		},
+		{
+			"from": [8, 0, 8],
+			"to": [8, 8, 16],
+			"rotation": {"angle": -45, "axis": "x", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#base"},
+				"west": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#base"}
+			}
+		},
+		{
+			"from": [4, 6, 8],
+			"to": [12, 17, 8],
+			"faces": {
+				"north": {"uv": [2, 0, 10, 11], "texture": "#message"},
+				"south": {"uv": [10, 0, 2, 11], "texture": "#message"}
+			}
+		}
+	],
+	"display": {
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -18],
+			"scale": [2, 2, 2]
+		}
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "xkdeco:block/furniture/sign_left",
+	"textures": {
+		"particle": "xkdeco:block/furniture/sign_right",
+		"down": "xkdeco:block/furniture/sign_right"
+	}
+}
