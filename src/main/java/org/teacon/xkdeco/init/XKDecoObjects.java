@@ -406,6 +406,45 @@ public final class XKDecoObjects {
                 default -> Block.box(5, 0, 5, 11, 16, 11);
             };
         }
+
+        static ShapeFunction fromFactoryLamp() {
+            return d -> switch (d) {
+                case SOUTH -> Block.box(4, 4, 0, 12, 12, 8);
+                case EAST -> Block.box(0, 4, 4, 8, 12, 12);
+                case NORTH -> Block.box(4, 4, 8, 12, 12, 16);
+                case WEST -> Block.box(8, 4, 4, 16, 12, 12);
+                case DOWN -> Block.box(4, 8, 4, 12, 16, 12);
+                case UP -> Block.box(4, 0, 4, 12, 8, 12);
+            };
+        }
+
+        static ShapeFunction fromFan() {
+            return d -> switch (d) {
+                case SOUTH -> Block.box(0, 0, 0, 6, 16, 16);
+                case EAST -> Block.box(0, 0, 0, 16, 16, 6);
+                case NORTH -> Block.box(10, 0, 0, 16, 16, 16);
+                case WEST -> Block.box(0, 0, 10, 16, 16, 16);
+                default -> Block.box(0, 0, 0, 10, 16, 16);
+            };
+        }
+
+        static ShapeFunction fromScreen() {
+            return d -> switch (d) {
+                case SOUTH -> Block.box(0, 0, 0, 2, 16, 16);
+                case EAST -> Block.box(0, 0, 0, 16, 16, 2);
+                case NORTH -> Block.box(14, 0, 0, 16, 16, 16);
+                case WEST -> Block.box(0, 0, 14, 16, 16, 16);
+                default -> Block.box(0, 0, 0, 2, 16, 16);
+            };
+        }
+
+        static ShapeFunction fromVentFan() {
+            return d -> switch (d) {
+                case SOUTH, NORTH -> Block.box(0, 0, 2, 16, 16, 14);
+                case EAST, WEST -> Block.box(2, 0, 0, 14, 16, 16);
+                default -> Block.box(0, 0, 2, 16, 16, 14);
+            };
+        }
     }
 
     static {
@@ -893,5 +932,43 @@ public final class XKDecoObjects {
         addPlant("peach_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE);
         addPlant("cherry_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE);
         addPlant("white_cherry_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE);
+
+        addBasic("factory_lamp", ShapeFunction.fromFactoryLamp(), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("factory_lamp_broken", ShapeFunction.fromFactoryLamp(), false, BLOCK_EMPTY_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("factory_warning_lamp", ShapeFunction.fromFactoryLamp(), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        //addBasic("factory_light_bar", s -> Block.box(0, 0, 0, 16, 4, 3), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("factory_ceiling_lamp", s -> Block.box(0, 12, 0, 16, 16, 16), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("factory_pendant", s -> Block.box(2, 4, 2, 16, 16, 16), false, BLOCK_CANDLESTICK, ITEM_FURNITURE);
+        addBasic("fan_blade", ShapeFunction.fromFan(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("factory_vent_fan", ShapeFunction.fromVentFan(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("factory_vent_fan_big", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("steel_windmill", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("iron_windmill", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("wooden_windmill", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE);
+        //addBasic("mechanical_console", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("mechanical_screen", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("mechanical_chair", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        //addBasic("tech_console", s -> Block.box(2, 0, 2, 14, 8, 14), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("tech_screen", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("tech_chair", s -> Block.box(2, 0, 2, 14, 8, 14), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_off", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_cube", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_diagram", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_dna", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_list", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_message", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_threebodies", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("screen_transport", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("tech_table", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("tech_table_circle", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("tech_table_bigcircle", s -> Shapes.block(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("sign_entrance", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("sign_exit", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("sign_left", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("sign_right", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("small_sign_left", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("small_sign_right", ShapeFunction.fromScreen(), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
+        addBasic("small_sign_ground", s -> Block.box(0, 0, 0, 16, 1, 16), false, BLOCK_METAL_WARDROBE, ITEM_FURNITURE);
     }
 }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "xkdeco:block/furniture/factory_vent_fan_big"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/factory_vent_fan_big",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/factory_vent_fan_big",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/factory_vent_fan_big",
+      "y": 90
+    }
+  }
+}
