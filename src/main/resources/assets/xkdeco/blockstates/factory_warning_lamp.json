@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp"
+    },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp",
+      "x": 90
+    }
+  }
+}
