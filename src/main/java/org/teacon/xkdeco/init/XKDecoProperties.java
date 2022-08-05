@@ -53,5 +53,4 @@ public final class XKDecoProperties {
     public static final BlockBehaviour.Properties BLOCK_WOOD_LAMP = BlockBehaviour.Properties.of(Material.WOOD).strength(0.5f, 0.5f).lightLevel(s -> 15);
     public static final BlockBehaviour.Properties BLOCK_STONE_TANK = BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(0.5f, 0.5f);
     public static final BlockBehaviour.Properties BLOCK_GLASS_TANK = BlockBehaviour.Properties.of(Material.GLASS).noOcclusion().strength(0.5f, 0.5f);
-
 }
