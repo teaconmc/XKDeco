@@ -18,7 +18,7 @@ public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotr
 
     // indexed blocks which have an index respectively
     sealed interface Special extends XKDecoBlock permits SpecialBlockDisplayBlock, SpecialCupBlock, SpecialDessertBlock,
-            SpecialItemDisplayBlock, SpecialRoofRidgeBlock, SpecialWallBlock, SpecialWardrobeBlock {
+            SpecialItemDisplayBlock, SpecialRoofRidgeBlock, SpecialWallBlock, SpecialWardrobeBlock, SpecialLightBar, SpecialConsole {
         // nothing here
     }
 }
