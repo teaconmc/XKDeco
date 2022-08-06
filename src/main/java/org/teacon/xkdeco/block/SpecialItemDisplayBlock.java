@@ -171,6 +171,9 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XK
         if (!pLevel.isClientSide) {
             if (pState.getValue(POWERED) != pLevel.hasNeighborSignal(pPos)) {
                 pLevel.setBlock(pPos, pState.cycle(POWERED), 2);
+                if (pLevel.getBlockEntity(pPos) instanceof ItemDisplayBlockEntity be) {
+                    be.setChanged();
+                }
             }
         }
     }
