@@ -80,8 +80,6 @@ public final class ItemDisplayBlockEntity extends BlockEntity implements Clearab
 
     public void setSpin(float spin) {
         this.spin = spin;
-        // do not send update packet to save network traffic for unimportant data
-        this.setChanged();
     }
 
     @Nullable
