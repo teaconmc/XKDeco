@@ -29,17 +29,17 @@ public final class IsotropicStairBlock extends StairBlock implements XKDecoBlock
     @Override
     @SuppressWarnings("deprecation")
     public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
-        boolean b = false;
+        boolean faceBlocked = false;
         var block = pAdjacentBlockState.getBlock();
-        if(block instanceof Isotropic ib && ib.isGlass()){
+        if (block instanceof Isotropic ib && ib.isGlass()) {
             var shape1 = ib.getShapeStatic(pAdjacentBlockState);
             var shape2 = this.getShapeStatic(pState);
-            if((Block.isFaceFull(shape1,pDirection) && Block.isFaceFull(shape2,pDirection.getOpposite()))){
-                b = true;
+            if ((Block.isFaceFull(shape1,pDirection) && Block.isFaceFull(shape2,pDirection.getOpposite()))) {
+                faceBlocked = true;
             }
         }
     
-        return (isGlass && b) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
+        return (this.isGlass && faceBlocked) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
     }
     
     public  VoxelShape getShapeStatic(BlockState pState) {

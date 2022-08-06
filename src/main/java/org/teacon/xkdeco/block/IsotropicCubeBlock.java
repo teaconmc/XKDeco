@@ -30,15 +30,14 @@ public final class IsotropicCubeBlock extends Block implements XKDecoBlock.Isotr
     }
     
     public static boolean cubeSkipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
-        var block1 =pState.getBlock();
+        var block1 = pState.getBlock();
         var block2 = pAdjacentBlockState.getBlock();
-        if(block2 instanceof Isotropic ib2 && ib2.isGlass() && block1 instanceof Isotropic ib1 && ib1.isGlass()){
+        if (block2 instanceof Isotropic ib2 && ib2.isGlass() && block1 instanceof Isotropic ib1 && ib1.isGlass()) {
             var shape1 = ib2.getShapeStatic(pAdjacentBlockState);
             var shape2 = ib1.getShapeStatic(pState);
             return (Block.isFaceFull(shape1, pDirection) && Block.isFaceFull(shape2, pDirection.getOpposite()) && !(pAdjacentBlockState.getBlock() instanceof StairBlock))
-                    || (pAdjacentBlockState.getBlock() instanceof StairBlock) &&
-                    ((pAdjacentBlockState.getValue(StairBlock.HALF) == Half.BOTTOM && pDirection == Direction.UP)
-                            || (pAdjacentBlockState.getValue(StairBlock.HALF) == Half.TOP && pDirection == Direction.DOWN));
+                    || (pAdjacentBlockState.getBlock() instanceof StairBlock) && ((pAdjacentBlockState.getValue(StairBlock.HALF) == Half.BOTTOM && pDirection == Direction.UP)
+                    || (pAdjacentBlockState.getValue(StairBlock.HALF) == Half.TOP && pDirection == Direction.DOWN));
         }
     
         return false;

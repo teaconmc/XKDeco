@@ -31,9 +31,6 @@ import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
-import static org.teacon.xkdeco.block.IsotropicRoofBlock.RoofHalf.BASE;
-import static org.teacon.xkdeco.block.IsotropicRoofBlock.RoofHalf.TIP;
-
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class IsotropicRoofBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
@@ -147,7 +144,7 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofShape.STRAIGHT)
-                .setValue(HALF, TIP).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+                .setValue(HALF, RoofHalf.TIP).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -198,35 +195,35 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
 
                 // try to become a slow, non-straight roof matching the roof at left/right
                 tryConnectTo(Rotation.LEFT,
-                        (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == TIP && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
+                        (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.SLOW,
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
                 tryConnectTo(Rotation.RIGHT,
-                        (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == TIP && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
+                        (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.SLOW,
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
                 tryConnectTo(Rotation.LEFT,
-                        (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == BASE && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
+                        (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
                 tryConnectTo(Rotation.RIGHT,
-                        (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == BASE && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
+                        (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
 
                 // adjust self to become a slow, straight roof
                 tryConnectTo(Rotation.FRONT,
-                        (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == TIP && v == RoofVariant.NORMAL
-                                || isClosedSide(s, r, Rotation.BACK) && h == BASE && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(HALF, TIP).setValue(VARIANT, RoofVariant.SLOW)),
+                        (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
+                                || isClosedSide(s, r, Rotation.BACK) && h == RoofHalf.BASE && v == RoofVariant.SLOW,
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW)),
                 tryConnectTo(Rotation.BACK,
-                        (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == TIP && v == RoofVariant.NORMAL
-                                || isOpenSide(s, r, Rotation.FRONT) && h == TIP && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(HALF, BASE).setValue(VARIANT, RoofVariant.SLOW)),
+                        (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
+                                || isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP && v == RoofVariant.SLOW,
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
 
                 // adjust self to become a steep, straight roof
                 tryConnectTo(Rotation.UP,
-                        (r, s, h, v) -> r == Rotation.FRONT && h == TIP && (v == RoofVariant.NORMAL || v == RoofVariant.STEEP),
-                        (curr, tgt) -> curr.setValue(HALF, BASE).setValue(VARIANT, RoofVariant.STEEP)),
+                        (r, s, h, v) -> r == Rotation.FRONT && h == RoofHalf.TIP && (v == RoofVariant.NORMAL || v == RoofVariant.STEEP),
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP)),
                 tryConnectTo(Rotation.DOWN,
-                        (r, s, h, v) -> r == Rotation.FRONT && (h == TIP && v == RoofVariant.NORMAL || h == BASE && v == RoofVariant.STEEP),
-                        (curr, tgt) -> curr.setValue(HALF, TIP).setValue(VARIANT, RoofVariant.STEEP))
+                        (r, s, h, v) -> r == Rotation.FRONT && (h == RoofHalf.TIP && v == RoofVariant.NORMAL || h == RoofHalf.BASE && v == RoofVariant.STEEP),
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP))
         )) {
             var result = trial.apply(pContext.getLevel(), pContext.getClickedPos(), pContext.getHorizontalDirection());
             if (result.isPresent()) return result.get();
@@ -263,31 +260,31 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             case LEFT -> {
             }
             case FRONT -> {
-                if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT && facingHalf == BASE
+                if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.BASE
                         && currDirection == facingDirection
                         && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, TIP);
+                    return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.TIP);
                 }
             }
             case RIGHT -> {
             }
             case BACK -> {
-                if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT && facingHalf == TIP
+                if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.TIP
                         && currDirection == facingDirection
                         && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, BASE);
+                    return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.BASE);
                 }
             }
             case UP -> {
-                if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT && facingHalf == TIP
+                if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.TIP
                         && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, BASE);
+                    return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, RoofHalf.BASE);
                 }
             }
             case DOWN -> {
-                if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT && facingHalf == BASE
+                if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.BASE
                         && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, TIP);
+                    return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, RoofHalf.TIP);
                 }
             }
         }

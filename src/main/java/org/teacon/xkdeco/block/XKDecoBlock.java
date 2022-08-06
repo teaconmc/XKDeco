@@ -11,9 +11,16 @@ public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotr
 
     // isotropic blocks which are directionless or uv locked (stairs, slabs, or pillars)
     sealed interface Isotropic extends XKDecoBlock permits IsotropicCubeBlock, IsotropicHollowBlock, IsotropicPillarBlock, IsotropicRoofBlock, IsotropicSlabBlock, IsotropicStairBlock {
-        // isGlass
+        /**
+         * @return true if the block should be considered as "glass"; false otherwise.
+         */
         boolean isGlass();
-        //get VoxelShape without level
+
+        /**
+         * Return the static shape of the block, without knowing the current Level info.
+         * @param state Current block state
+         * @return The shape of the block under given state
+         */
         VoxelShape getShapeStatic(BlockState state);
     }
 

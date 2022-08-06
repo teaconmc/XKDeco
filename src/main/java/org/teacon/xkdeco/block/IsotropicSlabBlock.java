@@ -26,25 +26,24 @@ public final class IsotropicSlabBlock extends SlabBlock implements XKDecoBlock.I
     @Override
     @SuppressWarnings("deprecation")
     public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
-        boolean b = false;
-        //if(pState.getValue(TYPE) == SlabType.DOUBLE) return IsotropicCubeBlock.cubeSkipRendering(pState,pAdjacentBlockState,pDirection);
+        boolean faceBlocked = false;
         var block = pAdjacentBlockState.getBlock();
-        if(block instanceof Isotropic ib && ib.isGlass()){
+        if (block instanceof Isotropic ib && ib.isGlass()) {
             var shape1 = ib.getShapeStatic(pAdjacentBlockState);
             var shape2 = this.getShapeStatic(pState);
-            if((Block.isFaceFull(shape1,pDirection) && Block.isFaceFull(shape2,pDirection.getOpposite()))){
-                b = true;
+            if ((Block.isFaceFull(shape1, pDirection) && Block.isFaceFull(shape2, pDirection.getOpposite()))) {
+                faceBlocked = true;
             }
-            if(((pAdjacentBlockState.is(this)&& pAdjacentBlockState.getValue(TYPE) == pState.getValue(TYPE))
-                    || pAdjacentBlockState.getBlock() instanceof IsotropicCubeBlock)
-            && pDirection.getAxis() != Direction.Axis.Y){
-                b = true;
+            if (((pAdjacentBlockState.is(this) && pAdjacentBlockState.getValue(TYPE) == pState.getValue(TYPE)) || pAdjacentBlockState.getBlock() instanceof IsotropicCubeBlock)
+                    && pDirection.getAxis() != Direction.Axis.Y) {
+                faceBlocked = true;
             }
         }
     
-        return (isGlass && b) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
+        return (this.isGlass && faceBlocked) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
     }
-    
+
+    @Override
     public VoxelShape getShapeStatic(BlockState pState) {
         SlabType slabtype = pState.getValue(TYPE);
         return switch (slabtype) {
