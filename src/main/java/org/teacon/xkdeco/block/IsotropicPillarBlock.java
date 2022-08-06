@@ -4,9 +4,11 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -21,8 +23,19 @@ public final class IsotropicPillarBlock extends RotatedPillarBlock implements XK
     }
 
     @Override
-    public boolean skipRendering(@NotNull BlockState pState, @NotNull BlockState pAdjacentBlockState, @NotNull Direction pDirection) {
-        return (this.isGlass && pAdjacentBlockState.is(this)) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
+    @SuppressWarnings("deprecation")
+    public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
+        boolean faceBlocked = false;
+        var block = pAdjacentBlockState.getBlock();
+        if (block instanceof Isotropic ib && ib.isGlass()){
+            var shape1 = ib.getShapeStatic(pAdjacentBlockState);
+            var shape2 = this.getShapeStatic(pState);
+            if((Block.isFaceFull(shape1,pDirection) && Block.isFaceFull(shape2,pDirection.getOpposite()))){
+                faceBlocked = true;
+            }
+        }
+    
+        return (this.isGlass && faceBlocked) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
     }
 
     @SuppressWarnings("deprecation")
@@ -32,5 +45,15 @@ public final class IsotropicPillarBlock extends RotatedPillarBlock implements XK
 
     public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
         return this.isGlass || super.propagatesSkylightDown(state, world, pos);
+    }
+    
+    @Override
+    public boolean isGlass() {
+        return isGlass;
+    }
+    
+    @Override
+    public VoxelShape getShapeStatic(BlockState state) {
+        return Shapes.block();
     }
 }

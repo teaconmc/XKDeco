@@ -76,4 +76,14 @@ public final class IsotropicHollowBlock extends Block implements SimpleWaterlogg
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
+    
+    @Override
+    public boolean isGlass() {
+        return false;
+    }
+    
+    @Override
+    public VoxelShape getShapeStatic(BlockState state) {
+        return this.blockShape;
+    }
 }

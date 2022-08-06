@@ -354,7 +354,22 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             case OUTER -> actual.getCounterClockWise() == expected || actual.get2DOpposite() == expected;
         };
     }
-
+    
+    @Override
+    public boolean isGlass() {
+        return false;
+    }
+    
+    @Override
+    public VoxelShape getShapeStatic(BlockState pState) {
+        var leftRight = getConnectionLeftRight(pState.getValue(FACING), pState.getValue(SHAPE));
+        var leftRightIndex = leftRight.getLeft().get2DDataValue() * 4 + leftRight.getRight().get2DDataValue();
+        return switch (pState.getValue(HALF)) {
+            case TIP -> ROOF_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
+            case BASE -> ROOF_BASE_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
+        };
+    }
+    
     @FunctionalInterface
     private interface QuadPredicate<A, B, C, D> {
         boolean test(A a, B b, C c, D d);

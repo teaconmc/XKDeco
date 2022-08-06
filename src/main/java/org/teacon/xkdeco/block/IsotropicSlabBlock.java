@@ -4,9 +4,12 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -19,10 +22,35 @@ public final class IsotropicSlabBlock extends SlabBlock implements XKDecoBlock.I
         super(properties);
         this.isGlass = isGlass;
     }
+    
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
+        boolean faceBlocked = false;
+        var block = pAdjacentBlockState.getBlock();
+        if (block instanceof Isotropic ib && ib.isGlass()) {
+            var shape1 = ib.getShapeStatic(pAdjacentBlockState);
+            var shape2 = this.getShapeStatic(pState);
+            if ((Block.isFaceFull(shape1, pDirection) && Block.isFaceFull(shape2, pDirection.getOpposite()))) {
+                faceBlocked = true;
+            }
+            if (((pAdjacentBlockState.is(this) && pAdjacentBlockState.getValue(TYPE) == pState.getValue(TYPE)) || pAdjacentBlockState.getBlock() instanceof IsotropicCubeBlock)
+                    && pDirection.getAxis() != Direction.Axis.Y) {
+                faceBlocked = true;
+            }
+        }
+    
+        return (this.isGlass && faceBlocked) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
+    }
 
     @Override
-    public boolean skipRendering(@NotNull BlockState pState, @NotNull BlockState pAdjacentBlockState, @NotNull Direction pDirection) {
-        return (this.isGlass && pAdjacentBlockState.is(this)) || super.skipRendering(pState, pAdjacentBlockState, pDirection);
+    public VoxelShape getShapeStatic(BlockState pState) {
+        SlabType slabtype = pState.getValue(TYPE);
+        return switch (slabtype) {
+            case DOUBLE -> Shapes.block();
+            case TOP -> TOP_AABB;
+            default -> BOTTOM_AABB;
+        };
     }
 
     @Override
@@ -34,5 +62,10 @@ public final class IsotropicSlabBlock extends SlabBlock implements XKDecoBlock.I
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
         return this.isGlass || super.propagatesSkylightDown(state, world, pos);
+    }
+    
+    @Override
+    public boolean isGlass() {
+        return isGlass;
     }
 }
