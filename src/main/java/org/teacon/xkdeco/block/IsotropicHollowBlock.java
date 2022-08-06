@@ -49,6 +49,8 @@ public final class IsotropicHollowBlock extends Block implements SimpleWaterlogg
         var fluidState = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
+    
+    
 
     @Override
     @SuppressWarnings("deprecation")
@@ -65,6 +67,7 @@ public final class IsotropicHollowBlock extends Block implements SimpleWaterlogg
         }
         return super.updateShape(state, direction, prevState, world, pos, prevPos);
     }
+    
 
     @Override
     @SuppressWarnings("deprecation")
@@ -75,5 +78,15 @@ public final class IsotropicHollowBlock extends Block implements SimpleWaterlogg
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
+    }
+    
+    @Override
+    public boolean isGlass() {
+        return false;
+    }
+    
+    @Override
+    public VoxelShape getShapeStatic(BlockState state) {
+        return this.blockShape;
     }
 }

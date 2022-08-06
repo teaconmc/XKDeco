@@ -1,5 +1,8 @@
 package org.teacon.xkdeco.block;
 
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
 public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotropic, XKDecoBlock.Plant, XKDecoBlock.Special {
     // basic blocks which have directions
     sealed interface Basic extends XKDecoBlock permits BasicBlock, BasicCubeBlock, BasicFullDirectionBlock {
@@ -8,7 +11,10 @@ public sealed interface XKDecoBlock permits XKDecoBlock.Basic, XKDecoBlock.Isotr
 
     // isotropic blocks which are directionless or uv locked (stairs, slabs, or pillars)
     sealed interface Isotropic extends XKDecoBlock permits IsotropicCubeBlock, IsotropicHollowBlock, IsotropicPillarBlock, IsotropicRoofBlock, IsotropicSlabBlock, IsotropicStairBlock {
-        // nothing here
+        // isGlass
+        boolean isGlass();
+        //get VoxelShape without level
+        VoxelShape getShapeStatic(BlockState state);
     }
 
     // plant blocks which are related to grass and leaves
