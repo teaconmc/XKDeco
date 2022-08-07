@@ -48,7 +48,8 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
             "refreshments", "screw_thread_bronze_block", "black_roof_ridge",
             "empty_candlestick", "oil_lamp", "empty_bottle_stack", "bottle_stack",
             "mechanical_console", "tech_console", "factory_lamp", "factory_lamp_broken",
-            "factory_warning_lamp", "hologram_base"
+            "factory_warning_lamp", "hologram_base", "fan_blade", "factory_vent_fan",
+            "factory_vent_fan_big", "steel_windmill", "iron_windmill", "wooden_windmill"
     );
     private static final Set<String> BLOCK_ITEMS_SKIP = ImmutableSet.of(
             "cup", "item_projector", "refreshments",
