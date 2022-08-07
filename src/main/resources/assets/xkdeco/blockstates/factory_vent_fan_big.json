@@ -3,6 +3,10 @@
     "facing=north": {
       "model": "xkdeco:block/furniture/factory_vent_fan_big"
     },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/factory_vent_fan_big",
+      "y": 90
+    },
     "facing=south": {
       "model": "xkdeco:block/furniture/factory_vent_fan_big",
       "y": 180
@@ -11,9 +15,13 @@
       "model": "xkdeco:block/furniture/factory_vent_fan_big",
       "y": 270
     },
-    "facing=east": {
+    "facing=up": {
       "model": "xkdeco:block/furniture/factory_vent_fan_big",
-      "y": 90
+      "x": 270
+    },
+    "facing=down": {
+      "model": "xkdeco:block/furniture/factory_vent_fan_big",
+      "x": 90
     }
   }
 }

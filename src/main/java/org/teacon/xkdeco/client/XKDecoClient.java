@@ -90,7 +90,9 @@ public final class XKDecoClient {
     public static void setCutoutBlocks(FMLClientSetupEvent event) {
         for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
             var id = entry.getId().getPath();
-            if (entry.get() instanceof XKDecoBlock.Basic) {
+            if ("mechanical_screen".equals(id) || "tech_screen".equals(id)) {
+                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
+            } else if (entry.get() instanceof XKDecoBlock.Basic) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
             } else if (entry.get() instanceof XKDecoBlock.Special) {
                 ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
