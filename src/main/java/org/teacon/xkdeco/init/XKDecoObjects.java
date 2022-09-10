@@ -76,6 +76,8 @@ public final class XKDecoObjects {
     public static final String SLAB_SUFFIX = "_slab";
     public static final String PATH_SUFFIX = "_path";
     public static final String ROOF_SUFFIX = "_roof";
+    public static final String ROOF_EAVE_SUFFIX = "_roof_eave";
+    public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
     public static final String STOOL_SUFFIX = "_stool";
     public static final String CHAIR_SUFFIX = "_chair";
     public static final String TABLE_SUFFIX = "_table";
@@ -146,6 +148,12 @@ public final class XKDecoObjects {
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(HOLLOW_PREFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_FLAT_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new IsotropicRoofFlatBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_EAVE_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new IsotropicRoofEaveBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(ROOF_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicRoofBlock(properties));
@@ -798,6 +806,8 @@ public final class XKDecoObjects {
 
         addIsotropic("black_roof", BLOCK_ROOF, ITEM_STRUCTURE);
         addSpecial("black_roof_ridge", BLOCK_ROOF, ITEM_STRUCTURE);
+        addIsotropic("black_roof_eave", BLOCK_ROOF, ITEM_STRUCTURE);
+        addIsotropic("black_roof_flat", BLOCK_ROOF, ITEM_STRUCTURE);
 
         addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
         addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);
