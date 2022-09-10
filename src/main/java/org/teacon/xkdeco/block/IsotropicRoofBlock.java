@@ -3,10 +3,8 @@ package org.teacon.xkdeco.block;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -21,15 +19,12 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.commons.lang3.function.TriFunction;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.function.BinaryOperator;
-import java.util.function.UnaryOperator;
+
+import static org.teacon.xkdeco.util.RoofUtil.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -154,14 +149,19 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShapeStatic(BlockState pState) {
         var leftRight = getConnectionLeftRight(pState.getValue(FACING), pState.getValue(SHAPE));
         var leftRightIndex = leftRight.getLeft().get2DDataValue() * 4 + leftRight.getRight().get2DDataValue();
         return switch (pState.getValue(HALF)) {
             case TIP -> ROOF_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
             case BASE -> ROOF_BASE_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
         };
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return this.getShapeStatic(pState);
     }
 
     @Override
@@ -178,6 +178,10 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        var initialState = this.defaultBlockState()
+                .setValue(FACING, pContext.getHorizontalDirection())
+                .setValue(WATERLOGGED, pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER);
+
         for (var trial : List.of(
                 // try to become a non-straight roof matching the triangular side of the roof at front/back
                 tryConnectTo(Rotation.FRONT,
@@ -207,6 +211,14 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                         (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
 
+                // try to become a slow, non-straight roof matching the roof eave at left/right
+                tryConnectToEave(Rotation.LEFT,
+                        (r, s, h) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP,
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
+                tryConnectToEave(Rotation.RIGHT,
+                        (r, s, h) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP,
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
+
                 // adjust self to become a slow, straight roof
                 tryConnectTo(Rotation.FRONT,
                         (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
@@ -217,6 +229,19 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                                 || isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
 
+                // adjust self to become a slow, straight roof matching the flat roof at front/back
+                tryConnectToFlat(Rotation.FRONT,
+                        (p, h) -> p && h == RoofHalf.TIP,
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW)),
+                tryConnectToFlat(Rotation.BACK,
+                        (p, h) -> p && h == RoofHalf.TIP,
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
+
+                // adjust self to become a slow, straight roof matching the roof eave at back
+                tryConnectToEave(Rotation.BACK,
+                        (r, s, h) -> isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP,
+                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
+
                 // adjust self to become a steep, straight roof
                 tryConnectTo(Rotation.UP,
                         (r, s, h, v) -> r == Rotation.FRONT && h == RoofHalf.TIP && (v == RoofVariant.NORMAL || v == RoofVariant.STEEP),
@@ -225,13 +250,11 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                         (r, s, h, v) -> r == Rotation.FRONT && (h == RoofHalf.TIP && v == RoofVariant.NORMAL || h == RoofHalf.BASE && v == RoofVariant.STEEP),
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP))
         )) {
-            var result = trial.apply(pContext.getLevel(), pContext.getClickedPos(), pContext.getHorizontalDirection());
+            var result = trial.apply(pContext.getLevel(), pContext.getClickedPos(), pContext.getHorizontalDirection(), initialState);
             if (result.isPresent()) return result.get();
         }
 
-        return this.defaultBlockState()
-                .setValue(FACING, pContext.getHorizontalDirection())
-                .setValue(WATERLOGGED, pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER);
+        return initialState;
     }
 
     @Override
@@ -242,50 +265,59 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
 
-        if (!isRoof(pFacingState)) return pState;
-
         var currDirection = pState.getValue(FACING);
-        var currHalf = pState.getValue(HALF);
         var currShape = pState.getValue(SHAPE);
         var currVariant = pState.getValue(VARIANT);
 
-        var facingDirection = pFacingState.getValue(FACING);
-        var facingHalf = pFacingState.getValue(HALF);
-        var facingShape = pFacingState.getValue(SHAPE);
-        var facingVariant = pFacingState.getValue(VARIANT);
+        if (isRoof(pFacingState)) {
+            var facingDirection = pFacingState.getValue(FACING);
+            var facingHalf = pFacingState.getValue(HALF);
+            var facingShape = pFacingState.getValue(SHAPE);
+            var facingVariant = pFacingState.getValue(VARIANT);
 
-        var rotation = Rotation.fromDirections(currDirection, pFacing);
+            var rotation = Rotation.fromDirections(currDirection, pFacing);
 
-        switch (rotation) {
-            case LEFT -> {
-            }
-            case FRONT -> {
-                if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.BASE
-                        && currDirection == facingDirection
-                        && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.TIP);
+            switch (rotation) {
+                case LEFT, RIGHT -> {
+                }
+                case FRONT, BACK -> {
+                    if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT
+                            && currDirection == facingDirection
+                            && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
+                        return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, facingHalf.otherHalf());
+                    }
+                }
+                case UP, DOWN -> {
+                    if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT
+                            && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
+                        return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, facingHalf.otherHalf());
+                    }
                 }
             }
-            case RIGHT -> {
+        } else if (isFlatRoof(pFacingState)) {
+            var facingAxis = pFacingState.getValue(IsotropicRoofFlatBlock.AXIS);
+            var facingHalf = pFacingState.getValue(IsotropicRoofFlatBlock.HALF);
+
+            var rotation = Rotation.fromDirections(currDirection, pFacing);
+
+            if (currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT
+                    && currDirection.getAxis() == facingAxis
+                    && facingHalf == RoofHalf.TIP) {
+                return pState.setValue(VARIANT, RoofVariant.SLOW)
+                        .setValue(HALF, rotation == Rotation.FRONT ? RoofHalf.TIP : RoofHalf.BASE);
             }
-            case BACK -> {
-                if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.TIP
-                        && currDirection == facingDirection
-                        && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.BASE);
-                }
-            }
-            case UP -> {
-                if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.TIP
-                        && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, RoofHalf.BASE);
-                }
-            }
-            case DOWN -> {
-                if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT && facingHalf == RoofHalf.BASE
-                        && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                    return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, RoofHalf.TIP);
-                }
+        } else if (isEave(pFacingState)) {
+            var facingDirection = pFacingState.getValue(FACING);
+            var facingHalf = pFacingState.getValue(HALF);
+            var facingShape = pFacingState.getValue(SHAPE);
+
+            var rotation = Rotation.fromDirections(currDirection, pFacing);
+
+            if (rotation == Rotation.BACK
+                    && facingHalf == RoofHalf.TIP
+                    && isOpenSide(facingShape, Rotation.fromDirections(currDirection, facingDirection), Rotation.FRONT)
+                    && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
+                return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.BASE);
             }
         }
 
@@ -297,127 +329,9 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
         pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
     }
 
-    private TriFunction<Level, BlockPos, Direction, Optional<BlockState>> tryConnectTo(
-            Rotation target,
-            QuadPredicate<Rotation, RoofShape, RoofHalf, RoofVariant> rotHalfVariantPredicate,
-            BinaryOperator<BlockState> thenSet) {
-
-        return (level, placePos, placeDirection) -> {
-            var fluidType = level.getFluidState(placePos).getType();
-
-            var targetPosDirection = target.rotate(placeDirection);
-            var targetPos = placePos.relative(targetPosDirection);
-            var targetState = level.getBlockState(targetPos);
-
-            if (isRoof(targetState) && rotHalfVariantPredicate.test(
-                    Rotation.fromDirections(placeDirection, targetState.getValue(FACING)),
-                    targetState.getValue(SHAPE),
-                    targetState.getValue(HALF),
-                    targetState.getValue(VARIANT))
-            ) {
-                var initialState = this.defaultBlockState()
-                        .setValue(FACING, placeDirection)
-                        .setValue(WATERLOGGED, fluidType == Fluids.WATER);
-                return Optional.of(thenSet.apply(initialState, targetState));
-            } else {
-                return Optional.empty();
-            }
-        };
-    }
-
-    private static boolean isOpenSide(RoofShape shape, Rotation actual, Rotation expected) {
-        return switch (shape) {
-            case STRAIGHT -> actual == expected;
-            case INNER -> actual == expected || actual.getClockWise() == expected;
-            case OUTER -> false;
-        };
-    }
-
-    private static boolean isHalfOpenClockWiseSide(RoofShape shape, Rotation actual, Rotation expected) {
-        return switch (shape) {
-            case STRAIGHT, INNER -> actual.getCounterClockWise() == expected;
-            case OUTER -> actual == expected;
-        };
-    }
-
-    private static boolean isHalfOpenCounterClockWiseSide(RoofShape shape, Rotation actual, Rotation expected) {
-        return switch (shape) {
-            case STRAIGHT, OUTER -> actual.getClockWise() == expected;
-            case INNER -> actual.get2DOpposite() == expected;
-        };
-    }
-
-    private static boolean isClosedSide(RoofShape shape, Rotation actual, Rotation expected) {
-        return switch (shape) {
-            case STRAIGHT -> actual.get2DOpposite() == expected;
-            case INNER -> false;
-            case OUTER -> actual.getCounterClockWise() == expected || actual.get2DOpposite() == expected;
-        };
-    }
-    
     @Override
     public boolean isGlass() {
         return false;
-    }
-    
-    @Override
-    public VoxelShape getShapeStatic(BlockState pState) {
-        var leftRight = getConnectionLeftRight(pState.getValue(FACING), pState.getValue(SHAPE));
-        var leftRightIndex = leftRight.getLeft().get2DDataValue() * 4 + leftRight.getRight().get2DDataValue();
-        return switch (pState.getValue(HALF)) {
-            case TIP -> ROOF_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
-            case BASE -> ROOF_BASE_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
-        };
-    }
-    
-    @FunctionalInterface
-    private interface QuadPredicate<A, B, C, D> {
-        boolean test(A a, B b, C c, D d);
-    }
-
-    private enum Rotation {
-        LEFT(Direction::getCounterClockWise),
-        FRONT(UnaryOperator.identity()),
-        RIGHT(Direction::getClockWise),
-        BACK(Direction::getOpposite),
-        UP(d -> Direction.UP),
-        DOWN(direction -> Direction.DOWN);
-
-        private final UnaryOperator<Direction> rotator;
-
-        Rotation(UnaryOperator<Direction> rotator) {
-            this.rotator = rotator;
-        }
-
-        public Direction rotate(Direction direction) {
-            return this.rotator.apply(direction);
-        }
-
-        public Rotation getClockWise() {
-            return switch (this) {
-                case LEFT -> FRONT; case FRONT -> RIGHT; case RIGHT -> BACK; case BACK -> LEFT;
-                case UP, DOWN -> this;
-            };
-        }
-
-        public Rotation getCounterClockWise() {
-            return switch (this) {
-                case LEFT -> BACK; case FRONT -> LEFT; case RIGHT -> FRONT; case BACK -> RIGHT;
-                case UP, DOWN -> this;
-            };
-        }
-
-        public Rotation get2DOpposite() {
-            return switch (this) {
-                case LEFT -> RIGHT; case FRONT -> BACK; case RIGHT -> LEFT; case BACK -> FRONT;
-                case UP, DOWN -> this;
-            };
-        }
-
-        public static Rotation fromDirections(Direction start, Direction end) {
-            for (var r : Rotation.values()) if (end == r.rotate(start)) return r;
-            throw new IllegalStateException("wtf why none of the rotations matches");
-        }
     }
 
     private static Pair<Direction, Direction> getConnectionLeftRight(Direction facing, RoofShape shape) {
@@ -426,57 +340,5 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             case INNER -> Pair.of(facing.getCounterClockWise(), facing.getOpposite());
             case OUTER -> Pair.of(facing, facing.getClockWise());
         };
-    }
-
-    private static boolean isRoof(BlockState state) {
-        return state.getBlock() instanceof IsotropicRoofBlock;
-    }
-
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    public enum RoofHalf implements StringRepresentable {
-        BASE, TIP;
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-
-        @Override
-        public String toString() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-    }
-
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    public enum RoofShape implements StringRepresentable {
-        STRAIGHT, INNER, OUTER;
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-
-        @Override
-        public String toString() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-    }
-
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    public enum RoofVariant implements StringRepresentable {
-        NORMAL, SLOW, STEEP;
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-
-        @Override
-        public String toString() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
     }
 }

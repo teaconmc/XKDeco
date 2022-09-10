@@ -36,16 +36,9 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 
     // most of them have not been added into game yet
     private static final Collection<String> EXTRA_KEYS = List.of(
-//            "block.xkdeco.varnished_wardrobe",
-//            "block.xkdeco.ebony_wardrobe",
-//            "block.xkdeco.mahogany_wardrobe",
-//            "block.xkdeco.iron_wardrobe",
-//            "block.xkdeco.glass_wardrobe",
-//            "block.xkdeco.full_glass_wardrobe",
             "block.xkdeco.gilded_blackstone_pillar",
             "block.xkdeco.blue_roof",
             "block.xkdeco.blue_roof_ridge",
-            "block.xkdeco.blue_roof_flat",
             "block.xkdeco.blue_roof_eave",
             "block.xkdeco.blue_roof_end",
             "block.xkdeco.blue_roof_small_eave",
@@ -54,7 +47,6 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
             "block.xkdeco.blue_roof_tip",
             "block.xkdeco.green_roof",
             "block.xkdeco.green_roof_ridge",
-            "block.xkdeco.green_roof_flat",
             "block.xkdeco.green_roof_eave",
             "block.xkdeco.green_roof_end",
             "block.xkdeco.green_roof_small_eave",
@@ -63,7 +55,6 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
             "block.xkdeco.green_roof_tip",
             "block.xkdeco.red_roof",
             "block.xkdeco.red_roof_ridge",
-            "block.xkdeco.red_roof_flat",
             "block.xkdeco.red_roof_eave",
             "block.xkdeco.red_roof_end",
             "block.xkdeco.red_roof_small_eave",
@@ -79,7 +70,10 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
     );
 
     private static final Map<String, String> EXTRA_ENTRIES = Map.ofEntries(
-            Map.entry("block.xkdeco.special_wall", "%s (Column)")
+            Map.entry("block.xkdeco.special_wall", "%s (Column)"),
+            Map.entry("block.xkdeco.blue_roof_flat", "Blue Flat Roof"),
+            Map.entry("block.xkdeco.green_roof_flat", "Green Flat Roof"),
+            Map.entry("block.xkdeco.red_roof_flat", "Red Flat Roof")
     );
 
     public static void register(GatherDataEvent event) {
@@ -115,7 +109,9 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 
     // borrowed from mod uusi-aurinko
     private void translate(IForgeRegistryEntry<?> obj) {
-        var translation = snakeToSpace(Objects.requireNonNull(obj.getRegistryName()).getPath());
+        var id = Objects.requireNonNull(obj.getRegistryName()).getPath();
+        id = id.replace(ROOF_FLAT_SUFFIX, "_flat_roof");
+        var translation = snakeToSpace(id);
         if (obj instanceof Block) {
             add((Block) obj, translation);
         } else if (obj instanceof Item) {

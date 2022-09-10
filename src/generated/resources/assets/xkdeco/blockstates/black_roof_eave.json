@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "facing=north,half=base,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave_top",
+      "y": 270
+    },
+    "facing=south,half=base,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave_top",
+      "y": 90
+    },
+    "facing=west,half=base,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave_top",
+      "y": 180
+    },
+    "facing=east,half=base,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave_top"
+    },
+    "facing=north,half=tip,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave",
+      "y": 270
+    },
+    "facing=south,half=tip,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave",
+      "y": 90
+    },
+    "facing=west,half=tip,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave",
+      "y": 180
+    },
+    "facing=east,half=tip,shape=straight": {
+      "model": "xkdeco:block/structure/black_roof_eave"
+    },
+    "facing=north,half=base,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner_top",
+      "y": 270
+    },
+    "facing=south,half=base,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner_top",
+      "y": 90
+    },
+    "facing=west,half=base,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner_top",
+      "y": 180
+    },
+    "facing=east,half=base,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner_top"
+    },
+    "facing=north,half=tip,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner",
+      "y": 270
+    },
+    "facing=south,half=tip,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner",
+      "y": 90
+    },
+    "facing=west,half=tip,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner",
+      "y": 180
+    },
+    "facing=east,half=tip,shape=inner": {
+      "model": "xkdeco:block/structure/black_roof_eave_inner"
+    },
+    "facing=north,half=base,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer_top",
+      "y": 270
+    },
+    "facing=south,half=base,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer_top",
+      "y": 90
+    },
+    "facing=west,half=base,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer_top",
+      "y": 180
+    },
+    "facing=east,half=base,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer_top"
+    },
+    "facing=north,half=tip,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer",
+      "y": 270
+    },
+    "facing=south,half=tip,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer",
+      "y": 90
+    },
+    "facing=west,half=tip,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer",
+      "y": 180
+    },
+    "facing=east,half=tip,shape=outer": {
+      "model": "xkdeco:block/structure/black_roof_eave_outer"
+    }
+  }
+}
