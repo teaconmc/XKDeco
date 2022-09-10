@@ -1,7 +1,9 @@
 package org.teacon.xkdeco.block;
 
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -16,9 +18,16 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
+import static org.teacon.xkdeco.util.RoofUtil.*;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
-    public static final EnumProperty<IsotropicRoofBlock.RoofShape> SHAPE = EnumProperty.create("shape", IsotropicRoofBlock.RoofShape.class);
-    public static final EnumProperty<IsotropicRoofBlock.RoofHalf> HALF = EnumProperty.create("half", IsotropicRoofBlock.RoofHalf.class);
+    public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
+    public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -28,7 +37,7 @@ public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterlo
     public IsotropicRoofEaveBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
-                .setValue(SHAPE, IsotropicRoofBlock.RoofShape.STRAIGHT).setValue(HALF, IsotropicRoofBlock.RoofHalf.TIP)
+                .setValue(SHAPE, RoofShape.STRAIGHT).setValue(HALF, RoofHalf.TIP)
                 .setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
@@ -72,5 +81,33 @@ public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterlo
             case BASE -> ROOF_EAVE_BASE;
             case TIP -> ROOF_EAVE_TIP;
         };
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        var initialState = this.defaultBlockState()
+                .setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, getPlacementHalf(pContext))
+                .setValue(WATERLOGGED, pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER);
+
+        for (var trial : List.of(
+                // try to become a non-straight roof matching the triangular side of the roof at front/back
+                tryConnectToEave(Rotation.FRONT,
+                        (r, s, h) -> isHalfOpenClockWiseSide(s, r, Rotation.BACK),
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
+                tryConnectToEave(Rotation.FRONT,
+                        (r, s, h) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.BACK),
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
+                tryConnectToEave(Rotation.BACK,
+                        (r, s, h) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.FRONT),
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
+                tryConnectToEave(Rotation.BACK,
+                        (r, s, h) -> isHalfOpenClockWiseSide(s, r, Rotation.FRONT),
+                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING)))
+        )) {
+            var result = trial.apply(pContext.getLevel(), pContext.getClickedPos(), pContext.getHorizontalDirection(), initialState);
+            if (result.isPresent()) return result.get().setValue(HALF, getPlacementHalf(pContext));
+        }
+
+        return initialState;
     }
 }

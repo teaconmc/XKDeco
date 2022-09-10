@@ -1,7 +1,9 @@
 package org.teacon.xkdeco.block;
 
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -16,8 +18,14 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import static org.teacon.xkdeco.util.RoofUtil.*;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
-    public static final EnumProperty<IsotropicRoofBlock.RoofHalf> HALF = EnumProperty.create("half", IsotropicRoofBlock.RoofHalf.class);
+    public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -27,7 +35,7 @@ public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterlo
     public IsotropicRoofFlatBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
-                .setValue(HALF, IsotropicRoofBlock.RoofHalf.TIP).setValue(AXIS, Direction.Axis.X)
+                .setValue(HALF, RoofHalf.TIP).setValue(AXIS, Direction.Axis.X)
                 .setValue(WATERLOGGED, false));
     }
 
@@ -71,5 +79,12 @@ public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterlo
             case BASE -> ROOF_FLAT_BASE;
             case TIP -> ROOF_FLAT_TIP;
         };
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return this.defaultBlockState()
+                .setValue(AXIS, pContext.getHorizontalDirection().getAxis()).setValue(HALF, getPlacementHalf(pContext))
+                .setValue(WATERLOGGED, pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER);
     }
 }
