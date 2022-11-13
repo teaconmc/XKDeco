@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:maya_stonebricks"
+  },
+  "result": "xkdeco:maya_stonebrick_stairs",
+  "count": 1
+}

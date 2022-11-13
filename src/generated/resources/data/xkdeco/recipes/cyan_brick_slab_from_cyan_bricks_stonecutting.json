@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:cyan_bricks"
+  },
+  "result": "xkdeco:cyan_brick_slab",
+  "count": 2
+}

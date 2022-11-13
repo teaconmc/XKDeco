@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:black_tiles"
+    }
+  },
+  "result": {
+    "item": "xkdeco:black_tile_stairs",
+    "count": 4
+  }
+}

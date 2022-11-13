@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:mud_wall_block"
+    }
+  },
+  "result": {
+    "item": "xkdeco:mud_wall_stairs",
+    "count": 4
+  }
+}

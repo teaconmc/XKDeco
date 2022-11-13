@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:factory_block"
+    }
+  },
+  "result": {
+    "item": "xkdeco:factory_stairs",
+    "count": 4
+  }
+}

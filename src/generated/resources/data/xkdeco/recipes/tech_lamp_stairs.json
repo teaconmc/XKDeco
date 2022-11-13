@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:tech_lamp_block"
+    }
+  },
+  "result": {
+    "item": "xkdeco:tech_lamp_stairs",
+    "count": 4
+  }
+}

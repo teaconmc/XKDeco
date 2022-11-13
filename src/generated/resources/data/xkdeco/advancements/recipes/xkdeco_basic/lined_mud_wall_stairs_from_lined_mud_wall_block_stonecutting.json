@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:lined_mud_wall_stairs_from_lined_mud_wall_block_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_lined_mud_wall_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:lined_mud_wall_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:lined_mud_wall_stairs_from_lined_mud_wall_block_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lined_mud_wall_block",
+      "has_the_recipe"
+    ]
+  ]
+}

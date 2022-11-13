@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:quartz_glass"
+  },
+  "result": "xkdeco:quartz_glass_stairs",
+  "count": 1
+}

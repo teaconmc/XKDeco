@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:inca_bricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:inca_brick_stairs",
+    "count": 4
+  }
+}

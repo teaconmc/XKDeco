@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:deepslate_pavement_slab"
+    ]
+  },
+  "criteria": {
+    "has_deepslate_pavement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:deepslate_pavement"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:deepslate_pavement_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_deepslate_pavement",
+      "has_the_recipe"
+    ]
+  ]
+}

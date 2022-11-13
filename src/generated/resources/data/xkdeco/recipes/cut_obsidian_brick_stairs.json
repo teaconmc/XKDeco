@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:cut_obsidian_bricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:cut_obsidian_brick_stairs",
+    "count": 4
+  }
+}

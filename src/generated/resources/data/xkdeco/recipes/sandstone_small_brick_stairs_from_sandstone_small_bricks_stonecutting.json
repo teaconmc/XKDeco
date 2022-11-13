@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:sandstone_small_bricks"
+  },
+  "result": "xkdeco:sandstone_small_brick_stairs",
+  "count": 1
+}

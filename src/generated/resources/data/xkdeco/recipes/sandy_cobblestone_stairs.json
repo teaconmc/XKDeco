@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:sandy_cobblestone"
+    }
+  },
+  "result": {
+    "item": "xkdeco:sandy_cobblestone_stairs",
+    "count": 4
+  }
+}

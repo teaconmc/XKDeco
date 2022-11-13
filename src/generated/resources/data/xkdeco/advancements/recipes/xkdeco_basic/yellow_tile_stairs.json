@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:yellow_tile_stairs"
+    ]
+  },
+  "criteria": {
+    "has_yellow_tiles": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:yellow_tiles"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:yellow_tile_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_yellow_tiles",
+      "has_the_recipe"
+    ]
+  ]
+}

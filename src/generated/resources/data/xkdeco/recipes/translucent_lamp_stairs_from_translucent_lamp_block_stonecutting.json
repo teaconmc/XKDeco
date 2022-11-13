@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:translucent_lamp_block"
+  },
+  "result": "xkdeco:translucent_lamp_stairs",
+  "count": 1
+}

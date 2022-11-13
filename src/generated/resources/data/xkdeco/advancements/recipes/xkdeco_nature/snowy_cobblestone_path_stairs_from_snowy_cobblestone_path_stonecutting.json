@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:snowy_cobblestone_path_stairs_from_snowy_cobblestone_path_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_snowy_cobblestone_path": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:snowy_cobblestone_path"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:snowy_cobblestone_path_stairs_from_snowy_cobblestone_path_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_snowy_cobblestone_path",
+      "has_the_recipe"
+    ]
+  ]
+}

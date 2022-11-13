@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:aztec_mossy_stonebrick_slab"
+    ]
+  },
+  "criteria": {
+    "has_aztec_mossy_stonebricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:aztec_mossy_stonebricks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:aztec_mossy_stonebrick_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_aztec_mossy_stonebricks",
+      "has_the_recipe"
+    ]
+  ]
+}

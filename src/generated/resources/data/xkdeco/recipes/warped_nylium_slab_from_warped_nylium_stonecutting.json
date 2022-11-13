@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:warped_nylium"
+  },
+  "result": "xkdeco:warped_nylium_slab",
+  "count": 2
+}

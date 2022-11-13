@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:black_roof"
+  },
+  "result": "xkdeco:black_roof_eave",
+  "count": 2
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:glass_tile_stairs_from_glass_tiles_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_glass_tiles": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:glass_tiles"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:glass_tile_stairs_from_glass_tiles_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_glass_tiles",
+      "has_the_recipe"
+    ]
+  ]
+}

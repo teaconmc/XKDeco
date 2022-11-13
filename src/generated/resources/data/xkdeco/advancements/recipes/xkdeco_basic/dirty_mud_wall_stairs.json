@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:dirty_mud_wall_stairs"
+    ]
+  },
+  "criteria": {
+    "has_dirty_mud_wall_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:dirty_mud_wall_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:dirty_mud_wall_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dirty_mud_wall_block",
+      "has_the_recipe"
+    ]
+  ]
+}

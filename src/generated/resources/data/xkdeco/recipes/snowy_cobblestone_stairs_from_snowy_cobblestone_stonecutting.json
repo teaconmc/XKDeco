@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:snowy_cobblestone"
+  },
+  "result": "xkdeco:snowy_cobblestone_stairs",
+  "count": 1
+}

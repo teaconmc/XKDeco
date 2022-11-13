@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:translucent_lamp_block"
+    }
+  },
+  "result": {
+    "item": "xkdeco:translucent_lamp_slab",
+    "count": 6
+  }
+}

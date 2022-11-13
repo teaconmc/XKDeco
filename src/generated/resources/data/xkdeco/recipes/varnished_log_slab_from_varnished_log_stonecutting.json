@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:varnished_log"
+  },
+  "result": "xkdeco:varnished_log_slab",
+  "count": 2
+}

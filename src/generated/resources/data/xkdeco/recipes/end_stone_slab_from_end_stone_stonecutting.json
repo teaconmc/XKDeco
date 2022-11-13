@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:end_stone"
+  },
+  "result": "xkdeco:end_stone_slab",
+  "count": 2
+}

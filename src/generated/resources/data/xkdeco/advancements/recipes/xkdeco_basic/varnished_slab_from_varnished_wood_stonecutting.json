@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:varnished_slab_from_varnished_wood_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_varnished_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:varnished_wood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:varnished_slab_from_varnished_wood_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_varnished_wood",
+      "has_the_recipe"
+    ]
+  ]
+}

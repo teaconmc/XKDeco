@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:toughened_glass"
+  },
+  "result": "xkdeco:toughened_glass_slab",
+  "count": 2
+}

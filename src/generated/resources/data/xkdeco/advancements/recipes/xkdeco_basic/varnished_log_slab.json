@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:varnished_log_slab"
+    ]
+  },
+  "criteria": {
+    "has_varnished_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:varnished_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:varnished_log_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_varnished_log",
+      "has_the_recipe"
+    ]
+  ]
+}

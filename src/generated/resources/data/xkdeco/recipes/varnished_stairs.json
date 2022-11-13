@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:varnished_wood"
+    }
+  },
+  "result": {
+    "item": "xkdeco:varnished_stairs",
+    "count": 4
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:mahogany_log_slab"
+    ]
+  },
+  "criteria": {
+    "has_mahogany_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:mahogany_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:mahogany_log_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mahogany_log",
+      "has_the_recipe"
+    ]
+  ]
+}

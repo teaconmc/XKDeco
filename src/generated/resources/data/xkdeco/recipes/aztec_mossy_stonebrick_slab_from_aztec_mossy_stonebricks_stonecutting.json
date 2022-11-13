@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:aztec_mossy_stonebricks"
+  },
+  "result": "xkdeco:aztec_mossy_stonebrick_slab",
+  "count": 2
+}

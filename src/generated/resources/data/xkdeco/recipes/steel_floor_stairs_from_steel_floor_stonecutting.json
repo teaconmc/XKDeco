@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:steel_floor"
+  },
+  "result": "xkdeco:steel_floor_stairs",
+  "count": 1
+}

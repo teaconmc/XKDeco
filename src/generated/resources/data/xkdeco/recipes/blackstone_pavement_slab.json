@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:blackstone_pavement"
+    }
+  },
+  "result": {
+    "item": "xkdeco:blackstone_pavement_slab",
+    "count": 6
+  }
+}

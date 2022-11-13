@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:mossy_deepslate_bricks"
+  },
+  "result": "xkdeco:mossy_deepslate_brick_stairs",
+  "count": 1
+}

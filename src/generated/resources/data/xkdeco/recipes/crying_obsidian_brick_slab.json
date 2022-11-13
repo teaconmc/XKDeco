@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:crying_obsidian_bricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:crying_obsidian_brick_slab",
+    "count": 6
+  }
+}

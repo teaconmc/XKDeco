@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:factory_lamp_slab"
+    ]
+  },
+  "criteria": {
+    "has_factory_lamp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:factory_lamp"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:factory_lamp_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_factory_lamp",
+      "has_the_recipe"
+    ]
+  ]
+}

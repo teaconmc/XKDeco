@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:grass_cobblestone"
+  },
+  "result": "xkdeco:grass_cobblestone_slab",
+  "count": 2
+}

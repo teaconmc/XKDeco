@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:red_tiles"
+    }
+  },
+  "result": {
+    "item": "xkdeco:red_tile_slab",
+    "count": 6
+  }
+}

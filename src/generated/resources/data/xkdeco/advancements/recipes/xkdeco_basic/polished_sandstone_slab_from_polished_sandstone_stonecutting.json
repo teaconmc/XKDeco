@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:polished_sandstone_slab_from_polished_sandstone_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_polished_sandstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:polished_sandstone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:polished_sandstone_slab_from_polished_sandstone_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_polished_sandstone",
+      "has_the_recipe"
+    ]
+  ]
+}

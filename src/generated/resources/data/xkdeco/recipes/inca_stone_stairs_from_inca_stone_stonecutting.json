@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:inca_stone"
+  },
+  "result": "xkdeco:inca_stone_stairs",
+  "count": 1
+}

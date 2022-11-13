@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:mahogany_slab_from_mahogany_wood_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_mahogany_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:mahogany_wood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:mahogany_slab_from_mahogany_wood_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mahogany_wood",
+      "has_the_recipe"
+    ]
+  ]
+}

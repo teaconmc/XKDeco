@@ -12,6 +12,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.teacon.xkdeco.client.XKDecoClient;
 import org.teacon.xkdeco.data.XKDecoBlockStateProvider;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
+import org.teacon.xkdeco.data.XKDecoRecipeProvider;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
@@ -36,6 +37,7 @@ public final class XKDeco {
         modEventBus.addGenericListener(BlockEntityType.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
 
         modEventBus.addListener(XKDecoBlockStateProvider::register);
+        modEventBus.addListener(XKDecoRecipeProvider::register);
         modEventBus.addListener(XKDecoEnUsLangProvider::register);
 
         if (FMLEnvironment.dist.isClient()) {

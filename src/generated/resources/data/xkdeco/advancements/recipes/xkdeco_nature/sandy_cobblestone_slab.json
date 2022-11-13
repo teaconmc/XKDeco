@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:sandy_cobblestone_slab"
+    ]
+  },
+  "criteria": {
+    "has_sandy_cobblestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:sandy_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:sandy_cobblestone_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sandy_cobblestone",
+      "has_the_recipe"
+    ]
+  ]
+}

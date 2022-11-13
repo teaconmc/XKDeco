@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:grass_cobblestone_stairs"
+    ]
+  },
+  "criteria": {
+    "has_grass_cobblestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:grass_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:grass_cobblestone_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_grass_cobblestone",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:sandy_cobblestone_path_stairs"
+    ]
+  },
+  "criteria": {
+    "has_sandy_cobblestone_path": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:sandy_cobblestone_path"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:sandy_cobblestone_path_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sandy_cobblestone_path",
+      "has_the_recipe"
+    ]
+  ]
+}

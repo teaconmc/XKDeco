@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:maya_mossy_stonebrick_slab_from_maya_mossy_stonebricks_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_maya_mossy_stonebricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:maya_mossy_stonebricks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:maya_mossy_stonebrick_slab_from_maya_mossy_stonebricks_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_maya_mossy_stonebricks",
+      "has_the_recipe"
+    ]
+  ]
+}

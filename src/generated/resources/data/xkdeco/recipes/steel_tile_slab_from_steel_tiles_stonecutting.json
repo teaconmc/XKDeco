@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:steel_tiles"
+  },
+  "result": "xkdeco:steel_tile_slab",
+  "count": 2
+}

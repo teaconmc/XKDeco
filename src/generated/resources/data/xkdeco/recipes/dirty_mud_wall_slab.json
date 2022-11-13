@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:dirty_mud_wall_block"
+    }
+  },
+  "result": {
+    "item": "xkdeco:dirty_mud_wall_slab",
+    "count": 6
+  }
+}

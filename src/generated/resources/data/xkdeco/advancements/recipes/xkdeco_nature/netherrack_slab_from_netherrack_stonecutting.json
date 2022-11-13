@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:netherrack_slab_from_netherrack_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_netherrack": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:netherrack"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:netherrack_slab_from_netherrack_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherrack",
+      "has_the_recipe"
+    ]
+  ]
+}

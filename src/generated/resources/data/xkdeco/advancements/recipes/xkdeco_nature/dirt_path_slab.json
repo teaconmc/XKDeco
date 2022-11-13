@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:dirt_path_slab"
+    ]
+  },
+  "criteria": {
+    "has_dirt_path": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:dirt_path"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:dirt_path_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dirt_path",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:mycelium"
+  },
+  "result": "xkdeco:mycelium_slab",
+  "count": 2
+}

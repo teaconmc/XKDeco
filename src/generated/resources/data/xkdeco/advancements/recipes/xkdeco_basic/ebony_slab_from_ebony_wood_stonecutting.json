@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:ebony_slab_from_ebony_wood_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_ebony_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:ebony_wood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:ebony_slab_from_ebony_wood_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ebony_wood",
+      "has_the_recipe"
+    ]
+  ]
+}

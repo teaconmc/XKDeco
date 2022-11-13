@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:maya_polished_stonebrick_stairs"
+    ]
+  },
+  "criteria": {
+    "has_maya_polished_stonebricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:maya_polished_stonebricks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:maya_polished_stonebrick_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_maya_polished_stonebricks",
+      "has_the_recipe"
+    ]
+  ]
+}

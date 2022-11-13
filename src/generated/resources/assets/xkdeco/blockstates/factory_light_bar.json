@@ -4,39 +4,39 @@
       "model": "xkdeco:block/furniture/factory_light_bar",
       "x": 180,
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=top,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar",
       "x": 180,
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=top,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar",
       "x": 180,
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=top,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar",
       "x": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=bottom,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar",
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=bottom,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar",
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=bottom,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar",
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=bottom,shape=straight": {
       "model": "xkdeco:block/furniture/factory_light_bar"
@@ -45,29 +45,29 @@
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=top,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=top,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=top,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner"
@@ -75,50 +75,50 @@
     "facing=west,half=bottom,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=top,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=top,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=top,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=top,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "x": 180,
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner",
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_inner"
@@ -127,29 +127,29 @@
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=top,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=top,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=top,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer"
@@ -157,50 +157,50 @@
     "facing=west,half=bottom,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=top,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=top,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=top,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=top,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "x": 180,
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "y": 270,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "y": 90,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer",
       "y": 180,
-      "uvlock": false
+      "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right": {
       "model": "xkdeco:block/furniture/factory_light_bar_outer"

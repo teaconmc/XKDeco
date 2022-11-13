@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:cut_gold_block"
+    }
+  },
+  "result": {
+    "item": "xkdeco:cut_gold_block_stairs",
+    "count": 4
+  }
+}

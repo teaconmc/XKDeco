@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:sandy_cobblestone_path"
+  },
+  "result": "xkdeco:sandy_cobblestone_path_stairs",
+  "count": 1
+}

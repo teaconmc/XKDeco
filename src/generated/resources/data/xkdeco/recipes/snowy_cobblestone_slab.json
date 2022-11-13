@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:snowy_cobblestone"
+    }
+  },
+  "result": {
+    "item": "xkdeco:snowy_cobblestone_slab",
+    "count": 6
+  }
+}

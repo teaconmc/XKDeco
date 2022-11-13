@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:gold_bricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:gold_brick_slab",
+    "count": 6
+  }
+}

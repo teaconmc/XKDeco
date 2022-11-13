@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:cyan_tile_slab"
+    ]
+  },
+  "criteria": {
+    "has_cyan_tiles": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:cyan_tiles"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:cyan_tile_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cyan_tiles",
+      "has_the_recipe"
+    ]
+  ]
+}

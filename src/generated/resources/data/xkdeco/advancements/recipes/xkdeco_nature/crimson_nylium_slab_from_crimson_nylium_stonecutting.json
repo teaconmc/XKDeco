@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:crimson_nylium_slab_from_crimson_nylium_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_crimson_nylium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crimson_nylium"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:crimson_nylium_slab_from_crimson_nylium_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_crimson_nylium",
+      "has_the_recipe"
+    ]
+  ]
+}

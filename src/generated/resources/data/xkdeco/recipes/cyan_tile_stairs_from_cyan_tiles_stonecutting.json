@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:cyan_tiles"
+  },
+  "result": "xkdeco:cyan_tile_stairs",
+  "count": 1
+}

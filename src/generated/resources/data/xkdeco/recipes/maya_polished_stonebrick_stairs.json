@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:maya_polished_stonebricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:maya_polished_stonebrick_stairs",
+    "count": 4
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:red_sandstone_small_bricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:red_sandstone_small_brick_slab",
+    "count": 6
+  }
+}

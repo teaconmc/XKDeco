@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:glass_tiles"
+    }
+  },
+  "result": {
+    "item": "xkdeco:glass_tile_slab",
+    "count": 6
+  }
+}

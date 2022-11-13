@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:ebony_log"
+  },
+  "result": "xkdeco:ebony_log_slab",
+  "count": 2
+}

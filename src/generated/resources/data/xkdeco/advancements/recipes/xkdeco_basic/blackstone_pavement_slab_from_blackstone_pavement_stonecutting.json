@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:blackstone_pavement_slab_from_blackstone_pavement_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_blackstone_pavement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:blackstone_pavement"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:blackstone_pavement_slab_from_blackstone_pavement_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_blackstone_pavement",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:sandstone_small_brick_stairs"
+    ]
+  },
+  "criteria": {
+    "has_sandstone_small_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:sandstone_small_bricks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:sandstone_small_brick_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sandstone_small_bricks",
+      "has_the_recipe"
+    ]
+  ]
+}

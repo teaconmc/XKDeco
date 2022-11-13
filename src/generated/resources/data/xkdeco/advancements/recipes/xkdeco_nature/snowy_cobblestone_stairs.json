@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:snowy_cobblestone_stairs"
+    ]
+  },
+  "criteria": {
+    "has_snowy_cobblestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:snowy_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:snowy_cobblestone_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_snowy_cobblestone",
+      "has_the_recipe"
+    ]
+  ]
+}

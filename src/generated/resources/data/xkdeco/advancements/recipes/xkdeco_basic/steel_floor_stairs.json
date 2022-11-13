@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:steel_floor_stairs"
+    ]
+  },
+  "criteria": {
+    "has_steel_floor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:steel_floor"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:steel_floor_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_floor",
+      "has_the_recipe"
+    ]
+  ]
+}

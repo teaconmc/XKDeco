@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:black_tile_stairs"
+    ]
+  },
+  "criteria": {
+    "has_black_tiles": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:black_tiles"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:black_tile_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_black_tiles",
+      "has_the_recipe"
+    ]
+  ]
+}

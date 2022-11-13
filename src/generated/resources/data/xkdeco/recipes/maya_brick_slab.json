@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "xkdeco:maya_bricks"
+    }
+  },
+  "result": {
+    "item": "xkdeco:maya_brick_slab",
+    "count": 6
+  }
+}

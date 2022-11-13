@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "xkdeco:inca_brick_slab"
+    ]
+  },
+  "criteria": {
+    "has_inca_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:inca_bricks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "xkdeco:inca_brick_slab"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_inca_bricks",
+      "has_the_recipe"
+    ]
+  ]
+}
