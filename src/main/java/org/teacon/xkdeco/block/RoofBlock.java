@@ -19,7 +19,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.commons.lang3.tuple.Pair;
+import org.teacon.xkdeco.util.RoofUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -151,12 +151,10 @@ public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XK
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        var leftRight = getConnectionLeftRight(pState.getValue(FACING), pState.getValue(SHAPE));
-        var leftRightIndex = leftRight.getLeft().get2DDataValue() * 4 + leftRight.getRight().get2DDataValue();
-        return switch (pState.getValue(HALF)) {
-            case TIP -> ROOF_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
-            case BASE -> ROOF_BASE_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
-        };
+        var facing = pState.getValue(FACING);
+        var roofHalf = pState.getValue(HALF);
+        var roofVariant = pState.getValue(VARIANT);
+        return RoofUtil.getShape(pState.getValue(SHAPE), facing, roofHalf, roofVariant);
     }
 
     @Override
@@ -322,13 +320,5 @@ public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XK
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
-    }
-
-    private static Pair<Direction, Direction> getConnectionLeftRight(Direction facing, RoofShape shape) {
-        return switch (shape) {
-            case STRAIGHT -> Pair.of(facing.getCounterClockWise(), facing.getClockWise());
-            case INNER -> Pair.of(facing.getCounterClockWise(), facing.getOpposite());
-            case OUTER -> Pair.of(facing, facing.getClockWise());
-        };
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.TriPredicate;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -148,6 +149,18 @@ public class RoofUtil {
         };
     }
 
+    public static VoxelShape getShape(RoofShape shape, Direction facing, RoofHalf half, RoofVariant variant) {
+        var indexLeftRight = switch (shape) {
+            case STRAIGHT -> facing.getCounterClockWise().get2DDataValue() * 4 + facing.getClockWise().get2DDataValue();
+            case INNER -> facing.getCounterClockWise().get2DDataValue() * 4 + facing.getOpposite().get2DDataValue();
+            case OUTER -> facing.get2DDataValue() * 4 + facing.getClockWise().get2DDataValue();
+        };
+        return switch (half) {
+            case TIP -> RoofBlock.ROOF_SHAPES.get(variant.ordinal() * 16 + indexLeftRight);
+            case BASE -> RoofBlock.ROOF_BASE_SHAPES.get(variant.ordinal() * 16 + indexLeftRight);
+        };
+    }
+
     public enum Rotation {
         LEFT(Direction::getCounterClockWise),
         FRONT(UnaryOperator.identity()),
@@ -226,6 +239,22 @@ public class RoofUtil {
     @ParametersAreNonnullByDefault
     public enum RoofShape implements StringRepresentable {
         STRAIGHT, INNER, OUTER;
+
+        @Override
+        public String getSerializedName() {
+            return this.name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public String toString() {
+            return this.name().toLowerCase(Locale.ROOT);
+        }
+    }
+
+    @MethodsReturnNonnullByDefault
+    @ParametersAreNonnullByDefault
+    public enum RoofEndShape implements StringRepresentable {
+        LEFT, RIGHT;
 
         @Override
         public String getSerializedName() {

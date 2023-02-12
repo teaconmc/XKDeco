@@ -77,6 +77,7 @@ public final class XKDecoObjects {
     public static final String PATH_SUFFIX = "_path";
     public static final String ROOF_SUFFIX = "_roof";
     public static final String ROOF_RIDGE_SUFFIX = "_roof_ridge";
+    public static final String ROOF_END_SUFFIX = "_roof_end";
     public static final String ROOF_EAVE_SUFFIX = "_roof_eave";
     public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
     public static final String STOOL_SUFFIX = "_stool";
@@ -164,6 +165,9 @@ public final class XKDecoObjects {
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(ROOF_FLAT_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new RoofFlatBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_END_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new RoofEndBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(ROOF_EAVE_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new RoofEaveBlock(properties));
@@ -813,6 +817,7 @@ public final class XKDecoObjects {
 
         addRoof("black_roof", BLOCK_ROOF, ITEM_STRUCTURE);
         addRoof("black_roof_ridge", BLOCK_ROOF, ITEM_STRUCTURE);
+        addRoof("black_roof_end", BLOCK_ROOF, ITEM_STRUCTURE);
         addRoof("black_roof_eave", BLOCK_ROOF, ITEM_STRUCTURE);
         addRoof("black_roof_flat", BLOCK_ROOF, ITEM_STRUCTURE);
 

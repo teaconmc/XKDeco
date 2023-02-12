@@ -29,7 +29,7 @@ public sealed interface XKDecoBlock permits
 
     // roof related blocks which have complex connection logic
     sealed interface Roof extends XKDecoBlock permits
-            RoofBlock, RoofEaveBlock, RoofFlatBlock, RoofRidgeBlock {
+            RoofBlock, RoofEaveBlock, RoofEndBlock, RoofFlatBlock, RoofRidgeBlock {
         // nothing here
     }
 
