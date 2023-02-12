@@ -25,7 +25,7 @@ import static org.teacon.xkdeco.util.RoofUtil.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
+public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
     public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
     public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -34,7 +34,7 @@ public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterlo
     public static final VoxelShape ROOF_EAVE_TIP = Block.box(0, 0, 0, 16, 8, 16);
     public static final VoxelShape ROOF_EAVE_BASE = Block.box(0, 8, 0, 16, 16, 16);
 
-    public IsotropicRoofEaveBlock(Properties properties) {
+    public RoofEaveBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(SHAPE, RoofShape.STRAIGHT).setValue(HALF, RoofHalf.TIP)
@@ -50,7 +50,10 @@ public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterlo
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return getShapeStatic(pState);
+        return switch (pState.getValue(HALF)) {
+            case BASE -> ROOF_EAVE_BASE;
+            case TIP -> ROOF_EAVE_TIP;
+        };
     }
 
     @Override
@@ -68,19 +71,6 @@ public final class IsotropicRoofEaveBlock extends Block implements SimpleWaterlo
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(SHAPE, HALF, FACING, WATERLOGGED);
-    }
-
-    @Override
-    public boolean isGlass() {
-        return false;
-    }
-
-    @Override
-    public VoxelShape getShapeStatic(BlockState state) {
-        return switch (state.getValue(HALF)) {
-            case BASE -> ROOF_EAVE_BASE;
-            case TIP -> ROOF_EAVE_TIP;
-        };
     }
 
     @Override

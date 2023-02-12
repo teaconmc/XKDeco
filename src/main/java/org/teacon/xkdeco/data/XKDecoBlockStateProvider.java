@@ -20,9 +20,9 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.IsotropicRoofFlatBlock;
-import org.teacon.xkdeco.block.IsotropicRoofBlock;
-import org.teacon.xkdeco.block.IsotropicRoofEaveBlock;
+import org.teacon.xkdeco.block.RoofBlock;
+import org.teacon.xkdeco.block.RoofEaveBlock;
+import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
@@ -87,51 +87,51 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                     this.stairsBlock(stairBlock, model(id, path, ""), model(id, path, "_inner"), model(id, path, "_outer"));
                 } else if (block instanceof RotatedPillarBlock rotatedPillarBlock) {
                     this.axisBlock(rotatedPillarBlock, model(id, path, ""), model(getHorizontalPillarBlockId(id), path, ""));
-                } else if (block instanceof IsotropicRoofFlatBlock eave) {
+                } else if (block instanceof RoofFlatBlock eave) {
                     this.getVariantBuilder(eave).forAllStatesExcept(state -> {
-                        var halfSuffix = switch (state.getValue(IsotropicRoofFlatBlock.HALF)) {
+                        var halfSuffix = switch (state.getValue(RoofFlatBlock.HALF)) {
                             case TIP -> "";
                             case BASE -> "_top";
                         };
                         var model = model(id, path, halfSuffix);
-                        var facing2d = state.getValue(IsotropicRoofFlatBlock.AXIS);
+                        var facing2d = state.getValue(RoofFlatBlock.AXIS);
                         return ConfiguredModel.builder().modelFile(model).rotationY(facing2d == Direction.Axis.X ? 90 : 0).build();
-                    }, IsotropicRoofEaveBlock.WATERLOGGED);
-                } else if (block instanceof IsotropicRoofEaveBlock eave) {
+                    }, RoofEaveBlock.WATERLOGGED);
+                } else if (block instanceof RoofEaveBlock eave) {
                     this.getVariantBuilder(eave).forAllStatesExcept(state -> {
-                        var shapeSuffix = switch (state.getValue(IsotropicRoofEaveBlock.SHAPE)) {
+                        var shapeSuffix = switch (state.getValue(RoofEaveBlock.SHAPE)) {
                             case STRAIGHT -> "";
                             case INNER -> "_inner";
                             case OUTER -> "_outer";
                         };
-                        var halfSuffix = switch (state.getValue(IsotropicRoofEaveBlock.HALF)) {
+                        var halfSuffix = switch (state.getValue(RoofEaveBlock.HALF)) {
                             case TIP -> "";
                             case BASE -> "_top";
                         };
                         var model = model(id, path, shapeSuffix + halfSuffix);
-                        var facing2d = state.getValue(IsotropicRoofEaveBlock.FACING).get2DDataValue();
+                        var facing2d = state.getValue(RoofEaveBlock.FACING).get2DDataValue();
                         return ConfiguredModel.builder().modelFile(model).rotationY((1 + facing2d) % 4 * 90).build();
-                    }, IsotropicRoofEaveBlock.WATERLOGGED);
-                } else if (block instanceof IsotropicRoofBlock roof) {
+                    }, RoofEaveBlock.WATERLOGGED);
+                } else if (block instanceof RoofBlock roof) {
                     this.getVariantBuilder(roof).forAllStatesExcept(state -> {
-                        var prefix = switch (state.getValue(IsotropicRoofBlock.VARIANT)) {
+                        var prefix = switch (state.getValue(RoofBlock.VARIANT)) {
                             case NORMAL -> id.replace(XKDecoObjects.ROOF_SUFFIX, "_roof");
                             case SLOW -> id.replace(XKDecoObjects.ROOF_SUFFIX, "_slow_roof");
                             case STEEP -> id.replace(XKDecoObjects.ROOF_SUFFIX, "_steep_roof");
                         };
-                        var shapeSuffix = switch (state.getValue(IsotropicRoofBlock.SHAPE)) {
+                        var shapeSuffix = switch (state.getValue(RoofBlock.SHAPE)) {
                             case STRAIGHT -> "";
                             case INNER -> "_inner";
                             case OUTER -> "_outer";
                         };
-                        var halfSuffix = switch (state.getValue(IsotropicRoofBlock.HALF)) {
+                        var halfSuffix = switch (state.getValue(RoofBlock.HALF)) {
                             case TIP -> "";
                             case BASE -> "_top";
                         };
                         var model = model(prefix, path, shapeSuffix + halfSuffix);
-                        var facing2d = state.getValue(IsotropicRoofBlock.FACING).get2DDataValue();
+                        var facing2d = state.getValue(RoofBlock.FACING).get2DDataValue();
                         return ConfiguredModel.builder().modelFile(model).rotationY((1 + facing2d) % 4 * 90).build();
-                    }, IsotropicRoofBlock.WATERLOGGED);
+                    }, RoofBlock.WATERLOGGED);
                 } else if (block instanceof SpecialWardrobeBlock) {
                     this.getVariantBuilder(block).forAllStates(state -> {
                         var modelName = new StringBuilder(id);

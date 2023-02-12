@@ -28,7 +28,7 @@ import static org.teacon.xkdeco.util.RoofUtil.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicRoofBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
+public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
     public static final EnumProperty<RoofVariant> VARIANT = EnumProperty.create("variant", RoofVariant.class);
     public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
     public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
@@ -135,7 +135,7 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
             STEEP_ROOF_BASE_W, STEEP_ROOF_INNER_BASE_NW, Shapes.block(), STEEP_ROOF_OUTER_BASE_WS,
             STEEP_ROOF_OUTER_BASE_NW, STEEP_ROOF_BASE_N, STEEP_ROOF_INNER_BASE_EN, Shapes.block());
 
-    public IsotropicRoofBlock(Properties properties) {
+    public RoofBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofShape.STRAIGHT)
@@ -149,19 +149,14 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
     }
 
     @Override
-    public VoxelShape getShapeStatic(BlockState pState) {
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         var leftRight = getConnectionLeftRight(pState.getValue(FACING), pState.getValue(SHAPE));
         var leftRightIndex = leftRight.getLeft().get2DDataValue() * 4 + leftRight.getRight().get2DDataValue();
         return switch (pState.getValue(HALF)) {
             case TIP -> ROOF_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
             case BASE -> ROOF_BASE_SHAPES.get(pState.getValue(VARIANT).ordinal() * 16 + leftRightIndex);
         };
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return this.getShapeStatic(pState);
     }
 
     @Override
@@ -295,8 +290,8 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
                 }
             }
         } else if (isFlatRoof(pFacingState)) {
-            var facingAxis = pFacingState.getValue(IsotropicRoofFlatBlock.AXIS);
-            var facingHalf = pFacingState.getValue(IsotropicRoofFlatBlock.HALF);
+            var facingAxis = pFacingState.getValue(RoofFlatBlock.AXIS);
+            var facingHalf = pFacingState.getValue(RoofFlatBlock.HALF);
 
             var rotation = Rotation.fromDirections(currDirection, pFacing);
 
@@ -327,11 +322,6 @@ public final class IsotropicRoofBlock extends Block implements SimpleWaterlogged
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
-    }
-
-    @Override
-    public boolean isGlass() {
-        return false;
     }
 
     private static Pair<Direction, Direction> getConnectionLeftRight(Direction facing, RoofShape shape) {

@@ -20,11 +20,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.teacon.xkdeco.util.RoofUtil.*;
+import static org.teacon.xkdeco.util.RoofUtil.RoofHalf;
+import static org.teacon.xkdeco.util.RoofUtil.getPlacementHalf;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
+public final class RoofFlatBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
     public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -32,7 +33,7 @@ public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterlo
     public static final VoxelShape ROOF_FLAT_TIP = Block.box(0, 0, 0, 16, 8, 16);
     public static final VoxelShape ROOF_FLAT_BASE = Block.box(0, 8, 0, 16, 16, 16);
 
-    public IsotropicRoofFlatBlock(Properties properties) {
+    public RoofFlatBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(HALF, RoofHalf.TIP).setValue(AXIS, Direction.Axis.X)
@@ -48,7 +49,10 @@ public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterlo
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return getShapeStatic(pState);
+        return switch (pState.getValue(HALF)) {
+            case BASE -> ROOF_FLAT_BASE;
+            case TIP -> ROOF_FLAT_TIP;
+        };
     }
 
     @Override
@@ -66,19 +70,6 @@ public final class IsotropicRoofFlatBlock extends Block implements SimpleWaterlo
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(HALF, AXIS, WATERLOGGED);
-    }
-
-    @Override
-    public boolean isGlass() {
-        return false;
-    }
-
-    @Override
-    public VoxelShape getShapeStatic(BlockState state) {
-        return switch (state.getValue(HALF)) {
-            case BASE -> ROOF_FLAT_BASE;
-            case TIP -> ROOF_FLAT_TIP;
-        };
     }
 
     @Override

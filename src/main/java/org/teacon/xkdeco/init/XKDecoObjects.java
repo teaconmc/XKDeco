@@ -76,6 +76,7 @@ public final class XKDecoObjects {
     public static final String SLAB_SUFFIX = "_slab";
     public static final String PATH_SUFFIX = "_path";
     public static final String ROOF_SUFFIX = "_roof";
+    public static final String ROOF_RIDGE_SUFFIX = "_roof_ridge";
     public static final String ROOF_EAVE_SUFFIX = "_roof_eave";
     public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
     public static final String STOOL_SUFFIX = "_stool";
@@ -100,6 +101,7 @@ public final class XKDecoObjects {
     public static final String REFRESHMENT_SPECIAL = "refreshments";
     public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
     public static final String ITEM_PROJECTOR_SPECIAL = "item_projector";
+    public static final String FACTORY_LIGHT_BAR_SPECIAL = "factory_light_bar";
 
     private static void addCushionEntity() {
         ENTITIES.register(CUSHION_ENTITY, () -> EntityType.Builder
@@ -149,17 +151,25 @@ public final class XKDecoObjects {
         } else if (id.contains(HOLLOW_PREFIX)) {
             var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (id.contains(ROOF_FLAT_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicRoofFlatBlock(properties));
-            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (id.contains(ROOF_EAVE_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicRoofEaveBlock(properties));
-            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (id.contains(ROOF_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new IsotropicRoofBlock(properties));
-            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else {
             var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isGlass));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        }
+    }
+
+    private static void addRoof(String id,
+                                BlockBehaviour.Properties properties, Item.Properties itemProperties) {
+        if (id.contains(ROOF_RIDGE_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new RoofRidgeBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_FLAT_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new RoofFlatBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_EAVE_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new RoofEaveBlock(properties));
+            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+        } else if (id.contains(ROOF_SUFFIX)) {
+            var block = BLOCKS.register(id, () -> new RoofBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         }
     }
@@ -200,10 +210,7 @@ public final class XKDecoObjects {
         } else if (id.contains(WARDROBE_SUFFIX)) {
             var block = BLOCKS.register(id, () -> new SpecialWardrobeBlock(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (id.contains(ROOF_SUFFIX)) {
-            var block = BLOCKS.register(id, () -> new SpecialRoofRidgeBlock(properties));
-            ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-        } else if (Objects.equals(id, "factory_light_bar")) {
+        } else if (id.equals(FACTORY_LIGHT_BAR_SPECIAL)) {
             var block = BLOCKS.register(id, () -> new SpecialLightBar(properties));
             ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
         } else if (id.contains(VENT_FAN_SUFFIX)) {
@@ -804,10 +811,10 @@ public final class XKDecoObjects {
         addIsotropic("toughened_glass_slab", BLOCK_LIGHT, ITEM_BASIC);
         addIsotropic("toughened_glass_stairs", BLOCK_LIGHT, ITEM_BASIC);
 
-        addIsotropic("black_roof", BLOCK_ROOF, ITEM_STRUCTURE);
-        addSpecial("black_roof_ridge", BLOCK_ROOF, ITEM_STRUCTURE);
-        addIsotropic("black_roof_eave", BLOCK_ROOF, ITEM_STRUCTURE);
-        addIsotropic("black_roof_flat", BLOCK_ROOF, ITEM_STRUCTURE);
+        addRoof("black_roof", BLOCK_ROOF, ITEM_STRUCTURE);
+        addRoof("black_roof_ridge", BLOCK_ROOF, ITEM_STRUCTURE);
+        addRoof("black_roof_eave", BLOCK_ROOF, ITEM_STRUCTURE);
+        addRoof("black_roof_flat", BLOCK_ROOF, ITEM_STRUCTURE);
 
         addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE);
         addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE);

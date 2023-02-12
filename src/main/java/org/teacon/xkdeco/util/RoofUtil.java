@@ -8,9 +8,9 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.TriPredicate;
-import org.teacon.xkdeco.block.IsotropicRoofBlock;
-import org.teacon.xkdeco.block.IsotropicRoofEaveBlock;
-import org.teacon.xkdeco.block.IsotropicRoofFlatBlock;
+import org.teacon.xkdeco.block.RoofBlock;
+import org.teacon.xkdeco.block.RoofEaveBlock;
+import org.teacon.xkdeco.block.RoofFlatBlock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -22,15 +22,15 @@ import java.util.function.UnaryOperator;
 public class RoofUtil {
     /*** Test Roof Type ***/
     public static boolean isRoof(BlockState state) {
-        return state.getBlock() instanceof IsotropicRoofBlock;
+        return state.getBlock() instanceof RoofBlock;
     }
 
     public static boolean isFlatRoof(BlockState state) {
-        return state.getBlock() instanceof IsotropicRoofFlatBlock;
+        return state.getBlock() instanceof RoofFlatBlock;
     }
 
     public static boolean isEave(BlockState state) {
-        return state.getBlock() instanceof IsotropicRoofEaveBlock;
+        return state.getBlock() instanceof RoofEaveBlock;
     }
 
     /*** Test Open Shape ***/
@@ -83,10 +83,10 @@ public class RoofUtil {
             var targetState = level.getBlockState(targetPos);
 
             if (isRoof(targetState) && rotHalfVariantPredicate.test(
-                    Rotation.fromDirections(placeDirection, targetState.getValue(IsotropicRoofBlock.FACING)),
-                    targetState.getValue(IsotropicRoofBlock.SHAPE),
-                    targetState.getValue(IsotropicRoofBlock.HALF),
-                    targetState.getValue(IsotropicRoofBlock.VARIANT))
+                    Rotation.fromDirections(placeDirection, targetState.getValue(RoofBlock.FACING)),
+                    targetState.getValue(RoofBlock.SHAPE),
+                    targetState.getValue(RoofBlock.HALF),
+                    targetState.getValue(RoofBlock.VARIANT))
             ) {
                 return Optional.of(thenSet.apply(initialState, targetState));
             } else {
@@ -106,8 +106,8 @@ public class RoofUtil {
             var targetState = level.getBlockState(targetPos);
 
             if (isFlatRoof(targetState) && parallelHalfPredicate.test(
-                    targetState.getValue(IsotropicRoofFlatBlock.AXIS) == placeDirection.getAxis(),
-                    targetState.getValue(IsotropicRoofFlatBlock.HALF))
+                    targetState.getValue(RoofFlatBlock.AXIS) == placeDirection.getAxis(),
+                    targetState.getValue(RoofFlatBlock.HALF))
             ) {
                 return Optional.of(thenSet.apply(initialState, targetState));
             } else {
@@ -127,9 +127,9 @@ public class RoofUtil {
             var targetState = level.getBlockState(targetPos);
 
             if (isEave(targetState) && rotHalfPredicate.test(
-                    Rotation.fromDirections(placeDirection, targetState.getValue(IsotropicRoofEaveBlock.FACING)),
-                    targetState.getValue(IsotropicRoofEaveBlock.SHAPE),
-                    targetState.getValue(IsotropicRoofEaveBlock.HALF))
+                    Rotation.fromDirections(placeDirection, targetState.getValue(RoofEaveBlock.FACING)),
+                    targetState.getValue(RoofEaveBlock.SHAPE),
+                    targetState.getValue(RoofEaveBlock.HALF))
             ) {
                 return Optional.of(thenSet.apply(initialState, targetState));
             } else {
