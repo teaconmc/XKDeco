@@ -81,16 +81,16 @@ public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock
 
         for (var trial : List.of(
                 // try to become a non-straight roof matching the triangular side of the roof at front/back
-                tryConnectToEave(Rotation.FRONT,
+                tryConnectToEave("outer_roof_eave_from_front_1", Rotation.FRONT,
                         (r, s, h) -> isHalfOpenClockWiseSide(s, r, Rotation.BACK),
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectToEave(Rotation.FRONT,
+                tryConnectToEave("outer_roof_eave_from_front_2", Rotation.FRONT,
                         (r, s, h) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.BACK),
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
-                tryConnectToEave(Rotation.BACK,
+                tryConnectToEave("inner_roof_eave_from_back_1", Rotation.BACK,
                         (r, s, h) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.FRONT),
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectToEave(Rotation.BACK,
+                tryConnectToEave("inner_roof_eave_from_back_2", Rotation.BACK,
                         (r, s, h) -> isHalfOpenClockWiseSide(s, r, Rotation.FRONT),
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING)))
         )) {

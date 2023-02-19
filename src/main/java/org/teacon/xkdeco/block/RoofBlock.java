@@ -177,69 +177,69 @@ public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XK
 
         for (var trial : List.of(
                 // try to become a non-straight roof matching the triangular side of the roof at front/back
-                tryConnectTo(Rotation.FRONT,
+                tryConnectTo("outer_roof_from_front_1", Rotation.FRONT,
                         (r, s, h, v) -> isHalfOpenClockWiseSide(s, r, Rotation.BACK),
                         (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectTo(Rotation.FRONT,
+                tryConnectTo("outer_roof_from_front_2", Rotation.FRONT,
                         (r, s, h, v) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.BACK),
                         (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
-                tryConnectTo(Rotation.BACK,
+                tryConnectTo("inner_roof_from_back_1", Rotation.BACK,
                         (r, s, h, v) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.FRONT),
                         (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectTo(Rotation.BACK,
+                tryConnectTo("inner_roof_from_back_2", Rotation.BACK,
                         (r, s, h, v) -> isHalfOpenClockWiseSide(s, r, Rotation.FRONT),
                         (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
 
                 // try to become a slow, non-straight roof matching the roof at left/right
-                tryConnectTo(Rotation.LEFT,
+                tryConnectTo("outer_roof_from_left", Rotation.LEFT,
                         (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
-                tryConnectTo(Rotation.RIGHT,
+                tryConnectTo("outer_roof_from_right", Rotation.RIGHT,
                         (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
-                tryConnectTo(Rotation.LEFT,
+                tryConnectTo("inner_roof_from_left", Rotation.LEFT,
                         (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
-                tryConnectTo(Rotation.RIGHT,
+                tryConnectTo("inner_roof_from_right", Rotation.RIGHT,
                         (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
 
                 // try to become a slow, non-straight roof matching the roof eave at left/right
-                tryConnectToEave(Rotation.LEFT,
+                tryConnectToEave("slow_outer_roof_from_left_eave", Rotation.LEFT,
                         (r, s, h) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
-                tryConnectToEave(Rotation.RIGHT,
+                tryConnectToEave("slow_outer_roof_from_right_eave", Rotation.RIGHT,
                         (r, s, h) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP,
                         (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
 
                 // adjust self to become a slow, straight roof
-                tryConnectTo(Rotation.FRONT,
+                tryConnectTo("slow_tip_roof_from_front", Rotation.FRONT,
                         (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
                                 || isClosedSide(s, r, Rotation.BACK) && h == RoofHalf.BASE && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW)),
-                tryConnectTo(Rotation.BACK,
+                tryConnectTo("slow_base_roof_from_back", Rotation.BACK,
                         (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
                                 || isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP && v == RoofVariant.SLOW,
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
 
                 // adjust self to become a slow, straight roof matching the flat roof at front/back
-                tryConnectToFlat(Rotation.FRONT,
+                tryConnectToFlat("slow_tip_roof_from_front_flat", Rotation.FRONT,
                         (p, h) -> p && h == RoofHalf.TIP,
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW)),
-                tryConnectToFlat(Rotation.BACK,
+                tryConnectToFlat("slow_base_roof_from_back_flat", Rotation.BACK,
                         (p, h) -> p && h == RoofHalf.TIP,
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
 
                 // adjust self to become a slow, straight roof matching the roof eave at back
-                tryConnectToEave(Rotation.BACK,
+                tryConnectToEave("slow_base_roof_from_back_eave", Rotation.BACK,
                         (r, s, h) -> isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP,
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
 
                 // adjust self to become a steep, straight roof
-                tryConnectTo(Rotation.UP,
+                tryConnectTo("steep_base_roof_from_up", Rotation.UP,
                         (r, s, h, v) -> r == Rotation.FRONT && h == RoofHalf.TIP && (v == RoofVariant.NORMAL || v == RoofVariant.STEEP),
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP)),
-                tryConnectTo(Rotation.DOWN,
+                tryConnectTo("steep_tip_roof_from_down", Rotation.DOWN,
                         (r, s, h, v) -> r == Rotation.FRONT && (h == RoofHalf.TIP && v == RoofVariant.NORMAL || h == RoofHalf.BASE && v == RoofVariant.STEEP),
                         (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP))
         )) {

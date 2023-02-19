@@ -9,8 +9,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.TriPredicate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
+import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -21,6 +24,19 @@ import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
 public class RoofUtil {
+    private static final Logger LOGGER = LogManager.getLogger("RoofUtil");
+
+    private static void log(String ruleName, boolean isClient, BlockPos pos, Direction direction,
+                            BlockState initialState, BlockState targetState, BlockState finalState) {
+        if (isClient) {
+            LOGGER.debug("Rule {} applied because of {} at {} side of ({}, {}, {}) in client level: {} => {}",
+                    ruleName, targetState, direction, pos.getX(), pos.getY(), pos.getZ(), initialState, finalState);
+        } else {
+            LOGGER.debug("Rule {} applied because of {} at {} side of ({}, {}, {}) in server level: {} => {}",
+                    ruleName, targetState, direction, pos.getX(), pos.getY(), pos.getZ(), initialState, finalState);
+        }
+    }
+
     /*** Test Roof Type ***/
     public static boolean isRoof(BlockState state) {
         return state.getBlock() instanceof RoofBlock;
@@ -32,6 +48,10 @@ public class RoofUtil {
 
     public static boolean isEave(BlockState state) {
         return state.getBlock() instanceof RoofEaveBlock;
+    }
+
+    public static boolean isEndRoof(BlockState state) {
+        return state.getBlock() instanceof RoofEndBlock;
     }
 
     /*** Test Open Shape ***/
@@ -74,6 +94,7 @@ public class RoofUtil {
 
     /*** Test Neighbor Roof State ***/
     public static PlacementCheckerModifier tryConnectTo(
+            String name,
             Rotation target,
             QuadPredicate<Rotation, RoofShape, RoofHalf, RoofVariant> rotHalfVariantPredicate,
             BinaryOperator<BlockState> thenSet) {
@@ -89,7 +110,9 @@ public class RoofUtil {
                     targetState.getValue(RoofBlock.HALF),
                     targetState.getValue(RoofBlock.VARIANT))
             ) {
-                return Optional.of(thenSet.apply(initialState, targetState));
+                var finalState = thenSet.apply(initialState, targetState);
+                log(name, level.isClientSide(), placePos, placeDirection, initialState, targetState, finalState);
+                return Optional.of(finalState);
             } else {
                 return Optional.empty();
             }
@@ -97,6 +120,7 @@ public class RoofUtil {
     }
 
     public static PlacementCheckerModifier tryConnectToFlat(
+            String name,
             Rotation target,
             BiPredicate<Boolean, RoofHalf> parallelHalfPredicate,
             BinaryOperator<BlockState> thenSet) {
@@ -110,7 +134,9 @@ public class RoofUtil {
                     targetState.getValue(RoofFlatBlock.AXIS) == placeDirection.getAxis(),
                     targetState.getValue(RoofFlatBlock.HALF))
             ) {
-                return Optional.of(thenSet.apply(initialState, targetState));
+                var finalState = thenSet.apply(initialState, targetState);
+                log(name, level.isClientSide(), placePos, placeDirection, initialState, targetState, finalState);
+                return Optional.of(finalState);
             } else {
                 return Optional.empty();
             }
@@ -118,6 +144,7 @@ public class RoofUtil {
     }
 
     public static PlacementCheckerModifier tryConnectToEave(
+            String name,
             Rotation target,
             TriPredicate<Rotation, RoofShape, RoofHalf> rotHalfPredicate,
             BinaryOperator<BlockState> thenSet) {
@@ -132,7 +159,35 @@ public class RoofUtil {
                     targetState.getValue(RoofEaveBlock.SHAPE),
                     targetState.getValue(RoofEaveBlock.HALF))
             ) {
-                return Optional.of(thenSet.apply(initialState, targetState));
+                var finalState = thenSet.apply(initialState, targetState);
+                log(name, level.isClientSide(), placePos, placeDirection, initialState, targetState, finalState);
+                return Optional.of(finalState);
+            } else {
+                return Optional.empty();
+            }
+        };
+    }
+
+    public static PlacementCheckerModifier tryConnectToEnd(
+            String name,
+            Rotation target,
+            QuadPredicate<Rotation, RoofEndShape, RoofHalf, RoofVariant> rotHalfVariantPredicate,
+            BinaryOperator<BlockState> thenSet) {
+
+        return (level, placePos, placeDirection, initialState) -> {
+            var targetPosDirection = target.rotate(placeDirection);
+            var targetPos = placePos.relative(targetPosDirection);
+            var targetState = level.getBlockState(targetPos);
+
+            if (isRoof(targetState) && rotHalfVariantPredicate.test(
+                    Rotation.fromDirections(placeDirection, targetState.getValue(RoofEndBlock.FACING)),
+                    targetState.getValue(RoofEndBlock.SHAPE),
+                    targetState.getValue(RoofEndBlock.HALF),
+                    targetState.getValue(RoofEndBlock.VARIANT))
+            ) {
+                var finalState = thenSet.apply(initialState, targetState);
+                log(name, level.isClientSide(), placePos, placeDirection, initialState, targetState, finalState);
+                return Optional.of(finalState);
             } else {
                 return Optional.empty();
             }
