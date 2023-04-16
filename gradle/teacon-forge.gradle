@@ -30,7 +30,8 @@ interface TeaConExtension {
 }
 
 gradle.afterProject { Project current ->
-    // configure all the things
+    if (current != project) return
+
     def teacon = current.extensions.teacon as TeaConExtension
 
     def (platformName, gameVersion, platformVersion) = teacon.getPlatform().get().split('-', 3)
@@ -155,6 +156,7 @@ gradle.afterProject { Project current ->
     }
 
     def gameVersions = gameVersion.split('\\.')
+    def identifier = System.env.VERSION_IDENTIFIER
 
     def publishJarTask = teacon.publishTask.getOrElse(current.tasks.jar)
     def jarArchiveBaseName = "${repoName}-Forge-${gameVersions[0]}.${gameVersions[1]}" as String
@@ -162,7 +164,7 @@ gradle.afterProject { Project current ->
     // configure jar and re-obf
     publishJarTask.configure { Jar it ->
         it.archiveBaseName.set(jarArchiveBaseName)
-        it.archiveVersion.set("${artifactVersion}-SNAPSHOT+${"git rev-parse --short HEAD".execute().text.trim()}")
+        it.archiveVersion.set("${artifactVersion}${identifier ? '-' + identifier : ''}")
         it.manifest.attributes(generateArtifactAttributes(repoName, '1', it.archiveVersion.get()) as Map<String, ?>)
     }
 
@@ -256,7 +258,7 @@ gradle.afterProject { Project current ->
         it.repositories {
             maven {
                 name = "teacon"
-                url = "s3://maven/"
+                url = System.env.ARCHIVE_URL
                 credentials(AwsCredentials) {
                     accessKey = System.env.ARCHIVE_ACCESS_KEY
                     secretKey = System.env.ARCHIVE_SECRET_KEY
@@ -313,7 +315,7 @@ gradle.afterProject { Project current ->
             lines += "version=\"\${file.jarVersion}\""
             lines += "displayName=\"${escaped(modName)}\""
             lines += "authors=\"TeaConMC${modAuthors.collect { ', ' + escaped(it) }.join()}\""
-            lines += "displayName=\"${escaped(publishDescription)}\""
+            lines += "description=\"${escaped(publishDescription)}\""
             lines += ""
 
             // forge dependency
