@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.teacon.xkdeco.util.IntTriple;
 import org.teacon.xkdeco.util.RoofUtil;
+import org.teacon.xkdeco.util.RoofUtil.RoofEaveShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
@@ -28,12 +29,11 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.teacon.xkdeco.util.RoofUtil.RoofHalf;
-import static org.teacon.xkdeco.util.RoofUtil.RoofShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
-    public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
+    public static final EnumProperty<RoofEaveShape> SHAPE = EnumProperty.create("shape", RoofEaveShape.class);
     public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -44,7 +44,7 @@ public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock
     public RoofEaveBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
-                .setValue(SHAPE, RoofShape.STRAIGHT).setValue(HALF, RoofHalf.TIP)
+                .setValue(SHAPE, RoofEaveShape.STRAIGHT).setValue(HALF, RoofHalf.TIP)
                 .setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
@@ -103,18 +103,30 @@ public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock
         var facingFrontRight = horizontalSides[1] == horizontalSides[0].getClockWise();
         var baseState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(FACING, horizontalSides[0]);
         var variantState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(FACING, horizontalSides[1]);
-        var innerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofShape.INNER);
-        var outerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofShape.OUTER);
+        var innerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofEaveShape.INNER);
+        var outerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofEaveShape.OUTER);
         var innerVariantState = innerState.setValue(FACING, facingFrontRight ? horizontalSides[1].getOpposite() : horizontalSides[0]);
         var outerVariantState = outerState.setValue(FACING, facingFrontRight ? horizontalSides[1].getOpposite() : horizontalSides[0]);
+        var baseEndState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged)
+                .setValue(FACING, horizontalSides[0]).setValue(SHAPE, facingFrontRight ? RoofEaveShape.LEFT_END : RoofEaveShape.RIGHT_END);
+        var variantEndState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged)
+                .setValue(FACING, horizontalSides[1]).setValue(SHAPE, facingFrontRight ? RoofEaveShape.RIGHT_END : RoofEaveShape.LEFT_END);
         return () -> (updateSide
-                ? Stream.of(baseState, variantState)
-                : Stream.of(baseState, innerState, outerState, variantState, innerVariantState, outerVariantState))
+                ? Stream.of(baseEndState, variantEndState, baseState,
+                variantEndState.cycle(SHAPE), baseEndState.cycle(SHAPE), variantState)
+                : Stream.of(baseEndState, variantEndState, baseState, innerState, outerState,
+                variantEndState.cycle(SHAPE), baseEndState.cycle(SHAPE), variantState, innerVariantState, outerVariantState))
                 .flatMap(s -> Stream.of(RoofHalf.TIP, RoofHalf.BASE).map(v -> s.setValue(HALF, v))).iterator();
     }
 
     @Override
     public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
+        if (fromSide == state.getValue(FACING).getClockWise() && state.getValue(SHAPE) == RoofEaveShape.RIGHT_END) {
+            return Optional.of(state.setValue(SHAPE, RoofEaveShape.STRAIGHT));
+        }
+        if (fromSide == state.getValue(FACING).getCounterClockWise() && state.getValue(SHAPE) == RoofEaveShape.LEFT_END) {
+            return Optional.of(state.setValue(SHAPE, RoofEaveShape.STRAIGHT));
+        }
         return Optional.empty();
     }
 
@@ -126,6 +138,8 @@ public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock
             case STRAIGHT -> new int[]{basicHeights[2], basicHeights[1], basicHeights[0], basicHeights[1]};
             case INNER -> new int[]{basicHeights[2], basicHeights[1], basicHeights[1], basicHeights[2]};
             case OUTER -> new int[]{basicHeights[1], basicHeights[0], basicHeights[0], basicHeights[1]};
+            case LEFT_END -> new int[]{basicHeights[2], basicHeights[0], basicHeights[0], basicHeights[1]};
+            case RIGHT_END -> new int[]{basicHeights[2], basicHeights[1], basicHeights[0], basicHeights[0]};
         };
         var side2DValue = horizontalSide.get2DDataValue();
         var facing2DValue = state.getValue(FACING).get2DDataValue();

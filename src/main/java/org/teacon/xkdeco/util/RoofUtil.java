@@ -151,6 +151,22 @@ public class RoofUtil {
 
     @MethodsReturnNonnullByDefault
     @ParametersAreNonnullByDefault
+    public enum RoofEaveShape implements StringRepresentable {
+        STRAIGHT, INNER, OUTER, LEFT_END, RIGHT_END;
+
+        @Override
+        public String getSerializedName() {
+            return this.name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public String toString() {
+            return this.name().toLowerCase(Locale.ROOT);
+        }
+    }
+
+    @MethodsReturnNonnullByDefault
+    @ParametersAreNonnullByDefault
     public enum RoofVariant implements StringRepresentable {
         NORMAL, SLOW, STEEP;
 

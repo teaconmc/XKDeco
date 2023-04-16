@@ -119,6 +119,8 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
                             case STRAIGHT -> "";
                             case INNER -> "_inner";
                             case OUTER -> "_outer";
+                            case LEFT_END -> "_left_end";
+                            case RIGHT_END -> "_right_end";
                         };
                         var halfSuffix = switch (state.getValue(RoofEaveBlock.HALF)) {
                             case TIP -> "";
