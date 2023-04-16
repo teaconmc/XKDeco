@@ -53,5 +53,9 @@ public final class XKDeco {
 
         forgeEventBus.addListener(CushionEntity::onRightClickBlock);
         forgeEventBus.addListener(CushionEntity::onBreakBlock);
+
+        if (FMLEnvironment.dist.isClient()) {
+            forgeEventBus.addListener(XKDecoClient::addDebugText);
+        }
     }
 }

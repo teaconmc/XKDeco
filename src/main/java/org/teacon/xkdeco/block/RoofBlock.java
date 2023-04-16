@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.block;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,10 +20,14 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.teacon.xkdeco.util.IntTriple;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.teacon.xkdeco.util.RoofUtil.*;
 
@@ -171,83 +176,8 @@ public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XK
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        var initialState = this.defaultBlockState()
-                .setValue(FACING, pContext.getHorizontalDirection())
-                .setValue(WATERLOGGED, pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER);
-
-        for (var trial : List.of(
-                // try to become a non-straight roof matching the triangular side of the roof at front/back
-                tryConnectTo("outer_roof_from_front_1", Rotation.FRONT,
-                        (r, s, h, v) -> isHalfOpenClockWiseSide(s, r, Rotation.BACK),
-                        (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectTo("outer_roof_from_front_2", Rotation.FRONT,
-                        (r, s, h, v) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.BACK),
-                        (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
-                tryConnectTo("inner_roof_from_back_1", Rotation.BACK,
-                        (r, s, h, v) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.FRONT),
-                        (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectTo("inner_roof_from_back_2", Rotation.BACK,
-                        (r, s, h, v) -> isHalfOpenClockWiseSide(s, r, Rotation.FRONT),
-                        (curr, tgt) -> curr.setValue(VARIANT, tgt.getValue(VARIANT)).setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
-
-                // try to become a slow, non-straight roof matching the roof at left/right
-                tryConnectTo("outer_roof_from_left", Rotation.LEFT,
-                        (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
-                tryConnectTo("outer_roof_from_right", Rotation.RIGHT,
-                        (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
-                tryConnectTo("inner_roof_from_left", Rotation.LEFT,
-                        (r, s, h, v) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
-                tryConnectTo("inner_roof_from_right", Rotation.RIGHT,
-                        (r, s, h, v) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.BASE && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
-
-                // try to become a slow, non-straight roof matching the roof eave at left/right
-                tryConnectToEave("slow_outer_roof_from_left_eave", Rotation.LEFT,
-                        (r, s, h) -> r == Rotation.RIGHT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING).getCounterClockWise())),
-                tryConnectToEave("slow_outer_roof_from_right_eave", Rotation.RIGHT,
-                        (r, s, h) -> r == Rotation.LEFT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP,
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW).setValue(FACING, tgt.getValue(FACING))),
-
-                // adjust self to become a slow, straight roof
-                tryConnectTo("slow_tip_roof_from_front", Rotation.FRONT,
-                        (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
-                                || isClosedSide(s, r, Rotation.BACK) && h == RoofHalf.BASE && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW)),
-                tryConnectTo("slow_base_roof_from_back", Rotation.BACK,
-                        (r, s, h, v) -> r == Rotation.FRONT && s == RoofShape.STRAIGHT && h == RoofHalf.TIP && v == RoofVariant.NORMAL
-                                || isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP && v == RoofVariant.SLOW,
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
-
-                // adjust self to become a slow, straight roof matching the flat roof at front/back
-                tryConnectToFlat("slow_tip_roof_from_front_flat", Rotation.FRONT,
-                        (p, h) -> p && h == RoofHalf.TIP,
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.SLOW)),
-                tryConnectToFlat("slow_base_roof_from_back_flat", Rotation.BACK,
-                        (p, h) -> p && h == RoofHalf.TIP,
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
-
-                // adjust self to become a slow, straight roof matching the roof eave at back
-                tryConnectToEave("slow_base_roof_from_back_eave", Rotation.BACK,
-                        (r, s, h) -> isOpenSide(s, r, Rotation.FRONT) && h == RoofHalf.TIP,
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.SLOW)),
-
-                // adjust self to become a steep, straight roof
-                tryConnectTo("steep_base_roof_from_up", Rotation.UP,
-                        (r, s, h, v) -> r == Rotation.FRONT && h == RoofHalf.TIP && (v == RoofVariant.NORMAL || v == RoofVariant.STEEP),
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.BASE).setValue(VARIANT, RoofVariant.STEEP)),
-                tryConnectTo("steep_tip_roof_from_down", Rotation.DOWN,
-                        (r, s, h, v) -> r == Rotation.FRONT && (h == RoofHalf.TIP && v == RoofVariant.NORMAL || h == RoofHalf.BASE && v == RoofVariant.STEEP),
-                        (curr, tgt) -> curr.setValue(HALF, RoofHalf.TIP).setValue(VARIANT, RoofVariant.STEEP))
-        )) {
-            var result = trial.apply(pContext.getLevel(), pContext.getClickedPos(), pContext.getHorizontalDirection(), initialState);
-            if (result.isPresent()) return result.get();
-        }
-
-        return initialState;
+        return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
+                pContext.getClickedPos(), pContext.getNearestLookingDirections());
     }
 
     @Override
@@ -257,68 +187,62 @@ public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XK
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
-
-        var currDirection = pState.getValue(FACING);
-        var currShape = pState.getValue(SHAPE);
-        var currVariant = pState.getValue(VARIANT);
-
-        if (isRoof(pFacingState)) {
-            var facingDirection = pFacingState.getValue(FACING);
-            var facingHalf = pFacingState.getValue(HALF);
-            var facingShape = pFacingState.getValue(SHAPE);
-            var facingVariant = pFacingState.getValue(VARIANT);
-
-            var rotation = Rotation.fromDirections(currDirection, pFacing);
-
-            switch (rotation) {
-                case LEFT, RIGHT -> {
-                }
-                case FRONT, BACK -> {
-                    if (facingVariant == RoofVariant.SLOW && facingShape == RoofShape.STRAIGHT
-                            && currDirection == facingDirection
-                            && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                        return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, facingHalf.otherHalf());
-                    }
-                }
-                case UP, DOWN -> {
-                    if (facingVariant == RoofVariant.STEEP && facingShape == RoofShape.STRAIGHT
-                            && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                        return pState.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, facingHalf.otherHalf());
-                    }
-                }
-            }
-        } else if (isFlatRoof(pFacingState)) {
-            var facingAxis = pFacingState.getValue(RoofFlatBlock.AXIS);
-            var facingHalf = pFacingState.getValue(RoofFlatBlock.HALF);
-
-            var rotation = Rotation.fromDirections(currDirection, pFacing);
-
-            if (currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT
-                    && currDirection.getAxis() == facingAxis
-                    && facingHalf == RoofHalf.TIP) {
-                return pState.setValue(VARIANT, RoofVariant.SLOW)
-                        .setValue(HALF, rotation == Rotation.FRONT ? RoofHalf.TIP : RoofHalf.BASE);
-            }
-        } else if (isEave(pFacingState)) {
-            var facingDirection = pFacingState.getValue(FACING);
-            var facingHalf = pFacingState.getValue(HALF);
-            var facingShape = pFacingState.getValue(SHAPE);
-
-            var rotation = Rotation.fromDirections(currDirection, pFacing);
-
-            if (rotation == Rotation.BACK
-                    && facingHalf == RoofHalf.TIP
-                    && isOpenSide(facingShape, Rotation.fromDirections(currDirection, facingDirection), Rotation.FRONT)
-                    && currVariant == RoofVariant.NORMAL && currShape == RoofShape.STRAIGHT) {
-                return pState.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.BASE);
-            }
-        }
-
-        return pState;
+        return RoofUtil.updateShape(pState, pFacingState, pFacing);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
+    }
+
+    @Override
+    public Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides) {
+        // noinspection DuplicatedCode
+        var horizontalSides = Arrays.stream(lookingSides).filter(Direction.Plane.HORIZONTAL).toArray(Direction[]::new);
+        var facingFrontRight = horizontalSides[1] == horizontalSides[0].getClockWise();
+        var baseState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(FACING, horizontalSides[0]);
+        var variantState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(FACING, horizontalSides[1]);
+        var innerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofShape.INNER);
+        var outerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofShape.OUTER);
+        var innerVariantState = innerState.setValue(FACING, facingFrontRight ? horizontalSides[1].getOpposite() : horizontalSides[0]);
+        var outerVariantState = outerState.setValue(FACING, facingFrontRight ? horizontalSides[1].getOpposite() : horizontalSides[0]);
+        return () -> (updateSide
+                ? Stream.of(baseState, variantState)
+                : Stream.of(baseState, innerState, outerState, variantState, innerVariantState, outerVariantState))
+                .flatMap(s -> Stream.of(RoofHalf.TIP, RoofHalf.BASE).map(v -> s.setValue(HALF, v)))
+                .flatMap(s -> Stream.of(RoofVariant.NORMAL, RoofVariant.SLOW, RoofVariant.STEEP).map(v -> s.setValue(VARIANT, v)))
+                .filter(s -> s.getValue(HALF) != RoofHalf.BASE || s.getValue(VARIANT) != RoofVariant.NORMAL).iterator();
+    }
+
+    @Override
+    public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
+        if (fromSide == state.getValue(FACING).getOpposite() && state.getValue(VARIANT) == RoofVariant.NORMAL && state.getValue(SHAPE) == RoofShape.STRAIGHT) {
+            return Optional.of(state.setValue(VARIANT, RoofVariant.SLOW).setValue(HALF, RoofHalf.BASE));
+        }
+        if (fromSide == Direction.UP && state.getValue(VARIANT) == RoofVariant.NORMAL) {
+            return Optional.of(state.setValue(VARIANT, RoofVariant.STEEP).setValue(HALF, RoofHalf.BASE));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public IntTriple getSideHeight(BlockState state, Direction horizontalSide) {
+        // noinspection DuplicatedCode
+        Preconditions.checkState(Direction.Plane.HORIZONTAL.test(horizontalSide));
+        var basicHeights = switch (state.getValue(VARIANT)) { // lower, higher
+            case NORMAL -> state.getValue(HALF) == RoofHalf.TIP ? new int[]{0, 16} : new int[]{8, 24};
+            case SLOW -> state.getValue(HALF) == RoofHalf.TIP ? new int[]{0, 8} : new int[]{8, 16};
+            case STEEP -> state.getValue(HALF) == RoofHalf.TIP ? new int[]{-16, 16} : new int[]{0, 32};
+        };
+        var cornerHeights = switch (state.getValue(SHAPE)) { // front-right, front-left, back-left, back-right
+            case STRAIGHT -> new int[]{basicHeights[1], basicHeights[1], basicHeights[0], basicHeights[0]};
+            case INNER -> new int[]{basicHeights[1], basicHeights[1], basicHeights[0], basicHeights[1]};
+            case OUTER -> new int[]{basicHeights[1], basicHeights[0], basicHeights[0], basicHeights[0]};
+        };
+        var side2DValue = horizontalSide.get2DDataValue();
+        var facing2DValue = state.getValue(FACING).get2DDataValue();
+        var leftHeight = cornerHeights[(4 + facing2DValue - side2DValue) % 4];
+        var rightHeight = cornerHeights[(5 + facing2DValue - side2DValue) % 4];
+        return IntTriple.of(leftHeight, (leftHeight + rightHeight) / 2, rightHeight);
     }
 }

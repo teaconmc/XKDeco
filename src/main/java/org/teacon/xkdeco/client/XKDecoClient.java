@@ -1,20 +1,26 @@
 package org.teacon.xkdeco.client;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
@@ -35,6 +41,26 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoClient {
+    public static void addDebugText(RenderGameOverlayEvent.Text event) {
+        var mc = Minecraft.getInstance();
+        var cameraEntity = mc.getCameraEntity();
+        if (mc.options.renderDebug && cameraEntity != null) {
+            var block = cameraEntity.pick(ForgeIngameGui.rayTraceDistance, 0F, false);
+            if (block.getType() == HitResult.Type.BLOCK) {
+                var direction = ((BlockHitResult) block).getDirection();
+                var pos = ((BlockHitResult) block).getBlockPos();
+                if (Direction.Plane.HORIZONTAL.test(direction)) {
+                    var state = cameraEntity.level.getBlockState(pos);
+                    if (state.getBlock() instanceof XKDecoBlock.Roof roof) {
+                        var sideHeight = roof.getSideHeight(state, direction);
+                        event.getRight().add("Roof Side Height L: %d M: %d R: %d"
+                                .formatted(sideHeight.getLeft(), sideHeight.getMiddle(), sideHeight.getRight()));
+                    }
+                }
+            }
+        }
+    }
+
     public static void setItemColors(ColorHandlerEvent.Item event) {
         var blockColors = event.getBlockColors();
         var blockItemColor = (ItemColor) (stack, tintIndex) -> {

@@ -1,7 +1,11 @@
 package org.teacon.xkdeco.block;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.teacon.xkdeco.util.IntTriple;
+
+import java.util.Optional;
 
 public sealed interface XKDecoBlock permits
         XKDecoBlock.Basic, XKDecoBlock.Isotropic, XKDecoBlock.Plant, XKDecoBlock.Roof, XKDecoBlock.Special {
@@ -30,7 +34,11 @@ public sealed interface XKDecoBlock permits
     // roof related blocks which have complex connection logic
     sealed interface Roof extends XKDecoBlock permits
             RoofBlock, RoofEaveBlock, RoofEndBlock, RoofFlatBlock, RoofRidgeBlock {
-        // nothing here
+        Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides);
+
+        Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction side);
+
+        IntTriple getSideHeight(BlockState state, Direction horizontalSide);
     }
 
     // plant blocks which are related to grass and leaves

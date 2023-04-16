@@ -1,10 +1,12 @@
 package org.teacon.xkdeco.block;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,11 +19,16 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.teacon.xkdeco.util.IntTriple;
+import org.teacon.xkdeco.util.RoofUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-import static org.teacon.xkdeco.util.RoofUtil.*;
+import static org.teacon.xkdeco.util.RoofUtil.RoofHalf;
+import static org.teacon.xkdeco.util.RoofUtil.RoofShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -75,29 +82,55 @@ public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        var initialState = this.defaultBlockState()
-                .setValue(FACING, pContext.getHorizontalDirection()).setValue(HALF, getPlacementHalf(pContext))
-                .setValue(WATERLOGGED, pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER);
+        return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
+                pContext.getClickedPos(), pContext.getNearestLookingDirections());
+    }
 
-        for (var trial : List.of(
-                // try to become a non-straight roof matching the triangular side of the roof at front/back
-                tryConnectToEave("outer_roof_eave_from_front_1", Rotation.FRONT,
-                        (r, s, h) -> isHalfOpenClockWiseSide(s, r, Rotation.BACK),
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectToEave("outer_roof_eave_from_front_2", Rotation.FRONT,
-                        (r, s, h) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.BACK),
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.OUTER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING))),
-                tryConnectToEave("inner_roof_eave_from_back_1", Rotation.BACK,
-                        (r, s, h) -> isHalfOpenCounterClockWiseSide(s, r, Rotation.FRONT),
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING).getCounterClockWise())),
-                tryConnectToEave("inner_roof_eave_from_back_2", Rotation.BACK,
-                        (r, s, h) -> isHalfOpenClockWiseSide(s, r, Rotation.FRONT),
-                        (curr, tgt) -> curr.setValue(SHAPE, RoofShape.INNER).setValue(HALF, tgt.getValue(HALF)).setValue(FACING, curr.getValue(FACING)))
-        )) {
-            var result = trial.apply(pContext.getLevel(), pContext.getClickedPos(), pContext.getHorizontalDirection(), initialState);
-            if (result.isPresent()) return result.get().setValue(HALF, getPlacementHalf(pContext));
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState,
+                                  LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
+        return RoofUtil.updateShape(pState, pFacingState, pFacing);
+    }
 
-        return initialState;
+    @Override
+    public Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides) {
+        // noinspection DuplicatedCode
+        var horizontalSides = Arrays.stream(lookingSides).filter(Direction.Plane.HORIZONTAL).toArray(Direction[]::new);
+        var facingFrontRight = horizontalSides[1] == horizontalSides[0].getClockWise();
+        var baseState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(FACING, horizontalSides[0]);
+        var variantState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(FACING, horizontalSides[1]);
+        var innerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofShape.INNER);
+        var outerState = (facingFrontRight ? baseState : variantState).setValue(SHAPE, RoofShape.OUTER);
+        var innerVariantState = innerState.setValue(FACING, facingFrontRight ? horizontalSides[1].getOpposite() : horizontalSides[0]);
+        var outerVariantState = outerState.setValue(FACING, facingFrontRight ? horizontalSides[1].getOpposite() : horizontalSides[0]);
+        return () -> (updateSide
+                ? Stream.of(baseState, variantState)
+                : Stream.of(baseState, innerState, outerState, variantState, innerVariantState, outerVariantState))
+                .flatMap(s -> Stream.of(RoofHalf.TIP, RoofHalf.BASE).map(v -> s.setValue(HALF, v))).iterator();
+    }
+
+    @Override
+    public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
+        return Optional.empty();
+    }
+
+    @Override
+    public IntTriple getSideHeight(BlockState state, Direction horizontalSide) {
+        Preconditions.checkState(Direction.Plane.HORIZONTAL.test(horizontalSide));
+        var basicHeights = state.getValue(HALF) == RoofHalf.TIP ? new int[]{0, 4, 8} : new int[]{0, 8, 16}; // lower, higher
+        var middleHeights = switch (state.getValue(SHAPE)) { // front, left, back, right
+            case STRAIGHT -> new int[]{basicHeights[2], basicHeights[1], basicHeights[0], basicHeights[1]};
+            case INNER -> new int[]{basicHeights[2], basicHeights[1], basicHeights[1], basicHeights[2]};
+            case OUTER -> new int[]{basicHeights[1], basicHeights[0], basicHeights[0], basicHeights[1]};
+        };
+        var side2DValue = horizontalSide.get2DDataValue();
+        var facing2DValue = state.getValue(FACING).get2DDataValue();
+        var middleHeight = middleHeights[(4 + facing2DValue - side2DValue) % 4];
+        // noinspection SuspiciousNameCombination
+        return IntTriple.of(middleHeight, middleHeight, middleHeight);
     }
 }
