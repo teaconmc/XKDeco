@@ -20,7 +20,6 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.block.XKDecoBlock;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
@@ -110,34 +109,6 @@ public final class XKDecoClient {
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Block[]::new));
         event.register(waterBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-    }
-
-    public static void setCutoutBlocks(FMLClientSetupEvent event) {
-        // FIXME YES ALL OF THEM ARE GO TO JSON NOW GO BRRRRR
-        for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
-            var id = entry.getId().getPath();
-            if ("mechanical_screen".equals(id) || "tech_screen".equals(id)) {
-                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
-                System.out.println(entry.getId() + " -> translucent");
-            } else if (entry.get() instanceof XKDecoBlock.Basic) {
-                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
-                System.out.println(entry.getId() + " -> cutout");
-            } else if (entry.get() instanceof XKDecoBlock.Special) {
-                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
-                System.out.println(entry.getId() + " -> cutout");
-            } else if (id.contains(XKDecoObjects.GLASS_SUFFIX) || id.contains(XKDecoObjects.TRANSLUCENT_PREFIX)) {
-                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
-                System.out.println(entry.getId() + " -> translucent");
-            } else if (id.contains(XKDecoObjects.GLASS_PREFIX) || id.contains(XKDecoObjects.HOLLOW_PREFIX) || id.contains(XKDecoObjects.BIG_TABLE_SUFFIX) || id.contains(XKDecoObjects.TALL_TABLE_SUFFIX) || id.contains(XKDecoObjects.ROOF_SUFFIX)) {
-                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
-                System.out.println(entry.getId() + " -> cutout");
-            } else if (id.contains(XKDecoObjects.GRASS_PREFIX) || id.contains(XKDecoObjects.LEAVES_SUFFIX) || id.contains(XKDecoObjects.BLOSSOM_SUFFIX)) {
-                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutoutMipped());
-                System.out.println(entry.getId() + " -> cutout_mipped");
-            } else {
-                System.out.println(entry.getId() + " -> solid");
-            }
-        }
     }
 
     public static void setItemRenderers(RegisterClientReloadListenersEvent event) {

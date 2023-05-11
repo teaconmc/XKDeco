@@ -41,7 +41,6 @@ public final class XKDeco {
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(XKDecoClient::setItemColors);
             modEventBus.addListener(XKDecoClient::setBlockColors);
-            modEventBus.addListener(XKDecoClient::setCutoutBlocks);
             modEventBus.addListener(XKDecoClient::setItemRenderers);
             modEventBus.addListener(XKDecoClient::setEntityRenderers);
             modEventBus.addListener(XKDecoClient::setAdditionalPackFinder);
