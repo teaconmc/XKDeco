@@ -1,10 +1,11 @@
 {
-	"parent": "xkdeco:block/furniture/ebony_shelf1",
-	"textures": {
-		"0": "xkdeco:block/furniture/varnished_shelf",
-		"1": "xkdeco:block/furniture/bluewhite_porcelain_bottom",
-		"2": "xkdeco:block/furniture/bluewhite_porcelain_end",
-		"3": "xkdeco:block/furniture/bluewhite_porcelain_top",
-		"particle": "xkdeco:block/furniture/varnished_shelf"
-	}
+  "parent": "xkdeco:block/furniture/ebony_shelf1",
+  "textures": {
+    "0": "xkdeco:block/furniture/varnished_shelf",
+    "1": "xkdeco:block/furniture/bluewhite_porcelain_bottom",
+    "2": "xkdeco:block/furniture/bluewhite_porcelain_end",
+    "3": "xkdeco:block/furniture/bluewhite_porcelain_top",
+    "particle": "xkdeco:block/furniture/varnished_shelf"
+  },
+  "render_type": "cutout"
 }

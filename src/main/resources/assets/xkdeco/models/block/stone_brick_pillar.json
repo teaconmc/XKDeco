@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/stone_brick_pillar_top",
     "side": "xkdeco:block/stone_brick_pillar_side"
-  }
+  },
+  "render_type": "solid"
 }

@@ -4,5 +4,6 @@
     "bottom": "minecraft:block/dirt",
     "top": "minecraft:block/podzol_top",
     "side": "minecraft:block/podzol_side"
-  }
+  },
+  "render_type": "solid"
 }

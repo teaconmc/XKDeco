@@ -1,8 +1,9 @@
 {
-	"parent": "xkdeco:block/furniture/ebony_shelf3",
-	"textures": {
-		"0": "xkdeco:block/furniture/varnished_shelf",
-		"1": "xkdeco:block/furniture/old_book",
-		"particle": "xkdeco:block/furniture/varnished_shelf"
-	}
+  "parent": "xkdeco:block/furniture/ebony_shelf3",
+  "textures": {
+    "0": "xkdeco:block/furniture/varnished_shelf",
+    "1": "xkdeco:block/furniture/old_book",
+    "particle": "xkdeco:block/furniture/varnished_shelf"
+  },
+  "render_type": "cutout"
 }

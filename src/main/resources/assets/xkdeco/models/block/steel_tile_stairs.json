@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/steel_tiles",
     "top": "xkdeco:block/steel_tiles",
     "side": "xkdeco:block/steel_tiles"
-  }
+  },
+  "render_type": "solid"
 }

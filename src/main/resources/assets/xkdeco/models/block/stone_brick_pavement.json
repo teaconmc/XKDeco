@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/stone_brick_pavement",
     "particle": "xkdeco:block/stone_brick_pavement"
-  }
+  },
+  "render_type": "solid"
 }

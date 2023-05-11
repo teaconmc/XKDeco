@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/mud_wall_cross",
     "side": "xkdeco:block/mud_wall_line"
-  }
+  },
+  "render_type": "solid"
 }

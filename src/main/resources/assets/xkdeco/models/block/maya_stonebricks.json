@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/maya_stonebricks",
     "particle": "xkdeco:block/maya_stonebricks"
-  }
+  },
+  "render_type": "solid"
 }

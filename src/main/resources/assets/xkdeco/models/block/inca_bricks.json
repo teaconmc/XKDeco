@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/inca_bricks",
     "particle": "xkdeco:block/inca_bricks"
-  }
+  },
+  "render_type": "solid"
 }

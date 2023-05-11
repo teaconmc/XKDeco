@@ -1,9 +1,10 @@
 {
-	"parent": "xkdeco:block/furniture/ebony_chair",
-	"textures": {
-		"particle": "xkdeco:block/furniture/mahogany_chair_back",
-		"back": "xkdeco:block/furniture/mahogany_chair_back",
-		"side": "xkdeco:block/furniture/mahogany_chair_side",
-		"face": "xkdeco:block/furniture/mahogany_chair_top"
-	}
+  "parent": "xkdeco:block/furniture/ebony_chair",
+  "textures": {
+    "particle": "xkdeco:block/furniture/mahogany_chair_back",
+    "back": "xkdeco:block/furniture/mahogany_chair_back",
+    "side": "xkdeco:block/furniture/mahogany_chair_side",
+    "face": "xkdeco:block/furniture/mahogany_chair_top"
+  },
+  "render_type": "cutout"
 }

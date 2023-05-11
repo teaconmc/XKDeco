@@ -136,5 +136,6 @@
         }
       }
     }
-  ]
+  ],
+  "render_type": "cutout"
 }

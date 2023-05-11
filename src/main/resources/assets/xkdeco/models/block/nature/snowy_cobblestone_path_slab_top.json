@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/nature/snowy_cobblestone_path",
     "top": "xkdeco:block/nature/snowy_cobblestone_path",
     "side": "xkdeco:block/nature/snowy_cobblestone_path"
-  }
+  },
+  "render_type": "solid"
 }

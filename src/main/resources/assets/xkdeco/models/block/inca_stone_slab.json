@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/inca_stone",
     "top": "xkdeco:block/inca_stone",
     "side": "xkdeco:block/inca_stone"
-  }
+  },
+  "render_type": "solid"
 }

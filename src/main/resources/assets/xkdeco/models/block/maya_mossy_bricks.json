@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/maya_mossy_bricks",
     "particle": "xkdeco:block/maya_mossy_bricks"
-  }
+  },
+  "render_type": "solid"
 }

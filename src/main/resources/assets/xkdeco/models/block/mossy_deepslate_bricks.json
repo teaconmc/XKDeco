@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/mossy_deepslate_bricks",
     "particle": "xkdeco:block/mossy_deepslate_bricks"
-  }
+  },
+  "render_type": "solid"
 }

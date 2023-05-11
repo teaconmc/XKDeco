@@ -1,10 +1,11 @@
 {
-	"parent": "xkdeco:block/furniture/tech_table",
-	"textures": {
-		"particle": "xkdeco:block/furniture/tech_table_circle",
-		"top": "xkdeco:block/furniture/tech_table_circle",
-		"side": "xkdeco:block/furniture/tech_table_side",
-		"bottom": "xkdeco:block/furniture/tech_console_bottom",
-		"set": "xkdeco:block/furniture/tech_console_set"
-	}
+  "parent": "xkdeco:block/furniture/tech_table",
+  "textures": {
+    "particle": "xkdeco:block/furniture/tech_table_circle",
+    "top": "xkdeco:block/furniture/tech_table_circle",
+    "side": "xkdeco:block/furniture/tech_table_side",
+    "bottom": "xkdeco:block/furniture/tech_console_bottom",
+    "set": "xkdeco:block/furniture/tech_console_set"
+  },
+  "render_type": "cutout"
 }

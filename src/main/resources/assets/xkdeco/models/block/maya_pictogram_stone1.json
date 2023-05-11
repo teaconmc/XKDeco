@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/maya_pictogram_stone1",
     "particle": "xkdeco:block/maya_pictogram_stone1"
-  }
+  },
+  "render_type": "solid"
 }

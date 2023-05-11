@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/cut_obsidian",
     "top": "xkdeco:block/cut_obsidian",
     "side": "xkdeco:block/cut_obsidian"
-  }
+  },
+  "render_type": "solid"
 }

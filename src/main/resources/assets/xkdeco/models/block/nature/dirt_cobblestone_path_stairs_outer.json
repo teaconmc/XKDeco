@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/nature/dirt_cobblestone_path",
     "top": "xkdeco:block/nature/dirt_cobblestone_path",
     "side": "xkdeco:block/nature/dirt_cobblestone_path"
-  }
+  },
+  "render_type": "solid"
 }

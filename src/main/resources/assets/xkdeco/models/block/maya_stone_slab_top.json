@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/maya_stone",
     "top": "xkdeco:block/maya_stone",
     "side": "xkdeco:block/maya_stone"
-  }
+  },
+  "render_type": "solid"
 }

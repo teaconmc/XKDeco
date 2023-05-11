@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/ebony_planks",
     "top": "xkdeco:block/ebony_planks",
     "side": "xkdeco:block/ebony_planks"
-  }
+  },
+  "render_type": "solid"
 }

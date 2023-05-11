@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/varnished_planks",
     "top": "xkdeco:block/varnished_planks",
     "side": "xkdeco:block/varnished_planks"
-  }
+  },
+  "render_type": "solid"
 }

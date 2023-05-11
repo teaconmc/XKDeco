@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/crying_obsidian_bricks",
     "particle": "xkdeco:block/crying_obsidian_bricks"
-  }
+  },
+  "render_type": "solid"
 }

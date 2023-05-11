@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/deepslate_pavement",
     "top": "xkdeco:block/deepslate_pavement",
     "side": "xkdeco:block/deepslate_pavement"
-  }
+  },
+  "render_type": "solid"
 }

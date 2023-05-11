@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/mud_wall_cross",
     "top": "xkdeco:block/mud_wall_cross",
     "side": "xkdeco:block/mud_wall_line"
-  }
+  },
+  "render_type": "solid"
 }

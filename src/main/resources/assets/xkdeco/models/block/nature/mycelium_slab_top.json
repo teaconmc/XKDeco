@@ -4,5 +4,6 @@
     "bottom": "minecraft:block/dirt",
     "top": "minecraft:block/mycelium_top",
     "side": "minecraft:block/mycelium_side"
-  }
+  },
+  "render_type": "solid"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/inca_stone",
     "particle": "xkdeco:block/inca_stone"
-  }
+  },
+  "render_type": "solid"
 }

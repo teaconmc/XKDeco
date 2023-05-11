@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/factory_biohazard_rusted",
     "particle": "xkdeco:block/factory_biohazard_rusted"
-  }
+  },
+  "render_type": "solid"
 }

@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/blue_tiles",
     "top": "xkdeco:block/blue_tiles",
     "side": "xkdeco:block/blue_tiles"
-  }
+  },
+  "render_type": "solid"
 }
