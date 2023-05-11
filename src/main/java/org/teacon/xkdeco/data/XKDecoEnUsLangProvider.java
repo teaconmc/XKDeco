@@ -1,8 +1,7 @@
 package org.teacon.xkdeco.data;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -11,9 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
 
@@ -21,16 +19,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.teacon.xkdeco.init.XKDecoObjects.*;
-import static org.teacon.xkdeco.item.XKDecoCreativeModTab.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoEnUsLangProvider extends LanguageProvider {
-    public XKDecoEnUsLangProvider(DataGenerator gen, String modid, String locale) {
+    public XKDecoEnUsLangProvider(PackOutput gen, String modid, String locale) {
         super(gen, modid, locale);
     }
 
@@ -73,24 +69,25 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
             Map.entry("block.xkdeco.special_wall", "%s (Column)"),
             Map.entry("block.xkdeco.blue_roof_flat", "Blue Flat Roof"),
             Map.entry("block.xkdeco.green_roof_flat", "Green Flat Roof"),
-            Map.entry("block.xkdeco.red_roof_flat", "Red Flat Roof")
+            Map.entry("block.xkdeco.red_roof_flat", "Red Flat Roof"),
+            Map.entry("itemGroup.xkdeco_basic", "XKDeco: Basic"),
+            Map.entry("itemGroup.xkdeco_functional", "XKDeco: Functional"),
+            Map.entry("itemGroup.xkdeco_furniture", "XKDeco: Furniture"),
+            Map.entry("itemGroup.xkdeco_nature", "XKDeco: Nature"),
+            Map.entry("itemGroup.xkdeco_structure", "XKDeco: Structure")
     );
 
     public static void register(GatherDataEvent event) {
         var generator = event.getGenerator();
-        generator.addProvider(new XKDecoEnUsLangProvider(generator, XKDeco.ID, "en_us"));
+        generator.addProvider(event.includeClient(), new XKDecoEnUsLangProvider(generator.getPackOutput(), XKDeco.ID, "en_us"));
     }
 
     @Override
     protected void addTranslations() {
         Stream.<DeferredRegister<?>>of(BLOCKS, ITEMS, ENTITIES)
                 .flatMap(deferredRegister -> deferredRegister.getEntries().stream())
-                .map(RegistryObject::get)
-                .filter(obj -> !(obj instanceof BlockItem))
+                .filter(obj -> !(obj.get() instanceof BlockItem))
                 .forEach(this::translate);
-        Stream.of(TAB_BASIC, TAB_FUNCTIONAL, TAB_FURNITURE, TAB_NATURE, TAB_STRUCTURE)
-                .map(tab -> ((TranslatableComponent) tab.getDisplayName()).getKey())
-                .forEach(this::translateCreativeTab);
         EXTRA_KEYS.forEach(this::translateKey);
         EXTRA_ENTRIES.forEach(this::add);
     }
@@ -108,10 +105,11 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
     }
 
     // borrowed from mod uusi-aurinko
-    private void translate(IForgeRegistryEntry<?> obj) {
-        var id = Objects.requireNonNull(obj.getRegistryName()).getPath();
+    private void translate(RegistryObject<?> regObj) {
+        var id = regObj.getId().getPath();
         id = id.replace(ROOF_FLAT_SUFFIX, "_flat_roof");
         var translation = snakeToSpace(id);
+        var obj = regObj.get();
         if (obj instanceof Block) {
             add((Block) obj, translation);
         } else if (obj instanceof Item) {
@@ -123,7 +121,7 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
         } else if (obj instanceof EntityType) {
             add((EntityType<?>) obj, translation);
         } else if (obj instanceof SoundEvent) {
-            add("subtitles." + obj.getRegistryName().getNamespace() + "." + obj.getRegistryName().getPath(), translation);
+            add("subtitles." + regObj.getId().getNamespace() + "." + regObj.getId().getPath(), translation);
         } else {
             throw new RuntimeException("Unsupported registry object type '" + obj.getClass() + "'");
         }

@@ -5,8 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
@@ -16,11 +14,11 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
@@ -41,11 +39,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoClient {
-    public static void addDebugText(RenderGameOverlayEvent.Text event) {
+
+    // https://github.com/MinecraftForge/MinecraftForge/pull/8786
+    // https://forge-render-refactor.notion.site/forge-render-refactor/ecd69011d01042c48a0fca80696cb4da?v=47332327988948ebaf911b06b2aa1f5d&p=d3a706981ffd43768885e9a9b6163964&pm=s
+    public static void addDebugText(CustomizeGuiOverlayEvent.DebugText event) {
         var mc = Minecraft.getInstance();
         var cameraEntity = mc.getCameraEntity();
         if (mc.options.renderDebug && cameraEntity != null) {
-            var block = cameraEntity.pick(ForgeIngameGui.rayTraceDistance, 0F, false);
+            var block = cameraEntity.pick(ForgeGui.rayTraceDistance, 0F, false);
             if (block.getType() == HitResult.Type.BLOCK) {
                 var direction = ((BlockHitResult) block).getDirection();
                 var pos = ((BlockHitResult) block).getBlockPos();
@@ -61,27 +62,26 @@ public final class XKDecoClient {
         }
     }
 
-    public static void setItemColors(ColorHandlerEvent.Item event) {
+    public static void setItemColors(RegisterColorHandlersEvent.Item event) {
         var blockColors = event.getBlockColors();
         var blockItemColor = (ItemColor) (stack, tintIndex) -> {
             var state = ((BlockItem) stack.getItem()).getBlock().defaultBlockState();
             return blockColors.getColor(state, null, null, tintIndex);
         };
         var waterItemColor = (ItemColor) (stack, tintIndex) -> 0x3f76e4;
-        var itemColors = event.getItemColors();
-        itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+        event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.GRASS_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
-        itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+        event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.PLANTABLE_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
-        itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+        event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
-        itemColors.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+        event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Item[]::new));
-        itemColors.register(waterItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+        event.register(waterItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
     }
 
-    public static void setBlockColors(ColorHandlerEvent.Block event) {
+    public static void setBlockColors(RegisterColorHandlersEvent.Block event) {
         var grassBlockColor = (BlockColor) (state, world, pos, tintIndex) -> {
             if (pos != null && world != null) {
                 return BiomeColors.getAverageGrassColor(world, pos);
@@ -100,34 +100,42 @@ public final class XKDecoClient {
             }
             return 0x3f76e4;
         };
-        var blockColors = event.getBlockColors();
-        blockColors.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+        event.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.GRASS_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+        event.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.PLANTABLE_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+        event.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+        event.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Block[]::new));
-        blockColors.register(waterBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+        event.register(waterBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
                 .getPath().contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
     }
 
     public static void setCutoutBlocks(FMLClientSetupEvent event) {
+        // FIXME YES ALL OF THEM ARE GO TO JSON NOW GO BRRRRR
         for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
             var id = entry.getId().getPath();
             if ("mechanical_screen".equals(id) || "tech_screen".equals(id)) {
-                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
+                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
+                System.out.println(entry.getId() + " -> translucent");
             } else if (entry.get() instanceof XKDecoBlock.Basic) {
-                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+                System.out.println(entry.getId() + " -> cutout");
             } else if (entry.get() instanceof XKDecoBlock.Special) {
-                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+                System.out.println(entry.getId() + " -> cutout");
             } else if (id.contains(XKDecoObjects.GLASS_SUFFIX) || id.contains(XKDecoObjects.TRANSLUCENT_PREFIX)) {
-                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
+                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.translucent());
+                System.out.println(entry.getId() + " -> translucent");
             } else if (id.contains(XKDecoObjects.GLASS_PREFIX) || id.contains(XKDecoObjects.HOLLOW_PREFIX) || id.contains(XKDecoObjects.BIG_TABLE_SUFFIX) || id.contains(XKDecoObjects.TALL_TABLE_SUFFIX) || id.contains(XKDecoObjects.ROOF_SUFFIX)) {
-                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutout());
+                System.out.println(entry.getId() + " -> cutout");
             } else if (id.contains(XKDecoObjects.GRASS_PREFIX) || id.contains(XKDecoObjects.LEAVES_SUFFIX) || id.contains(XKDecoObjects.BLOSSOM_SUFFIX)) {
-                ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutoutMipped());
+                //ItemBlockRenderTypes.setRenderLayer(entry.get(), RenderType.cutoutMipped());
+                System.out.println(entry.getId() + " -> cutout_mipped");
+            } else {
+                System.out.println(entry.getId() + " -> solid");
             }
         }
     }
@@ -145,6 +153,6 @@ public final class XKDecoClient {
     }
 
     public static void setAdditionalPackFinder(AddPackFindersEvent event) {
-        event.addRepositorySource((consumer, factory) -> consumer.accept(SpecialWallResources.create(factory)));
+        event.addRepositorySource(consumer -> consumer.accept(SpecialWallResources.create()));
     }
 }

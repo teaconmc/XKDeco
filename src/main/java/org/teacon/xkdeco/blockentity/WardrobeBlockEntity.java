@@ -13,7 +13,7 @@ import static org.teacon.xkdeco.init.XKDecoObjects.WARDROBE_BLOCK_ENTITY;
 
 public class WardrobeBlockEntity extends BlockEntity {
     public static final RegistryObject<BlockEntityType<WardrobeBlockEntity>> TYPE =
-            RegistryObject.of(new ResourceLocation(XKDeco.ID, WARDROBE_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
+            RegistryObject.create(new ResourceLocation(XKDeco.ID, WARDROBE_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
     public WardrobeBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(TYPE.get(), pWorldPosition, pBlockState);
     }

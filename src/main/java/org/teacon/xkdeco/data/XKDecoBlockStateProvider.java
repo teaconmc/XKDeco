@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -16,7 +15,7 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.teacon.xkdeco.XKDeco;
@@ -58,13 +57,13 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
     );
 
     private XKDecoBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, XKDeco.ID, existingFileHelper);
+        super(generator.getPackOutput(), XKDeco.ID, existingFileHelper);
     }
 
     public static void register(GatherDataEvent event) {
         var generator = event.getGenerator();
         var existingFileHelper = event.getExistingFileHelper();
-        generator.addProvider(new XKDecoBlockStateProvider(generator, existingFileHelper));
+        generator.addProvider(event.includeClient(), new XKDecoBlockStateProvider(generator, existingFileHelper));
     }
 
     @Override
@@ -72,8 +71,9 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
         for (var entry : XKDecoObjects.BLOCKS.getEntries()) {
             var block = entry.get();
             var id = entry.getId().getPath();
-            var tabKey = ((TranslatableComponent) block.asItem().getCreativeTabs().iterator().next().getDisplayName()).getKey();
-            var path = tabKey.endsWith("_basic") ? "" : tabKey.substring(tabKey.lastIndexOf('_') + 1);
+            //var tabKey = ((TranslatableComponent) block.asItem().getCreativeTabs().iterator().next().getDisplayName()).getKey();
+            //var path = tabKey.endsWith("_basic") ? "" : tabKey.substring(tabKey.lastIndexOf('_') + 1);
+            var path = ""; // FIXME haha go brrrr
             var randomized = BLOCK_STATES_RANDOMIZED.contains(id);
 
 

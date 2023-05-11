@@ -5,10 +5,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
@@ -136,18 +134,18 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
             player.setItemInHand(handIn, blockEntity.getItem().copy());
             blockEntity.setItem(temp);
         } else if (blockEntity.getSelectedProperty().isEmpty()) {
-            message(player, new TranslatableComponent("item.minecraft.debug_stick.empty",
-                    Objects.requireNonNull(blockEntity.getStoredBlockState().getBlock().getRegistryName()).toString()));
+            var blockRegName = ForgeRegistries.BLOCKS.getKey(blockEntity.getStoredBlockState().getBlock());
+            message(player, Component.translatable("item.minecraft.debug_stick.empty", Objects.requireNonNull(blockRegName).toString()));
         } else if (hit.getLocation().subtract(Vec3.atLowerCornerOf(pos)).y() > 0.5) {
             var property = blockEntity.getSelectedProperty().get();
             blockEntity.setStoredBlockState(cycleState(blockEntity.getStoredBlockState(), property, false));
-            message(player, new TranslatableComponent("\"%s\" to %s",
+            message(player, Component.translatable("\"%s\" to %s",
                     property.getName(), getValueName(blockEntity.getStoredBlockState(), property)));
         } else {
             var blockState = blockEntity.getStoredBlockState();
             var newProperty = getRelative(blockState.getProperties(), blockEntity.getSelectedProperty().get(), false);
             blockEntity.setSelectedProperty(newProperty);
-            message(player, new TranslatableComponent("selected \"%s\" (%s)",
+            message(player, Component.translatable("selected \"%s\" (%s)",
                     newProperty.getName(), getValueName(blockState, newProperty)));
         }
 
@@ -166,7 +164,8 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
 
     // borrowed from DebugStickItem#message
     private static void message(Player pPlayer, Component pMessageComponent) {
-        ((ServerPlayer)pPlayer).sendMessage(pMessageComponent, ChatType.GAME_INFO, Util.NIL_UUID);
+        pPlayer.sendSystemMessage(pMessageComponent); // FIXME Verify this fix
+        //((ServerPlayer)pPlayer).sendMessage(pMessageComponent, ChatType.GAME_INFO, Util.NIL_UUID);
     }
 
     // borrowed from DebugStickItem#getNameHelper

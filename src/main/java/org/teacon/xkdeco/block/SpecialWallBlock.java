@@ -3,8 +3,8 @@ package org.teacon.xkdeco.block;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -122,7 +122,7 @@ public final class SpecialWallBlock extends WallBlock implements EntityBlock, XK
 
     @Override
     public MutableComponent getName() {
-        return new TranslatableComponent("block." + XKDeco.ID + ".special_wall", super.getName());
+        return Component.translatable("block." + XKDeco.ID + ".special_wall", super.getName());
     }
 
     @Override

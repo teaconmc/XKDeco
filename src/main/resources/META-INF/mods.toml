@@ -16,13 +16,13 @@ Models and textures are created by XeKr: https://github.com/XeKr
 [[dependencies.xkdeco]]
 modId="forge"
 mandatory=true
-versionRange="[40,)"
+versionRange="[45,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.xkdeco]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.18.2,1.19)"
+versionRange="[1.19.4]"
 ordering="NONE"
 side="BOTH"

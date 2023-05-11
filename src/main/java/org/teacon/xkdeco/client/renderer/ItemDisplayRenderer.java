@@ -1,17 +1,17 @@
 package org.teacon.xkdeco.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
@@ -62,9 +62,9 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
         var gui3d = bakedmodel.isGui3d();
         var amount = this.getRenderAmount(itemstack);
         @SuppressWarnings("deprecation")
-        var modelScale = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
+        var modelScale = bakedmodel.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
         pPoseStack.translate(0.5, 1 + 0.1F + 0.25 * modelScale * (pBlockEntity.isProjector() ? 24 : 1), 0.5);
-        pPoseStack.mulPose(Vector3f.YP.rotation(spin));
+        pPoseStack.mulPose(Axis.YP.rotation(spin));
 
         if (pBlockEntity.isProjector()) {
             pPoseStack.scale(16, 16, 16);
@@ -93,7 +93,7 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 
             var level = Objects.requireNonNull(pBlockEntity.getLevel());
             var packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos.above()), level.getBrightness(LightLayer.SKY, pos.above()));
-            this.itemRenderer.render(itemstack, ItemTransforms.TransformType.GROUND, false, pPoseStack, pBufferSource, packedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
+            this.itemRenderer.render(itemstack, ItemDisplayContext.GROUND, false, pPoseStack, pBufferSource, packedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
             pPoseStack.popPose();
             if (!gui3d) {
                 pPoseStack.translate(0.0, 0.0, 0.09375F);

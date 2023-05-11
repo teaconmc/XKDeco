@@ -34,7 +34,7 @@ import static org.teacon.xkdeco.init.XKDecoObjects.ITEM_DISPLAY_BLOCK_ENTITY;
 @ParametersAreNonnullByDefault
 public final class ItemDisplayBlockEntity extends BlockEntity implements Clearable {
     public static final RegistryObject<BlockEntityType<ItemDisplayBlockEntity>> TYPE =
-            RegistryObject.of(new ResourceLocation(XKDeco.ID, ITEM_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
+            RegistryObject.create(new ResourceLocation(XKDeco.ID, ITEM_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
     public static final String ITEMSTACK_NBT_KEY = "Display";
     private static final String SPIN_NBT_KEY = "Spin";
 

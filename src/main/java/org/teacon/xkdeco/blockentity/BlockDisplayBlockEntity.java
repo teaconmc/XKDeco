@@ -6,6 +6,7 @@ package org.teacon.xkdeco.blockentity;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
@@ -39,7 +40,7 @@ import static org.teacon.xkdeco.init.XKDecoObjects.BLOCK_DISPLAY_BLOCK_ENTITY;
 @ParametersAreNonnullByDefault
 public final class BlockDisplayBlockEntity extends BlockEntity implements Clearable {
     public static final RegistryObject<BlockEntityType<BlockDisplayBlockEntity>> TYPE =
-            RegistryObject.of(new ResourceLocation(XKDeco.ID, BLOCK_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
+            RegistryObject.create(new ResourceLocation(XKDeco.ID, BLOCK_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
     public static final String ITEMSTACK_NBT_KEY = "Display";
     private static final String BLOCKSTATE_NBT_KEY = "State";
     private static final String SELECTED_PROPERTY_NBT_KEY = "Selected";
@@ -129,7 +130,7 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
             this.item = ItemStack.of(pTag.getCompound(ITEMSTACK_NBT_KEY));
         }
         if (pTag.contains(BLOCKSTATE_NBT_KEY)) {
-            this.blockState = NbtUtils.readBlockState(pTag.getCompound(BLOCKSTATE_NBT_KEY));
+            this.blockState = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), pTag.getCompound(BLOCKSTATE_NBT_KEY));
         }
         if (pTag.contains(SELECTED_PROPERTY_NBT_KEY)) {
             var propertyName = pTag.getString(SELECTED_PROPERTY_NBT_KEY);
@@ -155,7 +156,7 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
     private void readNbtPacket(@Nullable CompoundTag tag) {
         if (tag == null) return;
         if (tag.contains(BLOCKSTATE_NBT_KEY)) {
-            this.blockState = NbtUtils.readBlockState(tag.getCompound(BLOCKSTATE_NBT_KEY));
+            this.blockState = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), tag.getCompound(BLOCKSTATE_NBT_KEY));
         }
     }
 
