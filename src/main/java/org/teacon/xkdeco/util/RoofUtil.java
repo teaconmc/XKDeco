@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.XKDecoBlock;
 
@@ -19,7 +19,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class RoofUtil {
-    private static final Logger LOGGER = LogManager.getLogger("RoofUtil");
+    private static final Logger LOGGER = LoggerFactory.getLogger("RoofUtil");
 
     public static BlockState getStateForPlacement(XKDecoBlock.Roof block, Level level,
                                                   BlockPos clickedPos, Direction[] directions) {

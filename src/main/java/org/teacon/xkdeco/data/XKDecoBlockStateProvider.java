@@ -16,8 +16,8 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.*;
 import org.teacon.xkdeco.init.XKDecoObjects;
@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoBlockStateProvider extends BlockStateProvider {
-    private static final Logger LOGGER = LogManager.getLogger("XKDeco");
+    private static final Logger LOGGER = LoggerFactory.getLogger("XKDeco");
 
     private static final Set<String> BLOCK_STATES_RANDOMIZED = ImmutableSet.of(
             "calligraphy", "cup", "ebony_shelf", "ink_painting",
