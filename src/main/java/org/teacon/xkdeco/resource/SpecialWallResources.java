@@ -1,7 +1,6 @@
 package org.teacon.xkdeco.resource;
 
 import com.google.gson.JsonParser;
-import net.minecraft.FileUtil;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,10 +35,10 @@ public final class SpecialWallResources implements PackResources {
     private static final String BLOCK_MODEL = "{\"variants\":{\"\":{\"model\":\"" + BLOCK_MODEL_LOCATION + "\"}}}";
     private static final String ITEM_MODEL = "{\"parent\":\"" + ITEM_MODEL_LOCATION + "\"}";
     private static final String PACK_META = "{\"pack\":{\"description\":\"XKDeco: Special Walls\",\"pack_format\":8}}";
-    private static final String NAME = "XKDeco: Special Walls"; // TODO Translatable
+    private static final String NAME_KEY = "pack.xkdeco_special_wall";
     private static final String ID = XKDeco.ID + "_" + XKDecoObjects.WALL_BLOCK_ENTITY;
 
-    private static final Pack.Info PACK_INFO = new Pack.Info(Component.literal(NAME), 13, 13, FeatureFlagSet.of(), true);
+    private static final Pack.Info PACK_INFO = new Pack.Info(Component.translatable(NAME_KEY), 13, 13, FeatureFlagSet.of(), true);
 
     private final String packId;
 
@@ -47,41 +46,17 @@ public final class SpecialWallResources implements PackResources {
         this.packId = packId;
     }
 
-    public static Pack create(/*Pack.PackConstructor pInfoFactory*/) {
-        return Pack.create(ID, Component.literal(NAME), true, SpecialWallResources::new, PACK_INFO, PackType.CLIENT_RESOURCES, Pack.Position.TOP, false, PackSource.DEFAULT);
+    public static Pack create() {
+        return Pack.create(ID, Component.translatable(NAME_KEY), true, SpecialWallResources::new, PACK_INFO, PackType.CLIENT_RESOURCES, Pack.Position.TOP, false, PackSource.DEFAULT);
     }
 
     @Override
     public IoSupplier<InputStream> getRootResource(String... pFileName) {
-        if (pFileName.length > 0 && "pack.mcmeta".equals(pFileName[0])) {
-            return () -> new ByteArrayInputStream(PACK_META.getBytes(StandardCharsets.UTF_8));
-        }
-        // TODO Determine if this is still necessary
-        //if (pFileName.contains("/") || pFileName.contains("\\")) {
-        //    throw new IllegalArgumentException("Root resources can only be filenames, not paths (no / allowed!)");
-        //}
-        //throw new FileNotFoundException(pFileName);
         return null;
     }
 
     @Override
     public IoSupplier<InputStream> getResource(PackType pType, ResourceLocation pLocation) {
-        var path = FileUtil.normalizeResourcePath(pLocation.getPath());
-        if (pType == PackType.CLIENT_RESOURCES && pLocation.getNamespace().equals(XKDeco.ID)) {
-            if (path.startsWith("blockstates/" + XKDecoObjects.SPECIAL_WALL_PREFIX) && path.endsWith(".json")) {
-                var id = new ResourceLocation(XKDeco.ID, path.substring("blockstates/".length(), path.length() - 5));
-                if (ForgeRegistries.BLOCKS.containsKey(id)) {
-                    return () -> new ByteArrayInputStream(BLOCK_MODEL.getBytes(StandardCharsets.UTF_8));
-                }
-            }
-            if (path.startsWith("models/item/" + XKDecoObjects.SPECIAL_WALL_PREFIX) && path.endsWith(".json")) {
-                var id = new ResourceLocation(XKDeco.ID, path.substring("models/item/".length(), path.length() - 5));
-                if (ForgeRegistries.BLOCKS.containsKey(id)) {
-                    return () -> new ByteArrayInputStream(ITEM_MODEL.getBytes(StandardCharsets.UTF_8));
-                }
-            }
-        }
-        //throw new FileNotFoundException(pType.getDirectory() + "/" + pLocation.getNamespace() + "/" + path);
         return null;
     }
 
