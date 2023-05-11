@@ -4,14 +4,23 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import org.teacon.xkdeco.item.XKDecoCreativeModTab;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public final class XKDecoProperties {
-    public static final Item.Properties ITEM_BASIC = new Item.Properties().tab(XKDecoCreativeModTab.TAB_BASIC);
-    public static final Item.Properties ITEM_STRUCTURE = new Item.Properties().tab(XKDecoCreativeModTab.TAB_STRUCTURE);
-    public static final Item.Properties ITEM_NATURE = new Item.Properties().tab(XKDecoCreativeModTab.TAB_NATURE);
-    public static final Item.Properties ITEM_FURNITURE = new Item.Properties().tab(XKDecoCreativeModTab.TAB_FURNITURE);
-    public static final Item.Properties ITEM_FUNCTIONAL = new Item.Properties().tab(XKDecoCreativeModTab.TAB_FUNCTIONAL);
+    public static final Item.Properties ITEM_BASIC = new Item.Properties();
+    public static final Item.Properties ITEM_STRUCTURE = new Item.Properties();
+    public static final Item.Properties ITEM_NATURE = new Item.Properties();
+    public static final Item.Properties ITEM_FURNITURE = new Item.Properties();
+    public static final Item.Properties ITEM_FUNCTIONAL = new Item.Properties();
+
+    public static final Collection<RegistryObject<Item>> TAB_BASIC_CONTENTS = new ArrayList<>();
+    public static final Collection<RegistryObject<Item>> TAB_STRUCTURE_CONTENTS = new ArrayList<>();
+    public static final Collection<RegistryObject<Item>> TAB_NATURE_CONTENTS = new ArrayList<>();
+    public static final Collection<RegistryObject<Item>> TAB_FURNITURE_CONTENTS = new ArrayList<>();
+    public static final Collection<RegistryObject<Item>> TAB_FUNCTIONAL_CONTENTS = new ArrayList<>();
 
     public static final BlockBehaviour.Properties BLOCK_MUD = BlockBehaviour.Properties.of(Material.STONE).strength(1.5f, 3f);
     public static final BlockBehaviour.Properties BLOCK_SANDSTONE = BlockBehaviour.Properties.of(Material.STONE).strength(1.5f, 6f);

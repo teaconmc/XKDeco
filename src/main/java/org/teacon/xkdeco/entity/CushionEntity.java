@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
@@ -41,7 +42,7 @@ public final class CushionEntity extends Entity {
     static {
         LOCATION_DATA_SERIALIZER = new Vec3Serializer();
         EntityDataSerializers.registerSerializer(LOCATION_DATA_SERIALIZER);
-        TYPE = RegistryObject.of(new ResourceLocation(XKDeco.ID, XKDecoObjects.CUSHION_ENTITY), ForgeRegistries.ENTITIES);
+        TYPE = RegistryObject.create(new ResourceLocation(XKDeco.ID, XKDecoObjects.CUSHION_ENTITY), ForgeRegistries.ENTITY_TYPES);
         DATA_DIFF_LOCATION = SynchedEntityData.defineId(CushionEntity.class, LOCATION_DATA_SERIALIZER);
     }
 
@@ -97,14 +98,14 @@ public final class CushionEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
         var targetPosition = this.position().add(this.getStandingDiffLocation());
-        var targetBelow = new BlockPos(targetPosition.x, targetPosition.y - 1.0, targetPosition.z);
+        var targetBelow = new BlockPos((int) targetPosition.x, (int) (targetPosition.y - 1.0), (int) targetPosition.z);
         var canStand = entity.level.getBlockState(targetBelow).isFaceSturdy(entity.level, targetBelow, Direction.UP);
         return canStand ? targetPosition : targetPosition.add(0.0, 1.0, 0.0);
     }
@@ -120,10 +121,10 @@ public final class CushionEntity extends Entity {
     }
 
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        var world = event.getWorld();
+        var world = event.getLevel();
         if (!world.isClientSide()) {
             var pos = event.getPos();
-            var player = event.getPlayer();
+            var player = event.getEntity();
             if (event.getFace() == Direction.UP && !player.isShiftKeyDown()) {
                 var cushions = world.getEntitiesOfClass(CushionEntity.class, new AABB(pos));
                 if (cushions.isEmpty() && canBlockBeSeated(world.getBlockState(pos))) {
@@ -134,7 +135,7 @@ public final class CushionEntity extends Entity {
     }
 
     private static boolean canBlockBeSeated(BlockState state) {
-        var name = Objects.requireNonNull(state.getBlock().getRegistryName());
+        var name = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(state.getBlock()));
         if (XKDeco.ID.equals(name.getNamespace())) {
             var id = name.getPath();
             return id.contains(XKDecoObjects.CHAIR_SUFFIX) || id.contains(XKDecoObjects.STOOL_SUFFIX);
@@ -143,7 +144,7 @@ public final class CushionEntity extends Entity {
     }
 
     public static void onBreakBlock(BlockEvent.BreakEvent event) {
-        final var world = event.getWorld();
+        final var world = event.getLevel();
         if (!world.isClientSide()) {
             var pos = event.getPos();
             var cushions = world.getEntitiesOfClass(CushionEntity.class, new AABB(pos));

@@ -1,42 +1,67 @@
 package org.teacon.xkdeco.item;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.init.XKDecoProperties;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-public final class XKDecoCreativeModTab extends CreativeModeTab {
-    public static final CreativeModeTab TAB_BASIC = new XKDecoCreativeModTab(XKDeco.ID + "_basic", "black_tiles");
-    public static final CreativeModeTab TAB_STRUCTURE = new XKDecoCreativeModTab(XKDeco.ID + "_structure", "special_wall_minecraft_cobblestone_wall");
-    public static final CreativeModeTab TAB_NATURE = new XKDecoCreativeModTab(XKDeco.ID + "_nature", "grass_block_slab");
-    public static final CreativeModeTab TAB_FURNITURE = new XKDecoCreativeModTab(XKDeco.ID + "_furniture", "varnished_big_table");
-    public static final CreativeModeTab TAB_FUNCTIONAL = new XKDecoCreativeModTab(XKDeco.ID + "_functional", "tech_item_display");
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = XKDeco.ID)
+public final class XKDecoCreativeModTab {
 
-    private final String itemId;
-
-    private final Lazy<ItemStack> itemStackLazy;
-
-    private XKDecoCreativeModTab(String label, String itemId) {
-        super(label);
-        this.itemId = itemId;
-        this.itemStackLazy = Lazy.of(this::getItemStack);
+    @SubscribeEvent
+    public static void tabs(CreativeModeTabEvent.Register event) {
+        event.registerCreativeModeTab(new ResourceLocation(XKDeco.ID, "basic"), builder -> builder
+                .icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "black_tiles"))).getDefaultInstance()))
+                .title(Component.translatable("itemGroup.xkdeco_basic"))
+                .displayItems((param, output) -> {
+                    for (var regObj : XKDecoProperties.TAB_BASIC_CONTENTS) {
+                        output.accept(regObj.get());
+                    }
+                })
+        );
+        event.registerCreativeModeTab(new ResourceLocation(XKDeco.ID, "structure"), builder -> builder
+                .icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "special_wall_minecraft_cobblestone_wall"))).getDefaultInstance()))
+                .title(Component.translatable("itemGroup.xkdeco_structure"))
+                .displayItems((param, output) -> {
+                    for (var regObj : XKDecoProperties.TAB_STRUCTURE_CONTENTS) {
+                        output.accept(regObj.get());
+                    }
+                })
+        );
+        event.registerCreativeModeTab(new ResourceLocation(XKDeco.ID, "nature"), builder -> builder
+                .icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "grass_block_slab"))).getDefaultInstance()))
+                .title(Component.translatable("itemGroup.xkdeco_nature"))
+                .displayItems((param, output) -> {
+                    for (var regObj : XKDecoProperties.TAB_NATURE_CONTENTS) {
+                        output.accept(regObj.get());
+                    }
+                })
+        );
+        event.registerCreativeModeTab(new ResourceLocation(XKDeco.ID, "furniture"), builder -> builder
+                .icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "varnished_big_table"))).getDefaultInstance()))
+                .title(Component.translatable("itemGroup.xkdeco_furniture"))
+                .displayItems((param, output) -> {
+                    for (var regObj : XKDecoProperties.TAB_FURNITURE_CONTENTS) {
+                        output.accept(regObj.get());
+                    }
+                })
+        );
+        event.registerCreativeModeTab(new ResourceLocation(XKDeco.ID, "functional"), builder -> builder
+                .icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "tech_item_display"))).getDefaultInstance()))
+                .title(Component.translatable("itemGroup.xkdeco_functional"))
+                .displayItems((param, output) -> {
+                    for (var regObj : XKDecoProperties.TAB_FUNCTIONAL_CONTENTS) {
+                        output.accept(regObj.get());
+                    }
+                })
+        );
     }
 
-    @Override
-    public ItemStack makeIcon() {
-        return this.itemStackLazy.get();
-    }
-
-    private ItemStack getItemStack() {
-        var resourceLocation = new ResourceLocation(XKDeco.ID, this.itemId);
-        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(resourceLocation)).getDefaultInstance();
-    }
 }

@@ -31,9 +31,9 @@ public final class XKDeco {
         XKDecoObjects.ITEMS.register(modEventBus);
         XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
 
-        modEventBus.addGenericListener(Block.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlocks);
-        modEventBus.addGenericListener(Item.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);
-        modEventBus.addGenericListener(BlockEntityType.class, EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
+        modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlocks);
+        modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);
+        modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
 
         modEventBus.addListener(XKDecoBlockStateProvider::register);
         modEventBus.addListener(XKDecoEnUsLangProvider::register);

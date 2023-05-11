@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -35,7 +36,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
     public PlantSlabBlock(Properties properties, boolean isPath, String dirtSlabId) {
         super(properties);
         this.isPath = isPath;
-        this.dirtSlab = RegistryObject.of(new ResourceLocation(XKDeco.ID, dirtSlabId), ForgeRegistries.BLOCKS);
+        this.dirtSlab = RegistryObject.create(new ResourceLocation(XKDeco.ID, dirtSlabId), ForgeRegistries.BLOCKS);
     }
 
     @Override
@@ -63,7 +64,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rng) {
+    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rng) {
         if (this.isPath) {
             this.turnToDirt(state, world, pos);
         }
@@ -86,7 +87,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rng) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rng) {
         if (world.isAreaLoaded(pos, 1)) {
             if (!this.isPath && !canBeGrass(state, world, pos)) {
                 this.turnToDirt(state, world, pos);

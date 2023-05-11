@@ -24,7 +24,7 @@ import static org.teacon.xkdeco.init.XKDecoObjects.WALL_BLOCK_ENTITY;
 @ParametersAreNonnullByDefault
 public final class WallBlockEntity extends BlockEntity {
     public static final RegistryObject<BlockEntityType<WallBlockEntity>> TYPE =
-            RegistryObject.of(new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITIES);
+            RegistryObject.create(new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
 
     private Block eastBlock = Blocks.AIR;
     private Block westBlock = Blocks.AIR;
