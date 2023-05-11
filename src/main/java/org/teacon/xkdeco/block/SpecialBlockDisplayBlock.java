@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -164,8 +165,7 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements X
 
     // borrowed from DebugStickItem#message
     private static void message(Player pPlayer, Component pMessageComponent) {
-        pPlayer.sendSystemMessage(pMessageComponent); // FIXME Verify this fix
-        //((ServerPlayer)pPlayer).sendMessage(pMessageComponent, ChatType.GAME_INFO, Util.NIL_UUID);
+        ((ServerPlayer)pPlayer).sendSystemMessage(pMessageComponent, true);
     }
 
     // borrowed from DebugStickItem#getNameHelper

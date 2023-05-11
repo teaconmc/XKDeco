@@ -74,7 +74,8 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
             Map.entry("itemGroup.xkdeco_functional", "XKDeco: Functional"),
             Map.entry("itemGroup.xkdeco_furniture", "XKDeco: Furniture"),
             Map.entry("itemGroup.xkdeco_nature", "XKDeco: Nature"),
-            Map.entry("itemGroup.xkdeco_structure", "XKDeco: Structure")
+            Map.entry("itemGroup.xkdeco_structure", "XKDeco: Structure"),
+            Map.entry("pack.xkdeco_special_wall", "XKDeco: Special Walls")
     );
 
     public static void register(GatherDataEvent event) {
