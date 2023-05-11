@@ -1,8 +1,9 @@
 {
-	"parent": "xkdeco:block/furniture/ebony_big_table",
-	"textures": {
-		"top": "xkdeco:block/furniture/varnished_big_table",
-		"particle": "xkdeco:block/furniture/varnished_big_table_side",
-		"side": "xkdeco:block/furniture/varnished_big_table_side"
-	}
+  "parent": "xkdeco:block/furniture/ebony_big_table",
+  "textures": {
+    "top": "xkdeco:block/furniture/varnished_big_table",
+    "particle": "xkdeco:block/furniture/varnished_big_table_side",
+    "side": "xkdeco:block/furniture/varnished_big_table_side"
+  },
+  "render_type": "cutout"
 }

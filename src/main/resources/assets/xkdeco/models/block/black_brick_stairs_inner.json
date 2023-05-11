@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/black_bricks",
     "top": "xkdeco:block/black_bricks",
     "side": "xkdeco:block/black_bricks"
-  }
+  },
+  "render_type": "solid"
 }

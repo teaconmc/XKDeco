@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/nature/red_maple_leaves",
     "particle": "xkdeco:block/nature/red_maple_leaves"
-  }
+  },
+  "render_type": "cutout_mipped"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/smooth_steel_block",
     "particle": "xkdeco:block/smooth_steel_block"
-  }
+  },
+  "render_type": "solid"
 }

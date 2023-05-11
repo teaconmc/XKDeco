@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/factory_electricity",
     "particle": "xkdeco:block/factory_electricity"
-  }
+  },
+  "render_type": "solid"
 }

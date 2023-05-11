@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/aztec_mossy_stonebricks",
     "particle": "xkdeco:block/aztec_mossy_stonebricks"
-  }
+  },
+  "render_type": "solid"
 }

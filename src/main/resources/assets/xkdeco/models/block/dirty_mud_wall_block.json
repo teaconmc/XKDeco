@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/dirty_mud_wall",
     "particle": "xkdeco:block/dirty_mud_wall"
-  }
+  },
+  "render_type": "solid"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/deepslate_pavement",
     "particle": "xkdeco:block/deepslate_pavement"
-  }
+  },
+  "render_type": "solid"
 }

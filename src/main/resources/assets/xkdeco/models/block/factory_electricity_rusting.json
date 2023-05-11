@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/factory_electricity_rusting",
     "particle": "xkdeco:block/factory_electricity_rusting"
-  }
+  },
+  "render_type": "solid"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/gilded_blackstone_pillar_top",
     "side": "xkdeco:block/gilded_blackstone_pillar_side"
-  }
+  },
+  "render_type": "solid"
 }

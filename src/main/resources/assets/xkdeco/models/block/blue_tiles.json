@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/blue_tiles",
     "particle": "xkdeco:block/blue_tiles"
-  }
+  },
+  "render_type": "solid"
 }

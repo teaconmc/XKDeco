@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/factory_block_rusted",
     "top": "xkdeco:block/factory_block_rusted",
     "side": "xkdeco:block/factory_block_rusted"
-  }
+  },
+  "render_type": "solid"
 }

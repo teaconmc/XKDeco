@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/toughened_sand",
     "particle": "xkdeco:block/toughened_sand"
-  }
+  },
+  "render_type": "solid"
 }

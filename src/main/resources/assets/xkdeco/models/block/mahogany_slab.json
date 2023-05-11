@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/mahogany_planks",
     "top": "xkdeco:block/mahogany_planks",
     "side": "xkdeco:block/mahogany_planks"
-  }
+  },
+  "render_type": "solid"
 }

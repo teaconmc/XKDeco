@@ -1,6 +1,7 @@
 {
-	"parent": "xkdeco:block/furniture/calligraphy1",
-	"textures": {
-		"0": "xkdeco:block/furniture/ink_painting2"
-	}
+  "parent": "xkdeco:block/furniture/calligraphy1",
+  "textures": {
+    "0": "xkdeco:block/furniture/ink_painting2"
+  },
+  "render_type": "cutout"
 }

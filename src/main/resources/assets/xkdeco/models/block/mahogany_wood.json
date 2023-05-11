@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/mahogany_log_side",
     "side": "xkdeco:block/mahogany_log_side"
-  }
+  },
+  "render_type": "solid"
 }

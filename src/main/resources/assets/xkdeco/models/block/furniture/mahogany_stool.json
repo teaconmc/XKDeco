@@ -1,8 +1,9 @@
 {
-	"parent": "xkdeco:block/furniture/ebony_stool",
-	"textures": {
-		"particle": "xkdeco:block/furniture/mahogany_table",
-		"down": "xkdeco:block/furniture/mahogany_table",
-		"side": "xkdeco:block/furniture/mahogany_table_side"
-	}
+  "parent": "xkdeco:block/furniture/ebony_stool",
+  "textures": {
+    "particle": "xkdeco:block/furniture/mahogany_table",
+    "down": "xkdeco:block/furniture/mahogany_table",
+    "side": "xkdeco:block/furniture/mahogany_table_side"
+  },
+  "render_type": "cutout"
 }

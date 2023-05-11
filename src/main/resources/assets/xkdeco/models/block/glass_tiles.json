@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/glass_tiles",
     "particle": "xkdeco:block/glass_tiles"
-  }
+  },
+  "render_type": "cutout"
 }

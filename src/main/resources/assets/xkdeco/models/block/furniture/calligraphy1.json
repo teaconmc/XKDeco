@@ -1,22 +1,82 @@
 {
-	"credit": "Made by XeKr with Blockbench",
-	"parent": "block/thin_block",
-	"textures": {
-		"0": "xkdeco:block/furniture/calligraphy1",
-		"particle": "#0"
-	},
-	"elements": [
-		{
-			"from": [0, 0, 3],
-			"to": [16, 1, 13],
-			"faces": {
-				"north": {"uv": [0, 3, 16, 4], "texture": "#0"},
-				"east": {"uv": [0, 3, 1, 13], "rotation": 90, "texture": "#0"},
-				"south": {"uv": [0, 3, 16, 4], "texture": "#0"},
-				"west": {"uv": [0, 3, 1, 13], "rotation": 90, "texture": "#0"},
-				"up": {"uv": [0, 3, 16, 13], "rotation": 180, "texture": "#0"},
-				"down": {"uv": [0, 3, 16, 13], "texture": "#0"}
-			}
-		}
-	]
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/thin_block",
+  "textures": {
+    "0": "xkdeco:block/furniture/calligraphy1",
+    "particle": "#0"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        3
+      ],
+      "to": [
+        16,
+        1,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            16,
+            4
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            13
+          ],
+          "rotation": 90,
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            16,
+            4
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            1,
+            13
+          ],
+          "rotation": 90,
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            16,
+            13
+          ],
+          "rotation": 180,
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            0,
+            3,
+            16,
+            13
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ],
+  "render_type": "cutout"
 }

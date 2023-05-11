@@ -4,5 +4,6 @@
     "top": "xkdeco:block/aztec_chiseled_stonebricks",
     "bottom": "xkdeco:block/aztec_chiseled_stonebricks",
     "side": "xkdeco:block/aztec_chiseled_stonebricks_side"
-  }
+  },
+  "render_type": "solid"
 }

@@ -4,5 +4,6 @@
     "top": "xkdeco:block/aztec_chiseled_stonebricks",
     "bottom": "xkdeco:block/maya_bricks",
     "side": "xkdeco:block/aztec_sculpture_stone"
-  }
+  },
+  "render_type": "solid"
 }

@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/polished_sandstone",
     "top": "xkdeco:block/polished_sandstone",
     "side": "xkdeco:block/polished_sandstone_slab"
-  }
+  },
+  "render_type": "solid"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/ebony_log_side",
     "side": "xkdeco:block/ebony_log_side"
-  }
+  },
+  "render_type": "solid"
 }

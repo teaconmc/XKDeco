@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/nature/cherry_blossom_leaves",
     "particle": "xkdeco:block/nature/cherry_blossom_leaves"
-  }
+  },
+  "render_type": "cutout_mipped"
 }

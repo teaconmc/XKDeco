@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/bronze_pillar_top",
     "side": "xkdeco:block/bronze_pillar_side"
-  }
+  },
+  "render_type": "solid"
 }

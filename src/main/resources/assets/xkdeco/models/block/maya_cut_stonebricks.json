@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/maya_chiseled_stonebricks_top",
     "side": "xkdeco:block/maya_cut_stonebricks_side"
-  }
+  },
+  "render_type": "solid"
 }

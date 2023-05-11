@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/translucent_lamp_block",
     "top": "xkdeco:block/translucent_lamp_block",
     "side": "xkdeco:block/translucent_lamp_block"
-  }
+  },
+  "render_type": "translucent"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/nature/cobblestone_path",
     "particle": "xkdeco:block/nature/cobblestone_path"
-  }
+  },
+  "render_type": "solid"
 }

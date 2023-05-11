@@ -1,11 +1,12 @@
 {
   "parent": "xkdeco:block/furniture/fish_bowl",
-	"textures": {
-		"particle": "xkdeco:block/furniture/dark_fish_bowl_top",
-		"top": "xkdeco:block/furniture/dark_fish_bowl_top",
-		"bottom": "xkdeco:block/furniture/dark_fish_bowl_botom",
-		"fish": "xkdeco:block/furniture/fish_bowl_fish",
-		"inner": "xkdeco:block/furniture/fish_bowl_inner",
-		"side": "xkdeco:block/furniture/dark_fish_bowl_side"
-	}
+  "textures": {
+    "particle": "xkdeco:block/furniture/dark_fish_bowl_top",
+    "top": "xkdeco:block/furniture/dark_fish_bowl_top",
+    "bottom": "xkdeco:block/furniture/dark_fish_bowl_botom",
+    "fish": "xkdeco:block/furniture/fish_bowl_fish",
+    "inner": "xkdeco:block/furniture/fish_bowl_inner",
+    "side": "xkdeco:block/furniture/dark_fish_bowl_side"
+  },
+  "render_type": "cutout"
 }

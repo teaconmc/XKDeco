@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/gold_bricks",
     "particle": "xkdeco:block/gold_bricks"
-  }
+  },
+  "render_type": "solid"
 }

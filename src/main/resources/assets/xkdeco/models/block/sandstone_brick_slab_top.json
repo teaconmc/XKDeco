@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/sandstone_bricks",
     "top": "xkdeco:block/sandstone_bricks",
     "side": "xkdeco:block/sandstone_bricks"
-  }
+  },
+  "render_type": "solid"
 }

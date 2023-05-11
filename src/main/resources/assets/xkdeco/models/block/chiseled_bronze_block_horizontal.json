@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/chiseled_bronze_block_top",
     "side": "xkdeco:block/chiseled_bronze_block_side"
-  }
+  },
+  "render_type": "solid"
 }

@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/cut_gold_block",
     "particle": "xkdeco:block/cut_gold_block"
-  }
+  },
+  "render_type": "solid"
 }

@@ -1,31 +1,108 @@
 {
-	"credit": "Made by XeKr with Blockbench",
-	"parent": "block/block",
-	"ambientocclusion": false,
-	"textures": {
-		"particle": "xkdeco:block/structure/black_roof_ridge",
-		"ridge": "xkdeco:block/structure/black_roof_ridge"
-	},
-	"elements": [
-		{
-			"from": [4.95, 3.95, 4.95],
-			"to": [11.05, 20.05, 11.05],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
-			"faces": {
-				"north": {"uv": [1, 0, 7, 16], "texture": "#ridge"},
-				"east": {"uv": [1, 0, 7, 16], "texture": "#ridge"},
-				"south": {"uv": [1, 0, 7, 16], "texture": "#ridge"},
-				"west": {"uv": [1, 0, 7, 16], "texture": "#ridge"},
-				"up": {"uv": [9, 9, 15, 15], "texture": "#ridge"},
-				"down": {"uv": [9, 9, 15, 15], "texture": "#ridge"}
-			}
-		}
-	],
-	"display": {
-		"gui": {
-			"rotation": [30, 135, 0],
-			"translation": [0, -0.5, 0],
-			"scale": [0.6, 0.6, 0.6]
-		}
-	}
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "xkdeco:block/structure/black_roof_ridge",
+    "ridge": "xkdeco:block/structure/black_roof_ridge"
+  },
+  "elements": [
+    {
+      "from": [
+        4.95,
+        3.95,
+        4.95
+      ],
+      "to": [
+        11.05,
+        20.05,
+        11.05
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            0,
+            7,
+            16
+          ],
+          "texture": "#ridge"
+        },
+        "east": {
+          "uv": [
+            1,
+            0,
+            7,
+            16
+          ],
+          "texture": "#ridge"
+        },
+        "south": {
+          "uv": [
+            1,
+            0,
+            7,
+            16
+          ],
+          "texture": "#ridge"
+        },
+        "west": {
+          "uv": [
+            1,
+            0,
+            7,
+            16
+          ],
+          "texture": "#ridge"
+        },
+        "up": {
+          "uv": [
+            9,
+            9,
+            15,
+            15
+          ],
+          "texture": "#ridge"
+        },
+        "down": {
+          "uv": [
+            9,
+            9,
+            15,
+            15
+          ],
+          "texture": "#ridge"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        135,
+        0
+      ],
+      "translation": [
+        0,
+        -0.5,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    }
+  },
+  "render_type": "cutout"
 }

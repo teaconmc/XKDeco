@@ -1,24 +1,86 @@
 {
-	"credit": "Made by XeKr with Blockbench",
-	"parent": "block/slab",
-	"textures": {
-		"bottom": "minecraft:block/netherrack",
-		"top": "minecraft:block/crimson_nylium",
-		"particle": "minecraft:block/crimson_nylium_side",
-		"side": "minecraft:block/crimson_nylium_side"
-	},
-	"elements": [
-		{
-			"from": [0, 0, 0],
-			"to": [16, 8, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 8], "texture": "#side", "cullface": "north"},
-				"east": {"uv": [0, 0, 16, 8], "texture": "#side", "cullface": "east"},
-				"south": {"uv": [0, 0, 16, 8], "texture": "#side", "cullface": "south"},
-				"west": {"uv": [0, 0, 16, 8], "texture": "#side", "cullface": "west"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom", "cullface": "down"}
-			}
-		}
-	]
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "minecraft:block/netherrack",
+    "top": "minecraft:block/crimson_nylium",
+    "particle": "minecraft:block/crimson_nylium_side",
+    "side": "minecraft:block/crimson_nylium_side"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            8
+          ],
+          "texture": "#side",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            8
+          ],
+          "texture": "#side",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            8
+          ],
+          "texture": "#side",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            8
+          ],
+          "texture": "#side",
+          "cullface": "west"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bottom",
+          "cullface": "down"
+        }
+      }
+    }
+  ],
+  "render_type": "solid"
 }

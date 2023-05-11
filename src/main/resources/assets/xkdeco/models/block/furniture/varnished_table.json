@@ -1,8 +1,9 @@
 {
-	"parent": "xkdeco:block/furniture/ebony_table",
-	"textures": {
-		"particle": "xkdeco:block/furniture/varnished_table",
-		"down": "xkdeco:block/furniture/varnished_table",
-		"side": "xkdeco:block/furniture/varnished_table_side"
-	}
+  "parent": "xkdeco:block/furniture/ebony_table",
+  "textures": {
+    "particle": "xkdeco:block/furniture/varnished_table",
+    "down": "xkdeco:block/furniture/varnished_table",
+    "side": "xkdeco:block/furniture/varnished_table_side"
+  },
+  "render_type": "solid"
 }

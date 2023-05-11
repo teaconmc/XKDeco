@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/nature/plantable_leaves_dark",
     "particle": "xkdeco:block/nature/plantable_leaves_dark"
-  }
+  },
+  "render_type": "cutout_mipped"
 }

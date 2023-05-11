@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/maya_quad_screw_thread_stone",
     "particle": "xkdeco:block/maya_quad_screw_thread_stone"
-  }
+  },
+  "render_type": "solid"
 }

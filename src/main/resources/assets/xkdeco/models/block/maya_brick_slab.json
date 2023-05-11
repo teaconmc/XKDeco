@@ -4,5 +4,6 @@
     "bottom": "xkdeco:block/maya_bricks",
     "top": "xkdeco:block/maya_bricks",
     "side": "xkdeco:block/maya_bricks"
-  }
+  },
+  "render_type": "solid"
 }

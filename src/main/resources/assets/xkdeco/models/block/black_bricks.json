@@ -3,5 +3,6 @@
   "textures": {
     "all": "xkdeco:block/black_bricks",
     "particle": "xkdeco:block/black_bricks"
-  }
+  },
+  "render_type": "solid"
 }

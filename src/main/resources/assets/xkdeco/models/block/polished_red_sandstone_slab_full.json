@@ -3,5 +3,6 @@
   "textures": {
     "end": "xkdeco:block/polished_red_sandstone",
     "side": "xkdeco:block/polished_red_sandstone_slab"
-  }
+  },
+  "render_type": "solid"
 }
