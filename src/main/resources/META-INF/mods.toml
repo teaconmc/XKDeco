@@ -8,7 +8,7 @@ authors="TeaConMC"
 version="${file.jarVersion}"
 displayName="XeKr's Decorations"
 description='''
-XeKr's Decorations for Minecraft 1.18.
+XeKr's Decorations for Minecraft 1.19.
 
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
