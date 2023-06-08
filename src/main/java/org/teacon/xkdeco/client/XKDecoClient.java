@@ -50,7 +50,7 @@ public final class XKDecoClient {
                 var direction = ((BlockHitResult) block).getDirection();
                 var pos = ((BlockHitResult) block).getBlockPos();
                 if (Direction.Plane.HORIZONTAL.test(direction)) {
-                    var state = cameraEntity.level.getBlockState(pos);
+                    var state = cameraEntity.level().getBlockState(pos);
                     if (state.getBlock() instanceof XKDecoBlock.Roof roof) {
                         var sideHeight = roof.getSideHeight(state, direction);
                         event.getRight().add("Roof Side Height L: %d M: %d R: %d"

@@ -11,6 +11,7 @@ import org.teacon.xkdeco.data.XKDecoBlockStateProvider;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
+import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -27,6 +28,7 @@ public final class XKDeco {
         XKDecoObjects.BLOCKS.register(modEventBus);
         XKDecoObjects.ITEMS.register(modEventBus);
         XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
+        XKDecoCreativeModTab.TABS.register(modEventBus);
 
         modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlocks);
         modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);

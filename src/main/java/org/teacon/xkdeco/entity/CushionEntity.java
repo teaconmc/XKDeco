@@ -52,7 +52,7 @@ public final class CushionEntity extends Entity {
     }
 
     public CushionEntity(BlockPos pos, Player player) {
-        super(TYPE.get(), player.level);
+        super(TYPE.get(), player.level());
         this.noPhysics = true;
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.375, pos.getZ() + 0.5);
         this.setStandingDiffLocation(this.calculateStandingDiff(player));
@@ -106,14 +106,14 @@ public final class CushionEntity extends Entity {
     public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
         var targetPosition = this.position().add(this.getStandingDiffLocation());
         var targetBelow = new BlockPos((int) targetPosition.x, (int) (targetPosition.y - 1.0), (int) targetPosition.z);
-        var canStand = entity.level.getBlockState(targetBelow).isFaceSturdy(entity.level, targetBelow, Direction.UP);
+        var canStand = entity.level().getBlockState(targetBelow).isFaceSturdy(entity.level(), targetBelow, Direction.UP);
         return canStand ? targetPosition : targetPosition.add(0.0, 1.0, 0.0);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide()) {
+        if (!this.level().isClientSide()) {
             if (this.getPassengers().isEmpty() || !canBlockBeSeated(this.getBlockStateOn())) {
                 this.remove(RemovalReason.DISCARDED);
             }
