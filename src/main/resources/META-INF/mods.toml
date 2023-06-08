@@ -8,7 +8,7 @@ authors="TeaConMC"
 version="${file.jarVersion}"
 displayName="XeKr's Decorations"
 description='''
-XeKr's Decorations for Minecraft 1.19.
+XeKr's Decorations for Minecraft 1.20.
 
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
@@ -23,6 +23,6 @@ side="BOTH"
 [[dependencies.xkdeco]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19.4]"
+versionRange="[1.20,)"
 ordering="NONE"
 side="BOTH"

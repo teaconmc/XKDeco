@@ -37,7 +37,7 @@ public final class SpecialWardrobeBlock extends AbstractChestBlock<WardrobeBlock
     public static final VoxelShape SHAPE_EAST_OPEN = Block.box(0, 0, 0, 15, 16, 16);
 
     public SpecialWardrobeBlock(Properties pProperties) {
-        super(pProperties, WardrobeBlockEntity.TYPE::get);
+        super(pProperties.pushReaction(PushReaction.BLOCK), WardrobeBlockEntity.TYPE::get);
     }
 
     @SuppressWarnings("deprecation")
@@ -129,12 +129,6 @@ public final class SpecialWardrobeBlock extends AbstractChestBlock<WardrobeBlock
             // this is a lower part and not supported by the ground
             return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public PushReaction getPistonPushReaction(BlockState pState) {
-        return PushReaction.BLOCK;
     }
 
     @Override

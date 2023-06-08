@@ -12,7 +12,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.lighting.LayerLightEngine;
+import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -21,7 +21,6 @@ import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Random;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -75,7 +74,7 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         if (this.isPath && state.getValue(TYPE) != SlabType.BOTTOM) {
             var aboveState = world.getBlockState(pos.above());
-            return !aboveState.getMaterial().isSolid() || aboveState.getBlock() instanceof FenceGateBlock;
+            return !aboveState.isSolid() || aboveState.getBlock() instanceof FenceGateBlock;
         }
         return true;
     }
@@ -109,7 +108,8 @@ public final class PlantSlabBlock extends SlabBlock implements XKDecoBlock.Plant
             var aboveState = world.getBlockState(abovePos);
             if (!aboveState.is(Blocks.SNOW) || aboveState.getValue(SnowLayerBlock.LAYERS) != 1) {
                 if (aboveState.getFluidState().getAmount() != 8) {
-                    return LayerLightEngine.getLightBlockInto(world, state, pos, aboveState, abovePos,
+                    // TODO Check if this is the correct impl
+                    return LightEngine.getLightBlockInto(world, state, pos, aboveState, abovePos,
                             Direction.UP, aboveState.getLightBlock(world, abovePos)) < world.getMaxLightLevel();
                 }
                 return false;

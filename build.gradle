@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)'
         classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
     }
 }
@@ -22,13 +22,13 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 // definitions at gradle/teacon-forge.gradle
 teacon {
     modId = 'xkdeco'
-    modVersion = '0.3.0'
+    modVersion = '0.4.0'
     modLicense = 'BSD-3-Clause'
     modGitHubRepo = 'teaconmc/XKDeco'
     modAuthors = ['xekr (XeKr)', 'ustc-zzzz', 'LucunJi']
-    modDescription = 'XeKr\'s Decorations for Minecraft 1.19.'
+    modDescription = 'XeKr\'s Decorations for Minecraft 1.20.'
 
-    platform = 'forge-1.19.4-45.0.58'
+    platform = 'forge-1.20-46.0.1'
     parchment = null
 
     // uncomment these lines if you need
