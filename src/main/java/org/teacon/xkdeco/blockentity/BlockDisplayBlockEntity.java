@@ -6,6 +6,7 @@ package org.teacon.xkdeco.blockentity;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -101,9 +102,8 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
         this.setChanged();
     }
 
-    @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
+    public @NotNull Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this,
                 be -> ((BlockDisplayBlockEntity) be).writeNbtPacket(null));
     }
@@ -123,6 +123,7 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
         readNbtPacket(tag);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void load(@NotNull CompoundTag pTag) {
         super.load(pTag);
@@ -130,7 +131,8 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
             this.item = ItemStack.of(pTag.getCompound(ITEMSTACK_NBT_KEY));
         }
         if (pTag.contains(BLOCKSTATE_NBT_KEY)) {
-            this.blockState = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), pTag.getCompound(BLOCKSTATE_NBT_KEY));
+            var lookup = this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
+            this.blockState = NbtUtils.readBlockState(lookup, pTag.getCompound(BLOCKSTATE_NBT_KEY));
         }
         if (pTag.contains(SELECTED_PROPERTY_NBT_KEY)) {
             var propertyName = pTag.getString(SELECTED_PROPERTY_NBT_KEY);
@@ -153,10 +155,12 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
         pTag.putString(SELECTED_PROPERTY_NBT_KEY, selectedProperty == null ? "" : selectedProperty.getName());
     }
 
+    @SuppressWarnings("deprecation")
     private void readNbtPacket(@Nullable CompoundTag tag) {
         if (tag == null) return;
         if (tag.contains(BLOCKSTATE_NBT_KEY)) {
-            this.blockState = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), tag.getCompound(BLOCKSTATE_NBT_KEY));
+            var lookup = this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
+            this.blockState = NbtUtils.readBlockState(lookup, tag.getCompound(BLOCKSTATE_NBT_KEY));
         }
     }
 
