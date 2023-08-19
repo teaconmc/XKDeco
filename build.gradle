@@ -22,7 +22,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 // definitions at gradle/teacon-forge.gradle
 teacon {
     modId = 'xkdeco'
-    modVersion = '0.4.0'
+    modVersion = '0.4.1'
     modLicense = 'BSD-3-Clause'
     modGitHubRepo = 'teaconmc/XKDeco'
     modAuthors = ['xekr (XeKr)', 'ustc-zzzz', 'LucunJi']

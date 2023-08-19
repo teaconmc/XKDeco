@@ -131,7 +131,8 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
             this.item = ItemStack.of(pTag.getCompound(ITEMSTACK_NBT_KEY));
         }
         if (pTag.contains(BLOCKSTATE_NBT_KEY)) {
-            var lookup = this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
+            var level = this.level;
+            var lookup = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
             this.blockState = NbtUtils.readBlockState(lookup, pTag.getCompound(BLOCKSTATE_NBT_KEY));
         }
         if (pTag.contains(SELECTED_PROPERTY_NBT_KEY)) {
