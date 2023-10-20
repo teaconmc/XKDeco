@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.teacon.xkdeco.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "xkdeco.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "ChunkRenderDispatcher$RenderChunk$RebuildTaskMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

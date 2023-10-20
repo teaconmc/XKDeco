@@ -1,10 +1,12 @@
 buildscript {
     repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
     dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)'
         classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
     }
@@ -13,11 +15,21 @@ buildscript {
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 apply from: 'gradle/teacon-forge.gradle'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+mixin {
+    add sourceSets.main, "xkdeco.refmap.json"
+    config "xkdeco.mixins.json"
+}
+
+dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
 
 // definitions at gradle/teacon-forge.gradle
 teacon {
@@ -34,8 +46,8 @@ teacon {
     // uncomment these lines if you need
     modName = 'XeKr\'s Decorations' // default to repo name
     // modGitHubBranch = 1.18-forge // for referring the license
-    // modifyMemberAccess = true // for access transformer
-     useDataGeneration = true // for data generation
+    modifyMemberAccess = true // for access transformer
+    useDataGeneration = true // for data generation
     // publishTask = shadowJar // for shadow jar or other usages
     // lazyTokens = ['minecraft_classpath': { project.configurations.shadow.asPath }] // for runtime tokens
 

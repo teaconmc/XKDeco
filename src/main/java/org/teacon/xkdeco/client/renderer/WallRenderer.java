@@ -39,59 +39,13 @@ public final class WallRenderer implements BlockEntityRenderer<WallBlockEntity> 
     public void render(WallBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack,
                        MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         var level = pBlockEntity.getLevel();
-        var pos = pBlockEntity.getBlockPos();
         var state = pBlockEntity.getBlockState();
         if (state.getBlock() instanceof SpecialWallBlock wall) {
-            var wallState = this.withState(state, wall.getWallDelegate(), BlockStateProperties.UP);
+            var wallState = pBlockEntity.withState(state, wall.getWallDelegate(), BlockStateProperties.UP);
             if (level == null) {
                 this.blockRenderer.renderSingleBlock(wallState, pPoseStack,
                         pBufferSource, pPackedLight, pPackedOverlay, ModelData.EMPTY, null);
-            } else {
-                var random = RandomSource.create();
-                var renderTypes = RenderType.chunkBufferLayers();
-                //var oldRenderType = MinecraftForgeClient.getRenderType();
-                for (var renderType : renderTypes) {
-                    //ForgeHooksClient.setRenderType(renderType);
-                    this.blockRenderer.renderBatched(wallState, pos, level, pPoseStack,
-                            pBufferSource.getBuffer(renderType), false, random, ModelData.EMPTY, renderType);
-                    var eastWall = wall.connectsTo(level.getBlockState(pos.east()));
-                    if (eastWall.isPresent()) {
-                        var eastWallState = this.withState(state, eastWall.get(), BlockStateProperties.EAST_WALL);
-                        this.blockRenderer.renderBatched(eastWallState, pos, level, pPoseStack,
-                                pBufferSource.getBuffer(renderType), false, random, ModelData.EMPTY, renderType);
-                    }
-                    var northWall = wall.connectsTo(level.getBlockState(pos.north()));
-                    if (northWall.isPresent()) {
-                        var northWallState = this.withState(state, northWall.get(), BlockStateProperties.NORTH_WALL);
-                        this.blockRenderer.renderBatched(northWallState, pos, level, pPoseStack,
-                                pBufferSource.getBuffer(renderType), false, random, ModelData.EMPTY, renderType);
-                    }
-                    var southWall = wall.connectsTo(level.getBlockState(pos.south()));
-                    if (southWall.isPresent()) {
-                        var southWallState = this.withState(state, southWall.get(), BlockStateProperties.SOUTH_WALL);
-                        this.blockRenderer.renderBatched(southWallState, pos, level, pPoseStack,
-                                pBufferSource.getBuffer(renderType), false, random, ModelData.EMPTY, renderType);
-                    }
-                    var westWall = wall.connectsTo(level.getBlockState(pos.west()));
-                    if (westWall.isPresent()) {
-                        var westWallState = this.withState(state, westWall.get(), BlockStateProperties.WEST_WALL);
-                        this.blockRenderer.renderBatched(westWallState, pos, level, pPoseStack,
-                                pBufferSource.getBuffer(renderType), false, random, ModelData.EMPTY, renderType);
-                    }
-                }
-                //ForgeHooksClient.setRenderType(oldRenderType);
             }
         }
-    }
-
-    private <T extends Comparable<T>> BlockState withState(BlockState source, Block target, Property<T> property) {
-        var state = target.defaultBlockState();
-        if (state.hasProperty(BlockStateProperties.UP)) {
-            state = state.setValue(BlockStateProperties.UP, false);
-        }
-        if (state.hasProperty(property)) {
-            state = state.setValue(property, source.getValue(property));
-        }
-        return state;
     }
 }

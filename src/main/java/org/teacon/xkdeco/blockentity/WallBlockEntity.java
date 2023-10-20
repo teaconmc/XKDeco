@@ -1,28 +1,40 @@
 package org.teacon.xkdeco.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.renderer.ChunkBufferBuilderPack;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.SpecialWallBlock;
+import org.teacon.xkdeco.client.IFixedBEREntity;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.teacon.xkdeco.init.XKDecoObjects.WALL_BLOCK_ENTITY;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class WallBlockEntity extends BlockEntity {
+public final class WallBlockEntity extends BlockEntity implements IFixedBEREntity {
     public static final RegistryObject<BlockEntityType<WallBlockEntity>> TYPE =
             RegistryObject.create(new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
 
@@ -88,5 +100,60 @@ public final class WallBlockEntity extends BlockEntity {
                 .getKey(this.southBlock), ForgeRegistries.BLOCKS.getKey(Blocks.AIR)).toString());
         pTag.putString("WestBlockName", Objects.requireNonNullElse(ForgeRegistries.BLOCKS
                 .getKey(this.westBlock), ForgeRegistries.BLOCKS.getKey(Blocks.AIR)).toString());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void renderFixedBER(Set<RenderType> begunRenderTypes, BlockRenderDispatcher blockRenderer, ChunkBufferBuilderPack builderPack, PoseStack poseStack, int packedOverlay) {
+        var level = this.getLevel();
+        var pos = this.getBlockPos();
+        var state = this.getBlockState();
+        if (state.getBlock() instanceof SpecialWallBlock wall) {
+            var wallState = this.withState(state, wall.getWallDelegate(), BlockStateProperties.UP);
+            var random = RandomSource.create();
+            var renderTypes = RenderType.chunkBufferLayers();
+            for (var renderType : renderTypes) {
+                var buffer = getBuilder(begunRenderTypes, builderPack, renderType);
+                assert level != null;
+                blockRenderer.renderBatched(wallState, pos, level, poseStack,
+                        buffer, false, random, ModelData.EMPTY, renderType);
+                var eastWall = wall.connectsTo(level.getBlockState(pos.east()));
+                if (eastWall.isPresent()) {
+                    var eastWallState = this.withState(state, eastWall.get(), BlockStateProperties.EAST_WALL);
+                    blockRenderer.renderBatched(eastWallState, pos, level, poseStack,
+                            buffer, false, random, ModelData.EMPTY, renderType);
+                }
+                var northWall = wall.connectsTo(level.getBlockState(pos.north()));
+                if (northWall.isPresent()) {
+                    var northWallState = this.withState(state, northWall.get(), BlockStateProperties.NORTH_WALL);
+                    blockRenderer.renderBatched(northWallState, pos, level, poseStack,
+                            buffer, false, random, ModelData.EMPTY, renderType);
+                }
+                var southWall = wall.connectsTo(level.getBlockState(pos.south()));
+                if (southWall.isPresent()) {
+                    var southWallState = this.withState(state, southWall.get(), BlockStateProperties.SOUTH_WALL);
+                    blockRenderer.renderBatched(southWallState, pos, level, poseStack,
+                            buffer, false, random, ModelData.EMPTY, renderType);
+                }
+                var westWall = wall.connectsTo(level.getBlockState(pos.west()));
+                if (westWall.isPresent()) {
+                    var westWallState = this.withState(state, westWall.get(), BlockStateProperties.WEST_WALL);
+                    blockRenderer.renderBatched(westWallState, pos, level, poseStack,
+                            buffer, false, random, ModelData.EMPTY, renderType);
+                }
+            }
+
+        }
+    }
+
+    public <T extends Comparable<T>> BlockState withState(BlockState source, Block target, Property<T> property) {
+        var state = target.defaultBlockState();
+        if (state.hasProperty(BlockStateProperties.UP)) {
+            state = state.setValue(BlockStateProperties.UP, false);
+        }
+        if (state.hasProperty(property)) {
+            state = state.setValue(property, source.getValue(property));
+        }
+        return state;
     }
 }
