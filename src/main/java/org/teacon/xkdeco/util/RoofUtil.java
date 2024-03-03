@@ -59,27 +59,41 @@ public class RoofUtil {
         var facingBlock = facingState.getBlock();
         return switch (facing) {
             case DOWN, UP -> Direction.Plane.HORIZONTAL.stream().allMatch(side -> {
-                var back = stateBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(state, side) : null;
-                var front = updateSide
-                        ? facingBlock instanceof XKDecoBlock.Roof r ? r.getUpdateShapeChoice(facingState,
-                        facing.getOpposite()).map(choice -> r.getSideHeight(choice, side)).orElse(null) : null
-                        : facingBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(facingState, side) : null;
+                IntTriple back = stateBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(state, side) : null;
+				IntTriple front;
+				if (updateSide) {
+					if (facingBlock instanceof XKDecoBlock.Roof r) {
+						var choice = r.getUpdateShapeChoice(facingState, facing.getOpposite());
+						front = choice.map(c -> r.getSideHeight(c, side)).orElse(null);
+					} else {
+						front = null;
+					}
+				} else {
+					front = facingBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(facingState, side) : null;
+				}
                 return back != null && front != null && switch (facing.getAxisDirection()) {
                     case NEGATIVE -> IntTriple.matchDownUp(front, back);
                     case POSITIVE -> IntTriple.matchDownUp(back, front);
                 };
             });
             case NORTH, SOUTH, WEST, EAST -> {
-                var back = stateBlock instanceof XKDecoBlock.Roof r
+				IntTriple back = stateBlock instanceof XKDecoBlock.Roof r
                         ? r.getSideHeight(state, facing) : lenient ? IntTriple.of(0, 0, 0) : null;
-                var front = updateSide
-                        ? facingBlock instanceof XKDecoBlock.Roof r ? r.getUpdateShapeChoice(facingState,
-                        facing.getOpposite()).map(choice -> r.getSideHeight(choice, facing.getOpposite())).orElse(null) : lenient ? back : null
-                        : facingBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(facingState, facing.getOpposite()) : lenient ? back : null;
-                yield back != null && front != null && IntTriple.matchFrontBack(front, back);
-            }
-        };
-    }
+				IntTriple front;
+				if (updateSide) {
+					if (facingBlock instanceof XKDecoBlock.Roof r) {
+						var choice = r.getUpdateShapeChoice(facingState, facing.getOpposite());
+						front = choice.map(c -> r.getSideHeight(c, facing.getOpposite())).orElse(null);
+					} else {
+						front = null;
+					}
+				} else {
+					front = facingBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(facingState, facing.getOpposite()) : null;
+				}
+				yield back != null && front != null && IntTriple.matchFrontBack(front, back);
+			}
+		};
+	}
 
     public static BlockState updateShape(BlockState oldState, BlockState fromState, Direction fromDirection) {
         if (oldState.getBlock() instanceof XKDecoBlock.Roof roof) {
