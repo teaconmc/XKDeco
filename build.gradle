@@ -1,43 +1,283 @@
 buildscript {
     repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)'
-        classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+plugins {
+    id "me.shedaniel.unified-publishing" version "0.1.+"
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'org.spongepowered.mixin'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-apply from: 'gradle/teacon-forge.gradle'
+version = "${minecraft_version}-forge-${mod_version}"
+group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_name
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+compileJava.options.encoding = 'UTF-8'
 
-// definitions at gradle/teacon-forge.gradle
-teacon {
-    modId = 'xkdeco'
-    modVersion = '0.4.1'
-    modLicense = 'BSD-3-Clause'
-    modGitHubRepo = 'teaconmc/XKDeco'
-    modAuthors = ['xekr (XeKr)', 'ustc-zzzz', 'LucunJi']
-    modDescription = 'XeKr\'s Decorations for Minecraft 1.20.'
-
-    platform = 'forge-1.20-46.0.1'
-    parchment = null
-
-    // uncomment these lines if you need
-    modName = 'XeKr\'s Decorations' // default to repo name
-    // modGitHubBranch = 1.18-forge // for referring the license
-    // modifyMemberAccess = true // for access transformer
-     useDataGeneration = true // for data generation
-    // publishTask = shadowJar // for shadow jar or other usages
-    // lazyTokens = ['minecraft_classpath': { project.configurations.shadow.asPath }] // for runtime tokens
-
-    // use './gradlew -q printModMeta > src/main/resources/META-INF/mods.toml' to generate mod meta
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+    mappings channel: mappings_channel, version: mappings_version
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    // Currently, this location cannot be changed from the default.
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run_client')
+            property 'production', 'true'
+            property 'forge.logging.console.level', 'debug'
+
+            // Export mixin-changed classes
+            property 'mixin.debug.export', 'true'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+            // These arguments allow for optional authentication with Mojang servers.
+            // If you want to authenticate, put these properties in GRADLE_HOME/gradle.properties.
+            // By default, this is C:\Users\<your username>\.gradle\gradle.properties on Windows or ~/.gradle/gradle.properties on Linux/MacOS.
+            if (project.hasProperty('mc_uuid')) {
+                // Your UUID, trimmed / without the dashes
+                args '--uuid', project.getProperty('mc_uuid')
+            }
+            if (project.hasProperty('mc_username')) {
+                // Your Minecraft in-game username, not email
+                args '--username', project.getProperty('mc_username')
+            }
+            if (project.hasProperty('mc_accessToken')) {
+                // Your current access token. When it expires, you need to retrieve a new one and regenerate your run configurations.
+                // You may be able to find it in your .minecraft folder in launcher_accounts.json or launcher_profiles.json.
+                args '--accessToken', project.getProperty('mc_accessToken')
+            }
+
+            // Add mixin config to runtime
+            args '-mixin.config=' + project.getProperty('mod_id') + '.mixins.json'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run_server')
+            property 'production', 'true'
+            property 'forge.logging.console.level', 'debug'
+
+            // Export mixin-changed classes
+            property 'mixin.debug.export', 'true'
+
+            // Add mixin config to runtime
+            args '-mixin.config=' + project.getProperty('mod_id') + '.mixins.json'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run_data')
+            property 'production', 'true'
+            property 'forge.logging.console.level', 'debug'
+
+            // Export mixin-changed classes
+            property 'mixin.debug.export', 'true'
+
+            // Add mixin config to runtime
+            args '-mixin.config=' + project.getProperty('mod_id') + '.mixins.json'
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+// Include resources generated by data generators.
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    maven { url = 'https://maven.neoforged.net/releases' }
+    maven { url "https://maven.su5ed.dev/releases" }
+    maven { url "https://api.modrinth.com/maven" }
+    maven {
+        // saps.dev Maven (KubeJS and Rhino)
+        url = "https://maven.saps.dev/minecraft"
+        content {
+            includeGroup "dev.latvian.mods"
+        }
+    }
+    maven { url "https://maven.shedaniel.me/" }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven {
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven { url 'https://maven.blamejared.com' }
+    maven { url = "https://maven.theillusivec4.top/" }
+    flatDir {
+        dir 'libs'
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    // Sets up the mixin config; this gets added to run configurations and the manifest in the final jar
+    config "${mod_id}.mixins.json"
+
+    // Enables exporting mixin-changed classes to .mixin.out in the run folder
+    debug.export = true
+}
+
+dependencies {
+    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+    // compile against the JEI API but do not include it at runtime
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    //// at runtime, use the full JEI jar for Forge
+    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+    implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
+    compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
+
+    implementation(annotationProcessor(fg.deobf("maven.modrinth:kiwi:${project.kiwi_version}-forge")))
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
+    implementation fg.deobf("maven.modrinth:jade:11.8.0")
+
+    implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
+    implementation fg.deobf("maven.modrinth:modernfix:u5R7SNlj")
+
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.0+1.11.3+1.20.1")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
+    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.6.0+0.15.0+1.20.1")
+}
+
+processResources {
+    from('src/main/java') {
+        include '**/*.json'
+    }
+}
+
+jar {
+    manifest {
+        attributes(["Specification-Title"     : mod_id,
+                    "Specification-Vendor"    : mod_authors,
+                    "Specification-Version"   : "1", // We are version 1 of ourselves
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : mod_version,
+                    "Implementation-Vendor"   : mod_authors,
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    "MixinConfigs"            : "${mod_id}.mixins.json"])
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Example configuration to allow publishing using the maven-publish plugin
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+// publish.dependsOn('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+/*
+unifiedPublishing {
+    project {
+        displayName = "[Forge $project.supported_version] $project.mod_version"
+        version = project.mod_version // Optional, Inferred from project by default
+        changelog = file("CHANGELOG.md").exists() ? file("CHANGELOG.md").text : ""
+        releaseType = project.release_type // Optional, use "release", "beta" or "alpha"
+        gameVersions = ["1.20", "1.20.1"]
+        gameLoaders = ["forge", "neoforge"]
+
+        mainPublication tasks.jar // Declares the publicated jar
+
+        if (System.getenv("CURSE_TOKEN") != null) {
+            curseforge {
+                token = System.getenv("CURSE_TOKEN")
+                id = "885292" // Required, must be a string, ID of CurseForge project
+
+                relations { // Optional, Inferred from the relations above by default
+                    depends "kiwi"
+                    optional "cloth-config"
+                    optional "lychee"
+                    optional "kubejs"
+                    optional "huge-structure-blocks"
+                }
+            }
+        }
+
+        if (System.getenv("CURSE_TOKEN") != null) {
+            modrinth {
+                token = System.getenv("MODRINTH_TOKEN")
+                id = "xnn6vBkh" // Required, must be a string, ID of Modrinth project
+
+                relations { // Optional, Inferred from the relations above by default
+                    depends "kiwi"
+                    optional "cloth-config"
+                    optional "lychee"
+                    optional "kubejs"
+                    optional "huge-structure-blocks"
+                }
+            }
+        }
+    }
+}*/
