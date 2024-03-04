@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/gilded_blackstone_bricks",
-    "particle": "xkdeco:block/gilded_blackstone_bricks"
-  },
-  "render_type": "solid"
-}

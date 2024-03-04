@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "xkdeco:block/tech_lamp_block",
-    "top": "xkdeco:block/tech_lamp_block",
-    "side": "xkdeco:block/tech_lamp_block"
-  },
-  "render_type": "solid"
-}

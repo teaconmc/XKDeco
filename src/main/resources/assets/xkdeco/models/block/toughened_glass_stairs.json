@@ -1,9 +1,0 @@
-{
-  "parent": "block/stairs",
-  "textures": {
-    "bottom": "xkdeco:block/toughened_glass",
-    "top": "xkdeco:block/toughened_glass",
-    "side": "xkdeco:block/toughened_glass"
-  },
-  "render_type": "translucent"
-}

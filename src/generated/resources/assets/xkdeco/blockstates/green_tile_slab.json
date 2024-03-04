@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "xkdeco:block/green_tile_slab_top"
-    },
     "type=bottom": {
       "model": "xkdeco:block/green_tile_slab"
     },
     "type=double": {
       "model": "xkdeco:block/green_tiles"
+    },
+    "type=top": {
+      "model": "xkdeco:block/green_tile_slab_top"
     }
   }
 }

@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "xkdeco:block/ebony_log_top",
-    "top": "xkdeco:block/ebony_log_top",
-    "side": "xkdeco:block/ebony_log_side"
-  },
-  "render_type": "solid"
-}

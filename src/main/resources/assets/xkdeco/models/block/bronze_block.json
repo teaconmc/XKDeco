@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/bronze_block",
-    "particle": "xkdeco:block/bronze_block"
-  },
-  "render_type": "solid"
-}

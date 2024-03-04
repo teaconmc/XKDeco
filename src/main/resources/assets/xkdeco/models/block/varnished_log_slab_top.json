@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "xkdeco:block/varnished_log_top",
-    "top": "xkdeco:block/varnished_log_top",
-    "side": "xkdeco:block/varnished_log_side"
-  },
-  "render_type": "solid"
-}

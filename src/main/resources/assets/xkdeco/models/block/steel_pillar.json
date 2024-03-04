@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "xkdeco:block/steel_pillar_top",
-    "side": "xkdeco:block/steel_pillar_side"
-  },
-  "render_type": "solid"
-}

@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/inca_stonebricks",
-    "top": "xkdeco:block/inca_stonebricks",
-    "side": "xkdeco:block/inca_stonebricks"
-  },
-  "render_type": "solid"
-}

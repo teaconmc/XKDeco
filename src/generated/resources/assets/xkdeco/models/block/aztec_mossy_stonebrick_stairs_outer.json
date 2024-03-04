@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "xkdeco:block/aztec_mossy_stonebricks",
+    "side": "xkdeco:block/aztec_mossy_stonebricks",
+    "top": "xkdeco:block/aztec_mossy_stonebricks"
+  }
+}

@@ -38,9 +38,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class RoofBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
-	public static final EnumProperty<RoofVariant> VARIANT = EnumProperty.create("variant", RoofVariant.class);
+	public static final EnumProperty<RoofVariant> VARIANT = XKDStateProperties.ROOF_VARIANT;
 	public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
-	public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
+	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

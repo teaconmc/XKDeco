@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "top": "xkdeco:block/maya_skull_stone_top",
-    "bottom": "xkdeco:block/maya_skull_stone_bottom",
-    "side": "xkdeco:block/maya_skull_stone"
-  },
-  "render_type": "solid"
-}

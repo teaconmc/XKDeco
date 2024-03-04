@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "xkdeco:block/varnished_log_top",
-    "side": "xkdeco:block/varnished_log_side"
-  },
-  "render_type": "solid"
-}

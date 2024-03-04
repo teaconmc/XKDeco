@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/black_tiles",
-    "particle": "xkdeco:block/black_tiles"
-  },
-  "render_type": "solid"
-}

@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "xkdeco:block/inca_stonebrick_slab_top"
-    },
     "type=bottom": {
       "model": "xkdeco:block/inca_stonebrick_slab"
     },
     "type=double": {
       "model": "xkdeco:block/inca_stonebricks"
+    },
+    "type=top": {
+      "model": "xkdeco:block/inca_stonebrick_slab_top"
     }
   }
 }

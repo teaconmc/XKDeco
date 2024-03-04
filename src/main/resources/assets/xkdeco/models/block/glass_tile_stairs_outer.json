@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/glass_tiles",
-    "top": "xkdeco:block/glass_tiles",
-    "side": "xkdeco:block/glass_tiles"
-  },
-  "render_type": "cutout"
-}

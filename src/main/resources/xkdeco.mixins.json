@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
+		"BlockFamilyProviderMixin"
 	],
 	"client": [
 	],

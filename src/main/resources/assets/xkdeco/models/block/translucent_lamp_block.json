@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/translucent_lamp_block",
-    "particle": "xkdeco:block/translucent_lamp_block"
-  },
-  "render_type": "translucent"
-}

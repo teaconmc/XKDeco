@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "xkdeco:block/sandstone_bricks",
+    "side": "xkdeco:block/sandstone_bricks",
+    "top": "xkdeco:block/sandstone_bricks"
+  }
+}

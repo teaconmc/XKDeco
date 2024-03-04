@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/maya_pictogram_stone5",
-    "particle": "xkdeco:block/maya_pictogram_stone5"
-  },
-  "render_type": "solid"
-}

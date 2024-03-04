@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/toughened_glass",
-    "particle": "xkdeco:block/toughened_glass"
-  },
-  "render_type": "translucent"
-}

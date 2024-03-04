@@ -26,6 +26,7 @@ import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
+import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SpecialBlockDisplayBlock;
 import org.teacon.xkdeco.block.SpecialConsole;
 import org.teacon.xkdeco.block.SpecialCupBlock;
@@ -108,6 +109,8 @@ public final class XKDecoObjects {
 	public static final String ROOF_END_SUFFIX = "_roof_end";
 	public static final String ROOF_EAVE_SUFFIX = "_roof_eave";
 	public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
+	public static final String ROOF_DECO_SUFFIX = "_roof_deco";
+	public static final String ROOF_TIP_SUFFIX = "_roof_tip";
 	public static final String STOOL_SUFFIX = "_stool";
 	public static final String CHAIR_SUFFIX = "_chair";
 	public static final String TABLE_SUFFIX = "_table";
@@ -201,21 +204,26 @@ public final class XKDecoObjects {
 			BlockBehaviour.Properties properties,
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
-		if (id.contains(ROOF_RIDGE_SUFFIX)) {
+		if (id.endsWith(ROOF_RIDGE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new RoofRidgeBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(ROOF_FLAT_SUFFIX)) {
+		} else if (id.endsWith(ROOF_FLAT_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new RoofFlatBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(ROOF_END_SUFFIX)) {
+		} else if (id.endsWith(ROOF_END_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new RoofEndBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(ROOF_EAVE_SUFFIX)) {
+		} else if (id.endsWith(ROOF_EAVE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new RoofEaveBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(ROOF_SUFFIX)) {
+		} else if (id.endsWith(ROOF_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new RoofBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+		} else if (id.endsWith(ROOF_TIP_SUFFIX)) {
+			var block = BLOCKS.register(id, () -> new RoofTipBlock(properties));
+			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+		} else {
+//			throw new IllegalArgumentException("Illegal id (" + id + ") for roof blocks");
 		}
 	}
 
@@ -281,13 +289,15 @@ public final class XKDecoObjects {
 	}
 
 	private static void addDisplayBlockEntity() {
-		BLOCK_ENTITY.register(ITEM_DISPLAY_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(ItemDisplayBlockEntity::new,
+		BLOCK_ENTITY.register(ITEM_DISPLAY_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(
+				ItemDisplayBlockEntity::new,
 				BLOCKS.getEntries()
 						.stream()
 						.map(RegistryObject::get)
 						.filter(b -> b instanceof SpecialItemDisplayBlock)
 						.toArray(Block[]::new)).build(DSL.remainderType()));
-		BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(BlockDisplayBlockEntity::new,
+		BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(
+				BlockDisplayBlockEntity::new,
 				BLOCKS.getEntries()
 						.stream()
 						.map(RegistryObject::get)
@@ -296,7 +306,8 @@ public final class XKDecoObjects {
 	}
 
 	private static void addWardrobeBlockEntity() {
-		BLOCK_ENTITY.register(WARDROBE_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(WardrobeBlockEntity::new,
+		BLOCK_ENTITY.register(WARDROBE_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(
+				WardrobeBlockEntity::new,
 				BLOCKS.getEntries()
 						.stream()
 						.map(RegistryObject::get)
@@ -305,7 +316,8 @@ public final class XKDecoObjects {
 	}
 
 	public static void addSpecialWallBlocks(RegisterEvent event) {
-		var vanillaWalls = List.of(Blocks.COBBLESTONE_WALL,
+		var vanillaWalls = List.of(
+				Blocks.COBBLESTONE_WALL,
 				Blocks.MOSSY_COBBLESTONE_WALL,
 				Blocks.BRICK_WALL,
 				Blocks.PRISMARINE_WALL,
@@ -350,7 +362,8 @@ public final class XKDecoObjects {
 	public static void addSpecialWallBlockEntity(RegisterEvent event) {
 		var blocks = ForgeRegistries.BLOCKS.getValues().stream().filter(SpecialWallBlock.class::isInstance).toArray(Block[]::new);
 		var registryName = new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY);
-		event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES,
+		event.register(
+				ForgeRegistries.Keys.BLOCK_ENTITY_TYPES,
 				registryName,
 				() -> BlockEntityType.Builder.of(WallBlockEntity::new, blocks).build(DSL.remainderType()));
 	}
@@ -399,11 +412,13 @@ public final class XKDecoObjects {
 
 		static ShapeFunction fromShelf() {
 			return d -> switch (d) {
-				case EAST, WEST -> Shapes.or(Block.box(0, 0, 0, 16, 1, 16),
+				case EAST, WEST -> Shapes.or(
+						Block.box(0, 0, 0, 16, 1, 16),
 						Block.box(0, 15, 0, 16, 16, 16),
 						Block.box(0, 1, 0, 16, 15, 1),
 						Block.box(0, 1, 15, 16, 15, 16));
-				case NORTH, SOUTH -> Shapes.or(Block.box(15, 0, 0, 16, 16, 16),
+				case NORTH, SOUTH -> Shapes.or(
+						Block.box(15, 0, 0, 16, 16, 16),
 						Block.box(0, 0, 0, 1, 16, 16),
 						Block.box(1, 15, 0, 15, 16, 16),
 						Block.box(1, 0, 0, 15, 1, 16));
@@ -621,6 +636,7 @@ public final class XKDecoObjects {
 		addIsotropic("lined_mud_wall_slab", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("lined_mud_wall_stairs", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
+		addIsotropic("crossed_mud_wall_block", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("crossed_mud_wall_slab", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("crossed_mud_wall_stairs", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -664,6 +680,7 @@ public final class XKDecoObjects {
 
 		addIsotropic("polished_sandstone", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("polished_sandstone_slab", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
+//		addIsotropic("polished_sandstone_stairs", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("sandstone_bricks", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("sandstone_brick_slab", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -677,6 +694,7 @@ public final class XKDecoObjects {
 
 		addIsotropic("polished_red_sandstone", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("polished_red_sandstone_slab", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
+//		addIsotropic("polished_red_sandstone_stairs", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("red_sandstone_bricks", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("red_sandstone_brick_slab", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -885,6 +903,8 @@ public final class XKDecoObjects {
 		addRoof("black_roof_end", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
 		addRoof("black_roof_eave", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
 		addRoof("black_roof_flat", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
+		addRoof("black_roof_deco", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
+		addRoof("black_roof_tip", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
 
 		addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE, TAB_NATURE_CONTENTS);

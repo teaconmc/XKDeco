@@ -1,9 +1,0 @@
-{
-  "parent": "block/inner_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/copper_tiles",
-    "top": "xkdeco:block/copper_tiles",
-    "side": "xkdeco:block/copper_tiles"
-  },
-  "render_type": "solid"
-}

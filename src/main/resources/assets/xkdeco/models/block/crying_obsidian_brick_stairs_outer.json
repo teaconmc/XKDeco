@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/crying_obsidian_bricks",
-    "top": "xkdeco:block/crying_obsidian_bricks",
-    "side": "xkdeco:block/crying_obsidian_bricks"
-  },
-  "render_type": "solid"
-}

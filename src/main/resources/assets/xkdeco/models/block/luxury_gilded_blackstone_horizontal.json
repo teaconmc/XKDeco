@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "xkdeco:block/luxury_gilded_blackstone_top",
-    "side": "xkdeco:block/luxury_gilded_blackstone_side"
-  },
-  "render_type": "solid"
-}

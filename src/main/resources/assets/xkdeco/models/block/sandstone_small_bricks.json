@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/sandstone_small_bricks"
-  },
-  "render_type": "solid"
-}

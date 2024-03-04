@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/maya_mossy_stonebricks",
-    "particle": "xkdeco:block/maya_mossy_stonebricks"
-  },
-  "render_type": "solid"
-}

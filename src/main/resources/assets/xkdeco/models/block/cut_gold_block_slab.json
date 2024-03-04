@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "xkdeco:block/cut_gold_block",
-    "top": "xkdeco:block/cut_gold_block",
-    "side": "xkdeco:block/cut_gold_block"
-  },
-  "render_type": "solid"
-}

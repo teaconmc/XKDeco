@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "xkdeco:block/maya_stonebrick_slab_top"
-    },
     "type=bottom": {
       "model": "xkdeco:block/maya_stonebrick_slab"
     },
     "type=double": {
       "model": "xkdeco:block/maya_stonebricks"
+    },
+    "type=top": {
+      "model": "xkdeco:block/maya_stonebrick_slab_top"
     }
   }
 }

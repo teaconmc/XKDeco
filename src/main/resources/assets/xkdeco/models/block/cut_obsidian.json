@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/cut_obsidian",
-    "particle": "xkdeco:block/cut_obsidian"
-  },
-  "render_type": "solid"
-}

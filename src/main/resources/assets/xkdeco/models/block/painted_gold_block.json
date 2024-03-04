@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "xkdeco:block/painted_gold_block_top",
-    "side": "xkdeco:block/painted_gold_block_side"
-  },
-  "render_type": "solid"
-}
