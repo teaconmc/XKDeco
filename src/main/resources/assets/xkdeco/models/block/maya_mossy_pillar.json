@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "xkdeco:block/maya_mossy_pillar_top",
-    "side": "xkdeco:block/maya_mossy_pillar_side"
-  },
-  "render_type": "solid"
-}

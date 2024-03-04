@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "xkdeco:block/stone_brick_pavement_slab_top"
-    },
     "type=bottom": {
       "model": "xkdeco:block/stone_brick_pavement_slab"
     },
     "type=double": {
       "model": "xkdeco:block/stone_brick_pavement"
+    },
+    "type=top": {
+      "model": "xkdeco:block/stone_brick_pavement_slab_top"
     }
   }
 }

@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/copper_tiles",
-    "particle": "xkdeco:block/copper_tiles"
-  },
-  "render_type": "solid"
-}

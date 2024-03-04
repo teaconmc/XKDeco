@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "xkdeco:block/quartz_glass",
-    "top": "xkdeco:block/quartz_glass",
-    "side": "xkdeco:block/quartz_glass"
-  },
-  "render_type": "translucent"
-}

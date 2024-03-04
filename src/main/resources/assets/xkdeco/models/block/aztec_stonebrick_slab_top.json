@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "xkdeco:block/aztec_stonebricks",
-    "top": "xkdeco:block/aztec_stonebricks",
-    "side": "xkdeco:block/aztec_stonebricks"
-  },
-  "render_type": "solid"
-}

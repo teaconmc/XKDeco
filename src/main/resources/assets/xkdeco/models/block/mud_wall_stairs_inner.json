@@ -1,9 +1,0 @@
-{
-  "parent": "block/inner_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/mud_wall",
-    "top": "xkdeco:block/mud_wall",
-    "side": "xkdeco:block/mud_wall"
-  },
-  "render_type": "solid"
-}

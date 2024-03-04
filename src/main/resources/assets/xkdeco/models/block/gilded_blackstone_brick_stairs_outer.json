@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/gilded_blackstone_bricks",
-    "top": "xkdeco:block/gilded_blackstone_bricks",
-    "side": "xkdeco:block/gilded_blackstone_bricks"
-  },
-  "render_type": "solid"
-}

@@ -35,9 +35,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class RoofEndBlock extends Block implements XKDecoBlock.Roof {
-	public static final EnumProperty<RoofVariant> VARIANT = EnumProperty.create("variant", RoofVariant.class);
+	public static final EnumProperty<RoofVariant> VARIANT = XKDStateProperties.ROOF_VARIANT;
 	public static final EnumProperty<RoofEndShape> SHAPE = EnumProperty.create("shape", RoofEndShape.class);
-	public static final EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
+	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

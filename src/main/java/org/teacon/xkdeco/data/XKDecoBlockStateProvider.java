@@ -191,13 +191,13 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
 				}
 			}
 
-			if (!BLOCK_ITEMS_SKIP.contains(id)) {
-				if (randomized) {
-					this.simpleBlockItem(block, collectRandomizedModels(id, path).findFirst().orElseThrow());
-				} else {
-					this.simpleBlockItem(block, model(id, path, ""));
-				}
-			}
+//			if (!BLOCK_ITEMS_SKIP.contains(id)) {
+//				if (randomized) {
+//					this.simpleBlockItem(block, collectRandomizedModels(id, path).findFirst().orElseThrow());
+//				} else {
+//					this.simpleBlockItem(block, model(id, path, ""));
+//				}
+//			}
 
 			var blockClassName = block.getClass().getName();
 			var propertyNames = block.defaultBlockState().getProperties().stream().map(Property::getName).toList();

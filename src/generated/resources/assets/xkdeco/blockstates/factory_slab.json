@@ -1,13 +1,13 @@
 {
   "variants": {
-    "type=top": {
-      "model": "xkdeco:block/factory_slab_top"
-    },
     "type=bottom": {
       "model": "xkdeco:block/factory_slab"
     },
     "type=double": {
       "model": "xkdeco:block/factory_block"
+    },
+    "type=top": {
+      "model": "xkdeco:block/factory_slab_top"
     }
   }
 }

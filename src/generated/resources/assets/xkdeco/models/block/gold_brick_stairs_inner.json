@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "xkdeco:block/gold_bricks",
+    "side": "xkdeco:block/gold_bricks",
+    "top": "xkdeco:block/gold_bricks"
+  }
+}

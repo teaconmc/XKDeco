@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "xkdeco:block/sandstone_small_bricks",
-    "top": "xkdeco:block/sandstone_small_bricks",
-    "side": "xkdeco:block/sandstone_small_bricks"
-  },
-  "render_type": "solid"
-}

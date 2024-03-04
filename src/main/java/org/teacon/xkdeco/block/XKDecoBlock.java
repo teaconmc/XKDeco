@@ -34,8 +34,7 @@ public sealed interface XKDecoBlock permits
 	}
 
 	// roof related blocks which have complex connection logic
-	sealed interface Roof extends XKDecoBlock permits
-			RoofBlock, RoofEaveBlock, RoofEndBlock, RoofFlatBlock, RoofRidgeBlock {
+	sealed interface Roof extends XKDecoBlock permits RoofBlock, RoofEaveBlock, RoofEndBlock, RoofFlatBlock, RoofRidgeBlock {
 		Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides);
 
 		Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction side);

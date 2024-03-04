@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "xkdeco:block/stone_brick_pavement",
-    "top": "xkdeco:block/stone_brick_pavement",
-    "side": "xkdeco:block/stone_brick_pavement"
-  },
-  "render_type": "solid"
-}

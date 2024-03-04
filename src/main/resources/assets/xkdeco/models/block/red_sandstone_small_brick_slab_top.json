@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "xkdeco:block/red_sandstone_small_bricks",
-    "top": "xkdeco:block/red_sandstone_small_bricks",
-    "side": "xkdeco:block/red_sandstone_small_bricks"
-  },
-  "render_type": "solid"
-}

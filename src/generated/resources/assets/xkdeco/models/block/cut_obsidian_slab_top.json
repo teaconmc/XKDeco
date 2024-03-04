@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "xkdeco:block/cut_obsidian",
+    "side": "xkdeco:block/cut_obsidian",
+    "top": "xkdeco:block/cut_obsidian"
+  }
+}

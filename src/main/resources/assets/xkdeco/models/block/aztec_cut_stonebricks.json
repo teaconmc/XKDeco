@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "top": "xkdeco:block/aztec_chiseled_stonebricks",
-    "bottom": "xkdeco:block/aztec_cut_stonebricks_bottom",
-    "side": "xkdeco:block/aztec_cut_stonebricks_side"
-  },
-  "render_type": "solid"
-}

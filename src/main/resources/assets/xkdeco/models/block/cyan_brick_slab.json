@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "xkdeco:block/cyan_bricks",
-    "top": "xkdeco:block/cyan_bricks",
-    "side": "xkdeco:block/cyan_bricks"
-  },
-  "render_type": "solid"
-}

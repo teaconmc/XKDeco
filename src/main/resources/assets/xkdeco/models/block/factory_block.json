@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/factory_block",
-    "particle": "xkdeco:block/factory_block"
-  },
-  "render_type": "solid"
-}

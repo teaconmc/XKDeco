@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/maya_mossy_stonebricks",
-    "top": "xkdeco:block/maya_mossy_stonebricks",
-    "side": "xkdeco:block/maya_mossy_stonebricks"
-  },
-  "render_type": "solid"
-}

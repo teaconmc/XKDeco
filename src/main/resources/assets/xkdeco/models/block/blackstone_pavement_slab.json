@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "xkdeco:block/blackstone_pavement",
-    "top": "xkdeco:block/blackstone_pavement",
-    "side": "xkdeco:block/blackstone_pavement"
-  },
-  "render_type": "solid"
-}

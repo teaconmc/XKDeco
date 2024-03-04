@@ -1,9 +1,0 @@
-{
-  "parent": "block/stairs",
-  "textures": {
-    "bottom": "xkdeco:block/cyan_tiles",
-    "top": "xkdeco:block/cyan_tiles",
-    "side": "xkdeco:block/cyan_tiles"
-  },
-  "render_type": "solid"
-}

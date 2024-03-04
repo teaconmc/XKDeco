@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "xkdeco:block/blue_tiles",
+    "side": "xkdeco:block/blue_tiles",
+    "top": "xkdeco:block/blue_tiles"
+  }
+}

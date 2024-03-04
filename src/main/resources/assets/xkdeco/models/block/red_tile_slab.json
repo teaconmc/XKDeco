@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "xkdeco:block/red_tiles",
-    "top": "xkdeco:block/red_tiles",
-    "side": "xkdeco:block/red_tiles"
-  },
-  "render_type": "solid"
-}

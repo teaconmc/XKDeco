@@ -1,0 +1,9 @@
+{
+  "parent": "xkdeco:block/template_roof_eave_inner",
+  "textures": {
+    "inner": "xkdeco:block/roof_inner",
+    "particle": "xkdeco:block/black_roof",
+    "ridge": "xkdeco:block/black_roof_ridge",
+    "roof": "xkdeco:block/black_roof"
+  }
+}

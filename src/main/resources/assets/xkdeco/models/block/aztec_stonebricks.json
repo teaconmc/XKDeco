@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/aztec_stonebricks",
-    "particle": "xkdeco:block/aztec_stonebricks"
-  },
-  "render_type": "solid"
-}

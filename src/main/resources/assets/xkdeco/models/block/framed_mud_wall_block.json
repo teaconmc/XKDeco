@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/mud_wall_framed",
-    "particle": "xkdeco:block/mud_wall_framed"
-  },
-  "render_type": "solid"
-}

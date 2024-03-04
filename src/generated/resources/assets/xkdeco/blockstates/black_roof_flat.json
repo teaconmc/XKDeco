@@ -1,18 +1,18 @@
 {
   "variants": {
     "axis=x,half=base": {
-      "model": "xkdeco:block/structure/black_roof_flat_top",
+      "model": "xkdeco:block/black_roof_flat_top",
+      "y": 90
+    },
+    "axis=x,half=tip": {
+      "model": "xkdeco:block/black_roof_flat",
       "y": 90
     },
     "axis=z,half=base": {
-      "model": "xkdeco:block/structure/black_roof_flat_top"
-    },
-    "axis=x,half=tip": {
-      "model": "xkdeco:block/structure/black_roof_flat",
-      "y": 90
+      "model": "xkdeco:block/black_roof_flat_top"
     },
     "axis=z,half=tip": {
-      "model": "xkdeco:block/structure/black_roof_flat"
+      "model": "xkdeco:block/black_roof_flat"
     }
   }
 }
