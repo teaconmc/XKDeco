@@ -1,9 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/stone_lamp",
-  "textures": {
-    "top": "xkdeco:block/furniture/deepslate_lamp_top",
-    "particle": "xkdeco:block/furniture/deepslate_lamp",
-    "lamp": "xkdeco:block/furniture/deepslate_lamp"
-  },
-  "render_type": "cutout"
-}

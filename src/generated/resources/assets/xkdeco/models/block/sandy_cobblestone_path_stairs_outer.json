@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "xkdeco:block/sandy_cobblestone_path",
+    "side": "xkdeco:block/sandy_cobblestone_path",
+    "top": "xkdeco:block/sandy_cobblestone_path"
+  }
+}

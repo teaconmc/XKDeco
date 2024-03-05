@@ -1,7 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/calligraphy1",
-  "textures": {
-    "0": "xkdeco:block/furniture/calligraphy2"
-  },
-  "render_type": "cutout"
-}

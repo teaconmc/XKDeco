@@ -1,9 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "minecraft:block/netherrack",
-    "top": "minecraft:block/crimson_nylium",
-    "side": "minecraft:block/crimson_nylium_side"
-  },
-  "render_type": "solid"
-}

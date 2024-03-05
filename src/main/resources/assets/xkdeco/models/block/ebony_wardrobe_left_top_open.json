@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/functional/template/wardrobe_left_top_open",
-  "textures": {
-    "body": "xkdeco:block/functional/ebony_wardrobe",
-    "door": "xkdeco:block/functional/ebony_wardrobe_door"
-  },
-  "render_type": "cutout"
-}

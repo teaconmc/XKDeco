@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "xkdeco:block/grass_cobblestone_path_slab"
+    },
+    "type=double": {
+      "model": "xkdeco:block/grass_cobblestone_path"
+    },
+    "type=top": {
+      "model": "xkdeco:block/grass_cobblestone_path_slab_top"
+    }
+  }
+}

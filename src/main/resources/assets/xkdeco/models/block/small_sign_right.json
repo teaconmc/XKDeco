@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/small_sign_left",
-  "textures": {
-    "particle": "xkdeco:block/furniture/small_sign_right",
-    "down": "xkdeco:block/furniture/small_sign_right"
-  },
-  "render_type": "cutout"
-}

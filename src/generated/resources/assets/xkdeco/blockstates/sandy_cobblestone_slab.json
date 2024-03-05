@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "xkdeco:block/sandy_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "xkdeco:block/sandy_cobblestone"
+    },
+    "type=top": {
+      "model": "xkdeco:block/sandy_cobblestone_slab_top"
+    }
+  }
+}

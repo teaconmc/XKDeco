@@ -44,7 +44,7 @@ public sealed interface XKDecoBlock permits
 
 	// plant blocks which are related to grass and leaves
 	sealed interface Plant extends XKDecoBlock permits
-			PlantLeavesBlock, PlantSlabBlock, PlantLeavesShatterBlock {
+			PlantLeavesBlock, PlantSlabBlock, FallenLeavesBlock {
 		// nothing here
 	}
 

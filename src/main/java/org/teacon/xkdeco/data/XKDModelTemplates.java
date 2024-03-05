@@ -8,8 +8,11 @@ import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.collect.Maps;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 
 public class XKDModelTemplates {
@@ -50,6 +53,14 @@ public class XKDModelTemplates {
 	public static final ModelTemplate ROOF_FLAT_TOP = create("template_roof_flat_top", "_top", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER);
 	public static final ModelTemplate ROOF_TIP = create("template_roof_tip", TextureSlot.PARTICLE);
 	public static final ModelTemplate ROOF_TIP_TOP = create("template_roof_tip_top", "_top", TextureSlot.PARTICLE);
+	public static final ModelTemplate FALLEN_LEAVES = create("template_fallen_leaves", TextureSlot.ALL);
+	public static final TexturedModel.Provider FALLEN_LEAVES_PROVIDER = block -> {
+		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
+		if (id.getPath().startsWith("fallen_")) {
+			block = BuiltInRegistries.BLOCK.get(id.withPath(id.getPath().substring(7)));
+		}
+		return new TexturedModel(TextureMapping.cube(block), FALLEN_LEAVES);
+	};
 
 	static {
 		bootstrap();

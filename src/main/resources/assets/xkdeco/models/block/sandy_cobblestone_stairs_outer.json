@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "xkdeco:block/nature/sandy_cobblestone",
-    "top": "xkdeco:block/nature/sandy_cobblestone",
-    "side": "xkdeco:block/nature/sandy_cobblestone"
-  },
-  "render_type": "solid"
-}

@@ -13,6 +13,7 @@ import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.util.RoofUtil;
 
+import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -43,7 +44,13 @@ public class XKDModelProvider extends FabricModelProvider {
 	private static final ResourceLocation ROOF_INNER_TEXTURE = new ResourceLocation(XKDeco.ID, "block/roof_inner");
 	private static final Set<Block> ROTATED_PILLARS = Set.of(
 			block("chiseled_bronze_block"),
-			block("chiseled_steel_block"));
+			block("chiseled_steel_block"),
+			block("maya_chiseled_stonebricks"));
+	private static final Set<Block> SPECIAL_DOUBLE_SLABS = Set.of(
+			block("polished_sandstone_slab"),
+			block("polished_red_sandstone_slab"),
+			block("maya_polished_stonebrick_slab"));
+	private BlockModelGenerators generators;
 
 	public XKDModelProvider(FabricDataOutput output) {
 		super(output);
@@ -57,10 +64,28 @@ public class XKDModelProvider extends FabricModelProvider {
 		return true;
 	}
 
+	public static boolean createIfSpecialDoubleSlabs(Block pBlock, BlockModelGenerators generators) {
+		if (!SPECIAL_DOUBLE_SLABS.contains(pBlock)) {
+			return false;
+		}
+		ResourceLocation texture = TextureMapping.getBlockTexture(pBlock);
+		TextureMapping $$1 = TextureMapping.column(texture, texture.withPath(s -> s.substring(0, s.length() - 5)));
+		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(pBlock, $$1, generators.modelOutput);
+		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(pBlock, $$1, generators.modelOutput);
+		ResourceLocation $$4 = ModelTemplates.CUBE_COLUMN.createWithOverride(pBlock, "_full", $$1, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(pBlock, $$2, $$3, $$4));
+		return true;
+	}
+
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators generators) {
+		this.generators = generators;
+		BlockModelGenerators.SHAPE_CONSUMERS = Maps.newHashMap(BlockModelGenerators.SHAPE_CONSUMERS);
+		BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.CUT, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant);
+		BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.POLISHED, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant);
 		XKDBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> {
-			LOGGER.info("Generating models for block family {}", family.getBaseBlock());
+			Block baseBlock = family.getBaseBlock();
+			LOGGER.info("Generating models for block family {}", baseBlock);
 			BlockModelGenerators.BlockFamilyProvider provider;
 			if (family == XKDBlockFamilies.LINED_MUD_WALL) {
 				TextureMapping textureMapping = TextureMapping.column(
@@ -68,68 +93,93 @@ public class XKDModelProvider extends FabricModelProvider {
 						TextureMapping.getBlockTexture(block("crossed_mud_wall_block")));
 				provider = generators.new BlockFamilyProvider(textureMapping);
 				ResourceLocation blockModel = ModelTemplates.CUBE_COLUMN.create(
-						family.getBaseBlock(),
+						baseBlock,
 						textureMapping,
 						generators.modelOutput);
 				ResourceLocation horizontalBlockModel = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(
-						family.getBaseBlock(),
+						baseBlock,
 						textureMapping,
 						generators.modelOutput);
 				BlockStateGenerator generator = BlockModelGenerators.createRotatedPillarWithHorizontalVariant(
-						family.getBaseBlock(),
+						baseBlock,
 						blockModel,
 						horizontalBlockModel);
 				generators.blockStateOutput.accept(generator);
 				provider.fullBlock = blockModel;
+			} else if (family == XKDBlockFamilies.CUT_BRONZE_BLOCK || family == XKDBlockFamilies.MAYA_POLISHED_STONEBRICKS) {
+				// we have already generated the base model in other families
+				TexturedModel texturedModel = generators.texturedModels.getOrDefault(baseBlock, TexturedModel.CUBE.get(baseBlock));
+				provider = generators.new BlockFamilyProvider(texturedModel.getMapping());
+				provider.fullBlock = ModelLocationUtils.getModelLocation(baseBlock);
 			} else {
-				provider = generators.family(family.getBaseBlock());
+				provider = generators.family(baseBlock);
 			}
 			provider.generateFor(family);
 		});
-		createRoof(generators, "black_roof");
-		generators.createTrivialCube(block("framed_mud_wall_block"));
+		createRoof("black_roof");
+		for (String s : List.of("danger", "attention", "electricity", "toxic", "radiation", "biohazard")) {
+			createRustingBlock("factory_" + s);
+		}
+		createTrivialCube("maya_quad_screw_thread_stone");
+		createTrivialCube("maya_pictogram_stone");
+		createTrivialCube("maya_skull_stone");
+		createTrivialCube("aztec_sculpture_stone");
+		createTrivialCube("framed_mud_wall_block");
+		createTrivialCube("hollow_steel_block");
+		createTrivialCube("framed_steel_block");
+		createTrivialCube("steel_filings");
+		createTrivialCube("quartz_sand");
+		createTrivialCube("toughened_sand");
+
+		createTrivialCube("ginkgo_leaves");
+		createTrivialCube("orange_maple_leaves");
+		createTrivialCube("red_maple_leaves");
+		createTrivialCube("peach_blossom");
+		createTrivialCube("peach_blossom_leaves");
+		createTrivialCube("cherry_blossom");
+		createTrivialCube("cherry_blossom_leaves");
+		createTrivialCube("white_cherry_blossom");
+		createTrivialCube("white_cherry_blossom_leaves");
+		generators.createTrivialBlock(block("plantable_leaves"), TexturedModel.LEAVES);
+		generators.createTrivialBlock(block("plantable_leaves_dark"), TexturedModel.LEAVES);
+		generators.createTrivialBlock(block("willow_leaves"), TexturedModel.LEAVES);
+		generators.createTrivialBlock(block("fallen_ginkgo_leaves"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		generators.createTrivialBlock(block("fallen_orange_maple_leaves"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		generators.createTrivialBlock(block("fallen_red_maple_leaves"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		generators.createTrivialBlock(block("fallen_peach_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		generators.createTrivialBlock(block("fallen_cherry_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		generators.createTrivialBlock(block("fallen_white_cherry_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		createSimpleBlockState("hanging_willow_leaves");
+		generators.createSimpleFlatItemModel(block("hanging_willow_leaves"));
 	}
 
-	private static void createLinedMudWallBlock(BlockModelGenerators generators) {
-//		TextureMapping textureMapping = TextureMapping.column(
-//				TextureMapping.getBlockTexture(block("lined_mud_wall_block")),
-//				TextureMapping.getBlockTexture(block("crossed_mud_wall_block")));
-//		ResourceLocation blockModel = ModelTemplates.CUBE_COLUMN.create(
-//				block("lined_mud_wall_block"),
-//				textureMapping,
-//				generators.modelOutput);
-//		ResourceLocation horizontalBlockModel = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(
-//				block("lined_mud_wall_block"),
-//				textureMapping,
-//				generators.modelOutput);
-//		BlockModelGenerators.createRotatedPillarWithHorizontalVariant(block("lined_mud_wall_block"), blockModel, horizontalBlockModel);
-//		ResourceLocation bottomSlabModel = ModelTemplates.SLAB_BOTTOM.create(
-//				block("mud_wall_block_slab"),
-//				textureMapping,
-//				generators.modelOutput);
-//		ResourceLocation topSlabModel = ModelTemplates.SLAB_TOP.create(
-//				block("mud_wall_block_slab"),
-//				textureMapping,
-//				generators.modelOutput);
-//		BlockModelGenerators.createSlab(block("lined_mud_wall_block_slab"), bottomSlabModel, topSlabModel, blockModel);
+	private void createSimpleBlockState(String id) {
+		Block block = block(id);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, ModelLocationUtils.getModelLocation(block)));
 	}
 
-	private static void createRoof(BlockModelGenerators generators, String id) {
+	private void createRustingBlock(String id) {
+		createTrivialCube(id);
+		createTrivialCube(id + "_rusting");
+		createTrivialCube(id + "_rusted");
+	}
+
+	private void createTrivialCube(String id) {
+		generators.createTrivialCube(block(id));
+	}
+
+	private void createRoof(String id) {
 		ResourceLocation roofTexture = TextureMapping.getBlockTexture(block(id));
 		ResourceLocation ridgeTexture = TextureMapping.getBlockTexture(block(id), "_ridge");
-		createRoofNormal(generators, id, roofTexture, ridgeTexture);
-		createRoofRidge(generators, id + "_ridge", roofTexture, ridgeTexture);
-		createRoofFlat(generators, id + "_flat", roofTexture);
-		createRoofEave(generators, id + "_eave", roofTexture, ridgeTexture);
-		createRoofEnd(generators, id + "_end", roofTexture, ridgeTexture);
-		createRoofTip(generators, id + "_tip");
+		createRoofNormal(id, roofTexture, ridgeTexture);
+		createRoofRidge(id + "_ridge", roofTexture, ridgeTexture);
+		createRoofFlat(id + "_flat", roofTexture);
+		createRoofEave(id + "_eave", roofTexture, ridgeTexture);
+		createRoofEnd(id + "_end", roofTexture, ridgeTexture);
+		createRoofTip(id + "_tip");
 	}
 
-	private static void createRoofEnd(
-			BlockModelGenerators generators,
-			String id,
-			ResourceLocation roofTexture,
-			ResourceLocation ridgeTexture) {
+	private void createRoofEnd(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.properties(RoofEndBlock.VARIANT, RoofEndBlock.SHAPE, RoofEndBlock.HALF)
@@ -155,11 +205,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private static void createRoofEave(
-			BlockModelGenerators generators,
-			String id,
-			ResourceLocation roofTexture,
-			ResourceLocation ridgeTexture) {
+	private void createRoofEave(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.properties(RoofEaveBlock.SHAPE, RoofEaveBlock.HALF).generate((shape, half) -> {
@@ -182,7 +228,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private static void createRoofFlat(BlockModelGenerators generators, String id, ResourceLocation roofTexture) {
+	private void createRoofFlat(String id, ResourceLocation roofTexture) {
 		Block block = block(id);
 		ResourceLocation model0 = XKDModelTemplates.ROOF_FLAT.create(
 				block,
@@ -202,11 +248,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private static void createRoofRidge(
-			BlockModelGenerators generators,
-			String id,
-			ResourceLocation roofTexture,
-			ResourceLocation ridgeTexture) {
+	private void createRoofRidge(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture) {
 		Block block = block(id);
 		List<ResourceLocation> models = Stream.of(
 				XKDModelTemplates.ROOF_RIDGE,
@@ -302,11 +344,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private static void createRoofNormal(
-			BlockModelGenerators generators,
-			String id,
-			ResourceLocation roofTexture,
-			ResourceLocation ridgeTexture) {
+	private void createRoofNormal(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.properties(RoofBlock.VARIANT, RoofBlock.SHAPE, RoofBlock.HALF).generate((variant, shape, half) -> {
@@ -340,7 +378,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				.select(Direction.NORTH, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
 	}
 
-	private static void createRoofTip(BlockModelGenerators generators, String id) {
+	private void createRoofTip(String id) {
 		Block block = block(id);
 		ResourceLocation model0 = XKDModelTemplates.ROOF_TIP.create(
 				block,
@@ -359,7 +397,6 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerators generators) {
-
 	}
 
 	private static Block block(String id) {

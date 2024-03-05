@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/slab_top",
   "textures": {
-    "bottom": "xkdeco:block/maya_polished_stonebricks",
-    "side": "xkdeco:block/maya_polished_stonebricks",
-    "top": "xkdeco:block/maya_polished_stonebricks"
+    "bottom": "xkdeco:block/maya_polished_stonebrick",
+    "side": "xkdeco:block/maya_polished_stonebrick_slab",
+    "top": "xkdeco:block/maya_polished_stonebrick"
   }
 }

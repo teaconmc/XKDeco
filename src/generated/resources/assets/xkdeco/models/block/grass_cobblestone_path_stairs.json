@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "xkdeco:block/grass_cobblestone_path",
+    "side": "xkdeco:block/grass_cobblestone_path",
+    "top": "xkdeco:block/grass_cobblestone_path"
+  }
+}

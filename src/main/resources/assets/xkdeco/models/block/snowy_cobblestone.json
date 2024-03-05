@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/nature/snowy_cobblestone",
-    "particle": "xkdeco:block/nature/snowy_cobblestone"
-  },
-  "render_type": "solid"
-}

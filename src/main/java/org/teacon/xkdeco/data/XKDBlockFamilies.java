@@ -93,6 +93,15 @@ public class XKDBlockFamilies {
 	public static final BlockFamily TRANSLUCENT_LAMP_BLOCK = basicSetup("translucent_lamp_block").getFamily();
 	public static final BlockFamily QUARTZ_GLASS = basicSetup("quartz_glass").getFamily();
 	public static final BlockFamily TOUGHENED_GLASS = basicSetup("toughened_glass").getFamily();
+	public static final BlockFamily DIRT_COBBLESTONE = basicSetup("dirt_cobblestone").getFamily();
+	public static final BlockFamily GRASS_COBBLESTONE = basicSetup("grass_cobblestone").getFamily();
+	public static final BlockFamily SANDY_COBBLESTONE = basicSetup("sandy_cobblestone").getFamily();
+	public static final BlockFamily SNOWY_COBBLESTONE = basicSetup("snowy_cobblestone").getFamily();
+	public static final BlockFamily COBBLESTONE_PATH = basicSetup("cobblestone_path").getFamily();
+	public static final BlockFamily DIRT_COBBLESTONE_PATH = basicSetup("dirt_cobblestone_path").getFamily();
+	public static final BlockFamily GRASS_COBBLESTONE_PATH = basicSetup("grass_cobblestone_path").getFamily();
+	public static final BlockFamily SANDY_COBBLESTONE_PATH = basicSetup("sandy_cobblestone_path").getFamily();
+	public static final BlockFamily SNOWY_COBBLESTONE_PATH = basicSetup("snowy_cobblestone_path").getFamily();
 
 	private static BlockFamily.Builder basicSetup(String id) {
 		BlockFamily.Builder builder = familyBuilder(id);
