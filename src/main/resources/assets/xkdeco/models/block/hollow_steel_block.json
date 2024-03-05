@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/hollow_steel_block",
-    "particle": "xkdeco:block/hollow_steel_block"
-  },
-  "render_type": "cutout"
-}

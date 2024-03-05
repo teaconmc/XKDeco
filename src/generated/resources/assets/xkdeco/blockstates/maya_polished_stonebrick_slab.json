@@ -4,7 +4,7 @@
       "model": "xkdeco:block/maya_polished_stonebrick_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/maya_polished_stonebricks"
+      "model": "xkdeco:block/maya_polished_stonebrick_slab_full"
     },
     "type=top": {
       "model": "xkdeco:block/maya_polished_stonebrick_slab_top"

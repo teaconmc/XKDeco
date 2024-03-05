@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/template_fallen_leaves",
+  "textures": {
+    "all": "xkdeco:block/orange_maple_leaves"
+  }
+}

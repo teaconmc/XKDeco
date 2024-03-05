@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "xkdeco:block/maya_quad_screw_thread_stone"
+  }
+}

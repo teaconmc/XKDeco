@@ -2,7 +2,7 @@
   "parent": "minecraft:block/slab",
   "textures": {
     "bottom": "xkdeco:block/polished_sandstone",
-    "side": "xkdeco:block/polished_sandstone",
+    "side": "xkdeco:block/polished_sandstone_slab",
     "top": "xkdeco:block/polished_sandstone"
   }
 }

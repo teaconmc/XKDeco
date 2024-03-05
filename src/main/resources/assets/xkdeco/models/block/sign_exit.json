@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/sign_entrance",
-  "textures": {
-    "particle": "xkdeco:block/furniture/sign_exit",
-    "down": "xkdeco:block/furniture/sign_exit"
-  },
-  "render_type": "cutout"
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/functional/template/double_wardrobe_right_top",
-  "textures": {
-    "body": "xkdeco:block/functional/glass_wardrobe",
-    "door": "xkdeco:block/functional/glass_wardrobe_door"
-  },
-  "render_type": "cutout"
-}

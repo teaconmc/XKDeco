@@ -15,12 +15,21 @@ import net.minecraft.world.level.block.Block;
 public class BlockFamilyProviderMixin {
 	@Shadow
 	@Final
-	BlockModelGenerators this$0;
+	BlockModelGenerators this$0; //TODO check if this is working on production environment
 
 	@Inject(method = "fullBlockVariant", at = @At("HEAD"), cancellable = true)
 	private void xkdeco_fullBlockVariant(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
+		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
 		if (XKDModelProvider.createIfRotatedPillar(pBlock, this$0)) {
-			cir.setReturnValue((BlockModelGenerators.BlockFamilyProvider) (Object) this);
+			cir.setReturnValue(self);
+		}
+	}
+
+	@Inject(method = "slab", at = @At("HEAD"), cancellable = true)
+	private void xkdeco_slab(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
+		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
+		if (XKDModelProvider.createIfSpecialDoubleSlabs(pBlock, this$0)) {
+			cir.setReturnValue(self);
 		}
 	}
 }

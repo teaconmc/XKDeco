@@ -1,9 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/ebony_shelf2",
-  "textures": {
-    "0": "xkdeco:block/furniture/varnished_shelf",
-    "1": "xkdeco:block/furniture/deco_dish",
-    "particle": "xkdeco:block/furniture/varnished_shelf"
-  },
-  "render_type": "cutout"
-}

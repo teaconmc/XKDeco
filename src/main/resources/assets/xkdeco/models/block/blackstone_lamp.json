@@ -1,9 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/stone_lamp",
-  "textures": {
-    "top": "xkdeco:block/furniture/blackstone_lamp_top",
-    "particle": "xkdeco:block/furniture/blackstone_lamp",
-    "lamp": "xkdeco:block/furniture/blackstone_lamp"
-  },
-  "render_type": "cutout"
-}

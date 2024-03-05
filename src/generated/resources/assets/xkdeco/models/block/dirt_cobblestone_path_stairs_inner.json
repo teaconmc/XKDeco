@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "xkdeco:block/dirt_cobblestone_path",
+    "side": "xkdeco:block/dirt_cobblestone_path",
+    "top": "xkdeco:block/dirt_cobblestone_path"
+  }
+}

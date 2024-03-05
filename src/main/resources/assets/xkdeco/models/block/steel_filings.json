@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/steel_filings",
-    "particle": "xkdeco:block/steel_filings"
-  },
-  "render_type": "solid"
-}

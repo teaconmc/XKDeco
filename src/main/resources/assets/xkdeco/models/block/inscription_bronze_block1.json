@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/inscription_bronze_block1",
-    "particle": "xkdeco:block/inscription_bronze_block1"
-  },
-  "render_type": "solid"
-}

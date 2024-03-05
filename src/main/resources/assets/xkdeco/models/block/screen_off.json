@@ -1,9 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/screen",
-  "textures": {
-    "particle": "xkdeco:block/furniture/screen_off",
-    "screen": "xkdeco:block/furniture/screen_off",
-    "frame": "xkdeco:block/furniture/screen_frame"
-  },
-  "render_type": "cutout"
-}

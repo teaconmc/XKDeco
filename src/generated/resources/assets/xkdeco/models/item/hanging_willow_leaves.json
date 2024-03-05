@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "xkdeco:block/hanging_willow_leaves"
+  }
+}

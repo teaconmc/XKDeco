@@ -4,7 +4,7 @@
       "model": "xkdeco:block/polished_sandstone_slab"
     },
     "type=double": {
-      "model": "xkdeco:block/polished_sandstone"
+      "model": "xkdeco:block/polished_sandstone_slab_full"
     },
     "type=top": {
       "model": "xkdeco:block/polished_sandstone_slab_top"

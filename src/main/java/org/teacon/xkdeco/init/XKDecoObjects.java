@@ -19,7 +19,7 @@ import org.teacon.xkdeco.block.IsotropicPillarBlock;
 import org.teacon.xkdeco.block.IsotropicSlabBlock;
 import org.teacon.xkdeco.block.IsotropicStairBlock;
 import org.teacon.xkdeco.block.PlantLeavesBlock;
-import org.teacon.xkdeco.block.PlantLeavesShatterBlock;
+import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -125,7 +125,7 @@ public final class XKDecoObjects {
 	public static final String ITEM_DISPLAY_SUFFIX = "_item_display";
 	public static final String BLOCK_DISPLAY_SUFFIX = "_block_display";
 	public static final String WARDROBE_SUFFIX = "_wardrobe";
-	public static final String SHATTER_SUFFIX = "_shatter";
+	public static final String FALLEN_LEAVES_PREFIX = "fallen_";
 	public static final String CONSOLE_SUFFIX = "_console";
 	public static final String VENT_FAN_SUFFIX = "_vent_fan";
 
@@ -234,8 +234,8 @@ public final class XKDecoObjects {
 			Collection<RegistryObject<Item>> tabContents) {
 		var isPath = id.contains(PATH_SUFFIX);
 		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
-			if (id.endsWith(SHATTER_SUFFIX)) {
-				var block = BLOCKS.register(id, () -> new PlantLeavesShatterBlock(properties));
+			if (id.startsWith(FALLEN_LEAVES_PREFIX)) {
+				var block = BLOCKS.register(id, () -> new FallenLeavesBlock(properties));
 				tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 				return;
 			}
@@ -962,6 +962,7 @@ public final class XKDecoObjects {
 		addPlant("plantable_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("plantable_leaves_dark", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("willow_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("hanging_willow_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS); //TODO proper class
 
 		addIsotropic("varnished_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic("varnished_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
@@ -1140,12 +1141,12 @@ public final class XKDecoObjects {
 		addBasic("big_solar_system_model", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("telescope", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addPlant("ginkgo_leaves_shatter", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("orange_maple_leaves_shatter", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("red_maple_leaves_shatter", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("peach_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("cherry_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("white_cherry_blossom_shatter", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_ginkgo_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_orange_maple_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_red_maple_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_peach_blossom", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_white_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addBasic("factory_lamp", ShapeFunction.fromFactoryLamp(), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(

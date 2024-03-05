@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/functional/template/double_wardrobe_left_bottom_open",
-  "textures": {
-    "body": "xkdeco:block/functional/varnished_wardrobe",
-    "door": "xkdeco:block/functional/varnished_wardrobe_door"
-  },
-  "render_type": "cutout"
-}

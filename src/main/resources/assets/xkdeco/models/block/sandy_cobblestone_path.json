@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "xkdeco:block/nature/sandy_cobblestone_path",
-    "particle": "xkdeco:block/nature/sandy_cobblestone_path"
-  },
-  "render_type": "solid"
-}

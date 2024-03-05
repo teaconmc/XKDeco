@@ -1,9 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/ebony_desk",
-  "textures": {
-    "particle": "xkdeco:block/furniture/varnished_desk",
-    "down": "xkdeco:block/furniture/varnished_desk",
-    "side": "xkdeco:block/furniture/varnished_tall_table_side"
-  },
-  "render_type": "cutout"
-}

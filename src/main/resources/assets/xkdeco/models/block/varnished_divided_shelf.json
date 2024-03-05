@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/furniture/ebony_divided_shelf",
-  "textures": {
-    "0": "xkdeco:block/furniture/varnished_shelf",
-    "particle": "xkdeco:block/furniture/varnished_shelf"
-  },
-  "render_type": "cutout"
-}
