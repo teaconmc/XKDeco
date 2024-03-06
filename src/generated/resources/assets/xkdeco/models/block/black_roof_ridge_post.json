@@ -1,5 +1,5 @@
 {
-  "parent": "xkdeco:block/template_roof_ridge_post",
+  "parent": "xkdeco:block/template_roof_ridge_asian_post",
   "textures": {
     "inner": "xkdeco:block/roof_inner",
     "particle": "xkdeco:block/black_roof",

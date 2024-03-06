@@ -19,7 +19,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,7 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofFlatBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
+public final class RoofFlatBlock extends Block implements XKDecoBlock.Roof {
 	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -118,5 +118,13 @@ public final class RoofFlatBlock extends Block implements SimpleWaterloggedBlock
 		var middleHeight = horizontalSide.getAxis() == state.getValue(AXIS) ? basicHeights[1] : basicHeights[0];
 		// noinspection SuspiciousNameCombination
 		return IntTriple.of(middleHeight, middleHeight, middleHeight);
+	}
+
+	@Override
+	public BlockState rotate(BlockState pState, Rotation pRotation) {
+		if (pRotation == Rotation.CLOCKWISE_90 || pRotation == Rotation.COUNTERCLOCKWISE_90) {
+			return pState.cycle(AXIS);
+		}
+		return pState;
 	}
 }

@@ -1,10 +1,10 @@
 {
   "variants": {
     "half=base": {
-      "model": "xkdeco:block/black_roof_tip"
+      "model": "xkdeco:block/black_roof_tip_top"
     },
     "half=tip": {
-      "model": "xkdeco:block/black_roof_tip_top"
+      "model": "xkdeco:block/black_roof_tip"
     }
   }
 }

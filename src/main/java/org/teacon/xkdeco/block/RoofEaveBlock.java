@@ -20,7 +20,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,20 +34,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofEaveBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Roof {
+public final class RoofEaveBlock extends HorizontalDirectionalBlock implements XKDecoBlock.Roof {
 	public static final EnumProperty<RoofEaveShape> SHAPE = EnumProperty.create("shape", RoofEaveShape.class);
 	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
-	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public static final VoxelShape ROOF_EAVE_TIP = Block.box(0, 0, 0, 16, 8, 16);
 	public static final VoxelShape ROOF_EAVE_BASE = Block.box(0, 8, 0, 16, 16, 16);
 
-	public RoofEaveBlock(Properties properties) {
+	public RoofEaveBlock(Properties properties, boolean narrow) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
-				.setValue(SHAPE, RoofEaveShape.STRAIGHT).setValue(HALF, RoofHalf.TIP)
-				.setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+				.setValue(SHAPE, RoofEaveShape.STRAIGHT)
+				.setValue(HALF, RoofHalf.TIP)
+				.setValue(FACING, Direction.NORTH)
+				.setValue(WATERLOGGED, false));
 	}
 
 	@Override

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=base": {
+      "model": "xkdeco:block/yellow_roof_tip_top"
+    },
+    "half=tip": {
+      "model": "xkdeco:block/yellow_roof_tip"
+    }
+  }
+}

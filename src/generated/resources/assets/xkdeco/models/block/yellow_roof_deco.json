@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/template_roof_deco",
+  "textures": {
+    "all": "xkdeco:block/yellow_roof_deco",
+    "ridge": "xkdeco:block/yellow_roof_ridge"
+  }
+}
