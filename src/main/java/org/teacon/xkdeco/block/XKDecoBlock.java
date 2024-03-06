@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.teacon.xkdeco.util.IntTriple;
 
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public sealed interface XKDecoBlock permits
-		XKDecoBlock.Basic, XKDecoBlock.Isotropic, XKDecoBlock.Plant, XKDecoBlock.Roof, XKDecoBlock.Special {
+public interface XKDecoBlock {
 	// basic blocks which have directions
 	sealed interface Basic extends XKDecoBlock permits
 			BasicBlock, BasicCubeBlock, BasicFullDirectionBlock {
@@ -34,7 +34,7 @@ public sealed interface XKDecoBlock permits
 	}
 
 	// roof related blocks which have complex connection logic
-	sealed interface Roof extends XKDecoBlock permits RoofBlock, RoofEaveBlock, RoofEndBlock, RoofFlatBlock, RoofRidgeBlock {
+	interface Roof extends SimpleWaterloggedBlock, XKDecoBlock {
 		Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides);
 
 		Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction side);

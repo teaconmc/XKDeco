@@ -95,7 +95,7 @@
     },
     {
       "apply": {
-        "model": "xkdeco:block/black_roof_ridge_side_tall"
+        "model": "xkdeco:block/black_roof_ridge_steep"
       },
       "when": {
         "north": "tall"
@@ -103,7 +103,7 @@
     },
     {
       "apply": {
-        "model": "xkdeco:block/black_roof_ridge_side_tall",
+        "model": "xkdeco:block/black_roof_ridge_steep",
         "y": 90
       },
       "when": {
@@ -112,7 +112,7 @@
     },
     {
       "apply": {
-        "model": "xkdeco:block/black_roof_ridge_side_tall",
+        "model": "xkdeco:block/black_roof_ridge_steep",
         "y": 180
       },
       "when": {
@@ -121,7 +121,7 @@
     },
     {
       "apply": {
-        "model": "xkdeco:block/black_roof_ridge_side_tall",
+        "model": "xkdeco:block/black_roof_ridge_steep",
         "y": 270
       },
       "when": {

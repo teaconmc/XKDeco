@@ -18,9 +18,16 @@ import net.minecraft.resources.ResourceLocation;
 public class XKDModelTemplates {
 	public static final TextureSlot SLOT_ROOF = TextureSlot.create("roof", TextureSlot.PARTICLE);
 	public static final TextureSlot SLOT_RIDGE = TextureSlot.create("ridge");
+	public static final TextureSlot SLOT_RIDGE2 = TextureSlot.create("ridge2");
 	public static final TextureSlot SLOT_INNER = TextureSlot.create("inner");
 	public static final Map<String, ModelTemplate> MAP = Maps.newHashMap();
 	public static final ModelTemplate ROOF_RIDGE = create("template_roof_ridge", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
+	public static final ModelTemplate ROOF_RIDGE_ASIAN = create(
+			"template_roof_ridge_asian",
+			TextureSlot.PARTICLE,
+			SLOT_ROOF,
+			SLOT_INNER,
+			SLOT_RIDGE);
 	public static final ModelTemplate ROOF_RIDGE_CORNER = create(
 			"template_roof_ridge_corner",
 			"_corner",
@@ -35,9 +42,16 @@ public class XKDModelTemplates {
 			SLOT_ROOF,
 			SLOT_INNER,
 			SLOT_RIDGE);
-	public static final ModelTemplate ROOF_RIDGE_SIDE_TALL = create(
-			"template_roof_ridge_side_tall",
-			"_side_tall",
+	public static final ModelTemplate ROOF_RIDGE_ASIAN_POST = create(
+			"template_roof_ridge_asian_post",
+			"_post",
+			TextureSlot.PARTICLE,
+			SLOT_ROOF,
+			SLOT_INNER,
+			SLOT_RIDGE);
+	public static final ModelTemplate ROOF_RIDGE_ASIAN_STEEP = create(
+			"template_roof_ridge_asian_steep",
+			"_steep",
 			TextureSlot.PARTICLE,
 			SLOT_ROOF,
 			SLOT_INNER,
@@ -49,11 +63,16 @@ public class XKDModelTemplates {
 			SLOT_ROOF,
 			SLOT_INNER,
 			SLOT_RIDGE);
-	public static final ModelTemplate ROOF_FLAT = create("template_roof_flat", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER);
-	public static final ModelTemplate ROOF_FLAT_TOP = create("template_roof_flat_top", "_top", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER);
-	public static final ModelTemplate ROOF_TIP = create("template_roof_tip", TextureSlot.PARTICLE);
-	public static final ModelTemplate ROOF_TIP_TOP = create("template_roof_tip_top", "_top", TextureSlot.PARTICLE);
+	public static final ModelTemplate ROOF_RIDGE_ASIAN_INVENTORY = create(
+			"template_roof_ridge_asian_inventory",
+			"_inventory",
+			TextureSlot.PARTICLE,
+			SLOT_ROOF,
+			SLOT_INNER,
+			SLOT_RIDGE);
 	public static final ModelTemplate FALLEN_LEAVES = create("template_fallen_leaves", TextureSlot.ALL);
+	public static final ModelTemplate NATURAL_SLAB = create("template_natural_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
+
 	public static final TexturedModel.Provider FALLEN_LEAVES_PROVIDER = block -> {
 		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
 		if (id.getPath().startsWith("fallen_")) {
@@ -67,6 +86,12 @@ public class XKDModelTemplates {
 	}
 
 	private static void bootstrap() {
+		createShift("template_roof_flat", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER);
+		createShift("template_roof_small_flat_end", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
+		createShift("template_roof_deco", TextureSlot.ALL, SLOT_RIDGE);
+		createShift("template_roof_deco_oblique", TextureSlot.ALL);
+		createShift("template_roof_tip", TextureSlot.ALL);
+
 		for (RoofUtil.RoofVariant variant : RoofUtil.RoofVariant.values()) {
 			for (RoofUtil.RoofShape shape : RoofUtil.RoofShape.values()) {
 				for (RoofUtil.RoofHalf half : RoofUtil.RoofHalf.values()) {
@@ -97,6 +122,7 @@ public class XKDModelTemplates {
 				if (half == RoofUtil.RoofHalf.BASE) {
 					suffix += "_top";
 				}
+				create("template_roof_small_eave" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
 				create("template_roof_eave" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
 			}
 		}
@@ -112,9 +138,35 @@ public class XKDModelTemplates {
 					}
 					suffix += "_" + shape;
 					create("template_roof_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
+					create("template_roof_small_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
+					create("template_roof_small_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
 				}
 			}
 		}
+		for (RoofUtil.RoofVariant variant : RoofUtil.RoofVariant.values()) {
+			if (variant == RoofUtil.RoofVariant.SLOW) {
+				continue;
+			}
+			for (RoofUtil.RoofHalf half : RoofUtil.RoofHalf.values()) {
+				String suffix = "";
+				if (variant != RoofUtil.RoofVariant.NORMAL) {
+					suffix += "_" + variant;
+				}
+				if (half == RoofUtil.RoofHalf.BASE) {
+					suffix += "_top";
+				}
+				create("template_roof_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_INNER);
+				create("template_roof_small_ridge_end_asian" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_RIDGE2);
+				if (variant == RoofUtil.RoofVariant.NORMAL) {
+					create("template_roof_small_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE2);
+				}
+			}
+		}
+	}
+
+	private static ModelTemplate createShift(String pBlockModelLocation, TextureSlot... pRequiredSlots) {
+		create(pBlockModelLocation + "_top", "_top", pRequiredSlots);
+		return create(pBlockModelLocation, null, pRequiredSlots);
 	}
 
 	private static ModelTemplate create(String pBlockModelLocation, TextureSlot... pRequiredSlots) {

@@ -13,19 +13,22 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BasicCubeBlock;
 import org.teacon.xkdeco.block.BasicFullDirectionBlock;
+import org.teacon.xkdeco.block.FallenLeavesBlock;
+import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.IsotropicCubeBlock;
 import org.teacon.xkdeco.block.IsotropicHollowBlock;
 import org.teacon.xkdeco.block.IsotropicPillarBlock;
 import org.teacon.xkdeco.block.IsotropicSlabBlock;
 import org.teacon.xkdeco.block.IsotropicStairBlock;
 import org.teacon.xkdeco.block.PlantLeavesBlock;
-import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
+import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
+import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SpecialBlockDisplayBlock;
 import org.teacon.xkdeco.block.SpecialConsole;
@@ -107,7 +110,9 @@ public final class XKDecoObjects {
 	public static final String ROOF_SUFFIX = "_roof";
 	public static final String ROOF_RIDGE_SUFFIX = "_roof_ridge";
 	public static final String ROOF_END_SUFFIX = "_roof_end";
+	public static final String ROOF_SMALL_END_SUFFIX = "_roof_small_end";
 	public static final String ROOF_EAVE_SUFFIX = "_roof_eave";
+	public static final String ROOF_SMALL_EAVE_SUFFIX = "_roof_small_eave";
 	public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
 	public static final String ROOF_DECO_SUFFIX = "_roof_deco";
 	public static final String ROOF_TIP_SUFFIX = "_roof_tip";
@@ -203,28 +208,51 @@ public final class XKDecoObjects {
 			String id,
 			BlockBehaviour.Properties properties,
 			Item.Properties itemProperties,
-			Collection<RegistryObject<Item>> tabContents) {
-		if (id.endsWith(ROOF_RIDGE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new RoofRidgeBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.endsWith(ROOF_FLAT_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new RoofFlatBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.endsWith(ROOF_END_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new RoofEndBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.endsWith(ROOF_EAVE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new RoofEaveBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.endsWith(ROOF_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new RoofBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.endsWith(ROOF_TIP_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new RoofTipBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else {
-//			throw new IllegalArgumentException("Illegal id (" + id + ") for roof blocks");
+			Collection<RegistryObject<Item>> tabContents,
+			boolean asian) {
+		var roof = BLOCKS.register(id, () -> new RoofBlock(properties));
+		tabContents.add(ITEMS.register(id, () -> new BlockItem(roof.get(), itemProperties)));
+		var roofRidge = BLOCKS.register(id + "_ridge", () -> new RoofRidgeBlock(properties, asian));
+		tabContents.add(ITEMS.register(id + "_ridge", () -> new BlockItem(roofRidge.get(), itemProperties)));
+		var roofSmallEnd = BLOCKS.register(id + "_small_end", () -> new RoofEndBlock(properties, true));
+		tabContents.add(ITEMS.register(id + "_small_end", () -> new BlockItem(roofSmallEnd.get(), itemProperties)));
+		var smallRidgeEnd = BLOCKS.register(id + "_small_ridge_end", () -> {
+			if (asian) {
+				return new RoofRidgeEndAsianBlock(properties, true);
+			} else {
+				return new RoofRidgeEndAsianBlock(properties, true);
+			}
+		});
+		var smallFlatEnd = BLOCKS.register(id + "_small_flat_end", () -> new RoofHorizontalShiftBlock(properties));
+
+		//TODO remove in the future:
+		tabContents.add(ITEMS.register(id + "_small_ridge_end", () -> new BlockItem(smallRidgeEnd.get(), itemProperties)));
+		tabContents.add(ITEMS.register(id + "_small_flat_end", () -> new BlockItem(smallFlatEnd.get(), itemProperties)));
+
+		var roofSmallEave = BLOCKS.register(id + "_small_eave", () -> new RoofEaveBlock(properties, true));
+		tabContents.add(ITEMS.register(id + "_small_eave", () -> new BlockItem(roofSmallEave.get(), itemProperties)));
+		var roofFlat = BLOCKS.register(id + "_flat", () -> new RoofFlatBlock(properties));
+		tabContents.add(ITEMS.register(id + "_flat", () -> new BlockItem(roofFlat.get(), itemProperties)));
+
+		if (!asian) {
+			return;
 		}
+
+		var roofEave = BLOCKS.register(id + "_eave", () -> new RoofEaveBlock(properties, false));
+		tabContents.add(ITEMS.register(id + "_eave", () -> new BlockItem(roofEave.get(), itemProperties)));
+		var roofEnd = BLOCKS.register(id + "_end", () -> new RoofEndBlock(properties, false));
+		tabContents.add(ITEMS.register(id + "_end", () -> new BlockItem(roofEnd.get(), itemProperties)));
+		var roofRidgeEnd = BLOCKS.register(id + "_ridge_end", () -> new RoofRidgeEndAsianBlock(properties, false));
+
+		//TODO remove in the future:
+		tabContents.add(ITEMS.register(id + "_ridge_end", () -> new BlockItem(roofRidgeEnd.get(), itemProperties)));
+
+		var roofDeco = BLOCKS.register(id + "_deco", () -> new HorizontalShiftBlock(properties));
+		tabContents.add(ITEMS.register(id + "_deco", () -> new BlockItem(roofDeco.get(), itemProperties)));
+		var roofDecoOblique = BLOCKS.register(id + "_deco_oblique", () -> new HorizontalShiftBlock(properties));
+		tabContents.add(ITEMS.register(id + "_deco_oblique", () -> new BlockItem(roofDecoOblique.get(), itemProperties)));
+		var roofTip = BLOCKS.register(id + "_tip", () -> new RoofTipBlock(properties));
+		tabContents.add(ITEMS.register(id + "_tip", () -> new BlockItem(roofTip.get(), itemProperties)));
 	}
 
 	private static void addPlant(
@@ -898,13 +926,12 @@ public final class XKDecoObjects {
 		addIsotropic("toughened_glass_slab", BLOCK_LIGHT, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("toughened_glass_stairs", BLOCK_LIGHT, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addRoof("black_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
-		addRoof("black_roof_ridge", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
-		addRoof("black_roof_end", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
-		addRoof("black_roof_eave", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
-		addRoof("black_roof_flat", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
-		addRoof("black_roof_deco", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
-		addRoof("black_roof_tip", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS);
+		addRoof("black_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, true);
+		addRoof("cyan_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, true);
+		addRoof("yellow_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, true);
+		addRoof("blue_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
+		addRoof("green_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
+		addRoof("red_roof", BLOCK_ROOF, ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
 
 		addPlant("dirt_slab", BLOCK_DIRT, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("dirt_path_slab", BLOCK_DIRT, ITEM_NATURE, TAB_NATURE_CONTENTS);

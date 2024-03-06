@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/template_roof_tip_top",
+  "textures": {
+    "all": "xkdeco:block/cyan_roof_tip"
+  }
+}

@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.client;
 
-import org.teacon.xkdeco.block.XKDecoBlock;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
@@ -14,54 +13,24 @@ import org.teacon.xkdeco.resource.SpecialWallResources;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoClient {
-
-	// https://github.com/MinecraftForge/MinecraftForge/pull/8786
-	// https://forge-render-refactor.notion.site/forge-render-refactor/ecd69011d01042c48a0fca80696cb4da?v=47332327988948ebaf911b06b2aa1f5d&p=d3a706981ffd43768885e9a9b6163964&pm=s
-	public static void addDebugText(CustomizeGuiOverlayEvent.DebugText event) {
-		var mc = Minecraft.getInstance();
-		var cameraEntity = mc.getCameraEntity();
-		if (mc.options.renderDebug && cameraEntity != null) {
-			var block = cameraEntity.pick(ForgeGui.rayTraceDistance, 0F, false);
-			if (block.getType() == HitResult.Type.BLOCK) {
-				var direction = ((BlockHitResult) block).getDirection();
-				var pos = ((BlockHitResult) block).getBlockPos();
-				if (Direction.Plane.HORIZONTAL.test(direction)) {
-					var state = cameraEntity.level().getBlockState(pos);
-					if (state.getBlock() instanceof XKDecoBlock.Roof roof) {
-						var sideHeight = roof.getSideHeight(state, direction);
-						event.getRight().add("Roof Side Height L: %d M: %d R: %d".formatted(
-								sideHeight.getLeft(),
-								sideHeight.getMiddle(),
-								sideHeight.getRight()));
-					}
-				}
-			}
-		}
-	}
 
 	public static void setItemColors(RegisterColorHandlersEvent.Item event) {
 		var blockColors = event.getBlockColors();

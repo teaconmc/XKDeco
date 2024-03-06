@@ -1,6 +1,6 @@
 {
   "parent": "xkdeco:block/template_roof_tip",
   "textures": {
-    "particle": "xkdeco:block/black_roof_tip"
+    "all": "xkdeco:block/black_roof_tip"
   }
 }

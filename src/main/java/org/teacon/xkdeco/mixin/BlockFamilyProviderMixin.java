@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.Block;
 
 @Mixin(BlockModelGenerators.BlockFamilyProvider.class)
 public class BlockFamilyProviderMixin {
-	@Shadow
+	@Shadow(aliases = {"f_125029_", "field_22836"})
 	@Final
-	BlockModelGenerators this$0; //TODO check if this is working on production environment
+	BlockModelGenerators this$0;
 
 	@Inject(method = "fullBlockVariant", at = @At("HEAD"), cancellable = true)
 	private void xkdeco_fullBlockVariant(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {

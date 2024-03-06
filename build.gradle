@@ -47,7 +47,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run_client')
-            property 'production', 'true'
+//            property 'production', 'true'
             property 'forge.logging.console.level', 'debug'
 
             // Export mixin-changed classes
@@ -84,7 +84,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run_server')
-            property 'production', 'true'
+//            property 'production', 'true'
             property 'forge.logging.console.level', 'debug'
 
             // Export mixin-changed classes
@@ -102,7 +102,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run_data')
-            property 'production', 'true'
+//            property 'production', 'true'
             property 'forge.logging.console.level', 'debug'
 
             // Export mixin-changed classes
@@ -193,6 +193,7 @@ dependencies {
 
     implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
     implementation fg.deobf("maven.modrinth:modernfix:u5R7SNlj")
+    implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
 
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.0+1.11.3+1.20.1")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")

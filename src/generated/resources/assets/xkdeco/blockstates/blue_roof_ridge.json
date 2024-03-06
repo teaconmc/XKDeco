@@ -1,0 +1,132 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge_post"
+      },
+      "when": {
+        "east": "low",
+        "north": "low",
+        "south": "low",
+        "west": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge_corner"
+      },
+      "when": {
+        "north": "none",
+        "west": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge_corner",
+        "y": 270
+      },
+      "when": {
+        "south": "none",
+        "west": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge_corner",
+        "y": 180
+      },
+      "when": {
+        "east": "none",
+        "south": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge_corner",
+        "y": 90
+      },
+      "when": {
+        "east": "none",
+        "north": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge_post"
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge"
+      },
+      "when": {
+        "north": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge",
+        "y": 90
+      },
+      "when": {
+        "east": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge",
+        "y": 180
+      },
+      "when": {
+        "south": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge",
+        "y": 270
+      },
+      "when": {
+        "west": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge"
+      },
+      "when": {
+        "north": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge",
+        "y": 90
+      },
+      "when": {
+        "east": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge",
+        "y": 180
+      },
+      "when": {
+        "south": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "xkdeco:block/blue_roof_ridge",
+        "y": 270
+      },
+      "when": {
+        "west": "tall"
+      }
+    }
+  ]
+}

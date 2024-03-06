@@ -21,6 +21,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,14 +35,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofEndBlock extends Block implements XKDecoBlock.Roof {
+public final class RoofEndBlock extends HorizontalDirectionalBlock implements XKDecoBlock.Roof {
 	public static final EnumProperty<RoofVariant> VARIANT = XKDStateProperties.ROOF_VARIANT;
 	public static final EnumProperty<RoofEndShape> SHAPE = EnumProperty.create("shape", RoofEndShape.class);
 	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
-	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public RoofEndBlock(Properties properties) {
+	public RoofEndBlock(Properties properties, boolean narrow) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofEndShape.LEFT)

@@ -1,12 +1,14 @@
 package org.teacon.xkdeco;
 
+import org.slf4j.Logger;
 import org.teacon.xkdeco.client.XKDecoClient;
-import org.teacon.xkdeco.data.XKDecoBlockStateProvider;
 import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
+
+import com.mojang.logging.LogUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -23,6 +25,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 @ParametersAreNonnullByDefault
 public final class XKDeco {
 	public static final String ID = "xkdeco";
+	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public XKDeco() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -37,7 +40,6 @@ public final class XKDeco {
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
 
-//		modEventBus.addListener(XKDecoBlockStateProvider::register);
 		modEventBus.addListener(XKDecoEnUsLangProvider::register);
 		modEventBus.addListener((GatherDataEvent event) -> {
 			FabricDataGenerator dataGenerator = FabricDataGenerator.create(ID, event);
@@ -58,9 +60,5 @@ public final class XKDeco {
 
 		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
 		forgeEventBus.addListener(CushionEntity::onBreakBlock);
-
-		if (FMLEnvironment.dist.isClient()) {
-			forgeEventBus.addListener(XKDecoClient::addDebugText);
-		}
 	}
 }

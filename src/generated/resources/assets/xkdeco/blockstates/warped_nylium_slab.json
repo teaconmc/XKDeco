@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "xkdeco:block/warped_nylium_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/warped_nylium"
+    },
+    "type=top": {
+      "model": "xkdeco:block/warped_nylium_slab_top"
+    }
+  }
+}

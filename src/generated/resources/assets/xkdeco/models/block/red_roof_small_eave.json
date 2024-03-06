@@ -1,0 +1,8 @@
+{
+  "parent": "xkdeco:block/template_roof_small_eave",
+  "textures": {
+    "particle": "xkdeco:block/red_roof",
+    "ridge": "xkdeco:block/red_roof_ridge",
+    "roof": "xkdeco:block/red_roof"
+  }
+}

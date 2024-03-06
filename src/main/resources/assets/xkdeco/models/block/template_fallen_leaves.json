@@ -3,11 +3,35 @@
 	"parent": "block/cube_all",
 	"elements": [
 		{
-			"from": [0, 0.5, 0],
-			"to": [16, 0.5, 16],
+			"from": [
+				0,
+				0.5,
+				0
+			],
+			"to": [
+				16,
+				0.5,
+				16
+			],
 			"faces": {
-				"up": {"uv": [0, 0, 16, 16], "texture": "#all"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#all"}
+				"up": {
+					"uv": [
+						0,
+						0,
+						16,
+						16
+					],
+					"texture": "#all"
+				},
+				"down": {
+					"uv": [
+						0,
+						0,
+						16,
+						16
+					],
+					"texture": "#all"
+				}
 			}
 		}
 	]
