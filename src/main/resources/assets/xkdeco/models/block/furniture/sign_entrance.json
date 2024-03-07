@@ -1,0 +1,79 @@
+{
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/cube",
+  "textures": {
+    "particle": "xkdeco:block/sign_entrance",
+    "down": "xkdeco:block/sign_entrance"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        3,
+        15
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            16,
+            13
+          ],
+          "texture": "#down"
+        },
+        "east": {
+          "uv": [
+            0,
+            3,
+            1,
+            13
+          ],
+          "texture": "#down"
+        },
+        "south": {
+          "uv": [
+            0,
+            3,
+            16,
+            13
+          ],
+          "texture": "#down"
+        },
+        "west": {
+          "uv": [
+            15,
+            3,
+            16,
+            13
+          ],
+          "texture": "#down"
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            16,
+            4
+          ],
+          "texture": "#down"
+        },
+        "down": {
+          "uv": [
+            0,
+            12,
+            16,
+            13
+          ],
+          "texture": "#down"
+        }
+      }
+    }
+  ],
+  "render_type": "cutout"
+}

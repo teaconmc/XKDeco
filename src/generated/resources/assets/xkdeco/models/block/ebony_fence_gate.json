@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_fence_gate",
+  "textures": {
+    "texture": "xkdeco:block/ebony_fence_gate"
+  }
+}

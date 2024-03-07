@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/thin_trapdoor_bottom",
+  "textures": {
+    "texture": "xkdeco:block/mahogany_trapdoor"
+  }
+}

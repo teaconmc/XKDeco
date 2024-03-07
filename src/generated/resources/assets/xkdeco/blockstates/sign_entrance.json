@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/sign_entrance",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/sign_entrance"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/sign_entrance",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/sign_entrance",
+      "y": 270
+    }
+  }
+}

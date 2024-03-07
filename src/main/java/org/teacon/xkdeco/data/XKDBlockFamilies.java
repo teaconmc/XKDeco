@@ -31,9 +31,9 @@ public class XKDBlockFamilies {
 	public static final BlockFamily DIRTY_MUD_WALL = basicSetup("dirty_mud_wall_block").getFamily();
 	public static final BlockFamily CYAN_BRICKS = basicSetup("cyan_bricks").getFamily();
 	public static final BlockFamily BLACK_BRICKS = basicSetup("black_bricks").getFamily();
-	public static final BlockFamily VARNISHED_PLANKS = basicSetup("varnished_planks").getFamily();
-	public static final BlockFamily EBONY_PLANKS = basicSetup("ebony_planks").getFamily();
-	public static final BlockFamily MAHOGANY_PLANKS = basicSetup("mahogany_planks").getFamily();
+	public static final BlockFamily VARNISHED_PLANKS = treatedPlanks("varnished").getFamily();
+	public static final BlockFamily EBONY_PLANKS = treatedPlanks("ebony").getFamily();
+	public static final BlockFamily MAHOGANY_PLANKS = treatedPlanks("mahogany").getFamily();
 	public static final BlockFamily POLISHED_SANDSTONE = blockAndSlab("polished_sandstone").getFamily();
 	public static final BlockFamily SANDSTONE_BRICKS = basicSetup("sandstone_bricks").getFamily();
 	public static final BlockFamily SANDSTONE_SMALL_BRICKS = basicSetup("sandstone_small_bricks").getFamily();
@@ -109,10 +109,19 @@ public class XKDBlockFamilies {
 			id = id.substring(0, id.length() - 1);
 		} else if (id.endsWith("_block") && !FULL_NAME_BLOCKS.contains(id)) {
 			id = id.substring(0, id.length() - 6);
-		} else if (id.endsWith("_planks")) {
-			id = id.substring(0, id.length() - 7);
 		}
 		return builder.slab(block(id + "_slab")).stairs(block(id + "_stairs"));
+	}
+
+	private static BlockFamily.Builder treatedPlanks(String id) {
+		BlockFamily.Builder builder = familyBuilder(id + "_planks");
+		return builder
+				.slab(block(id + "_slab"))
+				.stairs(block(id + "_stairs"))
+				.fence(block(id + "_fence"))
+				.fenceGate(block(id + "_fence_gate"))
+				.door(block(id + "_door"))
+				.trapdoor(block(id + "_trapdoor"));
 	}
 
 	private static BlockFamily.Builder blockAndSlab(String id) {

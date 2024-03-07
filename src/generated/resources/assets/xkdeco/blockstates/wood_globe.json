@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/wood_globe",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/wood_globe"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/wood_globe",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/wood_globe",
+      "y": 270
+    }
+  }
+}

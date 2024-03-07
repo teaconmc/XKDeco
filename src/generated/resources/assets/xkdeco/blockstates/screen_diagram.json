@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/screen_diagram",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/screen_diagram"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/screen_diagram",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/screen_diagram",
+      "y": 270
+    }
+  }
+}

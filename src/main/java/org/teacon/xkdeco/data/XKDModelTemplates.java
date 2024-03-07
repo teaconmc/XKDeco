@@ -2,6 +2,7 @@ package org.teacon.xkdeco.data;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.util.RoofUtil;
@@ -14,6 +15,7 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 
 public class XKDModelTemplates {
 	public static final TextureSlot SLOT_ROOF = TextureSlot.create("roof", TextureSlot.PARTICLE);
@@ -72,7 +74,6 @@ public class XKDModelTemplates {
 			SLOT_RIDGE);
 	public static final ModelTemplate FALLEN_LEAVES = create("template_fallen_leaves", TextureSlot.ALL);
 	public static final ModelTemplate NATURAL_SLAB = create("template_natural_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
-
 	public static final TexturedModel.Provider FALLEN_LEAVES_PROVIDER = block -> {
 		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
 		if (id.getPath().startsWith("fallen_")) {
@@ -80,6 +81,21 @@ public class XKDModelTemplates {
 		}
 		return new TexturedModel(TextureMapping.cube(block), FALLEN_LEAVES);
 	};
+	public static final TexturedModel.Provider WOODEN_TABLE_PROVIDER = createDefault(
+			XKDModelTemplates::allAndSide,
+			create("wooden_table", TextureSlot.ALL, TextureSlot.SIDE));
+	public static final TexturedModel.Provider WOODEN_DESK_PROVIDER = createDefault(
+			block -> {
+				return TextureMapping.cube(block).put(
+						TextureSlot.SIDE,
+						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("desk", "tall_table_side")));
+			},
+			create("wooden_desk", TextureSlot.ALL, TextureSlot.SIDE));
+	public static final ModelTemplate THIN_TRAPDOOR_TOP = create("thin_trapdoor_top", "_top", TextureSlot.TEXTURE);
+	public static final ModelTemplate THIN_TRAPDOOR_BOTTOM = create("thin_trapdoor_bottom", "_bottom", TextureSlot.TEXTURE);
+	public static final ModelTemplate THIN_TRAPDOOR_OPEN = create("thin_trapdoor_open", "_open", TextureSlot.TEXTURE);
+	public static final ModelTemplate WOODEN_FENCE_GATE_OPEN = create("wooden_fence_gate_open", "_open", TextureSlot.TEXTURE);
+	public static final ModelTemplate WOODEN_FENCE_GATE_CLOSED = create("wooden_fence_gate", TextureSlot.TEXTURE);
 
 	static {
 		bootstrap();
@@ -187,5 +203,15 @@ public class XKDModelTemplates {
 				pRequiredSlots);
 		MAP.put(pBlockModelLocation, template);
 		return template;
+	}
+
+	private static TexturedModel.Provider createDefault(
+			Function<Block, TextureMapping> pBlockToTextureMapping,
+			ModelTemplate pModelTemplate) {
+		return block -> new TexturedModel(pBlockToTextureMapping.apply(block), pModelTemplate);
+	}
+
+	public static TextureMapping allAndSide(Block block) {
+		return TextureMapping.cube(block).put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"));
 	}
 }

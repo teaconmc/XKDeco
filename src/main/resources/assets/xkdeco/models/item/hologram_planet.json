@@ -2,10 +2,10 @@
 	"credit": "Made by XeKr with Blockbench",
 	"parent": "block/cube",
 	"textures": {
-		"particle": "xkdeco:block/furniture/hologram",
-		"base": "xkdeco:block/furniture/hologram",
-		"moon": "xkdeco:block/furniture/hologram_moon",
-		"planet": "xkdeco:block/furniture/hologram_planet"
+		"particle": "xkdeco:block/hologram",
+		"base": "xkdeco:block/hologram",
+		"moon": "xkdeco:block/hologram_moon",
+		"planet": "xkdeco:block/hologram_planet"
 	},
 	"elements": [
 		{

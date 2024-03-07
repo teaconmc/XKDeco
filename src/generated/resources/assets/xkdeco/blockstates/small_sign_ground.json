@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/small_sign_ground",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/small_sign_ground"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/small_sign_ground",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/small_sign_ground",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "xkdeco:block/furniture/fish_bowl",
+  "textures": {
+    "particle": "xkdeco:block/dark_fish_bowl_top",
+    "top": "xkdeco:block/dark_fish_bowl_top",
+    "bottom": "xkdeco:block/dark_fish_bowl_botom",
+    "fish": "xkdeco:block/fish_bowl_fish",
+    "inner": "xkdeco:block/fish_bowl_inner",
+    "side": "xkdeco:block/dark_fish_bowl_side"
+  },
+  "render_type": "cutout"
+}

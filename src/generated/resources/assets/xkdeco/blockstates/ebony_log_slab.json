@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "xkdeco:block/ebony_log_slab"
+    },
+    "type=double": {
+      "model": "xkdeco:block/ebony_log"
+    },
+    "type=top": {
+      "model": "xkdeco:block/ebony_log_slab_top"
+    }
+  }
+}

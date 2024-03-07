@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/small_book_stack",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/small_book_stack"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/small_book_stack",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/small_book_stack",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/tech_table_circle",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/tech_table_circle"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/tech_table_circle",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/tech_table_circle",
+      "y": 270
+    }
+  }
+}

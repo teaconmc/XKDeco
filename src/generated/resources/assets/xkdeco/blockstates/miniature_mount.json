@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/miniature_mount",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/miniature_mount"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/miniature_mount",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/miniature_mount",
+      "y": 270
+    }
+  }
+}

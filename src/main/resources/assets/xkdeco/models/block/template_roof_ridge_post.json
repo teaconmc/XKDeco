@@ -3,8 +3,8 @@
 	"parent": "block/block",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "xkdeco:blocks/blue_roof_ridge",
-		"ridge": "xkdeco:blocks/blue_roof_ridge"
+		"particle": "xkdeco:block/blue_roof_ridge",
+		"ridge": "xkdeco:block/blue_roof_ridge"
 	},
 	"elements": [
 		{

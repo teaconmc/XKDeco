@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "xkdeco:block/ebony_log_top",
+    "side": "xkdeco:block/ebony_log",
+    "top": "xkdeco:block/ebony_log_top"
+  }
+}

@@ -9,12 +9,14 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
+import org.teacon.xkdeco.init.XKDecoProperties;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.collect.Maps;
@@ -41,10 +43,12 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WallSide;
+import net.minecraftforge.registries.RegistryObject;
 
 public class XKDModelProvider extends FabricModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -63,6 +67,21 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/grass_block_slab",
 			"block/grass_block_slab_top"
 	);
+	private static final Set<Block> THIN_TRAPDOORS = Set.of(
+			block("varnished_trapdoor"),
+			block("ebony_trapdoor"),
+			block("mahogany_trapdoor"));
+	private static final Set<Block> WOODEN_FENCE_GATES = Set.of(
+			block("varnished_fence_gate"),
+			block("ebony_fence_gate"),
+			block("mahogany_fence_gate"));
+	private static final List<String> GADGET_SKIP_PREFIXES = List.of(
+			"varnished_",
+			"ebony_",
+			"mahogany_");
+	private static final Set<Block> GADGET_SKIP_BLOCKS = Set.of(
+			block("bottle_stack"),
+			block("empty_bottle_stack"));
 	private BlockModelGenerators generators;
 
 	public XKDModelProvider(FabricDataOutput output) {
@@ -87,6 +106,30 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(pBlock, $$1, generators.modelOutput);
 		ResourceLocation $$4 = ModelTemplates.CUBE_COLUMN.createWithOverride(pBlock, "_full", $$1, generators.modelOutput);
 		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(pBlock, $$2, $$3, $$4));
+		return true;
+	}
+
+	public static boolean createIfSpecialTrapdoor(Block pBlock, BlockModelGenerators generators) {
+		if (!THIN_TRAPDOORS.contains(pBlock)) {
+			return false;
+		}
+		TextureMapping $$1 = TextureMapping.defaultTexture(pBlock);
+		ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(pBlock, $$1, generators.modelOutput);
+		ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(pBlock, $$1, generators.modelOutput);
+		ResourceLocation $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(pBlock, $$1, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(pBlock, $$2, $$3, $$4));
+		generators.delegateItemModel(pBlock, $$3);
+		return true;
+	}
+
+	public static boolean createIfSpecialFenceGate(Block pBlock, BlockModelGenerators generators) {
+		if (!WOODEN_FENCE_GATES.contains(pBlock)) {
+			return false;
+		}
+		TextureMapping textureMapping = TextureMapping.defaultTexture(pBlock);
+		ResourceLocation $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(pBlock, textureMapping, generators.modelOutput);
+		ResourceLocation $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(pBlock, textureMapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(pBlock, $$1, $$2, $$1, $$2, true));
 		return true;
 	}
 
@@ -193,6 +236,65 @@ public class XKDModelProvider extends FabricModelProvider {
 		createSlab(Blocks.CRIMSON_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.WARPED_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.END_STONE, false, false, UnaryOperator.identity());
+
+		createTreatedWood("varnished");
+		createTreatedWood("ebony");
+		createTreatedWood("mahogany");
+
+		outer:
+		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
+			Block block = Block.byItem(item);
+			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
+				continue;
+			}
+			var id = BuiltInRegistries.BLOCK.getKey(block);
+			for (String prefix : GADGET_SKIP_PREFIXES) {
+				if (id.getPath().startsWith(prefix)) {
+					continue outer;
+				}
+			}
+			createGadget(block);
+		}
+	}
+
+	private void createTreatedWood(String id) {
+		Block log = block(id + "_log");
+		TextureMapping logMapping = generators.woodProvider(log).log(log).wood(block(id + "_wood")).logMapping;
+		Block slab = block(id + "_log_slab");
+		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(slab, logMapping, generators.modelOutput);
+		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(slab, logMapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, $$2, $$3, ModelLocationUtils.getModelLocation(log)));
+
+		createTrivialBlock(id + "_table", XKDModelTemplates.WOODEN_TABLE_PROVIDER);
+//		createTrivialBlock(id + "_big_table", XKDModelTemplates.BIG_TABLE_PROVIDER);
+//		createTrivialBlock(id + "_tall_table", XKDModelTemplates.TALL_TABLE_PROVIDER);
+		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
+	}
+
+	private void createTrivialBlock(String id, TexturedModel.Provider provider) {
+		Block block = block(id);
+		ResourceLocation model = provider.create(block, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+	}
+
+	private void createHorizontallyRotatedBlock(String id, TexturedModel.Provider provider) {
+		Block block = block(id);
+		ResourceLocation model = provider.create(block, generators.modelOutput);
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+				block,
+				Variant.variant().with(VariantProperties.MODEL, model)).with(BlockModelGenerators.createHorizontalFacingDispatch()));
+	}
+
+	private void createGadget(Block block) {
+		var id = BuiltInRegistries.BLOCK.getKey(block);
+		if (block instanceof BasicBlock) {
+			ResourceLocation model = id.withPrefix("block/furniture/");
+			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+							block,
+							Variant.variant().with(VariantProperties.MODEL, model))
+					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
+			generators.delegateItemModel(block, model);
+		}
 	}
 
 	private void createSlab(Block fullBlock, boolean sided, boolean natural, UnaryOperator<TextureMapping> textureMappingOperator) {

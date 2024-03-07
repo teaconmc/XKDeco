@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/thin_trapdoor_open",
+  "textures": {
+    "texture": "xkdeco:block/ebony_trapdoor"
+  }
+}

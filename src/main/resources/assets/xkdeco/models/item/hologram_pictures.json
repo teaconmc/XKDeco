@@ -2,9 +2,9 @@
 	"credit": "Made by XeKr with Blockbench",
 	"parent": "block/cube",
 	"textures": {
-		"particle": "xkdeco:block/furniture/hologram",
-		"base": "xkdeco:block/furniture/hologram",
-		"pic": "xkdeco:block/furniture/hologram_pictures"
+		"particle": "xkdeco:block/hologram",
+		"base": "xkdeco:block/hologram",
+		"pic": "xkdeco:block/hologram_pictures"
 	},
 	"elements": [
 		{

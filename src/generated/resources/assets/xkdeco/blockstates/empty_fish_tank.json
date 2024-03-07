@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/empty_fish_tank",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/empty_fish_tank"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/empty_fish_tank",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/empty_fish_tank",
+      "y": 270
+    }
+  }
+}

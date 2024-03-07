@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left",
+  "textures": {
+    "bottom": "xkdeco:block/varnished_door_bottom",
+    "top": "xkdeco:block/varnished_door_top"
+  }
+}
