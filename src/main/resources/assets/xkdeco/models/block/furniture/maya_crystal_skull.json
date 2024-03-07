@@ -1,0 +1,34 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"1": "xkdeco:block/maya_crystal_skull_mat",
+		"particle": "xkdeco:block/maya_crystal_skull",
+		"down": "xkdeco:block/maya_crystal_skull"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 2, 14],
+			"faces": {
+				"north": {"uv": [0, 12, 12, 14], "texture": "#1"},
+				"east": {"uv": [0, 12, 12, 14], "texture": "#1"},
+				"south": {"uv": [0, 12, 12, 14], "texture": "#1"},
+				"west": {"uv": [0, 12, 12, 14], "texture": "#1"},
+				"up": {"uv": [0, 0, 12, 12], "texture": "#1"},
+				"down": {"uv": [0, 0, 12, 12], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 2, 4],
+			"to": [12, 10, 12],
+			"faces": {
+				"north": {"uv": [8, 8, 16, 16], "texture": "#down"},
+				"east": {"uv": [0, 8, 8, 16], "texture": "#down"},
+				"south": {"uv": [0, 0, 8, 8], "texture": "#down"},
+				"west": {"uv": [8, 8, 0, 16], "texture": "#down"},
+				"up": {"uv": [8, 8, 16, 0], "texture": "#down"}
+			}
+		}
+	]
+}

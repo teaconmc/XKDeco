@@ -26,9 +26,9 @@ import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
+import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
-import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SpecialBlockDisplayBlock;
 import org.teacon.xkdeco.block.SpecialConsole;
@@ -60,9 +60,15 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -108,14 +114,8 @@ public final class XKDecoObjects {
 	public static final String SLAB_SUFFIX = "_slab";
 	public static final String PATH_SUFFIX = "_path";
 	public static final String ROOF_SUFFIX = "_roof";
-	public static final String ROOF_RIDGE_SUFFIX = "_roof_ridge";
 	public static final String ROOF_END_SUFFIX = "_roof_end";
-	public static final String ROOF_SMALL_END_SUFFIX = "_roof_small_end";
-	public static final String ROOF_EAVE_SUFFIX = "_roof_eave";
-	public static final String ROOF_SMALL_EAVE_SUFFIX = "_roof_small_eave";
 	public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
-	public static final String ROOF_DECO_SUFFIX = "_roof_deco";
-	public static final String ROOF_TIP_SUFFIX = "_roof_tip";
 	public static final String STOOL_SUFFIX = "_stool";
 	public static final String CHAIR_SUFFIX = "_chair";
 	public static final String TABLE_SUFFIX = "_table";
@@ -613,6 +613,11 @@ public final class XKDecoObjects {
 				case DOWN -> Block.box(1, 14, 1, 15, 16, 15);
 			};
 		}
+
+		@Deprecated
+		static ShapeFunction wip() {
+			return fromChair();
+		}
 	}
 
 	static {
@@ -680,29 +685,9 @@ public final class XKDecoObjects {
 		addIsotropic("black_brick_slab", BLOCK_BRICK, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("black_brick_stairs", BLOCK_BRICK, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addIsotropic("varnished_wood", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("varnished_log", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("varnished_log_slab", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-
-		addIsotropic("ebony_wood", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("ebony_log", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("ebony_log_slab", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-
-		addIsotropic("mahogany_wood", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mahogany_log", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mahogany_log_slab", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-
-		addIsotropic("varnished_planks", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("varnished_slab", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("varnished_stairs", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-
-		addIsotropic("ebony_planks", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("ebony_slab", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("ebony_stairs", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-
-		addIsotropic("mahogany_planks", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mahogany_slab", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mahogany_stairs", BLOCK_WOOD, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addTreatedWood("varnished", BLOCK_WOOD, BLOCK_WOOD_FURNITURE);
+		addTreatedWood("ebony", BLOCK_WOOD, BLOCK_WOOD_FURNITURE);
+		addTreatedWood("mahogany", BLOCK_WOOD, BLOCK_WOOD_FURNITURE);
 
 		addIsotropic("sandstone_pillar", BLOCK_SANDSTONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -792,6 +777,8 @@ public final class XKDecoObjects {
 
 		addIsotropic("maya_pillar", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_pillar", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
+
+		addBasic("maya_crystal_skull", ShapeFunction.wip(), false, BLOCK_HARD_STONE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addIsotropic("aztec_stonebricks", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("aztec_stonebrick_slab", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -990,36 +977,6 @@ public final class XKDecoObjects {
 		addPlant("plantable_leaves_dark", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("willow_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("hanging_willow_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS); //TODO proper class
-
-		addIsotropic("varnished_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic("varnished_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic("varnished_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("varnished_desk", ShapeFunction.fromBigTable(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("varnished_stool", ShapeFunction.fromLongStool(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("varnished_chair", ShapeFunction.fromChair(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("varnished_empty_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("varnished_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("varnished_divided_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-
-		addIsotropic("ebony_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic("ebony_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic("ebony_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ebony_desk", ShapeFunction.fromBigTable(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ebony_stool", ShapeFunction.fromLongStool(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ebony_chair", ShapeFunction.fromChair(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ebony_empty_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ebony_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ebony_divided_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-
-		addIsotropic("mahogany_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic("mahogany_big_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic("mahogany_tall_table", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mahogany_desk", ShapeFunction.fromBigTable(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mahogany_stool", ShapeFunction.fromLongStool(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mahogany_chair", ShapeFunction.fromChair(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mahogany_empty_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mahogany_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mahogany_divided_shelf", ShapeFunction.fromShelf(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addBasic("miniature_tree", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("miniature_cherry", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
@@ -1285,5 +1242,34 @@ public final class XKDecoObjects {
 				BLOCK_METAL_LIGHT_NO_COLLISSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
+	}
+
+	public static void addTreatedWood(String id, BlockBehaviour.Properties woodProp, BlockBehaviour.Properties furnitureProp) {
+		addIsotropic(id + "_wood", woodProp, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_log", woodProp, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_log_slab", woodProp, ITEM_BASIC, TAB_BASIC_CONTENTS);
+
+		addIsotropic(id + "_planks", woodProp, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_slab", woodProp, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_stairs", woodProp, ITEM_BASIC, TAB_BASIC_CONTENTS);
+
+		addIsotropic(id + "_table", furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_big_table", furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_tall_table", furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_desk", ShapeFunction.fromBigTable(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_stool", ShapeFunction.fromLongStool(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_chair", ShapeFunction.fromChair(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_empty_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_divided_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+
+		var fence = BLOCKS.register(id + "_fence", () -> new FenceBlock(woodProp));
+		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_fence", () -> new BlockItem(fence.get(), ITEM_FURNITURE)));
+		var fenceGate = BLOCKS.register(id + "_fence_gate", () -> new FenceGateBlock(woodProp, WoodType.OAK));
+		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_fence_gate", () -> new BlockItem(fenceGate.get(), ITEM_FURNITURE)));
+		var door = BLOCKS.register(id + "_door", () -> new DoorBlock(woodProp, BlockSetType.OAK));
+		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_door", () -> new BlockItem(door.get(), ITEM_FURNITURE)));
+		var trapdoor = BLOCKS.register(id + "_trapdoor", () -> new TrapDoorBlock(woodProp, BlockSetType.OAK));
+		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_trapdoor", () -> new BlockItem(trapdoor.get(), ITEM_FURNITURE)));
 	}
 }

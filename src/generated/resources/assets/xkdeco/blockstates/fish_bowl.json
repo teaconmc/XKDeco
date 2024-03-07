@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/fish_bowl",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/fish_bowl"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/fish_bowl",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/fish_bowl",
+      "y": 270
+    }
+  }
+}

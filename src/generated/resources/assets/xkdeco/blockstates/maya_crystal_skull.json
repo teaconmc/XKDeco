@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/maya_crystal_skull",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/maya_crystal_skull"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/maya_crystal_skull",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/maya_crystal_skull",
+      "y": 270
+    }
+  }
+}

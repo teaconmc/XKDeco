@@ -1,0 +1,13 @@
+{
+  "parent": "xkdeco:block/furniture/miniature_tree",
+  "textures": {
+    "particle": "xkdeco:block/miniature_tree_front2",
+    "front": "xkdeco:block/miniature_tree_front2",
+    "inner": "xkdeco:block/miniature_tree_inner",
+    "leaves": "xkdeco:block/miniature_cherry_leaves",
+    "side": "xkdeco:block/miniature_tree_side2",
+    "tree": "xkdeco:block/miniature_tree",
+    "base": "xkdeco:block/miniature_tree_base2"
+  },
+  "render_type": "cutout"
+}

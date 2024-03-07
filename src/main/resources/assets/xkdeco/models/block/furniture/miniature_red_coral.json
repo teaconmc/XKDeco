@@ -1,0 +1,12 @@
+{
+  "parent": "xkdeco:block/furniture/miniature_coral",
+  "textures": {
+    "particle": "xkdeco:block/miniature_tree_front1",
+    "front": "xkdeco:block/miniature_tree_front1",
+    "inner": "xkdeco:block/miniature_coral_inner",
+    "side": "xkdeco:block/miniature_tree_side1",
+    "tree": "xkdeco:block/miniature_red_coral",
+    "base": "xkdeco:block/miniature_tree_base1"
+  },
+  "render_type": "cutout"
+}

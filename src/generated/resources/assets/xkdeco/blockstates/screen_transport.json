@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/screen_transport",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/screen_transport"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/screen_transport",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/screen_transport",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,1686 @@
+{
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/block",
+  "textures": {
+    "particle": "xkdeco:block/solar_system_model_base",
+    "base": "xkdeco:block/solar_system_model_base",
+    "planets": "xkdeco:block/solar_system_model"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "east": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "west": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#base"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        2,
+        7
+      ],
+      "to": [
+        9,
+        7,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            11,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            14,
+            11,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            14,
+            11,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            14,
+            11,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        6.5,
+        6
+      ],
+      "to": [
+        10,
+        10.5,
+        10
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          0,
+          -0.5,
+          0
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        2,
+        7
+      ],
+      "to": [
+        5.5,
+        8,
+        7
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          5,
+          4,
+          7
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        2,
+        6.5
+      ],
+      "to": [
+        5,
+        8,
+        7.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          5,
+          4,
+          7
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        8,
+        6.5
+      ],
+      "to": [
+        5.5,
+        9,
+        7.5
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          5,
+          8.5,
+          7
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            7,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            7,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            7,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            7,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            6,
+            0,
+            7,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            6,
+            0,
+            7,
+            1
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        2,
+        11.5
+      ],
+      "to": [
+        7.5,
+        8,
+        11.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          7,
+          4,
+          11.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        2,
+        11
+      ],
+      "to": [
+        7,
+        8,
+        12
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          7,
+          4,
+          11.5
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        8,
+        11
+      ],
+      "to": [
+        7.5,
+        9,
+        12
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          7,
+          8.5,
+          11.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        11.5,
+        2,
+        9
+      ],
+      "to": [
+        12.5,
+        8,
+        9
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          12,
+          4,
+          9
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        12,
+        2,
+        8.5
+      ],
+      "to": [
+        12,
+        8,
+        9.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          12,
+          4,
+          9
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        11.5,
+        8,
+        8.5
+      ],
+      "to": [
+        12.5,
+        9,
+        9.5
+      ],
+      "rotation": {
+        "angle": 22.5,
+        "axis": "y",
+        "origin": [
+          12,
+          8.5,
+          9
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            10,
+            0,
+            11,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            10,
+            0,
+            11,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            10,
+            0,
+            11,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            10,
+            0,
+            11,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            10,
+            0,
+            11,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            10,
+            0,
+            11,
+            1
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        8.5,
+        2,
+        3.5
+      ],
+      "to": [
+        9.5,
+        8,
+        3.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          9,
+          4,
+          3.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        9,
+        2,
+        3
+      ],
+      "to": [
+        9,
+        8,
+        4
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          9,
+          4,
+          3.5
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        8.5,
+        8,
+        3
+      ],
+      "to": [
+        9.5,
+        9,
+        4
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          9,
+          8.5,
+          3.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            0,
+            13,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            12,
+            0,
+            13,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            12,
+            0,
+            13,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            12,
+            0,
+            13,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            12,
+            0,
+            13,
+            1
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            12,
+            0,
+            13,
+            1
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        2.5,
+        2,
+        3
+      ],
+      "to": [
+        3.5,
+        8,
+        3
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          3,
+          4,
+          3
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        2,
+        2.5
+      ],
+      "to": [
+        3,
+        8,
+        3.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          3,
+          4,
+          3
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        1.5,
+        7,
+        1.5
+      ],
+      "to": [
+        4.5,
+        10,
+        4.5
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "y",
+        "origin": [
+          3,
+          8.5,
+          3
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            3,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            3,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            3,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            3,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            0,
+            5,
+            3,
+            8
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            0,
+            5,
+            3,
+            8
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        2,
+        12.5
+      ],
+      "to": [
+        3,
+        8,
+        12.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          2.5,
+          4,
+          12.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        2.5,
+        2,
+        12
+      ],
+      "to": [
+        2.5,
+        8,
+        13
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          2.5,
+          4,
+          12.5
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        7,
+        11
+      ],
+      "to": [
+        4,
+        10,
+        14
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          2.5,
+          8.5,
+          12.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            8,
+            7,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            4,
+            8,
+            7,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            4,
+            8,
+            7,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            4,
+            8,
+            7,
+            11
+          ],
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            4,
+            5,
+            7,
+            8
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            4,
+            5,
+            7,
+            8
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        8.5,
+        10
+      ],
+      "to": [
+        5,
+        8.5,
+        15
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          2.5,
+          8.5,
+          12.5
+        ]
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            2,
+            11,
+            7,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            2,
+            11,
+            7,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        2,
+        13.5
+      ],
+      "to": [
+        14,
+        8,
+        13.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          13.5,
+          4,
+          13.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        13.5,
+        2,
+        13
+      ],
+      "to": [
+        13.5,
+        8,
+        14
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          13.5,
+          4,
+          13.5
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        12.5,
+        7.5,
+        12.5
+      ],
+      "to": [
+        14.5,
+        9.5,
+        14.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          13.5,
+          8.5,
+          13.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "rotation": 90,
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            8,
+            6,
+            10,
+            8
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            8,
+            6,
+            10,
+            8
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        13.5,
+        7,
+        12
+      ],
+      "to": [
+        13.5,
+        10,
+        15
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          13.5,
+          8.5,
+          13.5
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            8,
+            12,
+            11,
+            15
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            8,
+            12,
+            11,
+            15
+          ],
+          "rotation": 270,
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        13.5,
+        2,
+        2
+      ],
+      "to": [
+        14.5,
+        8,
+        2
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          14,
+          4,
+          2
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            15,
+            10,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        2,
+        1.5
+      ],
+      "to": [
+        14,
+        8,
+        2.5
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          14,
+          4,
+          2
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            15,
+            12,
+            16,
+            16
+          ],
+          "texture": "#planets"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        7.5,
+        1
+      ],
+      "to": [
+        15,
+        9.5,
+        3
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          14,
+          8.5,
+          2
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            11,
+            9,
+            13,
+            11
+          ],
+          "rotation": 180,
+          "texture": "#planets"
+        },
+        "east": {
+          "uv": [
+            11,
+            9,
+            13,
+            11
+          ],
+          "rotation": 180,
+          "texture": "#planets"
+        },
+        "south": {
+          "uv": [
+            11,
+            9,
+            13,
+            11
+          ],
+          "rotation": 180,
+          "texture": "#planets"
+        },
+        "west": {
+          "uv": [
+            11,
+            9,
+            13,
+            11
+          ],
+          "rotation": 180,
+          "texture": "#planets"
+        },
+        "up": {
+          "uv": [
+            11,
+            6,
+            13,
+            8
+          ],
+          "rotation": 180,
+          "texture": "#planets"
+        },
+        "down": {
+          "uv": [
+            11,
+            6,
+            13,
+            8
+          ],
+          "rotation": 180,
+          "texture": "#planets"
+        }
+      }
+    }
+  ],
+  "groups": [
+    0,
+    1,
+    2,
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        18,
+        19,
+        20,
+        21
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "name": "group",
+      "origin": [
+        5,
+        4,
+        6.5
+      ],
+      "children": [
+        26,
+        27,
+        28
+      ]
+    }
+  ],
+  "render_type": "cutout"
+}

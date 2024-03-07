@@ -3,9 +3,9 @@
 	"parent": "block/block",
 	"ambientocclusion": false,
 	"textures": {
-		"ridge": "xkdeco:blocks/small_black_roof_ridge",
-		"particle": "xkdeco:blocks/black_roof",
-		"roof": "xkdeco:blocks/black_roof"
+		"ridge": "xkdeco:block/small_black_roof_ridge",
+		"particle": "xkdeco:block/black_roof",
+		"roof": "xkdeco:block/black_roof"
 	},
 	"elements": [
 		{

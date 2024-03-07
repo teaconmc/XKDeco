@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "xkdeco:block/varnished_log_top",
+    "side": "xkdeco:block/varnished_log",
+    "top": "xkdeco:block/varnished_log_top"
+  }
+}

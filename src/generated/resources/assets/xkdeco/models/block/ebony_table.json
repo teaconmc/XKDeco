@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/wooden_table",
+  "textures": {
+    "all": "xkdeco:block/ebony_table",
+    "side": "xkdeco:block/ebony_table_side"
+  }
+}

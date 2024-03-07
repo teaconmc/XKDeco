@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/wooden_table",
+  "textures": {
+    "all": "xkdeco:block/varnished_table",
+    "side": "xkdeco:block/varnished_table_side"
+  }
+}

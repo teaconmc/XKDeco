@@ -1,0 +1,374 @@
+{
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/cube",
+  "textures": {
+    "particle": "xkdeco:block/covered_lamp",
+    "lamp": "xkdeco:block/covered_lamp"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ],
+          "texture": "#lamp"
+        },
+        "down": {
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ],
+          "texture": "#lamp"
+        }
+      }
+    },
+    {
+      "from": [
+        11.9,
+        15.9,
+        11.9
+      ],
+      "to": [
+        4.1,
+        0.1,
+        4.1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ],
+          "texture": "#lamp"
+        },
+        "down": {
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ],
+          "texture": "#lamp"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        1,
+        10
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          6,
+          0,
+          6
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            15,
+            12,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "east": {
+          "uv": [
+            8,
+            15,
+            12,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            8,
+            15,
+            12,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "west": {
+          "uv": [
+            8,
+            15,
+            12,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "up": {
+          "uv": [
+            12,
+            12,
+            16,
+            16
+          ],
+          "texture": "#lamp"
+        },
+        "down": {
+          "uv": [
+            12,
+            12,
+            16,
+            16
+          ],
+          "texture": "#lamp"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        1,
+        7
+      ],
+      "to": [
+        9,
+        5,
+        9
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          6,
+          0,
+          6
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            11,
+            11,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "east": {
+          "uv": [
+            9,
+            11,
+            11,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            9,
+            11,
+            11,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "west": {
+          "uv": [
+            9,
+            11,
+            11,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "up": {
+          "uv": [
+            9,
+            11,
+            11,
+            13
+          ],
+          "texture": "#lamp"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        5,
+        8
+      ],
+      "to": [
+        9,
+        8,
+        8
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          8,
+          6.5,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            8,
+            11,
+            11
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            9,
+            8,
+            11,
+            11
+          ],
+          "texture": "#lamp"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        5,
+        8
+      ],
+      "to": [
+        9,
+        8,
+        8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          6.5,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            8,
+            11,
+            11
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            9,
+            8,
+            11,
+            11
+          ],
+          "texture": "#lamp"
+        }
+      }
+    }
+  ],
+  "render_type": "cutout"
+}
