@@ -195,6 +195,16 @@ public final class XKDecoObjects {
 		} else if (id.contains(TABLE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, IsotropicHollowBlock.TABLE_SHAPE));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+		} else if (id.contains("_trapdoor")) {
+			var block = BLOCKS.register(
+					id,
+					() -> new TrapDoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON));
+			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+		} else if (id.endsWith("_door")) {
+			var block = BLOCKS.register(
+					id,
+					() -> new DoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON));
+			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(HOLLOW_PREFIX)) {
 			var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
@@ -658,6 +668,8 @@ public final class XKDecoObjects {
 		addIsotropic("glass_tiles", BLOCK_GLASS, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("glass_tile_slab", BLOCK_GLASS, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("glass_tile_stairs", BLOCK_GLASS, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("glass_trapdoor", BLOCK_GLASS, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("glass_door", BLOCK_GLASS, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("mud_wall_block", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("mud_wall_slab", BLOCK_MUD, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -843,6 +855,7 @@ public final class XKDecoObjects {
 		addIsotropic("steel_block", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("smooth_steel_block", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("steel_pillar", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("steel_trapdoor", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("steel_floor", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("steel_floor_slab", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -850,19 +863,23 @@ public final class XKDecoObjects {
 
 		addIsotropic("chiseled_steel_block", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("hollow_steel_block", BLOCK_HOLLOW_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("hollow_steel_trapdoor", BLOCK_HOLLOW_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("framed_steel_block", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("factory_block", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_slab", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_stairs", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_trapdoor", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("factory_block_rusting", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_slab_rusting", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_stairs_rusting", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_trapdoor_rusting", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("factory_block_rusted", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_slab_rusted", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_stairs_rusted", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_trapdoor_rusted", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("factory_danger", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_danger_rusting", BLOCK_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -1267,9 +1284,7 @@ public final class XKDecoObjects {
 		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_fence", () -> new BlockItem(fence.get(), ITEM_FURNITURE)));
 		var fenceGate = BLOCKS.register(id + "_fence_gate", () -> new FenceGateBlock(woodProp, WoodType.OAK));
 		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_fence_gate", () -> new BlockItem(fenceGate.get(), ITEM_FURNITURE)));
-		var door = BLOCKS.register(id + "_door", () -> new DoorBlock(woodProp, BlockSetType.OAK));
-		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_door", () -> new BlockItem(door.get(), ITEM_FURNITURE)));
-		var trapdoor = BLOCKS.register(id + "_trapdoor", () -> new TrapDoorBlock(woodProp, BlockSetType.OAK));
-		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_trapdoor", () -> new BlockItem(trapdoor.get(), ITEM_FURNITURE)));
+		addIsotropic(id + "_door", woodProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_trapdoor", woodProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 	}
 }

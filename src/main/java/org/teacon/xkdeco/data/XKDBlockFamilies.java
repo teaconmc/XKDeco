@@ -24,7 +24,10 @@ public class XKDBlockFamilies {
 	public static final BlockFamily RED_TILES = basicSetup("red_tiles").getFamily();
 	public static final BlockFamily STEEL_TILES = basicSetup("steel_tiles").getFamily();
 	public static final BlockFamily COPPER_TILES = basicSetup("copper_tiles").getFamily();
-	public static final BlockFamily GLASS_TILES = basicSetup("glass_tiles").getFamily();
+	public static final BlockFamily GLASS_TILES = basicSetup("glass_tiles")
+			.trapdoor(block("glass_trapdoor"))
+			.door(block("glass_door"))
+			.getFamily();
 	public static final BlockFamily MUD_WALL = basicSetup("mud_wall_block").getFamily();
 	public static final BlockFamily LINED_MUD_WALL = basicSetup("lined_mud_wall_block").getFamily();
 	public static final BlockFamily CROSSED_MUD_WALL = basicSetup("crossed_mud_wall_block").getFamily();
@@ -77,16 +80,24 @@ public class XKDBlockFamilies {
 	public static final BlockFamily STEEL_BLOCK = familyBuilder("steel_block")
 			.polished(block("smooth_steel_block"))
 			.chiseled(block("chiseled_steel_block"))
+			.trapdoor(block("steel_trapdoor"))
 			.getFamily();
 	public static final BlockFamily STEEL_FLOOR = basicSetup("steel_floor").getFamily();
-	public static final BlockFamily FACTORY_BLOCK = basicSetup("factory_block").getFamily();
+	public static final BlockFamily HOLLOW_STEEL_FRAME = familyBuilder("hollow_steel_block")
+			.trapdoor(block("hollow_steel_trapdoor"))
+			.getFamily();
+	public static final BlockFamily FACTORY_BLOCK = basicSetup("factory_block")
+			.trapdoor(block("factory_trapdoor"))
+			.getFamily();
 	public static final BlockFamily FACTORY_BLOCK_RUSTING = familyBuilder("factory_block_rusting")
 			.slab(block("factory_slab_rusting"))
 			.stairs(block("factory_stairs_rusting"))
+			.trapdoor(block("factory_trapdoor_rusting"))
 			.getFamily();
 	public static final BlockFamily FACTORY_BLOCK_RUSTED = familyBuilder("factory_block_rusted")
 			.slab(block("factory_slab_rusted"))
 			.stairs(block("factory_stairs_rusted"))
+			.trapdoor(block("factory_trapdoor_rusted"))
 			.getFamily();
 	public static final BlockFamily FACTORY_LAMP_BLOCK = basicSetup("factory_lamp_block").getFamily();
 	public static final BlockFamily TECH_LAMP_BLOCK = basicSetup("tech_lamp_block").getFamily();
