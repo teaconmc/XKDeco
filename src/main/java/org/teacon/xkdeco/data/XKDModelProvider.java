@@ -194,7 +194,6 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTrivialCube("maya_skull_stone");
 		createTrivialCube("aztec_sculpture_stone");
 		createTrivialCube("framed_mud_wall_block");
-		createTrivialCube("hollow_steel_block");
 		createTrivialCube("framed_steel_block");
 		createTrivialCube("steel_filings");
 		createTrivialCube("quartz_sand");
