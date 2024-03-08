@@ -52,7 +52,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class XKDModelProvider extends FabricModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final ResourceLocation ROOF_INNER_TEXTURE = new ResourceLocation(XKDeco.ID, "block/roof_inner");
+	private static final ResourceLocation ROOF_INNER_TEXTURE = XKDeco.id("block/roof_inner");
 	private static final Set<Block> ROTATED_PILLARS = Set.of(
 			block("chiseled_bronze_block"),
 			block("chiseled_steel_block"),
@@ -239,6 +239,9 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTreatedWood("varnished");
 		createTreatedWood("ebony");
 		createTreatedWood("mahogany");
+		createSimpleBlockState("air_duct");
+		//TODO generate a builtin entity dummy block model if necessary
+		generators.delegateItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
 
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {

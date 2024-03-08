@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.teacon.xkdeco.XKDeco;
@@ -38,6 +39,7 @@ import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWallBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
@@ -1259,6 +1261,17 @@ public final class XKDecoObjects {
 				BLOCK_METAL_LIGHT_NO_COLLISSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
+
+		addBlock("air_duct", () -> new AirDuctBlock(BlockBehaviour.Properties.of()), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+	}
+
+	private static void addBlock(
+			String id,
+			Supplier<Block> blockSupplier,
+			Item.Properties itemProp,
+			Collection<RegistryObject<Item>> tabContents) {
+		var block = BLOCKS.register(id, blockSupplier);
+		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProp)));
 	}
 
 	public static void addTreatedWood(String id, BlockBehaviour.Properties woodProp, BlockBehaviour.Properties furnitureProp) {
@@ -1280,10 +1293,8 @@ public final class XKDecoObjects {
 		addBasic(id + "_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(id + "_divided_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		var fence = BLOCKS.register(id + "_fence", () -> new FenceBlock(woodProp));
-		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_fence", () -> new BlockItem(fence.get(), ITEM_FURNITURE)));
-		var fenceGate = BLOCKS.register(id + "_fence_gate", () -> new FenceGateBlock(woodProp, WoodType.OAK));
-		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id + "_fence_gate", () -> new BlockItem(fenceGate.get(), ITEM_FURNITURE)));
+		addBlock(id + "_fence", () -> new FenceBlock(woodProp), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock(id + "_fence_gate", () -> new FenceGateBlock(woodProp, WoodType.OAK), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_door", woodProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_trapdoor", woodProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 	}

@@ -1,0 +1,18 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/air_duct_cover",
+		"down": "xkdeco:block/air_duct_cover"
+	},
+	"elements": [
+		{
+			"from": [2, 2, 14],
+			"to": [14, 14, 16],
+			"faces": {
+				"north": {"uv": [2, 2, 14, 14], "texture": "#down"},
+				"south": {"uv": [2, 2, 14, 14], "texture": "#down"}
+			}
+		}
+	]
+}

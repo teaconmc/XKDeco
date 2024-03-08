@@ -26,7 +26,7 @@ public class JadeCompat implements IWailaPlugin {
 	}
 
 	public static class DebugProvider implements IBlockComponentProvider {
-		public static final ResourceLocation ID = new ResourceLocation(XKDeco.ID, "debug");
+		public static final ResourceLocation ID = XKDeco.id("debug");
 
 		@Override
 		public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
