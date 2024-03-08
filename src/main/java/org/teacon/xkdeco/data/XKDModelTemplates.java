@@ -191,14 +191,14 @@ public class XKDModelTemplates {
 
 	private static ModelTemplate createItem(String pItemModelLocation, TextureSlot... pRequiredSlots) {
 		return new ModelTemplate(
-				Optional.of(new ResourceLocation(XKDeco.ID, "item/" + pItemModelLocation)),
+				Optional.of(XKDeco.id("item/" + pItemModelLocation)),
 				Optional.empty(),
 				pRequiredSlots);
 	}
 
 	private static ModelTemplate create(String pBlockModelLocation, String pSuffix, TextureSlot... pRequiredSlots) {
 		ModelTemplate template = new ModelTemplate(
-				Optional.of(new ResourceLocation(XKDeco.ID, "block/" + pBlockModelLocation)),
+				Optional.of(XKDeco.id("block/" + pBlockModelLocation)),
 				Optional.ofNullable(pSuffix),
 				pRequiredSlots);
 		MAP.put(pBlockModelLocation, template);

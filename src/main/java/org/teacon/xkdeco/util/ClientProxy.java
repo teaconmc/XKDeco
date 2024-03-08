@@ -1,8 +1,11 @@
-package org.teacon.xkdeco.client;
+package org.teacon.xkdeco.util;
 
+import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
+import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
+import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.WallRenderer;
@@ -11,26 +14,37 @@ import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 import org.teacon.xkdeco.resource.SpecialWallResources;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class XKDecoClient {
+public final class ClientProxy {
 
 	public static void setItemColors(RegisterColorHandlersEvent.Item event) {
 		var blockColors = event.getBlockColors();
@@ -106,5 +120,34 @@ public final class XKDecoClient {
 
 	public static void setAdditionalPackFinder(AddPackFindersEvent event) {
 		event.addRepositorySource(consumer -> consumer.accept(SpecialWallResources.create()));
+	}
+
+	public static void init() {
+		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		modEventBus.addListener(ClientProxy::setItemColors);
+		modEventBus.addListener(ClientProxy::setBlockColors);
+		modEventBus.addListener(ClientProxy::setItemRenderers);
+		modEventBus.addListener(ClientProxy::setEntityRenderers);
+		modEventBus.addListener(ClientProxy::setAdditionalPackFinder);
+
+		modEventBus.addListener((ModelEvent.RegisterAdditional event) -> {
+			event.register(XKDeco.id("block/furniture/air_duct"));
+			event.register(XKDeco.id("block/furniture/air_duct_corner"));
+			event.register(XKDeco.id("block/furniture/air_duct_cover"));
+			event.register(XKDeco.id("block/furniture/air_duct_frame"));
+		});
+		modEventBus.addListener((ModelEvent.RegisterGeometryLoaders event) -> {
+			event.register("air_duct", new IGeometryLoader<UnbakedGeometryWrapper>() {
+				@Override
+				public UnbakedGeometryWrapper read(
+						JsonObject jsonObject,
+						JsonDeserializationContext deserializationContext) throws JsonParseException {
+					return new UnbakedGeometryWrapper(new AirDuctModel());
+				}
+			});
+		});
+		modEventBus.addListener((FMLClientSetupEvent event) -> {
+			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct")), RenderType.cutout());
+		});
 	}
 }

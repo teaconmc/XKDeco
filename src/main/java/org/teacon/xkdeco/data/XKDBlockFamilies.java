@@ -156,7 +156,7 @@ public class XKDBlockFamilies {
 	}
 
 	private static Block block(String id) {
-		ResourceLocation resourceLocation = new ResourceLocation(XKDeco.ID, id);
+		ResourceLocation resourceLocation = XKDeco.id(id);
 		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> {
 			return new IllegalStateException("Missing block: " + resourceLocation);
 		});
