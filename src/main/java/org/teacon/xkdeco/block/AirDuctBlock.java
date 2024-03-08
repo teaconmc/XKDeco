@@ -7,6 +7,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -38,6 +40,26 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
 		pBuilder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
+	}
+
+	@Override
+	public BlockState rotate(BlockState pState, Rotation pRotation) {
+		BlockState newState = pState;
+		for (Direction direction : Direction.Plane.HORIZONTAL) {
+			boolean value = pState.getValue(XKDStateProperties.DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
+			newState = newState.setValue(XKDStateProperties.DIRECTION_PROPERTIES.get(pRotation.rotate(direction).get3DDataValue()), value);
+		}
+		return newState;
+	}
+
+	@Override
+	public BlockState mirror(BlockState pState, Mirror pMirror) {
+		BlockState newState = pState;
+		for (Direction direction : Direction.Plane.HORIZONTAL) {
+			boolean value = pState.getValue(XKDStateProperties.DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
+			newState = newState.setValue(XKDStateProperties.DIRECTION_PROPERTIES.get(pMirror.mirror(direction).get3DDataValue()), value);
+		}
+		return newState;
 	}
 
 	@Override

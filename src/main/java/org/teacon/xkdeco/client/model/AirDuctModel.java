@@ -20,19 +20,26 @@ import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 
 public class AirDuctModel implements UnbakedModel {
-	//TODO data driven
-	private final ResourceLocation straight = XKDeco.id("block/furniture/air_duct");
-	private final ResourceLocation corner = XKDeco.id("block/furniture/air_duct_corner");
-	private final ResourceLocation cover = XKDeco.id("block/furniture/air_duct_cover");
-	private final ResourceLocation frame = XKDeco.id("block/furniture/air_duct_frame");
+	private final ResourceLocation straight;
+	private final ResourceLocation corner;
+	private final ResourceLocation cover;
+	private final ResourceLocation frame;
+
+	public AirDuctModel(ResourceLocation straight, ResourceLocation corner, ResourceLocation cover, ResourceLocation frame) {
+		this.straight = straight;
+		this.corner = corner;
+		this.cover = cover;
+		this.frame = frame;
+	}
 
 	@Override
 	public Collection<ResourceLocation> getDependencies() {
-		return List.of();
+		return List.of(straight, corner, cover, frame);
 	}
 
 	@Override
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> pResolver) {
+		getDependencies().stream().map(pResolver).forEach($ -> $.resolveParents(pResolver));
 	}
 
 	@SuppressWarnings("deprecation")
