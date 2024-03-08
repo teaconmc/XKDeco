@@ -1262,7 +1262,8 @@ public final class XKDecoObjects {
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addBlock("air_duct", () -> new AirDuctBlock(BlockBehaviour.Properties.of()), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("air_duct", () -> new AirDuctBlock(BLOCK_HOLLOW_IRON), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("air_duct_oblique", () -> new HorizontalShiftBlock(BLOCK_HOLLOW_IRON), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 	}
 
 	private static void addBlock(

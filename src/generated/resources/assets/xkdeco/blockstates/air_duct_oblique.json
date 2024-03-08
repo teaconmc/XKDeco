@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,half=base": {
+      "model": "xkdeco:block/air_duct_oblique_top",
+      "y": 90
+    },
+    "facing=east,half=tip": {
+      "model": "xkdeco:block/air_duct_oblique",
+      "y": 90
+    },
+    "facing=north,half=base": {
+      "model": "xkdeco:block/air_duct_oblique_top"
+    },
+    "facing=north,half=tip": {
+      "model": "xkdeco:block/air_duct_oblique"
+    },
+    "facing=south,half=base": {
+      "model": "xkdeco:block/air_duct_oblique_top",
+      "y": 180
+    },
+    "facing=south,half=tip": {
+      "model": "xkdeco:block/air_duct_oblique",
+      "y": 180
+    },
+    "facing=west,half=base": {
+      "model": "xkdeco:block/air_duct_oblique_top",
+      "y": 270
+    },
+    "facing=west,half=tip": {
+      "model": "xkdeco:block/air_duct_oblique",
+      "y": 270
+    }
+  }
+}

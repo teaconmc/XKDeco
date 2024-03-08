@@ -107,6 +107,7 @@ public class XKDModelTemplates {
 		createShift("template_roof_deco", TextureSlot.ALL, SLOT_RIDGE);
 		createShift("template_roof_deco_oblique", TextureSlot.ALL);
 		createShift("template_roof_tip", TextureSlot.ALL);
+		createShift("air_duct_oblique", TextureSlot.ALL);
 
 		for (RoofUtil.RoofVariant variant : RoofUtil.RoofVariant.values()) {
 			for (RoofUtil.RoofShape shape : RoofUtil.RoofShape.values()) {

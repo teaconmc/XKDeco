@@ -1,5 +1,9 @@
 {
 	"loader": "xkdeco:air_duct",
 	"elements": [
-	]
+	],
+	"straight": "xkdeco:block/furniture/air_duct",
+	"corner": "xkdeco:block/furniture/air_duct_corner",
+	"cover": "xkdeco:block/furniture/air_duct_cover",
+	"frame": "xkdeco:block/furniture/air_duct_frame"
 }

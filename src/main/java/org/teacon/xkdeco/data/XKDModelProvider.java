@@ -65,8 +65,9 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/dirt_path_slab",
 			"block/dirt_path_slab_top",
 			"block/grass_block_slab",
-			"block/grass_block_slab_top"
-	);
+			"block/grass_block_slab_top",
+			"block/air_duct_oblique",
+			"block/air_duct_oblique_top");
 	private static final Set<Block> THIN_TRAPDOORS = Set.of(
 			block("varnished_trapdoor"),
 			block("ebony_trapdoor"),
@@ -240,8 +241,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTreatedWood("ebony");
 		createTreatedWood("mahogany");
 		createSimpleBlockState("air_duct");
-		//TODO generate a builtin entity dummy block model if necessary
 		generators.delegateItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
+		createHorizontalShift("air_duct_oblique", "air_duct_oblique", null, false);
 
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
@@ -344,12 +345,13 @@ public class XKDModelProvider extends FabricModelProvider {
 			createHorizontalShift(
 					id + "_small_ridge_end",
 					"template_roof_small_ridge_end",
-					$ -> TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_RIDGE2, ridgeTexture));
+					$ -> TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_RIDGE2, ridgeTexture), true);
 		}
 		createHorizontalShift(
 				id + "_small_flat_end",
 				"template_roof_small_flat_end",
-				$ -> TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_RIDGE, asian ? smallRidgeTexture : ridgeTexture));
+				$ -> TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_RIDGE, asian ? smallRidgeTexture : ridgeTexture),
+				true);
 		if (!asian) {
 			return;
 		}
@@ -359,12 +361,16 @@ public class XKDModelProvider extends FabricModelProvider {
 		createHorizontalShift(
 				id + "_deco",
 				"template_roof_deco",
-				$ -> TextureMapping.cube($).put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture));
-		createHorizontalShift(id + "_deco_oblique", "template_roof_deco_oblique", null);
+				$ -> TextureMapping.cube($).put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture), true);
+		createHorizontalShift(id + "_deco_oblique", "template_roof_deco_oblique", null, true);
 		createRoofTip(id + "_tip");
 	}
 
-	private void createHorizontalShift(String id, String templateId, @Nullable Function<Block, TextureMapping> textureMappingFactory) {
+	private void createHorizontalShift(
+			String id,
+			String templateId,
+			@Nullable Function<Block, TextureMapping> textureMappingFactory,
+			boolean altRotation) {
 		Block block = block(id);
 		TextureMapping textureMapping;
 		if (textureMappingFactory == null) {
@@ -381,7 +387,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				textureMapping,
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(createHorizontalFacingDispatchAlt())
+				.with(altRotation ? createHorizontalFacingDispatchAlt() : BlockModelGenerators.createHorizontalFacingDispatch())
 				.with(PropertyDispatch.property(RoofTipBlock.HALF)
 						.select(RoofUtil.RoofHalf.TIP, Variant.variant().with(VariantProperties.MODEL, model0))
 						.select(RoofUtil.RoofHalf.BASE, Variant.variant().with(VariantProperties.MODEL, model1)));

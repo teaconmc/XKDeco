@@ -27,6 +27,8 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
@@ -130,24 +132,23 @@ public final class ClientProxy {
 		modEventBus.addListener(ClientProxy::setEntityRenderers);
 		modEventBus.addListener(ClientProxy::setAdditionalPackFinder);
 
-		modEventBus.addListener((ModelEvent.RegisterAdditional event) -> {
-			event.register(XKDeco.id("block/furniture/air_duct"));
-			event.register(XKDeco.id("block/furniture/air_duct_corner"));
-			event.register(XKDeco.id("block/furniture/air_duct_cover"));
-			event.register(XKDeco.id("block/furniture/air_duct_frame"));
-		});
 		modEventBus.addListener((ModelEvent.RegisterGeometryLoaders event) -> {
 			event.register("air_duct", new IGeometryLoader<UnbakedGeometryWrapper>() {
 				@Override
 				public UnbakedGeometryWrapper read(
 						JsonObject jsonObject,
 						JsonDeserializationContext deserializationContext) throws JsonParseException {
-					return new UnbakedGeometryWrapper(new AirDuctModel());
+					var straight = new ResourceLocation(GsonHelper.getAsString(jsonObject, "straight"));
+					var corner = new ResourceLocation(GsonHelper.getAsString(jsonObject, "corner"));
+					var cover = new ResourceLocation(GsonHelper.getAsString(jsonObject, "cover"));
+					var frame = new ResourceLocation(GsonHelper.getAsString(jsonObject, "frame"));
+					return new UnbakedGeometryWrapper(new AirDuctModel(straight, corner, cover, frame));
 				}
 			});
 		});
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
 			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct")), RenderType.cutout());
+			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct_oblique")), RenderType.cutout());
 		});
 	}
 }
