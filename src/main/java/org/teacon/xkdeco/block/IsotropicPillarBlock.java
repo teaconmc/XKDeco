@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicPillarBlock extends RotatedPillarBlock implements XKDecoBlock.Isotropic {
+public final class IsotropicPillarBlock extends RotatedPillarBlock implements XKDecoBlockIsotropic {
 	private final boolean isGlass;
 
 	public IsotropicPillarBlock(Properties properties, boolean isGlass) {
@@ -26,7 +26,7 @@ public final class IsotropicPillarBlock extends RotatedPillarBlock implements XK
 	public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
 		boolean faceBlocked = false;
 		var block = pAdjacentBlockState.getBlock();
-		if (block instanceof Isotropic ib && ib.isGlass()) {
+		if (block instanceof XKDecoBlockIsotropic ib && ib.isGlass()) {
 			var shape1 = ib.getShapeStatic(pAdjacentBlockState);
 			var shape2 = this.getShapeStatic(pState);
 			if ((Block.isFaceFull(shape1, pDirection) && Block.isFaceFull(shape2, pDirection.getOpposite()))) {

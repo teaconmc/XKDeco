@@ -37,7 +37,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class SpecialWardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity> implements XKDecoBlock.Special {
+public final class SpecialWardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity> {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final EnumProperty<DoorHingeSide> HINGE = BlockStateProperties.DOOR_HINGE;

@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.compat.jade;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.XKDecoBlock;
+import org.teacon.xkdeco.block.XKDecoBlockRoof;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +30,7 @@ public class JadeCompat implements IWailaPlugin {
 
 		@Override
 		public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-			if (!(accessor.getBlock() instanceof XKDecoBlock.Roof roof)) {
+			if (!(accessor.getBlock() instanceof XKDecoBlockRoof roof)) {
 				return;
 			}
 			var direction = accessor.getPlayer().getDirection().getOpposite();

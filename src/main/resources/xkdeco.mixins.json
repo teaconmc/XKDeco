@@ -4,7 +4,10 @@
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
-		"data.BlockFamilyProviderMixin"
+		"BlockBehaviourMixin",
+		"BushBlockMixin",
+		"data.BlockFamilyProviderMixin",
+		"forge.BlockMixin"
 	],
 	"client": [
 	],

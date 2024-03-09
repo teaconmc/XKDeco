@@ -8,7 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class FallenLeavesBlock extends LeavesBlock implements XKDecoBlock.Plant {
+//FIXME do not extend LeavesBlock
+public final class FallenLeavesBlock extends LeavesBlock {
 	private static final VoxelShape AABB = Block.box(0, 0, 0, 16, 1, 16);
 
 

@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialDessertBlock extends Block implements XKDecoBlock.Special {
+public final class SpecialDessertBlock extends Block {
 	private static final int MAXIMUM_COUNT = 7;
 
 	private static final IntegerProperty COUNT = IntegerProperty.create("count", 1, MAXIMUM_COUNT);

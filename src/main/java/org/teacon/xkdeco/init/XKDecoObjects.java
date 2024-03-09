@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BasicCubeBlock;
 import org.teacon.xkdeco.block.BasicFullDirectionBlock;
@@ -21,7 +22,6 @@ import org.teacon.xkdeco.block.IsotropicHollowBlock;
 import org.teacon.xkdeco.block.IsotropicPillarBlock;
 import org.teacon.xkdeco.block.IsotropicSlabBlock;
 import org.teacon.xkdeco.block.IsotropicStairBlock;
-import org.teacon.xkdeco.block.PlantLeavesBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -39,7 +39,7 @@ import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWallBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
-import org.teacon.xkdeco.block.AirDuctBlock;
+import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
@@ -65,6 +65,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -279,7 +280,13 @@ public final class XKDecoObjects {
 				tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 				return;
 			}
-			var block = BLOCKS.register(id, () -> new PlantLeavesBlock(properties));
+			var block = BLOCKS.register(id, () -> {
+				LeavesBlock $ = new LeavesBlock(properties);
+				if (id.startsWith(PLANTABLE_PREFIX)) {
+					XKDBlockSettings.builder().sustainsPlant().build().setTo($);
+				}
+				return $;
+			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(SLAB_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new PlantSlabBlock(properties, isPath, "dirt_slab"));

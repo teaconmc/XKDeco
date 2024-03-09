@@ -19,7 +19,7 @@ import net.minecraft.world.level.material.Fluids;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofHorizontalShiftBlock extends HorizontalShiftBlock implements XKDecoBlock.Roof {
+public final class RoofHorizontalShiftBlock extends HorizontalShiftBlock implements XKDecoBlockRoof {
 
 	public RoofHorizontalShiftBlock(Properties properties) {
 		super(properties);

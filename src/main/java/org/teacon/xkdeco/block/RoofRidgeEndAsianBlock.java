@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock implements XKDecoBlock.Roof {
+public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock implements XKDecoBlockRoof {
 	public static final EnumProperty<RoofUtil.RoofVariant> VARIANT = EnumProperty.create(
 			"variant",
 			RoofUtil.RoofVariant.class,
