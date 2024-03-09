@@ -75,4 +75,9 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 		pLevel.setBlockAndUpdate(pPos, pState);
 		return InteractionResult.sidedSuccess(pLevel.isClientSide);
 	}
+
+	@Override
+	public boolean useShapeForLightOcclusion(BlockState pState) {
+		return true;
+	}
 }

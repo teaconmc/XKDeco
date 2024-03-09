@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.init;
 
+import static net.minecraft.world.level.block.Block.box;
 import static org.teacon.xkdeco.init.XKDecoProperties.*;
 
 import java.util.Arrays;
@@ -39,6 +40,7 @@ import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWallBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -428,9 +430,11 @@ public final class XKDecoObjects {
 			}
 			return tags;
 		})));
+		//FIXME why?
 		Blocks.rebuildCache();
 	}
 
+	@Deprecated
 	@FunctionalInterface
 	private interface ShapeFunction {
 		VoxelShape getShape(Direction direction);
@@ -441,18 +445,18 @@ public final class XKDecoObjects {
 
 		static ShapeFunction fromLongStool() {
 			return d -> switch (d) {
-				case EAST, WEST -> Block.box(3, 0, 0, 13, 10, 16);
-				case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 10, 13);
+				case EAST, WEST -> box(3, 0, 0, 13, 10, 16);
+				case NORTH, SOUTH -> box(0, 0, 3, 16, 10, 13);
 				default -> Shapes.block();
 			};
 		}
 
 		static ShapeFunction fromChair() {
 			return d -> switch (d) {
-				case EAST -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(2, 10, 2, 4, 16, 14));
-				case SOUTH -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(2, 10, 2, 14, 16, 4));
-				case WEST -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(12, 10, 2, 14, 16, 14));
-				case NORTH -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(2, 10, 12, 14, 16, 14));
+				case EAST -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 2, 4, 16, 14));
+				case SOUTH -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 2, 14, 16, 4));
+				case WEST -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(12, 10, 2, 14, 16, 14));
+				case NORTH -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 12, 14, 16, 14));
 				default -> Shapes.block();
 			};
 		}
@@ -460,176 +464,176 @@ public final class XKDecoObjects {
 		static ShapeFunction fromShelf() {
 			return d -> switch (d) {
 				case EAST, WEST -> Shapes.or(
-						Block.box(0, 0, 0, 16, 1, 16),
-						Block.box(0, 15, 0, 16, 16, 16),
-						Block.box(0, 1, 0, 16, 15, 1),
-						Block.box(0, 1, 15, 16, 15, 16));
+						box(0, 0, 0, 16, 1, 16),
+						box(0, 15, 0, 16, 16, 16),
+						box(0, 1, 0, 16, 15, 1),
+						box(0, 1, 15, 16, 15, 16));
 				case NORTH, SOUTH -> Shapes.or(
-						Block.box(15, 0, 0, 16, 16, 16),
-						Block.box(0, 0, 0, 1, 16, 16),
-						Block.box(1, 15, 0, 15, 16, 16),
-						Block.box(1, 0, 0, 15, 1, 16));
+						box(15, 0, 0, 16, 16, 16),
+						box(0, 0, 0, 1, 16, 16),
+						box(1, 15, 0, 15, 16, 16),
+						box(1, 0, 0, 15, 1, 16));
 				default -> Shapes.block();
 			};
 		}
 
 		static ShapeFunction fromMiniature() {
 			return d -> switch (d) {
-				case EAST, WEST -> Block.box(3, 0, 0, 13, 6, 16);
-				case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 6, 13);
+				case EAST, WEST -> box(3, 0, 0, 13, 6, 16);
+				case NORTH, SOUTH -> box(0, 0, 3, 16, 6, 13);
 				default -> Shapes.block();
 			};
 		}
 
 		static ShapeFunction fromTeapot() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(4, 0, 4, 12, 6, 12) : Shapes.block();
+			return d -> Direction.Plane.HORIZONTAL.test(d) ? box(4, 0, 4, 12, 6, 12) : Shapes.block();
 		}
 
 		static ShapeFunction fromTeaWare() {
 			return d -> switch (d) {
-				case EAST, WEST -> Block.box(3, 0, 0, 13, 2, 16);
-				case NORTH, SOUTH -> Block.box(0, 0, 3, 16, 2, 13);
+				case EAST, WEST -> box(3, 0, 0, 13, 2, 16);
+				case NORTH, SOUTH -> box(0, 0, 3, 16, 2, 13);
 				default -> Shapes.block();
 			};
 		}
 
 		static ShapeFunction fromCarpet() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(0, 0, 0, 16, 1, 16) : Shapes.block();
+			return d -> Direction.Plane.HORIZONTAL.test(d) ? box(0, 0, 0, 16, 1, 16) : Shapes.block();
 		}
 
 		static ShapeFunction fromBoard() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? Block.box(1, 0, 1, 15, 1, 15) : Shapes.block();
+			return d -> Direction.Plane.HORIZONTAL.test(d) ? box(1, 0, 1, 15, 1, 15) : Shapes.block();
 		}
 
 		static ShapeFunction fromPorcelain() {
-			return d -> Block.box(2, 0, 2, 14, 16, 14);
+			return d -> box(2, 0, 2, 14, 16, 14);
 		}
 
 		static ShapeFunction fromPorcelainSmall() {
-			return d -> Block.box(5, 0, 5, 11, 12, 11);
+			return d -> box(5, 0, 5, 11, 12, 11);
 		}
 
 		static ShapeFunction fromLantern() {
-			return d -> Shapes.or(Block.box(2, 2, 2, 14, 14, 14), Block.box(5, 0, 5, 11, 16, 11));
+			return d -> Shapes.or(box(2, 2, 2, 14, 14, 14), box(5, 0, 5, 11, 16, 11));
 		}
 
 		static ShapeFunction fromFestivalLantern() {
-			return d -> Shapes.or(Block.box(2, 2, 2, 14, 14, 14), Block.box(5, 0, 5, 11, 16, 11), Block.box(0, 3, 0, 16, 13, 16));
+			return d -> Shapes.or(box(2, 2, 2, 14, 14, 14), box(5, 0, 5, 11, 16, 11), box(0, 3, 0, 16, 13, 16));
 		}
 
 		static ShapeFunction fromCandlestick() {
-			return d -> Block.box(5, 0, 5, 11, 13, 11);
+			return d -> box(5, 0, 5, 11, 13, 11);
 		}
 
 		static ShapeFunction fromBigCandlestick() {
-			return d -> Block.box(2, 0, 2, 14, 14, 14);
+			return d -> box(2, 0, 2, 14, 14, 14);
 		}
 
 		static ShapeFunction fromCoveredLamp() {
-			return d -> Block.box(4, 0, 4, 12, 16, 12);
+			return d -> box(4, 0, 4, 12, 16, 12);
 		}
 
 		static ShapeFunction fromStoneLamp() {
-			return d -> Block.box(3, 0, 3, 13, 16, 13);
+			return d -> box(3, 0, 3, 13, 16, 13);
 		}
 
 		static ShapeFunction fromWaterBowl() {
-			return d -> Block.box(0, 0, 0, 16, 5, 16);
+			return d -> box(0, 0, 0, 16, 5, 16);
 		}
 
 		static ShapeFunction fromFishBowl() {
-			return d -> Block.box(1, 0, 1, 15, 6, 15);
+			return d -> box(1, 0, 1, 15, 6, 15);
 		}
 
 		static ShapeFunction fromFishTank() {
-			return d -> Shapes.join(Shapes.block(), Block.box(1, 1, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
+			return d -> Shapes.join(Shapes.block(), box(1, 1, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
 		}
 
 		static ShapeFunction fromWaterTank() {
-			return d -> Shapes.join(Block.box(1, 0, 1, 15, 16, 15), Block.box(3, 3, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
+			return d -> Shapes.join(box(1, 0, 1, 15, 16, 15), box(3, 3, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
 		}
 
 		static ShapeFunction fromOilLamp() {
 			return d -> switch (d) {
-				case SOUTH -> Block.box(5, 4, 0, 11, 12, 8);
-				case EAST -> Block.box(0, 4, 5, 8, 12, 11);
-				case NORTH -> Block.box(5, 4, 8, 11, 12, 16);
-				case WEST -> Block.box(8, 4, 5, 16, 12, 11);
-				case DOWN -> Block.box(5, 5, 5, 11, 16, 11);
-				case UP -> Block.box(5, 0, 5, 11, 8, 11);
+				case SOUTH -> box(5, 4, 0, 11, 12, 8);
+				case EAST -> box(0, 4, 5, 8, 12, 11);
+				case NORTH -> box(5, 4, 8, 11, 12, 16);
+				case WEST -> box(8, 4, 5, 16, 12, 11);
+				case DOWN -> box(5, 5, 5, 11, 16, 11);
+				case UP -> box(5, 0, 5, 11, 8, 11);
 			};
 		}
 
 		static ShapeFunction fromEmptyCandlestick() {
 			return d -> switch (d) {
-				case SOUTH -> Block.box(5, 5, 0, 11, 16, 11);
-				case EAST -> Block.box(0, 5, 5, 11, 16, 11);
-				case NORTH -> Block.box(5, 5, 5, 11, 16, 16);
-				case WEST -> Block.box(5, 5, 5, 16, 16, 11);
-				default -> Block.box(5, 0, 5, 11, 16, 11);
+				case SOUTH -> box(5, 5, 0, 11, 16, 11);
+				case EAST -> box(0, 5, 5, 11, 16, 11);
+				case NORTH -> box(5, 5, 5, 11, 16, 16);
+				case WEST -> box(5, 5, 5, 16, 16, 11);
+				default -> box(5, 0, 5, 11, 16, 11);
 			};
 		}
 
 		static ShapeFunction fromFactoryLamp() {
 			return d -> switch (d) {
-				case SOUTH -> Block.box(4, 4, 0, 12, 12, 8);
-				case EAST -> Block.box(0, 4, 4, 8, 12, 12);
-				case NORTH -> Block.box(4, 4, 8, 12, 12, 16);
-				case WEST -> Block.box(8, 4, 4, 16, 12, 12);
-				case DOWN -> Block.box(4, 8, 4, 12, 16, 12);
-				case UP -> Block.box(4, 0, 4, 12, 8, 12);
+				case SOUTH -> box(4, 4, 0, 12, 12, 8);
+				case EAST -> box(0, 4, 4, 8, 12, 12);
+				case NORTH -> box(4, 4, 8, 12, 12, 16);
+				case WEST -> box(8, 4, 4, 16, 12, 12);
+				case DOWN -> box(4, 8, 4, 12, 16, 12);
+				case UP -> box(4, 0, 4, 12, 8, 12);
 			};
 		}
 
 		static ShapeFunction fromFan() {
 			return d -> switch (d) {
-				case EAST -> Block.box(1, 0, 1, 6, 15, 15);
-				case SOUTH -> Block.box(1, 0, 1, 15, 15, 6);
-				case WEST -> Block.box(10, 1, 1, 16, 15, 15);
-				case NORTH -> Block.box(1, 1, 10, 15, 15, 16);
-				case UP -> Block.box(1, 0, 1, 15, 6, 15);
-				case DOWN -> Block.box(1, 10, 1, 15, 16, 15);
+				case EAST -> box(1, 0, 1, 6, 15, 15);
+				case SOUTH -> box(1, 0, 1, 15, 15, 6);
+				case WEST -> box(10, 1, 1, 16, 15, 15);
+				case NORTH -> box(1, 1, 10, 15, 15, 16);
+				case UP -> box(1, 0, 1, 15, 6, 15);
+				case DOWN -> box(1, 10, 1, 15, 16, 15);
 			};
 		}
 
 		static ShapeFunction fromScreen() {
 			return d -> switch (d) {
-				case SOUTH -> Block.box(0, 0, 0, 16, 16, 2);
-				case WEST -> Block.box(14, 0, 0, 16, 16, 16);
-				case NORTH -> Block.box(0, 0, 14, 16, 16, 16);
-				default -> Block.box(0, 0, 0, 2, 16, 16);
+				case SOUTH -> box(0, 0, 0, 16, 16, 2);
+				case WEST -> box(14, 0, 0, 16, 16, 16);
+				case NORTH -> box(0, 0, 14, 16, 16, 16);
+				default -> box(0, 0, 0, 2, 16, 16);
 			};
 		}
 
 		static ShapeFunction fromScreen2() {
 			return d -> switch (d) {
-				case SOUTH -> Block.box(0, 0, 2, 16, 16, 3);
-				case WEST -> Block.box(13, 0, 0, 14, 16, 16);
-				case NORTH -> Block.box(0, 0, 13, 16, 16, 14);
-				default -> Block.box(2, 0, 0, 3, 16, 16);
+				case SOUTH -> box(0, 0, 2, 16, 16, 3);
+				case WEST -> box(13, 0, 0, 14, 16, 16);
+				case NORTH -> box(0, 0, 13, 16, 16, 14);
+				default -> box(2, 0, 0, 3, 16, 16);
 			};
 		}
 
 		static ShapeFunction fromVentFan() {
 			return d -> switch (d) {
-				case SOUTH, NORTH -> Block.box(0, 0, 2, 16, 16, 14);
-				case EAST, WEST -> Block.box(2, 0, 0, 14, 16, 16);
-				default -> Block.box(0, 2, 0, 16, 14, 16);
+				case SOUTH, NORTH -> box(0, 0, 2, 16, 16, 14);
+				case EAST, WEST -> box(2, 0, 0, 14, 16, 16);
+				default -> box(0, 2, 0, 16, 14, 16);
 			};
 		}
 
 		static ShapeFunction fromTechTable() {
-			return d -> Shapes.or(Block.box(2, 0, 2, 14, 10, 14), Block.box(0, 10, 0, 16, 16, 16));
+			return d -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(0, 10, 0, 16, 16, 16));
 		}
 
 		static ShapeFunction fromHologramBase() {
 			return d -> switch (d) {
-				case EAST -> Block.box(0, 1, 1, 2, 15, 15);
-				case SOUTH -> Block.box(1, 1, 0, 15, 15, 2);
-				case WEST -> Block.box(14, 1, 1, 16, 15, 15);
-				case NORTH -> Block.box(1, 1, 14, 15, 15, 16);
-				case UP -> Block.box(1, 0, 1, 15, 2, 15);
-				case DOWN -> Block.box(1, 14, 1, 15, 16, 15);
+				case EAST -> box(0, 1, 1, 2, 15, 15);
+				case SOUTH -> box(1, 1, 0, 15, 15, 2);
+				case WEST -> box(14, 1, 1, 16, 15, 15);
+				case NORTH -> box(1, 1, 14, 15, 15, 16);
+				case UP -> box(1, 0, 1, 15, 2, 15);
+				case DOWN -> box(1, 14, 1, 15, 16, 15);
 			};
 		}
 
@@ -1113,28 +1117,28 @@ public final class XKDecoObjects {
 
 		addBasic(
 				"small_book_stack",
-				s -> Block.box(2, 0, 2, 14, 8, 14),
+				s -> box(2, 0, 2, 14, 8, 14),
 				false,
 				BLOCK_WOOD_FURNITURE,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"big_book_stack",
-				s -> Block.box(0, 0, 0, 16, 10, 16),
+				s -> box(0, 0, 0, 16, 10, 16),
 				false,
 				BLOCK_WOOD_FURNITURE,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"empty_bottle_stack",
-				s -> Block.box(2, 0, 2, 14, 8, 14),
+				s -> box(2, 0, 2, 14, 8, 14),
 				false,
 				BLOCK_GLASS_NO_OCCLUSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bottle_stack",
-				s -> Block.box(2, 0, 2, 14, 8, 14),
+				s -> box(2, 0, 2, 14, 8, 14),
 				false,
 				BLOCK_GLASS_NO_OCCLUSION,
 				ITEM_FURNITURE,
@@ -1143,7 +1147,7 @@ public final class XKDecoObjects {
 		addBasic("globe", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"solar_system_model",
-				s -> Block.box(0, 0, 0, 16, 10, 16),
+				s -> box(0, 0, 0, 16, 10, 16),
 				false,
 				BLOCK_WOOD_FURNITURE,
 				ITEM_FURNITURE,
@@ -1178,12 +1182,12 @@ public final class XKDecoObjects {
 
 		addBasic(
 				"factory_ceiling_lamp",
-				s -> Block.box(0, 12, 0, 16, 16, 16),
+				s -> box(0, 12, 0, 16, 16, 16),
 				false,
 				BLOCK_METAL_LIGHT,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("factory_pendant", s -> Block.box(2, 4, 2, 14, 16, 14), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("factory_pendant", s -> box(2, 4, 2, 14, 16, 14), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addBasic("fan_blade", ShapeFunction.fromFan(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
@@ -1263,14 +1267,68 @@ public final class XKDecoObjects {
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"small_sign_ground",
-				s -> Block.box(0, 0, 0, 16, 1, 16),
+				s -> box(0, 0, 0, 16, 1, 16),
 				false,
 				BLOCK_METAL_LIGHT_NO_COLLISSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addBlock("air_duct", () -> new AirDuctBlock(BLOCK_HOLLOW_IRON), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBlock("air_duct_oblique", () -> new HorizontalShiftBlock(BLOCK_HOLLOW_IRON), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("air_duct", () -> {
+			AirDuctBlock block = new AirDuctBlock(BLOCK_HOLLOW_IRON);
+			VoxelShape base = Shapes.block();
+			base = Shapes.join(base, box(0, 2, 2, 16, 14, 14), BooleanOp.ONLY_FIRST);
+			base = Shapes.join(base, box(2, 0, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
+			base = Shapes.join(base, box(2, 2, 0, 14, 14, 16), BooleanOp.ONLY_FIRST);
+			VoxelShape side = box(2, 0, 2, 14, 2, 14);
+			XKDBlockSettings.builder()
+					.shape(ShapeGenerator.sixWay(base, Shapes.empty(), side))
+					.interactionShape(ShapeGenerator.unit(Shapes.block()))
+					.build()
+					.setTo(block);
+			return block;
+		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("air_duct_oblique", () -> {
+			HorizontalShiftBlock block = new HorizontalShiftBlock(BLOCK_HOLLOW_IRON);
+			VoxelShape trueNorth = Shapes.join(
+					Shapes.or(
+							box(0, 0, 12, 16, 16, 16),
+							box(0, -2, 10, 16, 16, 12),
+							box(0, -4, 8, 16, 16, 10),
+							box(0, -6, 6, 16, 16, 8),
+							box(0, -8, 4, 16, 16, 6),
+							box(0, -10, 2, 16, 14, 4),
+							box(0, -12, 0, 16, 12, 2)),
+					Shapes.or(
+							box(2, 2, 12, 14, 14, 16),
+							box(2, 0, 10, 14, 14, 12),
+							box(2, -2, 8, 14, 14, 10),
+							box(2, -4, 6, 14, 14, 8),
+							box(2, -6, 4, 14, 14, 6),
+							box(2, -8, 2, 14, 12, 4),
+							box(2, -10, 0, 14, 10, 2)),
+					BooleanOp.ONLY_FIRST);
+			VoxelShape falseNorth = Shapes.join(
+					Shapes.or(
+							box(0, 0, 12, 16, 16, 16),
+							box(0, 0, 10, 16, 18, 12),
+							box(0, 0, 8, 16, 20, 10),
+							box(0, 0, 6, 16, 22, 8),
+							box(0, 0, 4, 16, 24, 6),
+							box(0, 2, 2, 16, 26, 4),
+							box(0, 4, 0, 16, 28, 2)),
+					Shapes.or(
+							box(2, 2, 12, 14, 14, 16),
+							box(2, 2, 10, 14, 16, 12),
+							box(2, 2, 8, 14, 18, 10),
+							box(2, 2, 6, 14, 20, 8),
+							box(2, 2, 4, 14, 22, 6),
+							box(2, 4, 2, 14, 24, 4),
+							box(2, 6, 0, 14, 26, 2)),
+					BooleanOp.ONLY_FIRST);
+			XKDBlockSettings.builder().shape(ShapeGenerator.horizontalShifted(trueNorth, falseNorth)).interactionShape(ShapeGenerator.unit(
+					Shapes.block())).build().setTo(block);
+			return block;
+		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 	}
 
 	private static void addBlock(
