@@ -17,7 +17,7 @@ public abstract class BushBlockMixin implements XKDBlock {
 	@Inject(method = "mayPlaceOn", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
 		XKDBlockSettings settings = xkdeco$getSettings();
-		if (settings != null && settings.sustainsPlant()) {
+		if (settings != null && settings.sustainsPlant) {
 			cir.setReturnValue(true);
 		}
 	}

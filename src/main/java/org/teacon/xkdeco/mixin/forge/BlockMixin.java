@@ -26,7 +26,7 @@ public abstract class BlockMixin implements XKDBlock {
 			IPlantable plantable,
 			CallbackInfoReturnable<Boolean> cir) {
 		XKDBlockSettings settings = xkdeco$getSettings();
-		if (settings != null && settings.sustainsPlant()) {
+		if (settings != null && settings.sustainsPlant) {
 			PlantType type = plantable.getPlantType(world, pos.relative(facing));
 			if (type == PlantType.PLAINS) {
 				cir.setReturnValue(true);
