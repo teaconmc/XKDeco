@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialCupBlock extends Block implements XKDecoBlock.Special {
+public final class SpecialCupBlock extends Block {
 	private static final int MAXIMUM_COUNT = 4;
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

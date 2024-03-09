@@ -22,7 +22,7 @@ import net.minecraft.world.level.material.Fluids;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofRidgeBlock extends WallBlock implements XKDecoBlock.Roof {
+public final class RoofRidgeBlock extends WallBlock implements XKDecoBlockRoof {
 	public RoofRidgeBlock(Properties properties, boolean asian) {
 		super(properties);
 	}

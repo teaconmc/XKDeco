@@ -21,7 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicHollowBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Isotropic {
+public final class IsotropicHollowBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlockIsotropic {
 	private static final VoxelShape TABLE_BASE = Block.box(4, 0, 4, 12, 3, 12);
 	private static final VoxelShape TABLE_LEG = Block.box(6, 3, 6, 10, 13, 10);
 	private static final VoxelShape TABLE_TOP = Block.box(0, 13, 0, 16, 16, 16);

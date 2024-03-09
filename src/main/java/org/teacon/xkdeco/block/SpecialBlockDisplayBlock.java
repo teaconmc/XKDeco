@@ -39,7 +39,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialBlockDisplayBlock extends BaseEntityBlock implements XKDecoBlock.Special {
+public final class SpecialBlockDisplayBlock extends BaseEntityBlock {
 	private static final VoxelShape TOP = Block.box(0, 11, 0, 16, 16, 16);
 	private static final VoxelShape NECK = Block.box(2, 8, 2, 14, 11, 14);
 	private static final VoxelShape BOTTOM = Shapes.or(

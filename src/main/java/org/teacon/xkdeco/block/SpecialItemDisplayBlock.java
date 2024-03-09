@@ -40,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialItemDisplayBlock extends BaseEntityBlock implements XKDecoBlock.Special {
+public final class SpecialItemDisplayBlock extends BaseEntityBlock {
 	private static final VoxelShape TOP = Block.box(0, 13, 0, 16, 16, 16);
 	private static final VoxelShape SHAPE = Shapes.or(
 			Block.box(3, 0, 3, 13, 4, 13),

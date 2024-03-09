@@ -20,6 +20,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 @SuppressWarnings("deprecation")
 public class AirDuctBakedModel implements BakedModel {
@@ -44,7 +45,7 @@ public class AirDuctBakedModel implements BakedModel {
 			return straight.get(0).getQuads(null, direction, randomSource);
 		}
 		try {
-			return cache.get(Pair.of(blockState, direction), () -> {
+			return cache.get(Pair.of(blockState.setValue(BlockStateProperties.WATERLOGGED, false), direction), () -> {
 				List<Direction> trueDirections = Lists.newArrayListWithExpectedSize(6);
 				for (int i = 0; i < 6; i++) {
 					if (blockState.getValue(XKDStateProperties.DIRECTION_PROPERTIES.get(i))) {

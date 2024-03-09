@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BasicFullDirectionBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlock.Basic {
+public final class BasicFullDirectionBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlockBasic {
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 

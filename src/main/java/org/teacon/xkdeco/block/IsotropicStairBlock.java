@@ -14,7 +14,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class IsotropicStairBlock extends StairBlock implements XKDecoBlock.Isotropic {
+public final class IsotropicStairBlock extends StairBlock implements XKDecoBlockIsotropic {
 	public static final int[] SHAPE_BY_STATE = new int[]{12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
 
 	private final boolean isGlass;
@@ -29,7 +29,7 @@ public final class IsotropicStairBlock extends StairBlock implements XKDecoBlock
 	public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
 		boolean faceBlocked = false;
 		var block = pAdjacentBlockState.getBlock();
-		if (block instanceof Isotropic ib && ib.isGlass()) {
+		if (block instanceof XKDecoBlockIsotropic ib && ib.isGlass()) {
 			var shape1 = ib.getShapeStatic(pAdjacentBlockState);
 			var shape2 = this.getShapeStatic(pState);
 			if ((Block.isFaceFull(shape1, pDirection) && Block.isFaceFull(shape2, pDirection.getOpposite()))) {

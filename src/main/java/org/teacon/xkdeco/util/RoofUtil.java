@@ -7,7 +7,7 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.teacon.xkdeco.block.RoofBlock;
-import org.teacon.xkdeco.block.XKDecoBlock;
+import org.teacon.xkdeco.block.XKDecoBlockRoof;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class RoofUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger("RoofUtil");
 
-	public static BlockState getStateForPlacement(XKDecoBlock.Roof block, Level level, BlockPos clickedPos, Direction[] directions) {
+	public static BlockState getStateForPlacement(XKDecoBlockRoof block, Level level, BlockPos clickedPos, Direction[] directions) {
 		var maxWeakCount = -1;
 		var maxStrongCount = -1;
 		var maxMatchedState = (BlockState) null;
@@ -58,17 +58,17 @@ public class RoofUtil {
 		var facingBlock = facingState.getBlock();
 		return switch (facing) {
 			case DOWN, UP -> Direction.Plane.HORIZONTAL.stream().allMatch(side -> {
-				IntTriple back = stateBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(state, side) : null;
+				IntTriple back = stateBlock instanceof XKDecoBlockRoof r ? r.getSideHeight(state, side) : null;
 				IntTriple front;
 				if (updateSide) {
-					if (facingBlock instanceof XKDecoBlock.Roof r) {
+					if (facingBlock instanceof XKDecoBlockRoof r) {
 						var choice = r.getUpdateShapeChoice(facingState, facing.getOpposite());
 						front = choice.map(c -> r.getSideHeight(c, side)).orElse(null);
 					} else {
 						front = null;
 					}
 				} else {
-					front = facingBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(facingState, side) : null;
+					front = facingBlock instanceof XKDecoBlockRoof r ? r.getSideHeight(facingState, side) : null;
 				}
 				return back != null && front != null && switch (facing.getAxisDirection()) {
 					case NEGATIVE -> IntTriple.matchDownUp(front, back);
@@ -76,20 +76,20 @@ public class RoofUtil {
 				};
 			});
 			case NORTH, SOUTH, WEST, EAST -> {
-				IntTriple back = stateBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(state, facing) : lenient ? IntTriple.of(
+				IntTriple back = stateBlock instanceof XKDecoBlockRoof r ? r.getSideHeight(state, facing) : lenient ? IntTriple.of(
 						0,
 						0,
 						0) : null;
 				IntTriple front;
 				if (updateSide) {
-					if (facingBlock instanceof XKDecoBlock.Roof r) {
+					if (facingBlock instanceof XKDecoBlockRoof r) {
 						var choice = r.getUpdateShapeChoice(facingState, facing.getOpposite());
 						front = choice.map(c -> r.getSideHeight(c, facing.getOpposite())).orElse(null);
 					} else {
 						front = null;
 					}
 				} else {
-					front = facingBlock instanceof XKDecoBlock.Roof r ? r.getSideHeight(facingState, facing.getOpposite()) : null;
+					front = facingBlock instanceof XKDecoBlockRoof r ? r.getSideHeight(facingState, facing.getOpposite()) : null;
 				}
 				yield back != null && front != null && IntTriple.matchFrontBack(front, back);
 			}
@@ -97,7 +97,7 @@ public class RoofUtil {
 	}
 
 	public static BlockState updateShape(BlockState oldState, BlockState fromState, Direction fromDirection) {
-		if (oldState.getBlock() instanceof XKDecoBlock.Roof roof) {
+		if (oldState.getBlock() instanceof XKDecoBlockRoof roof) {
 			var newState = roof.getUpdateShapeChoice(oldState, fromDirection);
 			return newState.filter(s -> matchFacing(s, fromState, fromDirection, false, false)).orElse(oldState);
 		}

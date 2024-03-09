@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialWallBlock extends WallBlock implements EntityBlock, XKDecoBlock.Special {
+public final class SpecialWallBlock extends WallBlock implements EntityBlock {
 	private static final VoxelShape NORTH_TEST = Block.box(7, 0, 0, 9, 16, 9);
 	private static final VoxelShape SOUTH_TEST = Block.box(7, 0, 7, 9, 16, 16);
 	private static final VoxelShape WEST_TEST = Block.box(0, 0, 7, 9, 16, 9);

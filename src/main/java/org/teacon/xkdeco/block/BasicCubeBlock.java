@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BasicCubeBlock extends Block implements XKDecoBlock.Basic {
+public final class BasicCubeBlock extends Block implements XKDecoBlockBasic {
 	private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	private final ImmutableMap<Direction, VoxelShape> shapes;
