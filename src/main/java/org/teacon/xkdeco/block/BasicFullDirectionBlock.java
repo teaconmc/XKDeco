@@ -1,21 +1,17 @@
 package org.teacon.xkdeco.block;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -23,25 +19,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BasicFullDirectionBlock extends Block implements SimpleWaterloggedBlock, XKDecoBlockBasic {
+public final class BasicFullDirectionBlock extends DirectionalBlock implements SimpleWaterloggedBlock {
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-	private final ImmutableMap<Direction, VoxelShape> shapes;
-
-	public BasicFullDirectionBlock(Properties properties, Map<Direction, ? extends VoxelShape> shapes) {
+	public BasicFullDirectionBlock(Properties properties) {
 		super(properties);
-		this.shapes = ImmutableMap.copyOf(shapes);
-		this.registerDefaultState(this.getStateDefinition().any()
-				.setValue(WATERLOGGED, false).setValue(FACING, Direction.UP));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(FACING, Direction.UP));
 	}
 
 	@Nullable
@@ -52,12 +40,6 @@ public final class BasicFullDirectionBlock extends Block implements SimpleWaterl
 		return this.defaultBlockState()
 				.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER)
 				.setValue(FACING, direction.orElse(Direction.DOWN).getOpposite());
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return Objects.requireNonNull(this.shapes.get(state.getValue(FACING)));
 	}
 
 	@Override
