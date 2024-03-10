@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import com.google.gson.JsonParser;
@@ -31,20 +32,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialWallResources implements PackResources {
+public final class MimicWallResources implements PackResources {
 	private static final String BLOCK_MODEL_LOCATION = XKDeco.ID + ":block/" + XKDecoObjects.WALL_BLOCK_ENTITY;
 	private static final String ITEM_MODEL_LOCATION = XKDeco.ID + ":item/" + XKDecoObjects.WALL_BLOCK_ENTITY;
 	private static final String BLOCK_MODEL = "{\"variants\":{\"\":{\"model\":\"" + BLOCK_MODEL_LOCATION + "\"}}}";
 	private static final String ITEM_MODEL = "{\"parent\":\"" + ITEM_MODEL_LOCATION + "\"}";
-	private static final String PACK_META = "{\"pack\":{\"description\":\"XKDeco: Special Walls\",\"pack_format\":8}}";
-	private static final String NAME_KEY = "pack.xkdeco_special_wall";
+	private static final String PACK_META = "{\"pack\":{\"description\":\"XKDeco: Mimic Walls\",\"pack_format\":8}}";
+	private static final String NAME_KEY = "pack.xkdeco.mimic_wall";
 	private static final String ID = XKDeco.ID + "_" + XKDecoObjects.WALL_BLOCK_ENTITY;
 
 	private static final Pack.Info PACK_INFO = new Pack.Info(Component.translatable(NAME_KEY), 13, 13, FeatureFlagSet.of(), true);
 
 	private final String packId;
 
-	public SpecialWallResources(String packId) {
+	public MimicWallResources(String packId) {
 		this.packId = packId;
 	}
 
@@ -53,7 +54,7 @@ public final class SpecialWallResources implements PackResources {
 				ID,
 				Component.translatable(NAME_KEY),
 				true,
-				SpecialWallResources::new,
+				MimicWallResources::new,
 				PACK_INFO,
 				PackType.CLIENT_RESOURCES,
 				Pack.Position.TOP,
@@ -76,17 +77,17 @@ public final class SpecialWallResources implements PackResources {
 		if (pPath.equals("blockstates")) {
 			for (var block : walls()) {
 				var registryName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
-				var name = XKDecoObjects.SPECIAL_WALL_PREFIX + registryName.toString().replace(':', '_');
+				var name = MimicWallBlock.toMimicId(registryName);
 				output.accept(
-						new ResourceLocation(XKDeco.ID, "blockstates/" + name + ".json"),
+						XKDeco.id("blockstates/" + name + ".json"),
 						() -> new ByteArrayInputStream(BLOCK_MODEL.getBytes(StandardCharsets.UTF_8)));
 			}
 		} else if (pPath.equals("models")) {
 			for (var block : walls()) {
 				var registryName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
-				var name = XKDecoObjects.SPECIAL_WALL_PREFIX + registryName.toString().replace(':', '_');
+				var name = MimicWallBlock.toMimicId(registryName);
 				output.accept(
-						new ResourceLocation(XKDeco.ID, "models/item/" + name + ".json"),
+						XKDeco.id("models/item/" + name + ".json"),
 						() -> new ByteArrayInputStream(ITEM_MODEL.getBytes(StandardCharsets.UTF_8)));
 			}
 		}

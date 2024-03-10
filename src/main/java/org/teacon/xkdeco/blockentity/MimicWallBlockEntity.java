@@ -5,7 +5,7 @@ import static org.teacon.xkdeco.init.XKDecoObjects.WALL_BLOCK_ENTITY;
 import java.util.Objects;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.SpecialWallBlock;
+import org.teacon.xkdeco.block.MimicWallBlock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -21,10 +21,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+@Deprecated
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class WallBlockEntity extends BlockEntity {
-	public static final RegistryObject<BlockEntityType<WallBlockEntity>> TYPE = RegistryObject.create(new ResourceLocation(
+public final class MimicWallBlockEntity extends BlockEntity {
+	public static final RegistryObject<BlockEntityType<MimicWallBlockEntity>> TYPE = RegistryObject.create(new ResourceLocation(
 			XKDeco.ID,
 			WALL_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
 
@@ -33,7 +34,7 @@ public final class WallBlockEntity extends BlockEntity {
 	private Block southBlock = Blocks.AIR;
 	private Block northBlock = Blocks.AIR;
 
-	public WallBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
+	public MimicWallBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(TYPE.get(), pWorldPosition, pBlockState);
 	}
 
@@ -47,7 +48,7 @@ public final class WallBlockEntity extends BlockEntity {
 		return this.saveWithoutMetadata();
 	}
 
-	public void updateBlocksFromLevel(SpecialWallBlock wall) {
+	public void updateBlocksFromLevel(MimicWallBlock wall) {
 		var pos = this.getBlockPos();
 		var block = this.getBlockState().getBlock();
 		if (this.level != null) {
@@ -78,7 +79,7 @@ public final class WallBlockEntity extends BlockEntity {
 		this.westBlock = Objects.requireNonNullElse(
 				ForgeRegistries.BLOCKS.getValue(new ResourceLocation(pTag.getString("WestBlockName"))),
 				Blocks.AIR);
-		if (this.getBlockState().getBlock() instanceof SpecialWallBlock wall) {
+		if (this.getBlockState().getBlock() instanceof MimicWallBlock wall) {
 			this.updateBlocksFromLevel(wall);
 		}
 	}

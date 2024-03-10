@@ -18,6 +18,7 @@ import org.teacon.xkdeco.block.BasicFullDirectionBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.HollowBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
+import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -33,7 +34,6 @@ import org.teacon.xkdeco.block.SpecialCupBlock;
 import org.teacon.xkdeco.block.SpecialDessertBlock;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
-import org.teacon.xkdeco.block.SpecialWallBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
@@ -41,10 +41,10 @@ import org.teacon.xkdeco.block.settings.ShapeStorage;
 import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
-import org.teacon.xkdeco.blockentity.WallBlockEntity;
+import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
-import org.teacon.xkdeco.item.SpecialWallItem;
+import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.DSL;
@@ -93,7 +93,7 @@ public final class XKDecoObjects {
 
 	public static final String CUSHION_ENTITY = "cushion";
 
-	public static final String WALL_BLOCK_ENTITY = "special_wall";
+	public static final String WALL_BLOCK_ENTITY = "mimic_wall";
 	public static final String ITEM_DISPLAY_BLOCK_ENTITY = "item_display";
 	public static final String BLOCK_DISPLAY_BLOCK_ENTITY = "block_display";
 	public static final String WARDROBE_BLOCK_ENTITY = "wardrobe";
@@ -109,7 +109,6 @@ public final class XKDecoObjects {
 	public static final String PLANTABLE_PREFIX = "plantable_";
 	public static final String TRANSLUCENT_PREFIX = "translucent_";
 	public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
-	public static final String SPECIAL_WALL_PREFIX = "special_wall_";
 	public static final String STONE_WATER_PREFIX = "stone_water_";
 
 	public static final String LOG_SUFFIX = "_log";
@@ -389,7 +388,7 @@ public final class XKDecoObjects {
 						.toArray(Block[]::new)).build(DSL.remainderType()));
 	}
 
-	public static void addSpecialWallBlocks(RegisterEvent event) {
+	public static void addMimicWallBlocks(RegisterEvent event) {
 		var vanillaWalls = List.of(
 				Blocks.COBBLESTONE_WALL,
 				Blocks.MOSSY_COBBLESTONE_WALL,
@@ -416,8 +415,8 @@ public final class XKDecoObjects {
 		for (var block : vanillaWalls) {
 			if (block instanceof WallBlock wall) {
 				var registryName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
-				var name = SPECIAL_WALL_PREFIX + registryName.toString().replace(':', '_');
-				event.register(ForgeRegistries.Keys.BLOCKS, new ResourceLocation(XKDeco.ID, name), () -> new SpecialWallBlock(wall));
+				var name = MimicWallBlock.toMimicId(registryName);
+				event.register(ForgeRegistries.Keys.BLOCKS, XKDeco.id(name), () -> new MimicWallBlock(wall));
 			}
 		}
 	}
@@ -425,21 +424,21 @@ public final class XKDecoObjects {
 	public static void addSpecialWallItems(RegisterEvent event) {
 		for (var entry : ForgeRegistries.BLOCKS.getEntries()) {
 			var block = entry.getValue();
-			if (block instanceof SpecialWallBlock wall) {
+			if (block instanceof MimicWallBlock wall) {
 				var registryName = entry.getKey().location();
-				event.register(ForgeRegistries.Keys.ITEMS, registryName, () -> new SpecialWallItem(wall, XKDecoProperties.ITEM_STRUCTURE));
+				event.register(ForgeRegistries.Keys.ITEMS, registryName, () -> new MimicWallItem(wall, XKDecoProperties.ITEM_STRUCTURE));
 				TAB_STRUCTURE_CONTENTS.add(RegistryObject.create(registryName, ForgeRegistries.ITEMS));
 			}
 		}
 	}
 
 	public static void addSpecialWallBlockEntity(RegisterEvent event) {
-		var blocks = ForgeRegistries.BLOCKS.getValues().stream().filter(SpecialWallBlock.class::isInstance).toArray(Block[]::new);
+		var blocks = ForgeRegistries.BLOCKS.getValues().stream().filter(MimicWallBlock.class::isInstance).toArray(Block[]::new);
 		var registryName = new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY);
 		event.register(
 				ForgeRegistries.Keys.BLOCK_ENTITY_TYPES,
 				registryName,
-				() -> BlockEntityType.Builder.of(WallBlockEntity::new, blocks).build(DSL.remainderType()));
+				() -> BlockEntityType.Builder.of(MimicWallBlockEntity::new, blocks).build(DSL.remainderType()));
 	}
 
 	public static void addSpecialWallTags(TagsUpdatedEvent event) {
@@ -448,7 +447,7 @@ public final class XKDecoObjects {
 			var tags = Lists.newArrayList(registry.getTagOrEmpty(tagKey));
 			if (BlockTags.WALLS.equals(tagKey)) {
 				for (var block : ForgeRegistries.BLOCKS.getValues()) {
-					if (block instanceof SpecialWallBlock) {
+					if (block instanceof MimicWallBlock) {
 						tags.add(ForgeRegistries.BLOCKS.getHolder(block).orElseThrow());
 					}
 				}

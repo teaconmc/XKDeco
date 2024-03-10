@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.MimicWallBlock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -34,13 +35,13 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 	}
 
 	private static final Map<String, String> EXTRA_ENTRIES = Map.ofEntries(
-			Map.entry("block.xkdeco.special_wall", "%s (Column)"),
+			Map.entry("block.xkdeco.mimic_wall", "Mimic %s"),
 			Map.entry("itemGroup.xkdeco_basic", "XKDeco: Basic"),
 			Map.entry("itemGroup.xkdeco_functional", "XKDeco: Functional"),
 			Map.entry("itemGroup.xkdeco_furniture", "XKDeco: Furniture"),
 			Map.entry("itemGroup.xkdeco_nature", "XKDeco: Nature"),
 			Map.entry("itemGroup.xkdeco_structure", "XKDeco: Structure"),
-			Map.entry("pack.xkdeco_special_wall", "XKDeco: Special Walls")
+			Map.entry("pack.xkdeco.mimic_wall", "XKDeco: Mimic Walls")
 	);
 
 	public static void register(GatherDataEvent event) {
@@ -76,6 +77,9 @@ public final class XKDecoEnUsLangProvider extends LanguageProvider {
 		var translation = snakeToSpace(id);
 		var obj = regObj.get();
 		if (obj instanceof Block) {
+			if (obj instanceof MimicWallBlock) {
+				return;
+			}
 			add((Block) obj, translation);
 		} else if (obj instanceof Item) {
 			add((Item) obj, translation);

@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.client.renderer;
 
-import org.teacon.xkdeco.block.SpecialWallBlock;
-import org.teacon.xkdeco.blockentity.WallBlockEntity;
+import org.teacon.xkdeco.block.MimicWallBlock;
+import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -19,12 +19,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.data.ModelData;
 
+@Deprecated
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class WallRenderer implements BlockEntityRenderer<WallBlockEntity> {
+public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlockEntity> {
 	private final BlockRenderDispatcher blockRenderer;
 
-	public WallRenderer(BlockEntityRendererProvider.Context context) {
+	public MimicWallRenderer(BlockEntityRendererProvider.Context context) {
 		this.blockRenderer = context.getBlockRenderDispatcher();
 	}
 
@@ -38,7 +39,7 @@ public final class WallRenderer implements BlockEntityRenderer<WallBlockEntity> 
 
 	@Override
 	public void render(
-			WallBlockEntity pBlockEntity,
+			MimicWallBlockEntity pBlockEntity,
 			float pPartialTick,
 			PoseStack pPoseStack,
 			MultiBufferSource pBufferSource,
@@ -47,7 +48,7 @@ public final class WallRenderer implements BlockEntityRenderer<WallBlockEntity> 
 		var level = pBlockEntity.getLevel();
 		var pos = pBlockEntity.getBlockPos();
 		var state = pBlockEntity.getBlockState();
-		if (state.getBlock() instanceof SpecialWallBlock wall) {
+		if (state.getBlock() instanceof MimicWallBlock wall) {
 			var wallState = this.withState(state, wall.getWallDelegate(), BlockStateProperties.UP);
 			if (level == null) {
 				this.blockRenderer.renderSingleBlock(wallState,
