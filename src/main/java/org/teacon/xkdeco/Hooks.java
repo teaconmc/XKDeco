@@ -13,7 +13,10 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class Hooks {
+public final class Hooks {
+	private Hooks() {
+	}
+
 	// a custom implementation of the Block.shouldRenderFace
 	private static final int CACHE_SIZE = 512;
 	private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(() -> {

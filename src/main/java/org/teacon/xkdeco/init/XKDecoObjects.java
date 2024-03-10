@@ -3,7 +3,6 @@ package org.teacon.xkdeco.init;
 import static net.minecraft.world.level.block.Block.box;
 import static org.teacon.xkdeco.init.XKDecoProperties.*;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +37,7 @@ import org.teacon.xkdeco.block.SpecialWallBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
+import org.teacon.xkdeco.block.settings.ShapeStorage;
 import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -47,12 +47,10 @@ import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.SpecialWallItem;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mojang.datafixers.DSL;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -151,28 +149,47 @@ public final class XKDecoObjects {
 				1F / 256F).setTrackingRange(256).build(new ResourceLocation(XKDeco.ID, CUSHION_ENTITY).toString()));
 	}
 
+	/**
+	 * basic -> horizontal
+	 */
 	private static void addBasic(
 			String id,
-			ShapeFunction shapeFunction,
+			String northShapeId,
 			boolean isSupportNeeded,
 			BlockBehaviour.Properties properties,
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
-		var horizontalShapes = Maps.toMap(Direction.Plane.HORIZONTAL, shapeFunction::getShape);
-		if (!isSupportNeeded && horizontalShapes.values().stream().anyMatch(s -> Block.isFaceFull(Shapes.join(
-				Shapes.block(),
-				s,
-				BooleanOp.ONLY_FIRST), Direction.DOWN))) {
-			var shapes = Maps.toMap(Arrays.stream(Direction.values()).toList(), shapeFunction::getShape);
-			var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties, shapes));
+		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
+		if (northShape == Shapes.block()) {
+			var block = BLOCKS.register(id, () -> new BasicCubeBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (horizontalShapes.values().stream().allMatch(Block::isShapeFullBlock)) {
-			var block = BLOCKS.register(id, () -> new BasicCubeBlock(properties, horizontalShapes));
+		} else if (northShape == null) { // migration code, remove in the future
+			XKDeco.LOGGER.error("Missing shape for block: {}, shape: {}", id, northShapeId);
+			var block = BLOCKS.register(id, () -> {
+				BasicBlock $ = new BasicBlock(properties, isSupportNeeded);
+				XKDBlockSettings.builder().shape(ShapeGenerator.horizontal(Shapes.block())).build().setTo($);
+				return $;
+			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
-			var block = BLOCKS.register(id, () -> new BasicBlock(properties, isSupportNeeded, horizontalShapes));
+			var block = BLOCKS.register(id, () -> {
+				BasicBlock $ = new BasicBlock(properties, isSupportNeeded);
+				XKDBlockSettings.builder().shape(ShapeGenerator.horizontal(northShape)).build().setTo($);
+				return $;
+			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		}
+	}
+
+	private static void addDirectionalBasic(
+			String id,
+			String shapeDownId,
+			BlockBehaviour.Properties properties,
+			Item.Properties itemProperties,
+			Collection<RegistryObject<Item>> tabContents) {
+		//TODO shape
+		var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties));
+		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
 	private static void addIsotropic(
@@ -330,8 +347,8 @@ public final class XKDecoObjects {
 			var block = BLOCKS.register(id, () -> new SpecialLightBar(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(VENT_FAN_SUFFIX)) {
-			var shapes = Maps.toMap(Arrays.stream(Direction.values()).toList(), d -> ShapeFunction.fromVentFan().getShape(d));
-			var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties, shapes));
+			//TODO shape
+			var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(CONSOLE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new SpecialConsole(properties));
@@ -440,215 +457,6 @@ public final class XKDecoObjects {
 		})));
 		//FIXME why?
 		Blocks.rebuildCache();
-	}
-
-	@Deprecated
-	@FunctionalInterface
-	private interface ShapeFunction {
-		VoxelShape getShape(Direction direction);
-
-		static ShapeFunction fromBigTable() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? HollowBlock.BIG_TABLE_SHAPE : Shapes.block();
-		}
-
-		static ShapeFunction fromLongStool() {
-			return d -> switch (d) {
-				case EAST, WEST -> box(3, 0, 0, 13, 10, 16);
-				case NORTH, SOUTH -> box(0, 0, 3, 16, 10, 13);
-				default -> Shapes.block();
-			};
-		}
-
-		static ShapeFunction fromChair() {
-			return d -> switch (d) {
-				case EAST -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 2, 4, 16, 14));
-				case SOUTH -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 2, 14, 16, 4));
-				case WEST -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(12, 10, 2, 14, 16, 14));
-				case NORTH -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 12, 14, 16, 14));
-				default -> Shapes.block();
-			};
-		}
-
-		static ShapeFunction fromShelf() {
-			return d -> switch (d) {
-				case EAST, WEST -> Shapes.or(
-						box(0, 0, 0, 16, 1, 16),
-						box(0, 15, 0, 16, 16, 16),
-						box(0, 1, 0, 16, 15, 1),
-						box(0, 1, 15, 16, 15, 16));
-				case NORTH, SOUTH -> Shapes.or(
-						box(15, 0, 0, 16, 16, 16),
-						box(0, 0, 0, 1, 16, 16),
-						box(1, 15, 0, 15, 16, 16),
-						box(1, 0, 0, 15, 1, 16));
-				default -> Shapes.block();
-			};
-		}
-
-		static ShapeFunction fromMiniature() {
-			return d -> switch (d) {
-				case EAST, WEST -> box(3, 0, 0, 13, 6, 16);
-				case NORTH, SOUTH -> box(0, 0, 3, 16, 6, 13);
-				default -> Shapes.block();
-			};
-		}
-
-		static ShapeFunction fromTeapot() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? box(4, 0, 4, 12, 6, 12) : Shapes.block();
-		}
-
-		static ShapeFunction fromTeaWare() {
-			return d -> switch (d) {
-				case EAST, WEST -> box(3, 0, 0, 13, 2, 16);
-				case NORTH, SOUTH -> box(0, 0, 3, 16, 2, 13);
-				default -> Shapes.block();
-			};
-		}
-
-		static ShapeFunction fromCarpet() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? box(0, 0, 0, 16, 1, 16) : Shapes.block();
-		}
-
-		static ShapeFunction fromBoard() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? box(1, 0, 1, 15, 1, 15) : Shapes.block();
-		}
-
-		static ShapeFunction fromPorcelain() {
-			return d -> box(2, 0, 2, 14, 16, 14);
-		}
-
-		static ShapeFunction fromPorcelainSmall() {
-			return d -> box(5, 0, 5, 11, 12, 11);
-		}
-
-		static ShapeFunction fromLantern() {
-			return d -> Shapes.or(box(2, 2, 2, 14, 14, 14), box(5, 0, 5, 11, 16, 11));
-		}
-
-		static ShapeFunction fromFestivalLantern() {
-			return d -> Shapes.or(box(2, 2, 2, 14, 14, 14), box(5, 0, 5, 11, 16, 11), box(0, 3, 0, 16, 13, 16));
-		}
-
-		static ShapeFunction fromCandlestick() {
-			return d -> box(5, 0, 5, 11, 13, 11);
-		}
-
-		static ShapeFunction fromBigCandlestick() {
-			return d -> box(2, 0, 2, 14, 14, 14);
-		}
-
-		static ShapeFunction fromCoveredLamp() {
-			return d -> box(4, 0, 4, 12, 16, 12);
-		}
-
-		static ShapeFunction fromStoneLamp() {
-			return d -> box(3, 0, 3, 13, 16, 13);
-		}
-
-		static ShapeFunction fromWaterBowl() {
-			return d -> box(0, 0, 0, 16, 5, 16);
-		}
-
-		static ShapeFunction fromFishBowl() {
-			return d -> box(1, 0, 1, 15, 6, 15);
-		}
-
-		static ShapeFunction fromFishTank() {
-			return d -> Shapes.join(Shapes.block(), box(1, 1, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
-		}
-
-		static ShapeFunction fromWaterTank() {
-			return d -> Shapes.join(box(1, 0, 1, 15, 16, 15), box(3, 3, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
-		}
-
-		static ShapeFunction fromOilLamp() {
-			return d -> switch (d) {
-				case SOUTH -> box(5, 4, 0, 11, 12, 8);
-				case EAST -> box(0, 4, 5, 8, 12, 11);
-				case NORTH -> box(5, 4, 8, 11, 12, 16);
-				case WEST -> box(8, 4, 5, 16, 12, 11);
-				case DOWN -> box(5, 5, 5, 11, 16, 11);
-				case UP -> box(5, 0, 5, 11, 8, 11);
-			};
-		}
-
-		static ShapeFunction fromEmptyCandlestick() {
-			return d -> switch (d) {
-				case SOUTH -> box(5, 5, 0, 11, 16, 11);
-				case EAST -> box(0, 5, 5, 11, 16, 11);
-				case NORTH -> box(5, 5, 5, 11, 16, 16);
-				case WEST -> box(5, 5, 5, 16, 16, 11);
-				default -> box(5, 0, 5, 11, 16, 11);
-			};
-		}
-
-		static ShapeFunction fromFactoryLamp() {
-			return d -> switch (d) {
-				case SOUTH -> box(4, 4, 0, 12, 12, 8);
-				case EAST -> box(0, 4, 4, 8, 12, 12);
-				case NORTH -> box(4, 4, 8, 12, 12, 16);
-				case WEST -> box(8, 4, 4, 16, 12, 12);
-				case DOWN -> box(4, 8, 4, 12, 16, 12);
-				case UP -> box(4, 0, 4, 12, 8, 12);
-			};
-		}
-
-		static ShapeFunction fromFan() {
-			return d -> switch (d) {
-				case EAST -> box(1, 0, 1, 6, 15, 15);
-				case SOUTH -> box(1, 0, 1, 15, 15, 6);
-				case WEST -> box(10, 1, 1, 16, 15, 15);
-				case NORTH -> box(1, 1, 10, 15, 15, 16);
-				case UP -> box(1, 0, 1, 15, 6, 15);
-				case DOWN -> box(1, 10, 1, 15, 16, 15);
-			};
-		}
-
-		static ShapeFunction fromScreen() {
-			return d -> switch (d) {
-				case SOUTH -> box(0, 0, 0, 16, 16, 2);
-				case WEST -> box(14, 0, 0, 16, 16, 16);
-				case NORTH -> box(0, 0, 14, 16, 16, 16);
-				default -> box(0, 0, 0, 2, 16, 16);
-			};
-		}
-
-		static ShapeFunction fromScreen2() {
-			return d -> switch (d) {
-				case SOUTH -> box(0, 0, 2, 16, 16, 3);
-				case WEST -> box(13, 0, 0, 14, 16, 16);
-				case NORTH -> box(0, 0, 13, 16, 16, 14);
-				default -> box(2, 0, 0, 3, 16, 16);
-			};
-		}
-
-		static ShapeFunction fromVentFan() {
-			return d -> switch (d) {
-				case SOUTH, NORTH -> box(0, 0, 2, 16, 16, 14);
-				case EAST, WEST -> box(2, 0, 0, 14, 16, 16);
-				default -> box(0, 2, 0, 16, 14, 16);
-			};
-		}
-
-		static ShapeFunction fromTechTable() {
-			return d -> Shapes.or(box(2, 0, 2, 14, 10, 14), box(0, 10, 0, 16, 16, 16));
-		}
-
-		static ShapeFunction fromHologramBase() {
-			return d -> switch (d) {
-				case EAST -> box(0, 1, 1, 2, 15, 15);
-				case SOUTH -> box(1, 1, 0, 15, 15, 2);
-				case WEST -> box(14, 1, 1, 16, 15, 15);
-				case NORTH -> box(1, 1, 14, 15, 15, 16);
-				case UP -> box(1, 0, 1, 15, 2, 15);
-				case DOWN -> box(1, 14, 1, 15, 16, 15);
-			};
-		}
-
-		@Deprecated
-		static ShapeFunction wip() {
-			return fromChair();
-		}
 	}
 
 	static {
@@ -801,7 +609,7 @@ public final class XKDecoObjects {
 		addIsotropic("maya_chiseled_stonebricks", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_cut_stonebricks", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addBasic("maya_single_screw_thread_stone", s -> Shapes.block(), false, BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBasic("maya_single_screw_thread_stone", "block", false, BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_double_screw_thread_stone", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_quad_screw_thread_stone", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -811,7 +619,7 @@ public final class XKDecoObjects {
 		addIsotropic("maya_pillar", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_pillar", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addBasic("maya_crystal_skull", ShapeFunction.wip(), false, BLOCK_HARD_STONE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("maya_crystal_skull", "xkdeco:maya_crystal_skull", false, BLOCK_HARD_STONE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addIsotropic("aztec_stonebricks", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("aztec_stonebrick_slab", BLOCK_HARD_STONE, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -870,7 +678,7 @@ public final class XKDecoObjects {
 		addIsotropic("cut_bronze_block_stairs", BLOCK_BRONZE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("chiseled_bronze_block", BLOCK_BRONZE, ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addBasic("screw_thread_bronze_block", s -> Shapes.block(), false, BLOCK_BRONZE, ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBasic("screw_thread_bronze_block", "block", false, BLOCK_BRONZE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("bronze_pillar", BLOCK_BRONZE, ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("steel_block", BLOCK_HARD_IRON, ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -1016,25 +824,25 @@ public final class XKDecoObjects {
 		addPlant("willow_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("hanging_willow_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS); //TODO proper class
 
-		addBasic("miniature_tree", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_cherry", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_ginkgo", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_maple", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_bamboo", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_coral", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_red_coral", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_mount", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_succulents", ShapeFunction.fromMiniature(), false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_tree", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_cherry", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_ginkgo", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_maple", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_bamboo", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_coral", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_red_coral", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_mount", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_succulents", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("teapot", ShapeFunction.fromTeapot(), true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("teapot", "xkdeco:teapot", true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addSpecial("cup", BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("tea_ware", ShapeFunction.fromTeaWare(), true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("tea_ware", "xkdeco:tea_ware", true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addSpecial("refreshments", BLOCK_DESSERT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addSpecial("fruit_platter", BLOCK_DESSERT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("calligraphy", ShapeFunction.fromCarpet(), true, BLOCK_CARPET, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ink_painting", ShapeFunction.fromCarpet(), true, BLOCK_CARPET, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("weiqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("xiangqi_board", ShapeFunction.fromBoard(), true, BLOCK_BOARD, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("calligraphy", "carpet", true, BLOCK_CARPET, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("ink_painting", "carpet", true, BLOCK_CARPET, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("weiqi_board", "xkdeco:board", true, BLOCK_BOARD, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("xiangqi_board", "xkdeco:board", true, BLOCK_BOARD, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addSpecial("plain_item_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
 		addSpecial("gorgeous_item_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
@@ -1058,110 +866,109 @@ public final class XKDecoObjects {
 
 		addWardrobeBlockEntity();
 
-		addBasic("white_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("white_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("white_porcelain", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("white_porcelain_tall", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"white_porcelain_small",
-				ShapeFunction.fromPorcelainSmall(),
+				"xkdeco:porcelain_small",
 				false,
 				BLOCK_PORCELAIN,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("bluewhite_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("bluewhite_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("bluewhite_porcelain", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("bluewhite_porcelain_tall", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bluewhite_porcelain_small",
-				ShapeFunction.fromPorcelainSmall(),
+				"xkdeco:porcelain_small",
 				false,
 				BLOCK_PORCELAIN,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("celadon_porcelain", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("celadon_porcelain_tall", ShapeFunction.fromPorcelain(), false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("celadon_porcelain", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("celadon_porcelain_tall", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"celadon_porcelain_small",
-				ShapeFunction.fromPorcelainSmall(),
+				"xkdeco:porcelain_small",
 				false,
 				BLOCK_PORCELAIN,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addBasic("paper_lantern", ShapeFunction.fromLantern(), false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("red_lantern", ShapeFunction.fromLantern(), false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("festival_lantern", ShapeFunction.fromFestivalLantern(), false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("oil_lamp", ShapeFunction.fromOilLamp(), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("candlestick", ShapeFunction.fromCandlestick(), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("big_candlestick", ShapeFunction.fromBigCandlestick(), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addBasic("paper_lantern", "xkdeco:lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("red_lantern", "xkdeco:lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("festival_lantern", "xkdeco:festival_lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("oil_lamp", "xkdeco:oil_lamp", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("candlestick", "xkdeco:candlestick", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("big_candlestick", "xkdeco:big_candlestick", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
 				"empty_candlestick",
-				ShapeFunction.fromEmptyCandlestick(),
-				false,
+				"xkdeco:empty_candlestick",
 				BLOCK_METAL_WITHOUT_LIGHT,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("covered_lamp", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("roofed_lamp", ShapeFunction.fromBigCandlestick(), false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("stone_lamp", ShapeFunction.fromStoneLamp(), false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("deepslate_lamp", ShapeFunction.fromStoneLamp(), false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("blackstone_lamp", ShapeFunction.fromStoneLamp(), false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("fish_bowl", ShapeFunction.fromFishBowl(), false, BLOCK_STONE_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("dark_fish_bowl", ShapeFunction.fromFishBowl(), false, BLOCK_STONE_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("covered_lamp", "xkdeco:covered_lamp", false, BLOCK_WOOD_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("roofed_lamp", "xkdeco:big_candlestick", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("stone_lamp", "xkdeco:stone_lamp", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("deepslate_lamp", "xkdeco:stone_lamp", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("blackstone_lamp", "xkdeco:stone_lamp", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("fish_bowl", "xkdeco:fish_bowl", false, BLOCK_STONE_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("dark_fish_bowl", "xkdeco:fish_bowl", false, BLOCK_STONE_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"stone_water_bowl",
-				ShapeFunction.fromWaterBowl(),
+				"xkdeco:water_bowl",
 				false,
 				BLOCK_STONE_NO_OCCLUSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"stone_water_tank",
-				ShapeFunction.fromWaterTank(),
+				"xkdeco:water_tank",
 				false,
 				BLOCK_STONE_NO_OCCLUSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("fish_tank", ShapeFunction.fromFishTank(), false, BLOCK_GLASS_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("empty_fish_tank", ShapeFunction.fromFishTank(), false, BLOCK_GLASS_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("fish_tank", "xkdeco:fish_tank", false, BLOCK_GLASS_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("empty_fish_tank", "xkdeco:fish_tank", false, BLOCK_GLASS_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addBasic(
 				"small_book_stack",
-				s -> box(2, 0, 2, 14, 8, 14),
+				"xkdeco:small_book_stack",
 				false,
 				BLOCK_WOOD_FURNITURE,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"big_book_stack",
-				s -> box(0, 0, 0, 16, 10, 16),
+				"xkdeco:big_book_stack",
 				false,
 				BLOCK_WOOD_FURNITURE,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"empty_bottle_stack",
-				s -> box(2, 0, 2, 14, 8, 14),
+				"xkdeco:bottle_stack",
 				false,
 				BLOCK_GLASS_NO_OCCLUSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bottle_stack",
-				s -> box(2, 0, 2, 14, 8, 14),
+				"xkdeco:bottle_stack",
 				false,
 				BLOCK_GLASS_NO_OCCLUSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("wood_globe", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("globe", ShapeFunction.fromCoveredLamp(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("wood_globe", "xkdeco:covered_lamp", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("globe", "xkdeco:covered_lamp", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"solar_system_model",
-				s -> box(0, 0, 0, 16, 10, 16),
+				"xkdeco:solar_system_model",
 				false,
 				BLOCK_WOOD_FURNITURE,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("big_solar_system_model", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("telescope", s -> Shapes.block(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("big_solar_system_model", "block", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("telescope", "block", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addPlant("fallen_ginkgo_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("fallen_orange_maple_leaves", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
@@ -1170,72 +977,70 @@ public final class XKDecoObjects {
 		addPlant("fallen_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addPlant("fallen_white_cherry_blossom", BLOCK_LEAVES, ITEM_NATURE, TAB_NATURE_CONTENTS);
 
-		addBasic("factory_lamp", ShapeFunction.fromFactoryLamp(), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addDirectionalBasic(
+				"factory_lamp",
+				"xkdeco:factory_lamp",
+				BLOCK_METAL_LIGHT,
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
 				"factory_lamp_broken",
-				ShapeFunction.fromFactoryLamp(),
-				false,
+				"xkdeco:factory_lamp",
 				BLOCK_METAL_WITHOUT_LIGHT,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addDirectionalBasic(
 				"factory_warning_lamp",
-				ShapeFunction.fromFactoryLamp(),
-				false,
+				"xkdeco:factory_lamp",
 				BLOCK_METAL_HALF_LIGHT,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
 		addSpecial("factory_light_bar", BLOCK_METAL_LIGHT_NO_COLLISSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic(
-				"factory_ceiling_lamp",
-				s -> box(0, 12, 0, 16, 16, 16),
-				false,
-				BLOCK_METAL_LIGHT,
-				ITEM_FURNITURE,
-				TAB_FURNITURE_CONTENTS);
-		addBasic("factory_pendant", s -> box(2, 4, 2, 14, 16, 14), false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		//FIXME non-directional
+		addBasic("factory_ceiling_lamp", "xkdeco:factory_ceiling_lamp", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("factory_pendant", "xkdeco:factory_pendant", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("fan_blade", ShapeFunction.fromFan(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("fan_blade", "xkdeco:fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addSpecial("factory_vent_fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addSpecial("factory_vent_fan_big", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("steel_windmill", ShapeFunction.fromFan(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("iron_windmill", ShapeFunction.fromFan(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("wooden_windmill", ShapeFunction.fromFan(), false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("steel_windmill", "xkdeco:fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("iron_windmill", "xkdeco:fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("wooden_windmill", "xkdeco:fan", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addSpecial("mechanical_console", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("mechanical_screen", ShapeFunction.fromScreen2(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mechanical_chair", ShapeFunction.fromChair(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("mechanical_screen", "xkdeco:screen2", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("mechanical_chair", "xkdeco:chair", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addSpecial("tech_console", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("tech_screen", ShapeFunction.fromScreen2(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("tech_chair", ShapeFunction.fromChair(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("tech_screen", "xkdeco:screen2", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("tech_chair", "xkdeco:chair", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("screen_off", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_cube", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_diagram", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_dna", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_list", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_message", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_threebodies", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_transport", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_off", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_cube", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_diagram", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_dna", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_list", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_message", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_threebodies", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_transport", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("tech_table", ShapeFunction.fromTechTable(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("tech_table", "xkdeco:tech_table", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"tech_table_circle",
-				ShapeFunction.fromTechTable(),
+				"xkdeco:tech_table",
 				false,
 				BLOCK_METAL_NO_OCCLUSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"tech_table_bigcircle",
-				ShapeFunction.fromTechTable(),
+				"xkdeco:tech_table",
 				false,
 				BLOCK_METAL_NO_OCCLUSION,
 				ITEM_FURNITURE,
@@ -1243,7 +1048,7 @@ public final class XKDecoObjects {
 
 		addBasic(
 				"hologram_base",
-				ShapeFunction.fromHologramBase(),
+				"xkdeco:hologram_base",
 				false,
 				BLOCK_METAL_NO_COLLISSION,
 				ITEM_FURNITURE,
@@ -1254,28 +1059,28 @@ public final class XKDecoObjects {
 		addItem("hologram_message", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addItem("hologram_xekr_logo", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addBasic("sign_entrance", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("sign_exit", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("sign_left", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("sign_right", ShapeFunction.fromScreen(), false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("sign_entrance", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("sign_exit", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("sign_left", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("sign_right", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addBasic(
 				"small_sign_left",
-				ShapeFunction.fromScreen(),
+				"xkdeco:screen",
 				false,
 				BLOCK_METAL_LIGHT_NO_COLLISSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"small_sign_right",
-				ShapeFunction.fromScreen(),
+				"xkdeco:screen",
 				false,
 				BLOCK_METAL_LIGHT_NO_COLLISSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"small_sign_ground",
-				s -> box(0, 0, 0, 16, 1, 16),
+				"carpet",
 				false,
 				BLOCK_METAL_LIGHT_NO_COLLISSION,
 				ITEM_FURNITURE,
@@ -1360,12 +1165,12 @@ public final class XKDecoObjects {
 		addIsotropic(id + "_table", furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_big_table", furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_tall_table", furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(id + "_desk", ShapeFunction.fromBigTable(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(id + "_stool", ShapeFunction.fromLongStool(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(id + "_chair", ShapeFunction.fromChair(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(id + "_empty_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(id + "_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic(id + "_divided_shelf", ShapeFunction.fromShelf(), false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_desk", "xkdeco:big_table", false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_stool", "xkdeco:long_stool", false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_chair", "xkdeco:chair", false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_empty_shelf", "xkdeco:shelf", false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_shelf", "xkdeco:shelf", false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(id + "_divided_shelf", "xkdeco:shelf", false, furnitureProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addBlock(id + "_fence", () -> new FenceBlock(woodProp), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBlock(id + "_fence_gate", () -> new FenceGateBlock(woodProp, WoodType.OAK), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
