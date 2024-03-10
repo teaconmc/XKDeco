@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/factory_pendant",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/factory_pendant"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/factory_pendant",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/factory_pendant",
+      "y": 270
+    }
+  }
+}

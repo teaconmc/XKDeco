@@ -1,11 +1,11 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "xkdeco:block/furniture/hologram_base"
-    },
     "facing=east": {
       "model": "xkdeco:block/furniture/hologram_base",
       "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/hologram_base"
     },
     "facing=south": {
       "model": "xkdeco:block/furniture/hologram_base",
@@ -14,14 +14,6 @@
     "facing=west": {
       "model": "xkdeco:block/furniture/hologram_base",
       "y": 270
-    },
-    "facing=up": {
-      "model": "xkdeco:block/furniture/hologram_base",
-      "x": 270
-    },
-    "facing=down": {
-      "model": "xkdeco:block/furniture/hologram_base",
-      "x": 90
     }
   }
 }

@@ -1,8 +1,6 @@
 {
-  "parent": "minecraft:block/inner_stairs",
+  "parent": "xkdeco:block/glass_stairs_inner",
   "textures": {
-    "bottom": "xkdeco:block/translucent_lamp_block",
-    "side": "xkdeco:block/translucent_lamp_block",
-    "top": "xkdeco:block/translucent_lamp_block"
+    "side": "xkdeco:block/translucent_lamp_block"
   }
 }

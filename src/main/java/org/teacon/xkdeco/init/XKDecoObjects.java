@@ -1046,10 +1046,9 @@ public final class XKDecoObjects {
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addBasic(
+		addDirectionalBasic(
 				"hologram_base",
 				"xkdeco:hologram_base",
-				false,
 				BLOCK_METAL_NO_COLLISSION,
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);

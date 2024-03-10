@@ -67,7 +67,7 @@ public class ShapeStorage {
 		put("screen2", box(0, 0, 13, 16, 16, 14));
 		put("vent_fan", box(0, 0, 2, 16, 16, 14));
 		put("tech_table", Shapes.or(box(2, 0, 2, 14, 10, 14), box(0, 10, 0, 16, 16, 16)));
-		put("hologram_base", box(1, 1, 14, 15, 15, 16));
+		put("hologram_base", box(1, 0, 1, 15, 2, 15));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

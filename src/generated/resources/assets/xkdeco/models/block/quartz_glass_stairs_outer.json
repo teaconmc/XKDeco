@@ -1,8 +1,6 @@
 {
-  "parent": "minecraft:block/outer_stairs",
+  "parent": "xkdeco:block/glass_stairs_outer",
   "textures": {
-    "bottom": "xkdeco:block/quartz_glass",
-    "side": "xkdeco:block/quartz_glass",
-    "top": "xkdeco:block/quartz_glass"
+    "side": "xkdeco:block/quartz_glass"
   }
 }
