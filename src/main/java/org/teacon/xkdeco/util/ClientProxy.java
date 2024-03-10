@@ -1,6 +1,8 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.settings.GlassType;
+import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.WallBlockEntity;
@@ -149,6 +151,19 @@ public final class ClientProxy {
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
 			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct")), RenderType.cutout());
 			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct_oblique")), RenderType.cutout());
+
+			//TODO temporary implementation. data-gen it in the future
+			for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
+				XKDBlockSettings settings = XKDBlockSettings.of(registryObject.get());
+				if (settings == null) {
+					continue;
+				}
+				if (settings.glassType == GlassType.CLEAR) {
+					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), RenderType.cutout());
+				} else if (settings.glassType != null) {
+					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), RenderType.translucent());
+				}
+			}
 		});
 	}
 }
