@@ -2,8 +2,7 @@ package org.teacon.xkdeco.item;
 
 import java.util.function.Consumer;
 
-import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.SpecialWallBlock;
+import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,16 +13,17 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
+@Deprecated
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialWallItem extends BlockItem {
-	public SpecialWallItem(SpecialWallBlock pBlock, Properties pProperties) {
+public final class MimicWallItem extends BlockItem {
+	public MimicWallItem(MimicWallBlock pBlock, Properties pProperties) {
 		super(pBlock, pProperties);
 	}
 
 	@Override
 	public Component getName(ItemStack pStack) {
-		return Component.translatable("block." + XKDeco.ID + ".special_wall", super.getName(pStack));
+		return getBlock().getName();
 	}
 
 	@Override

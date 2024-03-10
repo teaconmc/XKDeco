@@ -5,11 +5,12 @@ import java.util.Objects;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoProperties;
 
+import com.google.common.base.Suppliers;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,33 +24,29 @@ public final class XKDecoCreativeModTab {
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, XKDeco.ID);
 
 	public static final RegistryObject<CreativeModeTab> BASIC_TAB = TABS.register("basic", () -> CreativeModeTab.builder()
-			.icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "black_tiles")))
+			.icon(Suppliers.memoize(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(XKDeco.id("black_tiles")))
 					.getDefaultInstance()))
 			.title(Component.translatable("itemGroup.xkdeco_basic"))
 			.build());
 	public static final RegistryObject<CreativeModeTab> STRUCTURE_TAB = TABS.register("structure", () -> CreativeModeTab.builder()
-			.icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(
-					XKDeco.ID,
-					"special_wall_minecraft_cobblestone_wall"))).getDefaultInstance()))
+			.icon(Suppliers.memoize(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(XKDeco.id("black_roof_ridge"))).getDefaultInstance()))
 			.title(Component.translatable("itemGroup.xkdeco_structure"))
 			.build());
 	public static final RegistryObject<CreativeModeTab> NATURE_TAB = TABS.register("nature", () -> CreativeModeTab.builder()
-			.icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "grass_block_slab")))
+			.icon(Suppliers.memoize(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "grass_block_slab")))
 					.getDefaultInstance()))
 			.title(Component.translatable("itemGroup.xkdeco_nature"))
 			.build());
 	public static final RegistryObject<CreativeModeTab> FURNITURE_TAB = TABS.register("furniture", () -> CreativeModeTab.builder()
-			.icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(
-					XKDeco.ID,
-					"varnished_big_table"))).getDefaultInstance()))
+			.icon(Suppliers.memoize(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(XKDeco.id("varnished_big_table")))
+					.getDefaultInstance()))
 			.title(Component.translatable("itemGroup.xkdeco_furniture"))
 			.build());
 	public static final RegistryObject<CreativeModeTab> FUNCTIONAL_TAB = TABS.register("functional", () -> CreativeModeTab.builder()
-			.icon(Lazy.of(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(XKDeco.ID, "tech_item_display")))
+			.icon(Suppliers.memoize(() -> Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(XKDeco.id("tech_item_display")))
 					.getDefaultInstance()))
 			.title(Component.translatable("itemGroup.xkdeco_functional"))
 			.build());
-
 
 	@SubscribeEvent
 	public static void tabs(BuildCreativeModeTabContentsEvent event) {

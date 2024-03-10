@@ -23,7 +23,7 @@ public final class MathUtil {
 	}
 
 	public static boolean isIsotropicHorizontally(AABB aabb) {
-		return aabb.minX == aabb.minZ && aabb.maxX == aabb.maxZ && aabb.minX == 1 - aabb.maxX;
+		return aabb.minX == aabb.minZ && aabb.maxX == aabb.maxZ && Math.abs(1 - aabb.minX - aabb.maxX) < 1e-6;
 	}
 
 	public static boolean isIsotropicHorizontally(VoxelShape shape) {

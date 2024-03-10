@@ -32,7 +32,7 @@ public class CommonProxy {
 		XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
 		XKDecoCreativeModTab.TABS.register(modEventBus);
 
-		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlocks);
+		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
 

@@ -5,16 +5,16 @@ import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
-import org.teacon.xkdeco.blockentity.WallBlockEntity;
+import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
-import org.teacon.xkdeco.client.renderer.WallRenderer;
+import org.teacon.xkdeco.client.renderer.MimicWallRenderer;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
-import org.teacon.xkdeco.resource.SpecialWallResources;
+import org.teacon.xkdeco.resource.MimicWallResources;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -117,13 +117,13 @@ public final class ClientProxy {
 	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(CushionEntity.TYPE.get(), NoopRenderer::new);
 
-		event.registerBlockEntityRenderer(WallBlockEntity.TYPE.get(), WallRenderer::new);
+		event.registerBlockEntityRenderer(MimicWallBlockEntity.TYPE.get(), MimicWallRenderer::new);
 		event.registerBlockEntityRenderer(ItemDisplayBlockEntity.TYPE.get(), ItemDisplayRenderer::new);
 		event.registerBlockEntityRenderer(BlockDisplayBlockEntity.TYPE.get(), BlockDisplayRenderer::new);
 	}
 
 	public static void setAdditionalPackFinder(AddPackFindersEvent event) {
-		event.addRepositorySource(consumer -> consumer.accept(SpecialWallResources.create()));
+		event.addRepositorySource(consumer -> consumer.accept(MimicWallResources.create()));
 	}
 
 	public static void init() {

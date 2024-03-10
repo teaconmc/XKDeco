@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.client.renderer;
 
-import org.teacon.xkdeco.blockentity.WallBlockEntity;
-import org.teacon.xkdeco.item.SpecialWallItem;
+import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
+import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -32,9 +32,9 @@ public final class XKDecoWithoutLevelRenderer extends BlockEntityWithoutLevelRen
 	public void renderByItem(
 			ItemStack pStack, ItemDisplayContext pDisplayContext,
 			PoseStack pPose, MultiBufferSource pBuffer, int pLight, int pOverlay) {
-		if (pStack.getItem() instanceof SpecialWallItem item) {
+		if (pStack.getItem() instanceof MimicWallItem item) {
 			var state = item.getBlock().defaultBlockState().setValue(BlockStateProperties.UP, true);
-			this.dispatcher.renderItem(new WallBlockEntity(BlockPos.ZERO, state), pPose, pBuffer, pLight, pOverlay);
+			this.dispatcher.renderItem(new MimicWallBlockEntity(BlockPos.ZERO, state), pPose, pBuffer, pLight, pOverlay);
 		} else {
 			super.renderByItem(pStack, pDisplayContext, pPose, pBuffer, pLight, pOverlay);
 		}

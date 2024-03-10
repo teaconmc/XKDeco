@@ -320,6 +320,7 @@
   "block.xkdeco.mechanical_console": "Mechanical Console",
   "block.xkdeco.mechanical_item_display": "Mechanical Item Display",
   "block.xkdeco.mechanical_screen": "Mechanical Screen",
+  "block.xkdeco.mimic_wall": "Mimic %s",
   "block.xkdeco.miniature_bamboo": "Miniature Bamboo",
   "block.xkdeco.miniature_cherry": "Miniature Cherry",
   "block.xkdeco.miniature_coral": "Miniature Coral",
@@ -417,7 +418,6 @@
   "block.xkdeco.snowy_cobblestone_slab": "Snowy Cobblestone Slab",
   "block.xkdeco.snowy_cobblestone_stairs": "Snowy Cobblestone Stairs",
   "block.xkdeco.solar_system_model": "Solar System Model",
-  "block.xkdeco.special_wall": "%s (Column)",
   "block.xkdeco.steel_block": "Steel Block",
   "block.xkdeco.steel_filings": "Steel Filings",
   "block.xkdeco.steel_floor": "Steel Floor",
@@ -515,5 +515,5 @@
   "itemGroup.xkdeco_furniture": "XKDeco: Furniture",
   "itemGroup.xkdeco_nature": "XKDeco: Nature",
   "itemGroup.xkdeco_structure": "XKDeco: Structure",
-  "pack.xkdeco_special_wall": "XKDeco: Special Walls"
+  "pack.xkdeco.mimic_wall": "XKDeco: Mimic Walls"
 }

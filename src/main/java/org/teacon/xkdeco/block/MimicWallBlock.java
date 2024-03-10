@@ -2,8 +2,7 @@ package org.teacon.xkdeco.block;
 
 import java.util.Optional;
 
-import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.blockentity.WallBlockEntity;
+import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -11,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,15 +30,20 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialWallBlock extends WallBlock implements EntityBlock {
+public final class MimicWallBlock extends WallBlock implements EntityBlock {
 	private static final VoxelShape NORTH_TEST = Block.box(7, 0, 0, 9, 16, 9);
 	private static final VoxelShape SOUTH_TEST = Block.box(7, 0, 7, 9, 16, 16);
 	private static final VoxelShape WEST_TEST = Block.box(0, 0, 7, 9, 16, 9);
 	private static final VoxelShape EAST_TEST = Block.box(7, 0, 7, 16, 16, 9);
+	public static final String MIMIC_WALL_PREFIX = "mimic/";
+
+	public static String toMimicId(ResourceLocation original) {
+		return MIMIC_WALL_PREFIX + original.getNamespace() + "/" + original.getPath();
+	}
 
 	private final WallBlock wall;
 
-	public SpecialWallBlock(WallBlock wallDelegate) {
+	public MimicWallBlock(WallBlock wallDelegate) {
 		super(Properties.copy(wallDelegate));
 		this.wall = wallDelegate;
 	}
@@ -50,7 +55,7 @@ public final class SpecialWallBlock extends WallBlock implements EntityBlock {
 	public Optional<Block> connectsTo(BlockState pState) {
 		if (pState.is(BlockTags.WALLS)) {
 			var block = pState.getBlock();
-			if (!(block instanceof SpecialWallBlock)) {
+			if (!(block instanceof MimicWallBlock)) {
 				return Optional.of(block);
 			}
 		}
@@ -112,7 +117,7 @@ public final class SpecialWallBlock extends WallBlock implements EntityBlock {
 			var aboveBlockState = pLevel.getBlockState(abovePos);
 			var aboveShape = aboveBlockState.getCollisionShape(pLevel, abovePos).getFaceShape(Direction.DOWN);
 
-			if (pLevel.getBlockEntity(pCurrentPos) instanceof WallBlockEntity blockEntity) {
+			if (pLevel.getBlockEntity(pCurrentPos) instanceof MimicWallBlockEntity blockEntity) {
 				blockEntity.updateBlocksFromLevel(this);
 			}
 
@@ -129,12 +134,12 @@ public final class SpecialWallBlock extends WallBlock implements EntityBlock {
 
 	@Override
 	public MutableComponent getName() {
-		return Component.translatable("block." + XKDeco.ID + ".special_wall", super.getName());
+		return Component.translatable("block.xkdeco.mimic_wall", wall.getName());
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-		return new WallBlockEntity(pPos, pState);
+		return new MimicWallBlockEntity(pPos, pState);
 	}
 
 	@Override
