@@ -4,6 +4,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -18,5 +20,16 @@ public final class MathUtil {
 		return x >= boundingBox.minX && x <= boundingBox.maxX
 				&& y >= boundingBox.minY && y <= boundingBox.maxY
 				&& z >= boundingBox.minZ && z <= boundingBox.maxZ;
+	}
+
+	public static boolean isIsotropicHorizontally(AABB aabb) {
+		return aabb.minX == aabb.minZ && aabb.maxX == aabb.maxZ && aabb.minX == 1 - aabb.maxX;
+	}
+
+	public static boolean isIsotropicHorizontally(VoxelShape shape) {
+		if (shape.isEmpty() || shape == Shapes.block()) {
+			return true;
+		}
+		return shape.toAabbs().stream().allMatch(MathUtil::isIsotropicHorizontally);
 	}
 }

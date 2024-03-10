@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_column_wall_side",
+  "textures": {
+    "wall": "xkdeco:block/varnished_smooth"
+  }
+}

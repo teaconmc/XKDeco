@@ -8,6 +8,8 @@ public class XKDDataGen implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator generator) {
 		FabricDataGenerator.Pack pack = generator.createPack();
 //		pack.addProvider((FabricDataOutput dataOutput) -> new XKDecoEnUsLangProvider(dataOutput, XKDeco.ID, "en_us"));
+		pack.addProvider(XKDItemTagsProvider::new);
+		pack.addProvider(XKDBlockTagsProvider::new);
 		pack.addProvider(XKDModelProvider::new);
 	}
 }

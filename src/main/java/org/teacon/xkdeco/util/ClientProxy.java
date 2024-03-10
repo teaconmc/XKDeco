@@ -151,6 +151,7 @@ public final class ClientProxy {
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
 			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct")), RenderType.cutout());
 			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct_oblique")), RenderType.cutout());
+			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("hollow_steel_beam")), RenderType.cutout());
 
 			//TODO temporary implementation. data-gen it in the future
 			for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {

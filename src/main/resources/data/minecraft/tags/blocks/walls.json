@@ -1,6 +1,10 @@
 {
-  "replace": false,
-  "values": [
-    "xkdeco:black_roof_ridge"
-  ]
+	"replace": false,
+	"values": [
+		"xkdeco:black_roof_ridge",
+		"xkdeco:hollow_steel_beam",
+		"xkdeco:varnished_column_wall",
+		"xkdeco:ebony_column_wall",
+		"xkdeco:mahogany_column_wall"
+	]
 }

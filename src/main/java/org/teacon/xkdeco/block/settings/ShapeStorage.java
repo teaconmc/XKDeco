@@ -68,6 +68,43 @@ public class ShapeStorage {
 		put("vent_fan", box(0, 0, 2, 16, 16, 14));
 		put("tech_table", Shapes.or(box(2, 0, 2, 14, 10, 14), box(0, 10, 0, 16, 16, 16)));
 		put("hologram_base", box(1, 0, 1, 15, 2, 15));
+		put("air_duct", Shapes.join(
+				Shapes.or(
+						box(0, 0, 12, 16, 16, 16),
+						box(0, -2, 10, 16, 16, 12),
+						box(0, -4, 8, 16, 16, 10),
+						box(0, -6, 6, 16, 16, 8),
+						box(0, -8, 4, 16, 16, 6),
+						box(0, -10, 2, 16, 14, 4),
+						box(0, -12, 0, 16, 12, 2)),
+				Shapes.or(
+						box(2, 2, 12, 14, 14, 16),
+						box(2, 0, 10, 14, 14, 12),
+						box(2, -2, 8, 14, 14, 10),
+						box(2, -4, 6, 14, 14, 8),
+						box(2, -6, 4, 14, 14, 6),
+						box(2, -8, 2, 14, 12, 4),
+						box(2, -10, 0, 14, 10, 2)),
+				BooleanOp.ONLY_FIRST));
+		put("air_duct2", Shapes.join(
+				Shapes.or(
+						box(0, 0, 12, 16, 16, 16),
+						box(0, 0, 10, 16, 18, 12),
+						box(0, 0, 8, 16, 20, 10),
+						box(0, 0, 6, 16, 22, 8),
+						box(0, 0, 4, 16, 24, 6),
+						box(0, 2, 2, 16, 26, 4),
+						box(0, 4, 0, 16, 28, 2)),
+				Shapes.or(
+						box(2, 2, 12, 14, 14, 16),
+						box(2, 2, 10, 14, 16, 12),
+						box(2, 2, 8, 14, 18, 10),
+						box(2, 2, 6, 14, 20, 8),
+						box(2, 2, 4, 14, 22, 6),
+						box(2, 4, 2, 14, 24, 4),
+						box(2, 6, 0, 14, 26, 2)),
+				BooleanOp.ONLY_FIRST));
+		put("maya_crystal_skull", Shapes.or(box(2, 0, 2, 14, 2, 14), box(4, 2, 4, 12, 10, 12)));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

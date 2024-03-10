@@ -3,6 +3,7 @@ package org.teacon.xkdeco.block.settings;
 import java.util.function.Predicate;
 
 import org.teacon.xkdeco.block.XKDStateProperties;
+import org.teacon.xkdeco.util.MathUtil;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.base.Preconditions;
@@ -24,6 +25,9 @@ public interface ShapeGenerator {
 	}
 
 	static ShapeGenerator horizontal(VoxelShape north) {
+		if (MathUtil.isIsotropicHorizontally(north)) {
+			return unit(north);
+		}
 		VoxelShape[] shapes = new VoxelShape[4];
 		shapes[Direction.NORTH.get2DDataValue()] = north;
 		return (blockState, context) -> {
