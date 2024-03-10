@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.teacon.xkdeco.data.XKDModelProvider;
 
 import net.minecraft.data.models.BlockModelGenerators;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.Block;
 
 @Mixin(BlockModelGenerators.BlockFamilyProvider.class)
@@ -18,8 +19,12 @@ public class BlockFamilyProviderMixin {
 	@Final
 	BlockModelGenerators this$0;
 
+	@Shadow
+	@Final
+	private TextureMapping mapping;
+
 	@Inject(method = "fullBlockVariant", at = @At("HEAD"), cancellable = true)
-	private void xkdeco_fullBlockVariant(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
+	private void xkdeco$fullBlockVariant(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
 		if (XKDModelProvider.createIfRotatedPillar(pBlock, this$0)) {
 			cir.setReturnValue(self);
@@ -27,22 +32,30 @@ public class BlockFamilyProviderMixin {
 	}
 
 	@Inject(method = "slab", at = @At("HEAD"), cancellable = true)
-	private void xkdeco_slab(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
+	private void xkdeco$slab(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
 		if (XKDModelProvider.createIfSpecialDoubleSlabs(pBlock, this$0)) {
 			cir.setReturnValue(self);
 		}
 	}
 
+	@Inject(method = "stairs", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$stairs(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
+		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
+		if (XKDModelProvider.createIfSpecialStairs(pBlock, mapping, this$0)) {
+			cir.setReturnValue(self);
+		}
+	}
+
 	@Inject(method = "trapdoor", at = @At("HEAD"), cancellable = true)
-	private void xkdeco_trapdoor(Block pBlock, CallbackInfo ci) {
+	private void xkdeco$trapdoor(Block pBlock, CallbackInfo ci) {
 		if (XKDModelProvider.createIfSpecialTrapdoor(pBlock, this$0)) {
 			ci.cancel();
 		}
 	}
 
 	@Inject(method = "fenceGate", at = @At("HEAD"), cancellable = true)
-	private void xkdeco_fenceGate(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
+	private void xkdeco$fenceGate(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
 		if (XKDModelProvider.createIfSpecialFenceGate(pBlock, this$0)) {
 			cir.setReturnValue(self);

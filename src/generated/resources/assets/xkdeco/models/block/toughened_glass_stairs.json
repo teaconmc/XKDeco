@@ -1,8 +1,6 @@
 {
-  "parent": "minecraft:block/stairs",
+  "parent": "xkdeco:block/glass_stairs",
   "textures": {
-    "bottom": "xkdeco:block/toughened_glass",
-    "side": "xkdeco:block/toughened_glass",
-    "top": "xkdeco:block/toughened_glass"
+    "side": "xkdeco:block/toughened_glass"
   }
 }

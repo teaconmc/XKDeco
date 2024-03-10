@@ -1,0 +1,139 @@
+{
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "block/cube",
+  "textures": {
+    "particle": "xkdeco:block/factory_ceiling_lamp",
+    "lamp": "xkdeco:block/factory_ceiling_lamp",
+    "steel": "xkdeco:block/smooth_steel_block"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        12,
+        1
+      ],
+      "to": [
+        15,
+        14,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            13,
+            15,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "east": {
+          "uv": [
+            1,
+            13,
+            15,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "south": {
+          "uv": [
+            1,
+            13,
+            15,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "west": {
+          "uv": [
+            1,
+            13,
+            15,
+            15
+          ],
+          "texture": "#lamp"
+        },
+        "down": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#lamp"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "east": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "west": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#steel"
+        }
+      }
+    }
+  ],
+  "render_type": "cutout"
+}

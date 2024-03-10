@@ -1,6 +1,6 @@
 {
   "parent": "xkdeco:block/glass_stairs_outer",
   "textures": {
-    "side": "xkdeco:block/toughened_glass"
+    "side": "xkdeco:block/glass_tiles"
   }
 }

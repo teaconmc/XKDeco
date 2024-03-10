@@ -16,6 +16,7 @@ import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
+import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
 import org.teacon.xkdeco.util.RoofUtil;
 
@@ -97,40 +98,53 @@ public class XKDModelProvider extends FabricModelProvider {
 		return true;
 	}
 
-	public static boolean createIfSpecialDoubleSlabs(Block pBlock, BlockModelGenerators generators) {
-		if (!SPECIAL_DOUBLE_SLABS.contains(pBlock)) {
+	public static boolean createIfSpecialDoubleSlabs(Block block, BlockModelGenerators generators) {
+		if (!SPECIAL_DOUBLE_SLABS.contains(block)) {
 			return false;
 		}
-		ResourceLocation texture = TextureMapping.getBlockTexture(pBlock);
-		TextureMapping $$1 = TextureMapping.column(texture, texture.withPath(s -> s.substring(0, s.length() - 5)));
-		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(pBlock, $$1, generators.modelOutput);
-		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(pBlock, $$1, generators.modelOutput);
-		ResourceLocation $$4 = ModelTemplates.CUBE_COLUMN.createWithOverride(pBlock, "_full", $$1, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(pBlock, $$2, $$3, $$4));
+		ResourceLocation texture = TextureMapping.getBlockTexture(block);
+		TextureMapping mapping = TextureMapping.column(texture, texture.withPath(s -> s.substring(0, s.length() - 5)));
+		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
+		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
+		ResourceLocation $$4 = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, $$2, $$3, $$4));
 		return true;
 	}
 
-	public static boolean createIfSpecialTrapdoor(Block pBlock, BlockModelGenerators generators) {
-		if (!THIN_TRAPDOORS.contains(pBlock)) {
+	public static boolean createIfSpecialTrapdoor(Block block, BlockModelGenerators generators) {
+		if (!THIN_TRAPDOORS.contains(block)) {
 			return false;
 		}
-		TextureMapping $$1 = TextureMapping.defaultTexture(pBlock);
-		ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(pBlock, $$1, generators.modelOutput);
-		ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(pBlock, $$1, generators.modelOutput);
-		ResourceLocation $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(pBlock, $$1, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(pBlock, $$2, $$3, $$4));
-		generators.delegateItemModel(pBlock, $$3);
+		TextureMapping $$1 = TextureMapping.defaultTexture(block);
+		ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(block, $$1, generators.modelOutput);
+		ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(block, $$1, generators.modelOutput);
+		ResourceLocation $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(block, $$1, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(block, $$2, $$3, $$4));
+		generators.delegateItemModel(block, $$3);
 		return true;
 	}
 
-	public static boolean createIfSpecialFenceGate(Block pBlock, BlockModelGenerators generators) {
-		if (!WOODEN_FENCE_GATES.contains(pBlock)) {
+	public static boolean createIfSpecialFenceGate(Block block, BlockModelGenerators generators) {
+		if (!WOODEN_FENCE_GATES.contains(block)) {
 			return false;
 		}
-		TextureMapping textureMapping = TextureMapping.defaultTexture(pBlock);
-		ResourceLocation $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(pBlock, textureMapping, generators.modelOutput);
-		ResourceLocation $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(pBlock, textureMapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(pBlock, $$1, $$2, $$1, $$2, true));
+		TextureMapping textureMapping = TextureMapping.defaultTexture(block);
+		ResourceLocation $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(block, textureMapping, generators.modelOutput);
+		ResourceLocation $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(block, textureMapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, $$1, $$2, $$1, $$2, true));
+		return true;
+	}
+
+	public static boolean createIfSpecialStairs(Block block, TextureMapping mapping, BlockModelGenerators generators) {
+		XKDBlockSettings settings = XKDBlockSettings.of(block);
+		if (settings == null || settings.glassType == null) {
+			return false;
+		}
+		mapping = mapping.copyAndUpdate(TextureSlot.SIDE, mapping.get(TextureSlot.ALL));
+		ResourceLocation straightModel = XKDModelTemplates.GLASS_STAIRS.create(block, mapping, generators.modelOutput);
+		ResourceLocation innerModel = XKDModelTemplates.GLASS_STAIRS_INNER.create(block, mapping, generators.modelOutput);
+		ResourceLocation outerModel = XKDModelTemplates.GLASS_STAIRS_OUTER.create(block, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createStairs(block, innerModel, straightModel, outerModel));
 		return true;
 	}
 
