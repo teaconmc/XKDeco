@@ -8,8 +8,6 @@ authors="TeaConMC"
 version="${file.jarVersion}"
 displayName="XeKr's Decorations"
 description='''
-XeKr's Decorations for Minecraft 1.20.
-
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
 

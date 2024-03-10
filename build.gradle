@@ -204,6 +204,7 @@ processResources {
     from('src/main/java') {
         include '**/*.json'
     }
+    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
 }
 
 jar {

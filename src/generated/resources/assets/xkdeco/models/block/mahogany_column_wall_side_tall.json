@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_column_wall_side_tall",
+  "textures": {
+    "wall": "xkdeco:block/mahogany_smooth"
+  }
+}

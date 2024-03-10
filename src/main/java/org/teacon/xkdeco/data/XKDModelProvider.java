@@ -257,6 +257,12 @@ public class XKDModelProvider extends FabricModelProvider {
 		createSimpleBlockState("air_duct");
 		generators.delegateItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
 		createHorizontalShift("air_duct_oblique", "air_duct_oblique", null, false);
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
+				block("hollow_steel_beam"),
+				XKDeco.id("block/furniture/hollow_steel_beam_post"),
+				XKDeco.id("block/furniture/hollow_steel_beam_side"),
+				XKDeco.id("block/furniture/hollow_steel_beam_side_tall")));
+		generators.delegateItemModel(block("hollow_steel_beam"), XKDeco.id("block/furniture/hollow_steel_beam_inventory"));
 
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
@@ -286,6 +292,26 @@ public class XKDModelProvider extends FabricModelProvider {
 //		createTrivialBlock(id + "_big_table", XKDModelTemplates.BIG_TABLE_PROVIDER);
 //		createTrivialBlock(id + "_tall_table", XKDModelTemplates.TALL_TABLE_PROVIDER);
 		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
+
+		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
+		createWoodenWall(id + "_column_wall", "wooden_column_wall", textureMapping);
+		createWoodenWall("hollow_" + id + "_column_wall", "hollow_wooden_column_wall", textureMapping);
+	}
+
+	private void createWoodenWall(String id, String templateId, TextureMapping textureMapping) {
+		Block block = block(id);
+		ResourceLocation side = XKDModelTemplates.MAP.get(templateId + "_side").create(block, textureMapping, generators.modelOutput);
+		ResourceLocation post = XKDModelTemplates.MAP.get(templateId + "_post").create(block, textureMapping, generators.modelOutput);
+		ResourceLocation tallSide = XKDModelTemplates.MAP.get(templateId + "_side_tall").create(
+				block,
+				textureMapping,
+				generators.modelOutput);
+		ResourceLocation inventory = XKDModelTemplates.MAP.get(templateId + "_inventory").create(
+				block,
+				textureMapping,
+				generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, post, side, tallSide));
+		generators.delegateItemModel(block, inventory);
 	}
 
 	private void createTrivialBlock(String id, TexturedModel.Provider provider) {

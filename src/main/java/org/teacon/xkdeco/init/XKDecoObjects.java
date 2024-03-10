@@ -1087,10 +1087,10 @@ public final class XKDecoObjects {
 
 		addBlock("air_duct", () -> {
 			AirDuctBlock block = new AirDuctBlock(BLOCK_HOLLOW_IRON);
-			VoxelShape base = Shapes.block();
-			base = Shapes.join(base, box(0, 2, 2, 16, 14, 14), BooleanOp.ONLY_FIRST);
-			base = Shapes.join(base, box(2, 0, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
-			base = Shapes.join(base, box(2, 2, 0, 14, 14, 16), BooleanOp.ONLY_FIRST);
+			VoxelShape base = Shapes.join(
+					Shapes.block(),
+					Shapes.or(box(0, 2, 2, 16, 14, 14), box(2, 0, 2, 14, 16, 14), box(2, 2, 0, 14, 14, 16)),
+					BooleanOp.ONLY_FIRST);
 			VoxelShape side = box(2, 0, 2, 14, 2, 14);
 			XKDBlockSettings.builder()
 					.shape(ShapeGenerator.sixWay(base, Shapes.empty(), side))
@@ -1101,46 +1101,13 @@ public final class XKDecoObjects {
 		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBlock("air_duct_oblique", () -> {
 			HorizontalShiftBlock block = new HorizontalShiftBlock(BLOCK_HOLLOW_IRON);
-			VoxelShape trueNorth = Shapes.join(
-					Shapes.or(
-							box(0, 0, 12, 16, 16, 16),
-							box(0, -2, 10, 16, 16, 12),
-							box(0, -4, 8, 16, 16, 10),
-							box(0, -6, 6, 16, 16, 8),
-							box(0, -8, 4, 16, 16, 6),
-							box(0, -10, 2, 16, 14, 4),
-							box(0, -12, 0, 16, 12, 2)),
-					Shapes.or(
-							box(2, 2, 12, 14, 14, 16),
-							box(2, 0, 10, 14, 14, 12),
-							box(2, -2, 8, 14, 14, 10),
-							box(2, -4, 6, 14, 14, 8),
-							box(2, -6, 4, 14, 14, 6),
-							box(2, -8, 2, 14, 12, 4),
-							box(2, -10, 0, 14, 10, 2)),
-					BooleanOp.ONLY_FIRST);
-			VoxelShape falseNorth = Shapes.join(
-					Shapes.or(
-							box(0, 0, 12, 16, 16, 16),
-							box(0, 0, 10, 16, 18, 12),
-							box(0, 0, 8, 16, 20, 10),
-							box(0, 0, 6, 16, 22, 8),
-							box(0, 0, 4, 16, 24, 6),
-							box(0, 2, 2, 16, 26, 4),
-							box(0, 4, 0, 16, 28, 2)),
-					Shapes.or(
-							box(2, 2, 12, 14, 14, 16),
-							box(2, 2, 10, 14, 16, 12),
-							box(2, 2, 8, 14, 18, 10),
-							box(2, 2, 6, 14, 20, 8),
-							box(2, 2, 4, 14, 22, 6),
-							box(2, 4, 2, 14, 24, 4),
-							box(2, 6, 0, 14, 26, 2)),
-					BooleanOp.ONLY_FIRST);
+			VoxelShape trueNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct"));
+			VoxelShape falseNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct2"));
 			XKDBlockSettings.builder().shape(ShapeGenerator.horizontalShifted(trueNorth, falseNorth)).interactionShape(ShapeGenerator.unit(
 					Shapes.block())).build().setTo(block);
 			return block;
 		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("hollow_steel_beam", () -> new WallBlock(BLOCK_HOLLOW_IRON), ITEM_BASIC, TAB_BASIC_CONTENTS);
 	}
 
 	private static void addBlock(
@@ -1175,5 +1142,7 @@ public final class XKDecoObjects {
 		addBlock(id + "_fence_gate", () -> new FenceGateBlock(woodProp, WoodType.OAK), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_door", woodProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_trapdoor", woodProp, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock(id + "_column_wall", () -> new WallBlock(woodProp), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("hollow_" + id + "_column_wall", () -> new WallBlock(woodProp), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 	}
 }

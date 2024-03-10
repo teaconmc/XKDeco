@@ -25,6 +25,7 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+@Deprecated
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class XKDecoEnUsLangProvider extends LanguageProvider {

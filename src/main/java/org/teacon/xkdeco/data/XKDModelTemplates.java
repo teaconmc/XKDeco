@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.data;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -181,6 +182,16 @@ public class XKDModelTemplates {
 					create("template_roof_small_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE2);
 				}
 			}
+		}
+		for (String s : List.of("_inventory", "_post", "_side", "_side_tall")) {
+			TextureSlot[] slots;
+			if (s.startsWith("_side")) {
+				slots = new TextureSlot[]{TextureSlot.WALL};
+			} else {
+				slots = new TextureSlot[]{TextureSlot.WALL, TextureSlot.SIDE, TextureSlot.END};
+			}
+			create("wooden_column_wall" + s, s, slots);
+			create("hollow_wooden_column_wall" + s, s, slots);
 		}
 	}
 
