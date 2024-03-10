@@ -8,14 +8,17 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.teacon.xkdeco.Hooks;
 import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.duck.XKDBlock;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 @Mixin(BlockBehaviour.class)
@@ -43,7 +46,6 @@ public class BlockBehaviourMixin implements XKDBlock {
 			BlockPos pPos,
 			CollisionContext pContext,
 			CallbackInfoReturnable<VoxelShape> cir) {
-		XKDBlockSettings settings = xkdeco$getSettings();
 		if (settings != null && settings.shape != null) {
 			cir.setReturnValue(settings.shape.getShape(pState, pContext));
 		}
@@ -56,7 +58,6 @@ public class BlockBehaviourMixin implements XKDBlock {
 			BlockPos pPos,
 			CollisionContext pContext,
 			CallbackInfoReturnable<VoxelShape> cir) {
-		XKDBlockSettings settings = xkdeco$getSettings();
 		if (hasCollision && settings != null && settings.collisionShape != null) {
 			cir.setReturnValue(settings.collisionShape.getShape(pState, pContext));
 		}
@@ -64,9 +65,38 @@ public class BlockBehaviourMixin implements XKDBlock {
 
 	@Inject(method = "getInteractionShape", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<VoxelShape> cir) {
-		XKDBlockSettings settings = xkdeco$getSettings();
 		if (settings != null && settings.interactionShape != null) {
 			cir.setReturnValue(settings.interactionShape.getShape(pState, CollisionContext.empty()));
+		}
+	}
+
+	@Inject(method = "getShadeBrightness", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+		if (settings != null && settings.glassType != null) {
+			cir.setReturnValue(1F);
+		}
+	}
+
+	@Inject(method = "skipRendering", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$skipRendering(
+			BlockState pState,
+			BlockState pAdjacentState,
+			Direction pDirection,
+			CallbackInfoReturnable<Boolean> cir) {
+		if (settings != null && settings.glassType != null && Hooks.skipGlassRendering(pState, pAdjacentState, pDirection)) {
+			cir.setReturnValue(true);
+		}
+	}
+
+	@Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$getVisualShape(
+			BlockState pState,
+			BlockGetter pLevel,
+			BlockPos pPos,
+			CollisionContext pContext,
+			CallbackInfoReturnable<VoxelShape> cir) {
+		if (settings != null && settings.glassType != null) {
+			cir.setReturnValue(Shapes.empty());
 		}
 	}
 }

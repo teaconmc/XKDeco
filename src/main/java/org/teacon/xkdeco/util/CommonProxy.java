@@ -10,7 +10,9 @@ import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
@@ -50,5 +52,9 @@ public class CommonProxy {
 
 		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
 		forgeEventBus.addListener(CushionEntity::onBreakBlock);
+	}
+
+	public static boolean isColorlessGlass(BlockState blockState) {
+		return blockState.is(Tags.Blocks.GLASS_COLORLESS);
 	}
 }

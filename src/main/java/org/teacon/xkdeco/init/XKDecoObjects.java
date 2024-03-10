@@ -17,12 +17,8 @@ import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BasicCubeBlock;
 import org.teacon.xkdeco.block.BasicFullDirectionBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
+import org.teacon.xkdeco.block.HollowBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
-import org.teacon.xkdeco.block.IsotropicCubeBlock;
-import org.teacon.xkdeco.block.IsotropicHollowBlock;
-import org.teacon.xkdeco.block.IsotropicPillarBlock;
-import org.teacon.xkdeco.block.IsotropicSlabBlock;
-import org.teacon.xkdeco.block.IsotropicStairBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -40,6 +36,7 @@ import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWallBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
@@ -68,6 +65,9 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -180,43 +180,51 @@ public final class XKDecoObjects {
 			BlockBehaviour.Properties properties,
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
-		var isGlass = id.contains(GLASS_SUFFIX) || id.contains(TRANSLUCENT_PREFIX) || id.contains(GLASS_PREFIX);
+		Supplier<Block> blockSupplier;
 		if (id.contains(SLAB_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicSlabBlock(properties, isGlass));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new SlabBlock(properties);
 		} else if (id.contains(STAIRS_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicStairBlock(properties, isGlass));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new StairBlock(Blocks.AIR.defaultBlockState(), properties);
 		} else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new RotatedPillarBlock(properties);
 		} else if (id.contains(LINED_PREFIX) || id.contains(LUXURY_PREFIX) || id.contains(PAINTED_PREFIX) || id.contains(CHISELED_PREFIX) ||
 				id.contains(DOUBLE_SCREW_PREFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicPillarBlock(properties, isGlass));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new RotatedPillarBlock(properties);
 		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, IsotropicHollowBlock.BIG_TABLE_SHAPE));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new HollowBlock(properties, HollowBlock.BIG_TABLE_SHAPE);
 		} else if (id.contains(TABLE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, IsotropicHollowBlock.TABLE_SHAPE));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new HollowBlock(properties, HollowBlock.TABLE_SHAPE);
 		} else if (id.contains("_trapdoor")) {
-			var block = BLOCKS.register(
-					id,
-					() -> new TrapDoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new TrapDoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON);
 		} else if (id.endsWith("_door")) {
-			var block = BLOCKS.register(
-					id,
-					() -> new DoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new DoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON);
 		} else if (id.contains(HOLLOW_PREFIX)) {
-			var block = BLOCKS.register(id, () -> new IsotropicHollowBlock(properties, Shapes.block()));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new HollowBlock(properties, Shapes.block());
 		} else {
-			var block = BLOCKS.register(id, () -> new IsotropicCubeBlock(properties, isGlass));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			blockSupplier = () -> new Block(properties);
 		}
+		RegistryObject<Block> blockHolder;
+		var isGlass = id.contains(GLASS_SUFFIX) || id.contains(TRANSLUCENT_PREFIX) || id.contains(GLASS_PREFIX);
+		if (isGlass) {
+			blockHolder = BLOCKS.register(id, () -> {
+				var $ = blockSupplier.get();
+				GlassType glassType;
+				if (id.startsWith("quartz_glass")) {
+					glassType = GlassType.QUARTZ;
+				} else if (id.startsWith("translucent_")) {
+					glassType = GlassType.TRANSLUCENT;
+				} else if (id.startsWith("toughened_glass")) {
+					glassType = GlassType.TOUGHENED;
+				} else {
+					glassType = GlassType.CLEAR;
+				}
+				XKDBlockSettings.builder().glassType(glassType).build().setTo($);
+				return $;
+			});
+		} else {
+			blockHolder = BLOCKS.register(id, blockSupplier);
+		}
+		tabContents.add(ITEMS.register(id, () -> new BlockItem(blockHolder.get(), itemProperties)));
 	}
 
 	private static void addRoof(
@@ -440,7 +448,7 @@ public final class XKDecoObjects {
 		VoxelShape getShape(Direction direction);
 
 		static ShapeFunction fromBigTable() {
-			return d -> Direction.Plane.HORIZONTAL.test(d) ? IsotropicHollowBlock.BIG_TABLE_SHAPE : Shapes.block();
+			return d -> Direction.Plane.HORIZONTAL.test(d) ? HollowBlock.BIG_TABLE_SHAPE : Shapes.block();
 		}
 
 		static ShapeFunction fromLongStool() {
