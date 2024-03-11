@@ -15,11 +15,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class HorizontalShiftBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 	public static final EnumProperty<RoofUtil.RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
@@ -31,18 +28,6 @@ public class HorizontalShiftBlock extends HorizontalDirectionalBlock implements 
 				.setValue(HALF, RoofUtil.RoofHalf.TIP)
 				.setValue(FACING, Direction.NORTH)
 				.setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		return super.getShape(pState, pLevel, pPos, pContext); //TODO
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState pState) {
-		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
 	}
 
 	@Override

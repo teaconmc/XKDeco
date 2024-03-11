@@ -15,7 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -46,9 +45,6 @@ public final class RoofHorizontalShiftBlock extends HorizontalShiftBlock impleme
 			LevelAccessor pLevel,
 			BlockPos pCurrentPos,
 			BlockPos pFacingPos) {
-		if (pState.getValue(WATERLOGGED)) {
-			pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
-		}
 		return RoofUtil.updateShape(pState, pFacingState, pFacing);
 	}
 

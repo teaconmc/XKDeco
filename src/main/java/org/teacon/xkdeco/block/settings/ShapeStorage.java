@@ -36,6 +36,7 @@ public class ShapeStorage {
 		put("factory_ceiling_lamp", box(0, 12, 0, 16, 16, 16));
 		put("factory_pendant", box(2, 4, 2, 14, 16, 14));
 		put("big_table", HollowBlock.BIG_TABLE_SHAPE);
+		put("table", HollowBlock.TABLE_SHAPE);
 		put("long_stool", box(0, 0, 3, 16, 10, 13));
 		put("chair", Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 12, 14, 16, 14)));
 		put("shelf", Shapes.or(
@@ -105,6 +106,7 @@ public class ShapeStorage {
 						box(2, 6, 0, 14, 26, 2)),
 				BooleanOp.ONLY_FIRST));
 		put("maya_crystal_skull", Shapes.or(box(2, 0, 2, 14, 2, 14), box(4, 2, 4, 12, 10, 12)));
+		put("dessert", box(1, 0, 1, 15, 2, 15));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

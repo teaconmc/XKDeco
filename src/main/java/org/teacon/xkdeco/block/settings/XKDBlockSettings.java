@@ -13,6 +13,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class XKDBlockSettings {
+	public static final XKDBlockSettings EMPTY = new XKDBlockSettings.Builder().build();
 	public final boolean sustainsPlant;
 	public final GlassType glassType;
 	@Nullable
@@ -21,6 +22,8 @@ public class XKDBlockSettings {
 	public final ShapeGenerator collisionShape;
 	@Nullable
 	public final ShapeGenerator interactionShape;
+	@Nullable
+	public final CanSurviveHandler canSurviveHandler;
 
 	private XKDBlockSettings(Builder builder) {
 		this.sustainsPlant = builder.sustainsPlant;
@@ -28,6 +31,7 @@ public class XKDBlockSettings {
 		this.shape = builder.shape;
 		this.collisionShape = builder.collisionShape;
 		this.interactionShape = builder.interactionShape;
+		this.canSurviveHandler = builder.canSurviveHandler;
 	}
 
 	public static XKDBlockSettings.Builder builder() {
@@ -68,6 +72,8 @@ public class XKDBlockSettings {
 		private ShapeGenerator collisionShape;
 		@Nullable
 		private ShapeGenerator interactionShape;
+		@Nullable
+		private CanSurviveHandler canSurviveHandler;
 
 		public Builder sustainsPlant() {
 			this.sustainsPlant = true;
@@ -91,6 +97,11 @@ public class XKDBlockSettings {
 
 		public Builder interactionShape(ShapeGenerator interactionShape) {
 			this.interactionShape = interactionShape;
+			return this;
+		}
+
+		public Builder canSurviveHandler(CanSurviveHandler canSurviveHandler) {
+			this.canSurviveHandler = canSurviveHandler;
 			return this;
 		}
 

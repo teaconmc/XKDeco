@@ -27,8 +27,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -64,12 +62,6 @@ public final class RoofEndBlock extends HorizontalDirectionalBlock implements XK
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public FluidState getFluidState(BlockState pState) {
-		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
-	}
-
-	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
 				pContext.getClickedPos(), pContext.getNearestLookingDirections());
@@ -80,9 +72,6 @@ public final class RoofEndBlock extends HorizontalDirectionalBlock implements XK
 	public BlockState updateShape(
 			BlockState pState, Direction pFacing, BlockState pFacingState,
 			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-		if (pState.getValue(WATERLOGGED)) {
-			pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
-		}
 		return RoofUtil.updateShape(pState, pFacingState, pFacing);
 	}
 
