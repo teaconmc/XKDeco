@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -27,7 +27,7 @@ public class XKDBlockTagsProvider extends FabricTagProvider.BlockTagProvider {
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
-			Optional<XKDBlockSettings> settings = Optional.ofNullable(XKDBlockSettings.of(block));
+			Optional<XKBlockSettings> settings = Optional.ofNullable(XKBlockSettings.of(block));
 			if (block instanceof WallBlock) {
 				getOrCreateTagBuilder(BlockTags.WALLS).add(block);
 			} else if (block.getClass() == StairBlock.class) {

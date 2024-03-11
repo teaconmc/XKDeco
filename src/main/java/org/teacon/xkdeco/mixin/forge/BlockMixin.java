@@ -4,8 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
-import org.teacon.xkdeco.duck.XKDBlock;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +15,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
 @Mixin(Block.class)
-public abstract class BlockMixin implements XKDBlock {
+public abstract class BlockMixin {
 	@Inject(method = "canSustainPlant", at = @At("HEAD"), cancellable = true, remap = false)
 	private void xkdeco$canSustainPlant(
 			BlockState state,
@@ -25,7 +24,7 @@ public abstract class BlockMixin implements XKDBlock {
 			Direction facing,
 			IPlantable plantable,
 			CallbackInfoReturnable<Boolean> cir) {
-		XKDBlockSettings settings = xkdeco$getSettings();
+		XKBlockSettings settings = XKBlockSettings.of(this);
 		if (settings != null && settings.sustainsPlant) {
 			PlantType type = plantable.getPlantType(world, pos.relative(facing));
 			if (type == PlantType.PLAINS) {

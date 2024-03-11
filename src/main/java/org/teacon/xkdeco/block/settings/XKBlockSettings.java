@@ -1,19 +1,23 @@
 package org.teacon.xkdeco.block.settings;
 
+import java.util.function.UnaryOperator;
+
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.duck.XKDBlock;
+import org.teacon.xkdeco.duck.XKBlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class XKDBlockSettings {
-	public static final XKDBlockSettings EMPTY = new XKDBlockSettings.Builder().build();
+public class XKBlockSettings {
+	public static final XKBlockSettings EMPTY = new XKBlockSettings(builder());
 	public final boolean sustainsPlant;
 	public final GlassType glassType;
 	@Nullable
@@ -25,7 +29,7 @@ public class XKDBlockSettings {
 	@Nullable
 	public final CanSurviveHandler canSurviveHandler;
 
-	private XKDBlockSettings(Builder builder) {
+	private XKBlockSettings(Builder builder) {
 		this.sustainsPlant = builder.sustainsPlant;
 		this.glassType = builder.glassType;
 		this.shape = builder.shape;
@@ -34,21 +38,24 @@ public class XKDBlockSettings {
 		this.canSurviveHandler = builder.canSurviveHandler;
 	}
 
-	public static XKDBlockSettings.Builder builder() {
-		return new Builder();
+	public static XKBlockSettings.Builder builder() {
+		return new Builder(BlockBehaviour.Properties.of());
 	}
 
-	public XKDBlockSettings setTo(Block block) {
-		((XKDBlock) block).xkdeco$setSettings(this);
-		return this;
+	public static XKBlockSettings.Builder copyProperties(Block block) {
+		return new Builder(BlockBehaviour.Properties.copy(block));
 	}
 
-	public static XKDBlockSettings of(Block block) {
-		return ((XKDBlock) block).xkdeco$getSettings();
+	public static XKBlockSettings.Builder copyProperties(Block block, MapColor mapColor) {
+		return new Builder(BlockBehaviour.Properties.copy(block).mapColor(mapColor));
+	}
+
+	public static XKBlockSettings of(Object block) {
+		return ((XKBlockProperties) ((BlockBehaviour) block).properties).xkdeco$getSettings();
 	}
 
 	public static VoxelShape getGlassFaceShape(BlockState blockState, Direction direction) {
-		XKDBlockSettings settings = of(blockState.getBlock());
+		XKBlockSettings settings = of(blockState.getBlock());
 		if (settings == null) {
 			VoxelShape shape = blockState.getShape(EmptyBlockGetter.INSTANCE, BlockPos.ZERO, CollisionContext.empty());
 			return Block.isShapeFullBlock(shape) ? Shapes.block() : Shapes.empty();
@@ -64,6 +71,7 @@ public class XKDBlockSettings {
 	}
 
 	public static class Builder {
+		private final BlockBehaviour.Properties properties;
 		private boolean sustainsPlant;
 		private GlassType glassType;
 		@Nullable
@@ -74,6 +82,25 @@ public class XKDBlockSettings {
 		private ShapeGenerator interactionShape;
 		@Nullable
 		private CanSurviveHandler canSurviveHandler;
+
+		private Builder(BlockBehaviour.Properties properties) {
+			this.properties = properties;
+		}
+
+		public Builder configure(UnaryOperator<BlockBehaviour.Properties> configurator) {
+			configurator.apply(properties);
+			return this;
+		}
+
+		public Builder noOcclusion() {
+			properties.noOcclusion();
+			return this;
+		}
+
+		public Builder noCollission() {
+			properties.noCollission();
+			return this;
+		}
 
 		public Builder sustainsPlant() {
 			this.sustainsPlant = true;
@@ -105,8 +132,10 @@ public class XKDBlockSettings {
 			return this;
 		}
 
-		public XKDBlockSettings build() {
-			return new XKDBlockSettings(this);
+		public BlockBehaviour.Properties get() {
+			XKBlockSettings settings = new XKBlockSettings(this);
+			((XKBlockProperties) properties).xkdeco$setSettings(settings);
+			return properties;
 		}
 	}
 }

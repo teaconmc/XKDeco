@@ -2,7 +2,7 @@ package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.settings.GlassType;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
@@ -155,7 +155,7 @@ public final class ClientProxy {
 
 			//TODO temporary implementation. data-gen it in the future
 			for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
-				XKDBlockSettings settings = XKDBlockSettings.of(registryObject.get());
+				XKBlockSettings settings = XKBlockSettings.of(registryObject.get());
 				if (settings == null) {
 					continue;
 				}
