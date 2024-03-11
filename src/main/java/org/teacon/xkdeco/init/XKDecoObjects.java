@@ -20,6 +20,7 @@ import org.teacon.xkdeco.block.HollowBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
+import org.teacon.xkdeco.block.PlantSlabSnowyDirtBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
@@ -111,6 +112,9 @@ public final class XKDecoObjects {
 	public static final String TRANSLUCENT_PREFIX = "translucent_";
 	public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
 	public static final String STONE_WATER_PREFIX = "stone_water_";
+	public static final String GRASS_BLOCK_PREFIX = "grass_block_";
+	public static final String MYCELIUM__PREFIX = "mycelium_";
+	public static final String PODZOL_PREFIX = "podzol_";
 
 	public static final String LOG_SUFFIX = "_log";
 	public static final String WOOD_SUFFIX = "_wood";
@@ -337,8 +341,13 @@ public final class XKDecoObjects {
 			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(SLAB_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new PlantSlabBlock(properties, isPath, "dirt_slab"));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			if (id.startsWith(GRASS_BLOCK_PREFIX) || id.startsWith(MYCELIUM__PREFIX) || id.startsWith(PODZOL_PREFIX)) {
+				var block = BLOCKS.register(id, () -> new PlantSlabSnowyDirtBlock(properties, isPath, "dirt_slab"));
+				tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			} else {
+				var block = BLOCKS.register(id, () -> new PlantSlabBlock(properties, isPath, "dirt_slab"));
+				tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			}
 		} else {
 			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
 		}
