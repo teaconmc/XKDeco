@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,7 +28,7 @@ public abstract class BlockStateMixin {
 
 	@Inject(method = "canSurvive", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$canSurvive(LevelReader pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
-		XKDBlockSettings settings = XKDBlockSettings.of(getBlock());
+		XKBlockSettings settings = XKBlockSettings.of(getBlock());
 		if (settings != null && settings.canSurviveHandler != null) {
 			cir.setReturnValue(settings.canSurviveHandler.canSurvive(asState(), pLevel, pPos));
 		}
@@ -42,7 +42,7 @@ public abstract class BlockStateMixin {
 			BlockPos pPos,
 			BlockPos pNeighborPos,
 			CallbackInfoReturnable<BlockState> cir) {
-		XKDBlockSettings settings = XKDBlockSettings.of(getBlock());
+		XKBlockSettings settings = XKBlockSettings.of(getBlock());
 		if (settings != null && settings.canSurviveHandler != null && settings.canSurviveHandler.isSensitiveSide(asState(), pDirection) &&
 				!settings.canSurviveHandler.canSurvive(asState(), pLevel, pPos)) {
 			cir.setReturnValue(Blocks.AIR.defaultBlockState());
@@ -60,7 +60,7 @@ public abstract class BlockStateMixin {
 		if (!cir.getReturnValue().is(getBlock())) {
 			return;
 		}
-		XKDBlockSettings settings = XKDBlockSettings.of(getBlock());
+		XKBlockSettings settings = XKBlockSettings.of(getBlock());
 		if (settings != null && cir.getReturnValue().hasProperty(BlockStateProperties.WATERLOGGED) && cir.getReturnValue().getValue(
 				BlockStateProperties.WATERLOGGED)) {
 			pLevel.scheduleTick(pPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));

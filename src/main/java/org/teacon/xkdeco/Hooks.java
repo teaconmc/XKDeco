@@ -2,7 +2,7 @@ package org.teacon.xkdeco;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.settings.GlassType;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.util.CommonProxy;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
@@ -31,7 +31,7 @@ public final class Hooks {
 	});
 
 	public static boolean skipGlassRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
-		if (XKDBlockSettings.of(pState.getBlock()) == null && XKDBlockSettings.of(pAdjacentBlockState.getBlock()) == null) {
+		if (XKBlockSettings.of(pState.getBlock()) == null && XKBlockSettings.of(pAdjacentBlockState.getBlock()) == null) {
 			return false;
 		}
 		if (!pState.is(pAdjacentBlockState.getBlock()) && getGlassType(pState) != getGlassType(pAdjacentBlockState)) {
@@ -43,11 +43,11 @@ public final class Hooks {
 		if (b0 != 127) {
 			return b0 == 0;
 		}
-		VoxelShape shape1 = XKDBlockSettings.getGlassFaceShape(pState, pDirection);
+		VoxelShape shape1 = XKBlockSettings.getGlassFaceShape(pState, pDirection);
 		if (shape1.isEmpty()) {
 			return true;
 		}
-		VoxelShape shape2 = XKDBlockSettings.getGlassFaceShape(pAdjacentBlockState, pDirection.getOpposite());
+		VoxelShape shape2 = XKBlockSettings.getGlassFaceShape(pAdjacentBlockState, pDirection.getOpposite());
 		boolean flag = Shapes.joinIsNotEmpty(shape1, shape2, BooleanOp.ONLY_FIRST);
 		if (map.size() == CACHE_SIZE) {
 			map.removeLastByte();
@@ -58,7 +58,7 @@ public final class Hooks {
 
 	@Nullable
 	public static GlassType getGlassType(BlockState blockState) {
-		XKDBlockSettings settings = XKDBlockSettings.of(blockState.getBlock());
+		XKBlockSettings settings = XKBlockSettings.of(blockState.getBlock());
 		if (settings != null && settings.glassType != null) {
 			return settings.glassType;
 		}

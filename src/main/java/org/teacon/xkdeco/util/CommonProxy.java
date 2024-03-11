@@ -1,9 +1,10 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
+import org.teacon.xkdeco.duck.XKBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 import org.teacon.xkdeco.item.XKDecoCreativeModTab;
@@ -51,9 +52,9 @@ public class CommonProxy {
 			}
 			// set an empty settings to all blocks, to make them water-loggable correctly
 			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
-				XKDBlockSettings settings = XKDBlockSettings.of(block);
+				XKBlockSettings settings = XKBlockSettings.of(block);
 				if (settings == null) {
-					XKDBlockSettings.EMPTY.setTo(block);
+					((XKBlockProperties) block.properties).xkdeco$setSettings(XKBlockSettings.EMPTY);
 				}
 			});
 		});
