@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.WallSide;
-import net.minecraft.world.level.material.Fluids;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -37,9 +36,6 @@ public final class RoofRidgeBlock extends WallBlock implements XKDecoBlockRoof {
 	public BlockState updateShape(
 			BlockState pState, Direction pFacing, BlockState pFacingState,
 			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-		if (pState.getValue(WATERLOGGED)) {
-			pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
-		}
 		return RoofUtil.updateShape(pState, pFacingState, pFacing);
 	}
 

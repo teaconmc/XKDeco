@@ -1,1 +1,6 @@
-// 1.20.1	2024-03-11T01:34:33.1725502	XeKr's Decorations/Tags for minecraft:block mod id vanilla
+// 1.20.1	2024-03-11T13:59:13.9865344	XeKr's Decorations/Tags for minecraft:block mod id vanilla
+8cfdf1f8b34c3a950f3a4163a44bc2460218d40d data/minecraft/tags/blocks/impermeable.json
+e3b7510f38fffaceb236c09ccb1bbc677817af46 data/minecraft/tags/blocks/slabs.json
+cf2d58e3f1044dd7d872dc9d0978043b0bf1ec9b data/minecraft/tags/blocks/stairs.json
+97c255ae8d9c3c98e5d82d608c5c7b3de54de379 data/minecraft/tags/blocks/trapdoors.json
+4aa1256763681f3c028625c657cbe02b68593891 data/minecraft/tags/blocks/walls.json

@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.settings.XKDBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
 import org.teacon.xkdeco.entity.CushionEntity;
@@ -10,6 +11,7 @@ import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
@@ -18,6 +20,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.registries.RegisterEvent;
+import snownee.kiwi.datagen.GameObjectLookup;
 
 @Mod(XKDeco.ID)
 @MethodsReturnNonnullByDefault
@@ -40,6 +44,18 @@ public class CommonProxy {
 		modEventBus.addListener((GatherDataEvent event) -> {
 			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
 			new XKDDataGen().onInitializeDataGenerator(dataGenerator);
+		});
+		modEventBus.addListener((RegisterEvent event) -> {
+			if (!Registries.BLOCK.equals(event.getRegistryKey())) {
+				return;
+			}
+			// set an empty settings to all blocks, to make them water-loggable correctly
+			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
+				XKDBlockSettings settings = XKDBlockSettings.of(block);
+				if (settings == null) {
+					XKDBlockSettings.EMPTY.setTo(block);
+				}
+			});
 		});
 
 		if (FMLEnvironment.dist.isClient()) {

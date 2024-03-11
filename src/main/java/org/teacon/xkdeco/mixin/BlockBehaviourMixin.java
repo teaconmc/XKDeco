@@ -17,6 +17,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -97,6 +100,15 @@ public class BlockBehaviourMixin implements XKDBlock {
 			CallbackInfoReturnable<VoxelShape> cir) {
 		if (settings != null && settings.glassType != null) {
 			cir.setReturnValue(Shapes.empty());
+		}
+	}
+
+	@Inject(method = "getFluidState", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$getFluidState(BlockState pState, CallbackInfoReturnable<FluidState> cir) {
+		if (settings != null && pState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+			cir.setReturnValue(pState.getValue(BlockStateProperties.WATERLOGGED) ?
+					Fluids.WATER.getSource(false) :
+					Fluids.EMPTY.defaultFluidState());
 		}
 	}
 }

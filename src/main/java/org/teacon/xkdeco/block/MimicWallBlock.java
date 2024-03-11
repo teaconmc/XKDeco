@@ -108,10 +108,6 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 			LevelAccessor pLevel,
 			BlockPos pCurrentPos,
 			BlockPos pFacingPos) {
-		if (pState.getValue(WATERLOGGED)) {
-			pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
-		}
-
 		if (pFacing != Direction.DOWN) {
 			var abovePos = pCurrentPos.above();
 			var aboveBlockState = pLevel.getBlockState(abovePos);

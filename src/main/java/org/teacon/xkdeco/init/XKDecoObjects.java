@@ -35,6 +35,7 @@ import org.teacon.xkdeco.block.SpecialDessertBlock;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.settings.CanSurviveHandler;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.ShapeStorage;
@@ -136,7 +137,6 @@ public final class XKDecoObjects {
 	public static final String CONSOLE_SUFFIX = "_console";
 	public static final String VENT_FAN_SUFFIX = "_vent_fan";
 
-	public static final String CUP_SPECIAL = "cup";
 	public static final String REFRESHMENT_SPECIAL = "refreshments";
 	public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
 	public static final String ITEM_PROJECTOR_SPECIAL = "item_projector";
@@ -165,15 +165,23 @@ public final class XKDecoObjects {
 		} else if (northShape == null) { // migration code, remove in the future
 			XKDeco.LOGGER.error("Missing shape for block: {}, shape: {}", id, northShapeId);
 			var block = BLOCKS.register(id, () -> {
-				BasicBlock $ = new BasicBlock(properties, isSupportNeeded);
-				XKDBlockSettings.builder().shape(ShapeGenerator.horizontal(Shapes.block())).build().setTo($);
+				BasicBlock $ = new BasicBlock(properties);
+				XKDBlockSettings.builder()
+						.shape(ShapeGenerator.horizontal(Shapes.block()))
+						.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
+						.build()
+						.setTo($);
 				return $;
 			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			var block = BLOCKS.register(id, () -> {
-				BasicBlock $ = new BasicBlock(properties, isSupportNeeded);
-				XKDBlockSettings.builder().shape(ShapeGenerator.horizontal(northShape)).build().setTo($);
+				BasicBlock $ = new BasicBlock(properties);
+				XKDBlockSettings.builder()
+						.shape(ShapeGenerator.horizontal(northShape))
+						.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
+						.build()
+						.setTo($);
 				return $;
 			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
@@ -207,15 +215,29 @@ public final class XKDecoObjects {
 				id.contains(DOUBLE_SCREW_PREFIX)) {
 			blockSupplier = () -> new RotatedPillarBlock(properties);
 		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
-			blockSupplier = () -> new HollowBlock(properties, HollowBlock.BIG_TABLE_SHAPE);
+			blockSupplier = () -> {
+				HollowBlock block = new HollowBlock(properties);
+				XKDBlockSettings.builder()
+						.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("big_table"))))
+						.build()
+						.setTo(block);
+				return block;
+			};
 		} else if (id.contains(TABLE_SUFFIX)) {
-			blockSupplier = () -> new HollowBlock(properties, HollowBlock.TABLE_SHAPE);
+			blockSupplier = () -> {
+				HollowBlock block = new HollowBlock(properties);
+				XKDBlockSettings.builder()
+						.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("table"))))
+						.build()
+						.setTo(block);
+				return block;
+			};
 		} else if (id.contains("_trapdoor")) {
 			blockSupplier = () -> new TrapDoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON);
 		} else if (id.endsWith("_door")) {
 			blockSupplier = () -> new DoorBlock(properties, properties == BLOCK_WOOD ? BlockSetType.OAK : BlockSetType.IRON);
 		} else if (id.contains(HOLLOW_PREFIX)) {
-			blockSupplier = () -> new HollowBlock(properties, Shapes.block());
+			blockSupplier = () -> new HollowBlock(properties);
 		} else {
 			blockSupplier = () -> new Block(properties);
 		}
@@ -327,11 +349,16 @@ public final class XKDecoObjects {
 			BlockBehaviour.Properties properties,
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
-		if (id.equals(CUP_SPECIAL)) {
-			var block = BLOCKS.register(id, () -> new SpecialCupBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
-			var block = BLOCKS.register(id, () -> new SpecialDessertBlock(properties));
+		if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
+			var block = BLOCKS.register(id, () -> {
+				SpecialDessertBlock $ = new SpecialDessertBlock(properties);
+				XKDBlockSettings.builder()
+						.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("dessert"))))
+						.canSurviveHandler(CanSurviveHandler.checkFloor())
+						.build()
+						.setTo($);
+				return $;
+			});
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(ITEM_DISPLAY_SUFFIX) || id.equals(ITEM_PROJECTOR_SPECIAL)) {
 			var block = BLOCKS.register(id, () -> new SpecialItemDisplayBlock(properties));
@@ -454,7 +481,6 @@ public final class XKDecoObjects {
 			}
 			return tags;
 		})));
-		//FIXME why?
 		Blocks.rebuildCache();
 	}
 
@@ -834,7 +860,11 @@ public final class XKDecoObjects {
 		addBasic("miniature_succulents", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addBasic("teapot", "xkdeco:teapot", true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addSpecial("cup", BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock("cup", () -> {
+			SpecialCupBlock $ = new SpecialCupBlock(BLOCK_MINIATURE);
+			XKDBlockSettings.builder().canSurviveHandler(CanSurviveHandler.checkFloor()).build().setTo($);
+			return $;
+		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("tea_ware", "xkdeco:tea_ware", true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addSpecial("refreshments", BLOCK_DESSERT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addSpecial("fruit_platter", BLOCK_DESSERT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);

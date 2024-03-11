@@ -6,6 +6,7 @@
 	"mixins": [
 		"BlockBehaviourMixin",
 		"BlockMixin",
+		"BlockStateMixin",
 		"BushBlockMixin",
 		"HalfTransparentBlockMixin",
 		"data.BlockFamilyProviderMixin",

@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class BasicCubeBlock extends HorizontalDirectionalBlock {
+public class BasicCubeBlock extends HorizontalDirectionalBlock {
 
 	public BasicCubeBlock(Properties properties) {
 		super(properties);
