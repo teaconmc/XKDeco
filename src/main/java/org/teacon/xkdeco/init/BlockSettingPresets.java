@@ -24,7 +24,7 @@ public interface BlockSettingPresets {
 	}
 
 	static XKBlockSettings.Builder thingy(MapColor mapColor, SoundType soundType) {
-		return XKBlockSettings.builder().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
+		return XKBlockSettings.builder().waterLoggable().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
 				.strength(0.5F)
 				.noOcclusion()
 				.sound(soundType));
@@ -39,7 +39,7 @@ public interface BlockSettingPresets {
 	}
 
 	static XKBlockSettings.Builder lightThingy(MapColor mapColor, SoundType soundType, int light) {
-		return XKBlockSettings.builder().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
+		return XKBlockSettings.builder().waterLoggable().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
 				.strength(0.5F)
 				.noOcclusion()
 				.sound(soundType)
@@ -84,5 +84,9 @@ public interface BlockSettingPresets {
 
 	static XKBlockSettings.Builder hardenedGlass() {
 		return XKBlockSettings.copyProperties(Blocks.GLASS).configure($ -> $.strength(2f, 10f));
+	}
+
+	static XKBlockSettings.Builder lampBlock() {
+		return hardenedGlass().configure($ -> $.lightLevel($$ -> 15));
 	}
 }

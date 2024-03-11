@@ -10,6 +10,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+@Deprecated //TODO use BaseboardBlock
 public final class SpecialLightBar extends StairBlock {
 	private static final VoxelShape SOUTH_BOTTOM = Block.box(0, 2, 13, 16, 6, 16);
 	private static final VoxelShape NORTH_BOTTOM = Block.box(0, 2, 0, 16, 6, 3);

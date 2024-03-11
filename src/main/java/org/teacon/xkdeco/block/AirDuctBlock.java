@@ -23,7 +23,6 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WEST = BlockStateProperties.WEST;
 	public static final BooleanProperty UP = BlockStateProperties.UP;
 	public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public AirDuctBlock(Properties pProperties) {
 		super(pProperties);
@@ -33,13 +32,12 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 				.setValue(SOUTH, false)
 				.setValue(WEST, false)
 				.setValue(UP, false)
-				.setValue(DOWN, false)
-				.setValue(WATERLOGGED, false));
+				.setValue(DOWN, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
+		pBuilder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 
 	@Override
