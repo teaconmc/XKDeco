@@ -14,10 +14,8 @@ import java.util.stream.Collectors;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
-import org.teacon.xkdeco.block.BasicCubeBlock;
 import org.teacon.xkdeco.block.BasicFullDirectionBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
-import org.teacon.xkdeco.block.HollowBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
@@ -40,6 +38,7 @@ import org.teacon.xkdeco.block.settings.CanSurviveHandler;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.ShapeStorage;
+import org.teacon.xkdeco.block.settings.WaterLoggableComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -48,6 +47,7 @@ import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.MimicWallItem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.DSL;
 
@@ -162,15 +162,9 @@ public final class XKDecoObjects {
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
 		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
+		Preconditions.checkNotNull(northShape, "Missing shape for block: %s, shape: %s", id, northShapeId);
 		if (northShape == Shapes.block()) {
-			var block = BLOCKS.register(id, () -> new BasicCubeBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (northShape == null) { // migration code, remove in the future
-			XKDeco.LOGGER.error("Missing shape for block: {}, shape: {}", id, northShapeId);
-			var block = BLOCKS.register(id, () -> new BasicBlock(BlockSettingPresets.thingy(null)
-					.shape(ShapeGenerator.horizontal(Shapes.block()))
-					.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
-					.get()));
+			var block = BLOCKS.register(id, () -> new BasicBlock(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			var block = BLOCKS.register(id, () -> new BasicBlock(BlockSettingPresets.thingy(null)
@@ -217,11 +211,11 @@ public final class XKDecoObjects {
 				id.contains(DOUBLE_SCREW_PREFIX)) {
 			blockSupplier = () -> new RotatedPillarBlock(settings.get());
 		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
-			blockSupplier = () -> new HollowBlock(BlockSettingPresets.thingy(null)
+			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
 					.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("big_table"))))
 					.get());
 		} else if (id.contains(TABLE_SUFFIX)) {
-			blockSupplier = () -> new HollowBlock(BlockSettingPresets.thingy(null)
+			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
 					.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("table"))))
 					.get());
 		} else if (id.contains("_trapdoor")) {
@@ -232,8 +226,8 @@ public final class XKDecoObjects {
 			blockSupplier = () -> new DoorBlock(
 					settings.get(),
 					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
-		} else if (id.contains(HOLLOW_PREFIX)) {
-			blockSupplier = () -> new HollowBlock(settings.get());
+		} else if (settings.hasComponent(WaterLoggableComponent.TYPE)) {
+			blockSupplier = () -> new BasicBlock(settings.get());
 		} else {
 			blockSupplier = () -> new Block(settings.get());
 		}
@@ -687,7 +681,7 @@ public final class XKDecoObjects {
 		addIsotropic("steel_floor_stairs", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("chiseled_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("hollow_steel_block", BlockSettingPresets.hollowSteel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("hollow_steel_block", BlockSettingPresets.hollowSteel().waterLoggable(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("hollow_steel_trapdoor", BlockSettingPresets.hollowSteel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("framed_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -730,17 +724,17 @@ public final class XKDecoObjects {
 		addIsotropic("factory_biohazard_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("factory_biohazard_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_lamp_block", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_lamp_slab", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_lamp_stairs", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_lamp_block", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addIsotropic("tech_lamp_block", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("tech_lamp_slab", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("tech_lamp_stairs", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("tech_lamp_block", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("tech_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("tech_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addIsotropic("translucent_lamp_block", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lightThingy(null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_block", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("steel_filings", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -1101,6 +1095,7 @@ public final class XKDecoObjects {
 			return new AirDuctBlock(XKBlockSettings.builder()
 					.shape(ShapeGenerator.sixWay(base, Shapes.empty(), side))
 					.interactionShape(ShapeGenerator.unit(Shapes.block()))
+					.waterLoggable()
 					.get());
 		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBlock("air_duct_oblique", () -> {

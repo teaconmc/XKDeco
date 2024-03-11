@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.HollowBlock;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -35,8 +34,19 @@ public class ShapeStorage {
 		put("solar_system_model", box(0, 0, 0, 16, 10, 16));
 		put("factory_ceiling_lamp", box(0, 12, 0, 16, 16, 16));
 		put("factory_pendant", box(2, 4, 2, 14, 16, 14));
-		put("big_table", HollowBlock.BIG_TABLE_SHAPE);
-		put("table", HollowBlock.TABLE_SHAPE);
+
+		VoxelShape TABLE_BASE = box(4, 0, 4, 12, 3, 12);
+		VoxelShape TABLE_LEG = box(6, 3, 6, 10, 13, 10);
+		VoxelShape TABLE_TOP = box(0, 13, 0, 16, 16, 16);
+		put("table", Shapes.or(TABLE_BASE, TABLE_LEG, TABLE_TOP));
+
+		VoxelShape BIG_TABLE_TOP = box(0, 8, 0, 16, 16, 16);
+		VoxelShape BIG_TABLE_LEG_NN = box(0, 0, 0, 2, 8, 2);
+		VoxelShape BIG_TABLE_LEG_NP = box(0, 0, 14, 2, 8, 16);
+		VoxelShape BIG_TABLE_LEG_PN = box(14, 0, 0, 16, 8, 2);
+		VoxelShape BIG_TABLE_LEG_PP = box(14, 0, 14, 16, 8, 16);
+		put("big_table", Shapes.or(BIG_TABLE_TOP, BIG_TABLE_LEG_PP, BIG_TABLE_LEG_PN, BIG_TABLE_LEG_NP, BIG_TABLE_LEG_NN));
+
 		put("long_stool", box(0, 0, 3, 16, 10, 13));
 		put("chair", Shapes.or(box(2, 0, 2, 14, 10, 14), box(2, 10, 12, 14, 16, 14)));
 		put("shelf", Shapes.or(

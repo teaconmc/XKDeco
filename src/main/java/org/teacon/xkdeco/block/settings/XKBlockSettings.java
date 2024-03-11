@@ -1,16 +1,23 @@
 package org.teacon.xkdeco.block.settings;
 
+import java.util.Map;
 import java.util.function.UnaryOperator;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.duck.XKBlockProperties;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.EmptyBlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -28,6 +35,7 @@ public class XKBlockSettings {
 	public final ShapeGenerator interactionShape;
 	@Nullable
 	public final CanSurviveHandler canSurviveHandler;
+	public final Map<XKBlockComponent.Type<?>, XKBlockComponent> components;
 
 	private XKBlockSettings(Builder builder) {
 		this.sustainsPlant = builder.sustainsPlant;
@@ -36,6 +44,7 @@ public class XKBlockSettings {
 		this.collisionShape = builder.collisionShape;
 		this.interactionShape = builder.interactionShape;
 		this.canSurviveHandler = builder.canSurviveHandler;
+		this.components = Map.copyOf(builder.components);
 	}
 
 	public static XKBlockSettings.Builder builder() {
@@ -70,6 +79,43 @@ public class XKBlockSettings {
 		return Shapes.getFaceShape(shape, direction);
 	}
 
+	public boolean hasComponent(XKBlockComponent.Type<?> type) {
+		return components.containsKey(type);
+	}
+
+	public void injectProperties(Block block, StateDefinition.Builder<Block, BlockState> builder) {
+		for (XKBlockComponent component : components.values()) {
+			component.injectProperties(block, builder);
+		}
+	}
+
+	public BlockState registerDefaultState(BlockState state) {
+		for (XKBlockComponent component : components.values()) {
+			state = component.registerDefaultState(state);
+		}
+		return state;
+	}
+
+	public BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
+		for (XKBlockComponent component : components.values()) {
+			state = component.getStateForPlacement(state, context);
+		}
+		return state;
+	}
+
+	public BlockState updateShape(
+			BlockState pState,
+			Direction pDirection,
+			BlockState pNeighborState,
+			LevelAccessor pLevel,
+			BlockPos pPos,
+			BlockPos pNeighborPos) {
+		for (XKBlockComponent component : components.values()) {
+			pState = component.updateShape(pState, pDirection, pNeighborState, pLevel, pPos, pNeighborPos);
+		}
+		return pState;
+	}
+
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean sustainsPlant;
@@ -82,6 +128,7 @@ public class XKBlockSettings {
 		private ShapeGenerator interactionShape;
 		@Nullable
 		private CanSurviveHandler canSurviveHandler;
+		private final Map<XKBlockComponent.Type<?>, XKBlockComponent> components = Maps.newIdentityHashMap();
 
 		private Builder(BlockBehaviour.Properties properties) {
 			this.properties = properties;
@@ -132,10 +179,28 @@ public class XKBlockSettings {
 			return this;
 		}
 
+		public Builder component(XKBlockComponent component) {
+			XKBlockComponent before = this.components.put(component.type(), component);
+			Preconditions.checkState(before == null, "Component %s is already present", component.type());
+			return this;
+		}
+
+		public Builder waterLoggable() {
+			return component(WaterLoggableComponent.getInstance());
+		}
+
 		public BlockBehaviour.Properties get() {
 			XKBlockSettings settings = new XKBlockSettings(this);
 			((XKBlockProperties) properties).xkdeco$setSettings(settings);
 			return properties;
+		}
+
+		public boolean hasComponent(XKBlockComponent.Type<?> type) {
+			return components.containsKey(type);
+		}
+
+		public void removeComponent(XKBlockComponent.Type<?> type) {
+			components.remove(type);
 		}
 	}
 }

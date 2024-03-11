@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block;
 
+import org.teacon.xkdeco.block.settings.CheckedWaterloggedBlock;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -9,20 +11,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialCupBlock extends Block {
+public final class SpecialCupBlock extends Block implements CheckedWaterloggedBlock {
 	private static final int MAXIMUM_COUNT = 4;
 
-	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final IntegerProperty COUNT = IntegerProperty.create("count", 1, MAXIMUM_COUNT);
 
 	private static final VoxelShape ONE_SHAPE = Block.box(6, 0, 6, 10, 6, 10);
@@ -32,7 +30,7 @@ public final class SpecialCupBlock extends Block {
 
 	public SpecialCupBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(COUNT, 1));
+		this.registerDefaultState(this.stateDefinition.any().setValue(COUNT, 1));
 	}
 
 	@Override
@@ -52,8 +50,7 @@ public final class SpecialCupBlock extends Block {
 		if (state.is(this)) {
 			return state.setValue(COUNT, Math.min(MAXIMUM_COUNT, state.getValue(COUNT) + 1));
 		}
-		var fluidState = context.getLevel().getFluidState(context.getClickedPos());
-		return this.defaultBlockState().setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		return this.defaultBlockState();
 	}
 
 	@Override
@@ -76,7 +73,7 @@ public final class SpecialCupBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(COUNT, WATERLOGGED);
+		builder.add(COUNT);
 	}
 
 	@Override

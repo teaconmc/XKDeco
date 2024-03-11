@@ -176,6 +176,10 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.2")) {
+        jarJar.ranged(it, "[0.3.2,)")
+    }
 
     // compile against the JEI API but do not include it at runtime
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
@@ -207,18 +211,27 @@ processResources {
     exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
 }
 
+tasks.jarJar.configure {
+    archiveClassifier = ''
+
+    finalizedBy('reobfJarJar')
+}
+
 jar {
+    archiveClassifier = 'slim'
+
     manifest {
         attributes(["Specification-Title"     : mod_id,
-                    "Specification-Vendor"    : mod_authors,
                     "Specification-Version"   : "1", // We are version 1 of ourselves
                     "Implementation-Title"    : project.name,
                     "Implementation-Version"  : mod_version,
-                    "Implementation-Vendor"   : mod_authors,
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    "MixinConfigs"            : "${mod_id}.mixins.json"])
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+
+    finalizedBy('reobfJar')
 }
 
 // Example configuration to allow publishing using the maven-publish plugin
@@ -250,7 +263,7 @@ unifiedPublishing {
         gameVersions = ["1.20", "1.20.1"]
         gameLoaders = ["forge", "neoforge"]
 
-        mainPublication tasks.jar // Declares the publicated jar
+        mainPublication tasks.jarJar // Declares the publicated jar
 
         if (System.getenv("CURSE_TOKEN") != null) {
             curseforge {
