@@ -73,7 +73,7 @@ public class BlockBehaviourMixin {
 	private void xkdeco$getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
 		XKBlockSettings settings = XKBlockSettings.of(this);
 		if (settings != null && settings.glassType != null) {
-			cir.setReturnValue(1F);
+			cir.setReturnValue(settings.glassType.shadeBrightness());
 		}
 	}
 

@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -42,9 +43,9 @@ public class XKBlockSettings {
 	private XKBlockSettings(Builder builder) {
 		this.sustainsPlant = builder.sustainsPlant;
 		this.glassType = builder.glassType;
-		this.shape = builder.shape;
-		this.collisionShape = builder.collisionShape;
-		this.interactionShape = builder.interactionShape;
+		this.shape = builder.shape != null ? builder.shape : builder.getShape(builder.shapeId);
+		this.collisionShape = builder.collisionShape != null ? builder.collisionShape : builder.getShape(builder.collisionShapeId);
+		this.interactionShape = builder.interactionShape != null ? builder.interactionShape : builder.getShape(builder.interactionShapeId);
 		this.canSurviveHandler = builder.canSurviveHandler;
 		this.components = Map.copyOf(builder.components);
 	}
@@ -138,16 +139,23 @@ public class XKBlockSettings {
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean sustainsPlant;
+		@Nullable
 		private GlassType glassType;
 		@Nullable
 		private ShapeGenerator shape;
 		@Nullable
+		private ResourceLocation shapeId;
+		@Nullable
 		private ShapeGenerator collisionShape;
+		@Nullable
+		private ResourceLocation collisionShapeId;
 		@Nullable
 		private ShapeGenerator interactionShape;
 		@Nullable
+		private ResourceLocation interactionShapeId;
+		@Nullable
 		private CanSurviveHandler canSurviveHandler;
-		private final Map<XKBlockComponent.Type<?>, XKBlockComponent> components = Maps.newIdentityHashMap();
+		private final Map<XKBlockComponent.Type<?>, XKBlockComponent> components = Maps.newLinkedHashMap();
 
 		private Builder(BlockBehaviour.Properties properties) {
 			this.properties = properties;
@@ -190,6 +198,21 @@ public class XKBlockSettings {
 
 		public Builder interactionShape(ShapeGenerator interactionShape) {
 			this.interactionShape = interactionShape;
+			return this;
+		}
+
+		public Builder shape(ResourceLocation shapeId) {
+			this.shapeId = shapeId;
+			return this;
+		}
+
+		public Builder collisionShape(ResourceLocation shapeId) {
+			this.collisionShapeId = shapeId;
+			return this;
+		}
+
+		public Builder interactionShape(ResourceLocation shapeId) {
+			this.interactionShapeId = shapeId;
 			return this;
 		}
 
@@ -236,6 +259,19 @@ public class XKBlockSettings {
 
 		public void removeComponent(XKBlockComponent.Type<?> type) {
 			components.remove(type);
+		}
+
+		@Nullable
+		public ShapeGenerator getShape(ResourceLocation shapeId) {
+			if (shapeId == null) {
+				return null;
+			}
+			VoxelShape shape = ShapeStorage.getInstance().get(shapeId);
+			Preconditions.checkNotNull(shape, "Shape %s is not registered", shapeId);
+			if (hasComponent(HorizontalComponent.TYPE)) {
+				return ShapeGenerator.horizontal(shape);
+			}
+			return ShapeGenerator.unit(shape);
 		}
 	}
 }

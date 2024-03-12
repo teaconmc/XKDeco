@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "xkdeco:block/steel_safety_ladder_side"
+  }
+}

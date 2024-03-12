@@ -44,10 +44,20 @@ public record HorizontalComponent(boolean customPlacement) implements XKBlockCom
 
 	@Override
 	public BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
-		if (!customPlacement) {
-			state = state.setValue(FACING, context.getHorizontalDirection().getOpposite());
+		if (customPlacement) {
+			return state;
 		}
-		return state;
+		for (Direction direction : context.getNearestLookingDirections()) {
+			if (direction.getAxis().isVertical()) {
+				continue;
+			}
+			BlockState blockstate;
+			blockstate = state.setValue(FACING, direction.getOpposite());
+			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
+				return blockstate;
+			}
+		}
+		return null;
 	}
 
 	@Override

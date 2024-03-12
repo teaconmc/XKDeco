@@ -34,7 +34,11 @@ public final class Hooks {
 		if (XKBlockSettings.of(pState.getBlock()) == null && XKBlockSettings.of(pAdjacentBlockState.getBlock()) == null) {
 			return false;
 		}
-		if (!pState.is(pAdjacentBlockState.getBlock()) && getGlassType(pState) != getGlassType(pAdjacentBlockState)) {
+		GlassType glassType = getGlassType(pState);
+		if (glassType == null || !glassType.skipRendering()) {
+			return false;
+		}
+		if (!pState.is(pAdjacentBlockState.getBlock()) && glassType != getGlassType(pAdjacentBlockState)) {
 			return false;
 		}
 		Block.BlockStatePairKey key = new Block.BlockStatePairKey(pState, pAdjacentBlockState, pDirection);

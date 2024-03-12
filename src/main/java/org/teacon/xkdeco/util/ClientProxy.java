@@ -1,7 +1,8 @@
 package org.teacon.xkdeco.util;
 
+import java.util.List;
+
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -149,22 +150,21 @@ public final class ClientProxy {
 			});
 		});
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
-			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct")), RenderType.cutout());
-			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct_oblique")), RenderType.cutout());
-			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("hollow_steel_beam")), RenderType.cutout());
+			event.enqueueWork(() -> {
+				for (String s : List.of("hanging_willow_leaves")) {
+					RenderType cutout = RenderType.cutout();
+					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
+				}
 
-			//TODO temporary implementation. data-gen it in the future
-			for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
-				XKBlockSettings settings = XKBlockSettings.of(registryObject.get());
-				if (settings == null) {
-					continue;
+				//TODO temporary implementation. data-gen it in the future
+				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
+					XKBlockSettings settings = XKBlockSettings.of(registryObject.get());
+					if (settings == null || settings.glassType == null) {
+						continue;
+					}
+					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), (RenderType) settings.glassType.renderType().value);
 				}
-				if (settings.glassType == GlassType.CLEAR) {
-					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), RenderType.cutout());
-				} else if (settings.glassType != null) {
-					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), RenderType.translucent());
-				}
-			}
+			});
 		});
 	}
 }

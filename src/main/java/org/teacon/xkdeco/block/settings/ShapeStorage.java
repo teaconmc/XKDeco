@@ -117,6 +117,8 @@ public class ShapeStorage {
 				BooleanOp.ONLY_FIRST));
 		put("maya_crystal_skull", Shapes.or(box(2, 0, 2, 14, 2, 14), box(4, 2, 4, 12, 10, 12)));
 		put("dessert", box(1, 0, 1, 15, 2, 15));
+		put("ladder", box(0, 0, 13, 16, 16, 16));
+		put("safety_ladder", Shapes.join(Shapes.block(), box(1, 0, 1, 15, 16, 13), BooleanOp.ONLY_FIRST));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

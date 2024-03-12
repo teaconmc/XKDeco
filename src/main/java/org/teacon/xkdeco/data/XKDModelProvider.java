@@ -233,7 +233,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.createTrivialBlock(block("fallen_peach_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
 		generators.createTrivialBlock(block("fallen_cherry_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
 		generators.createTrivialBlock(block("fallen_white_cherry_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
-		createSimpleBlockState("hanging_willow_leaves");
+		createBlockStateOnly("hanging_willow_leaves", false);
 		generators.createSimpleFlatItemModel(block("hanging_willow_leaves"));
 
 		ResourceLocation dirtTexture = TextureMapping.getBlockTexture(Blocks.DIRT);
@@ -255,7 +255,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTreatedWood("varnished");
 		createTreatedWood("ebony");
 		createTreatedWood("mahogany");
-		createSimpleBlockState("air_duct");
+		createBlockStateOnly("air_duct", false);
 		generators.delegateItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
 		createHorizontalShift("air_duct_oblique", "air_duct_oblique", null, false);
 		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
@@ -264,6 +264,12 @@ public class XKDModelProvider extends FabricModelProvider {
 				XKDeco.id("block/furniture/hollow_steel_beam_side"),
 				XKDeco.id("block/furniture/hollow_steel_beam_side_tall")));
 		generators.delegateItemModel(block("hollow_steel_beam"), XKDeco.id("block/furniture/hollow_steel_beam_inventory"));
+		createBlockStateOnly("steel_safety_ladder", true);
+		createBlockStateOnly("steel_ladder", false);
+		ModelTemplates.FLAT_ITEM.create(
+				ModelLocationUtils.getModelLocation(block("steel_ladder").asItem()),
+				TextureMapping.layer0(TextureMapping.getBlockTexture(block("steel_safety_ladder"), "_side")),
+				generators.modelOutput);
 
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
@@ -360,9 +366,21 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, bottomModel, topModel, fullModel));
 	}
 
-	private void createSimpleBlockState(String id) {
+	private void createBlockStateOnly(String id, boolean delegateItem) {
 		Block block = block(id);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, ModelLocationUtils.getModelLocation(block)));
+		XKBlockSettings settings = XKBlockSettings.of(block);
+		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(block);
+		if (settings != null && settings.hasComponent(HorizontalComponent.TYPE)) {
+			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+							block,
+							Variant.variant().with(VariantProperties.MODEL, modelLocation))
+					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
+		} else {
+			generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
+		}
+		if (delegateItem) {
+			generators.delegateItemModel(block, modelLocation);
+		}
 	}
 
 	private void createRustingBlock(String id) {
