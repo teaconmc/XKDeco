@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-12T19:16:33.54483	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-12T23:40:16.2055995	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -213,6 +213,7 @@ f8a59642e35ab08edb24b66a0ae495b4c5eaf142 assets/xkdeco/blockstates/green_tile_st
 9fbbcdcfb614d648aebc6733d2171690437498f1 assets/xkdeco/blockstates/hollow_mahogany_column_wall.json
 3d0dc756eaf42f102b755133c195958a7a0cba2e assets/xkdeco/blockstates/hollow_steel_beam.json
 6cd1bb39afa6792802a1dedfc5e7359a5d40eed1 assets/xkdeco/blockstates/hollow_steel_block.json
+08a554504e8ba8e67800a88d9f6d79fd1fcf3faa assets/xkdeco/blockstates/hollow_steel_half_beam.json
 bb4f2fbbac80c0c9b51e4354fe452d4811603592 assets/xkdeco/blockstates/hollow_steel_trapdoor.json
 a8b0da218e3289a843c70601705092525f080f36 assets/xkdeco/blockstates/hollow_varnished_column_wall.json
 fc31c69c682e55571f3b888325b3a964ae5d4768 assets/xkdeco/blockstates/inca_bricks.json
@@ -1607,6 +1608,7 @@ ec119506257eb1b88887a12fe4f793c7c5aba280 assets/xkdeco/models/item/hanging_willo
 0988f23172f1e39c4aa21070f72ae7df1c02a5ec assets/xkdeco/models/item/hollow_mahogany_column_wall.json
 6a64522d3510894df17eab64b4c29ba66f1b9f77 assets/xkdeco/models/item/hollow_steel_beam.json
 ededb74a9398615bea34d00e83637d143be76062 assets/xkdeco/models/item/hollow_steel_block.json
+8b3bd3a69971e4cc45c720386fb6894d8d4c9039 assets/xkdeco/models/item/hollow_steel_half_beam.json
 11fb3b038a4e9c2dc878afc7fe30b4cf119620a4 assets/xkdeco/models/item/hollow_steel_trapdoor.json
 52f0a7896f132a3d8a4011f5e6315ab3fccf2f55 assets/xkdeco/models/item/hollow_varnished_column_wall.json
 241c8df822aa30f7651611884cbd03962f5218e2 assets/xkdeco/models/item/inca_bricks.json
