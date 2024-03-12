@@ -6,11 +6,15 @@
 	"mixins": [
 		"BlockBehaviourMixin",
 		"BlockMixin",
+		"BlockPropertiesMixin",
 		"BlockStateMixin",
 		"BushBlockMixin",
 		"HalfTransparentBlockMixin",
 		"data.BlockFamilyProviderMixin",
-		"forge.BlockMixin"
+		"forge.BlockMixin",
+		"property_inject.BlockItemMixin",
+		"property_inject.BlockMixin",
+		"property_inject.StateDefinitionBuilderMixin"
 	],
 	"client": [
 	],

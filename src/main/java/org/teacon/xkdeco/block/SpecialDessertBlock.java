@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block;
 
+import org.teacon.xkdeco.block.settings.CheckedWaterloggedBlock;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -18,7 +20,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialDessertBlock extends Block {
+public final class SpecialDessertBlock extends Block implements CheckedWaterloggedBlock {
 	private static final int MAXIMUM_COUNT = 7;
 
 	private static final IntegerProperty COUNT = IntegerProperty.create("count", 1, MAXIMUM_COUNT);
@@ -33,7 +35,6 @@ public final class SpecialDessertBlock extends Block {
 	public InteractionResult use(
 			BlockState state, Level world, BlockPos pos,
 			Player player, InteractionHand hand, BlockHitResult hit) {
-		// noinspection DuplicatedCode
 		var item = player.getItemInHand(hand);
 		if (world.isClientSide) {
 			if (this.eat(world, pos, state, player).consumesAction()) {

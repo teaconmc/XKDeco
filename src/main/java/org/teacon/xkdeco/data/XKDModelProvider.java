@@ -16,7 +16,8 @@ import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
-import org.teacon.xkdeco.block.settings.XKDBlockSettings;
+import org.teacon.xkdeco.block.settings.HorizontalComponent;
+import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
 import org.teacon.xkdeco.util.RoofUtil;
 
@@ -136,7 +137,7 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	public static boolean createIfSpecialStairs(Block block, TextureMapping mapping, BlockModelGenerators generators) {
-		XKDBlockSettings settings = XKDBlockSettings.of(block);
+		XKBlockSettings settings = XKBlockSettings.of(block);
 		if (settings == null || settings.glassType == null) {
 			return false;
 		}
@@ -330,7 +331,11 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	private void createGadget(Block block) {
 		var id = BuiltInRegistries.BLOCK.getKey(block);
-		if (block instanceof BasicBlock) {
+		XKBlockSettings settings = XKBlockSettings.of(block);
+		if (settings == null) {
+			return;
+		}
+		if (block instanceof BasicBlock && settings.hasComponent(HorizontalComponent.TYPE)) {
 			ResourceLocation model = id.withPrefix("block/furniture/");
 			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
 							block,

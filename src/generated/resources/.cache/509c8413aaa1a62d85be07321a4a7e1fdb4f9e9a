@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-11T01:34:33.1735473	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-12T08:30:14.3616784	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -12,6 +12,7 @@ abbd8ac8bb86eca8e4178d2f4765d9dc91622c9e assets/xkdeco/blockstates/aztec_stonebr
 131696618990a4deafb719c4284d517a6b601674 assets/xkdeco/blockstates/aztec_stonebrick_stairs.json
 1f2d8caf1c957fc5960364fbf0f35890ee655e8c assets/xkdeco/blockstates/big_book_stack.json
 39f726e30938c5daef375d31207b6981a3bf3011 assets/xkdeco/blockstates/big_candlestick.json
+00f7189fa0a5eca490e4395d106765c210a00d36 assets/xkdeco/blockstates/big_solar_system_model.json
 2dce79929efc9ffc6588706ad8561f471e1bd341 assets/xkdeco/blockstates/blackstone_lamp.json
 e3a81ec3582ca57faa06cb662c14f1f893853608 assets/xkdeco/blockstates/blackstone_pavement.json
 d1dec8663bd928aef5920ae459ab3b4e1d9cdb91 assets/xkdeco/blockstates/blackstone_pavement_slab.json
@@ -379,6 +380,7 @@ d49a9c3985576415481d2585d0e436b205c4c1b8 assets/xkdeco/blockstates/tech_screen.j
 a31d62589afad84476c0241517bfe7693806aa8b assets/xkdeco/blockstates/tech_table.json
 ca7490f97b17c278c73e61a4f9e485e0f9efb5d2 assets/xkdeco/blockstates/tech_table_bigcircle.json
 98e6276a09f975795e32c8a6e68eed16bc47eba4 assets/xkdeco/blockstates/tech_table_circle.json
+519bb9ef0972331e9410f4e1c19ca0f8ced4e83e assets/xkdeco/blockstates/telescope.json
 9e4a1423cea221b390245c4600e9687c8145976f assets/xkdeco/blockstates/toughened_glass.json
 d894d796563d8c902361471c21b575af44828d5d assets/xkdeco/blockstates/toughened_glass_slab.json
 1cf31cca7e027107f8bcdb2ea46c64d01b2e86bf assets/xkdeco/blockstates/toughened_glass_stairs.json
@@ -1402,6 +1404,7 @@ b7104033b50707d1dd96650d9d4109268982421a assets/xkdeco/models/item/aztec_stonebr
 a197fe500e52fe9f16f4b98bdccd3054eab6cd59 assets/xkdeco/models/item/aztec_stonebrick_stairs.json
 8d23925e20c90aa9046ae9d79ad47ba6f3e8490f assets/xkdeco/models/item/big_book_stack.json
 fc8468e8f379546a35d0c42b2143103015ceb3cd assets/xkdeco/models/item/big_candlestick.json
+bf215b456b28b76dcc73a5f2447a219571a40fd5 assets/xkdeco/models/item/big_solar_system_model.json
 75949b939e22505a53ce143390d945f8754dbe23 assets/xkdeco/models/item/blackstone_lamp.json
 f92f436ceb7a437b718e7cb792d4042b62a44f52 assets/xkdeco/models/item/blackstone_pavement.json
 7d659b9979fa9eec9cd283c47181c7a0943a0e39 assets/xkdeco/models/item/blackstone_pavement_slab.json
@@ -1769,6 +1772,7 @@ b4cfa29b59d4982d26f4a8e29cf77d616c6ebadc assets/xkdeco/models/item/tea_ware.json
 535a03e78ff9ddf5a3f3d29d422b6c10a6744551 assets/xkdeco/models/item/tech_table.json
 46907c4fbf016060dcc511cb4732e9d17960a6b7 assets/xkdeco/models/item/tech_table_bigcircle.json
 e29a6007d933e045e204b977684a1ea511c077bf assets/xkdeco/models/item/tech_table_circle.json
+f2457830aee4e2ed9ec67cb1809a98d51d73122e assets/xkdeco/models/item/telescope.json
 fdf697cfe5ec2f0cca788cf81e1c01f8409e1c8a assets/xkdeco/models/item/toughened_glass.json
 a4ec337572bea90b5712f49e11ff3aaa47b23719 assets/xkdeco/models/item/toughened_glass_slab.json
 c4508b210c0cb801b81ab34f5854c165c309cfe8 assets/xkdeco/models/item/toughened_glass_stairs.json
