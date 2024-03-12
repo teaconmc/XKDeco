@@ -46,17 +46,17 @@ public record DirectionalComponent(boolean customPlacement) implements XKBlockCo
 
 	@Override
 	public @Nullable BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
-		if (!customPlacement) {
-			for (Direction direction : context.getNearestLookingDirections()) {
-				BlockState blockstate;
-				blockstate = state.setValue(FACING, direction.getOpposite());
-				if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
-					return blockstate;
-				}
-			}
-			return null;
+		if (customPlacement) {
+			return state;
 		}
-		return state;
+		for (Direction direction : context.getNearestLookingDirections()) {
+			BlockState blockstate;
+			blockstate = state.setValue(FACING, direction.getOpposite());
+			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
+				return blockstate;
+			}
+		}
+		return null;
 	}
 
 	@Override

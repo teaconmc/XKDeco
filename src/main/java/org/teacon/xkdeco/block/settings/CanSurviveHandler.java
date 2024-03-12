@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 
 public interface CanSurviveHandler {
 	boolean isSensitiveSide(BlockState state, Direction side);
@@ -26,25 +25,20 @@ public interface CanSurviveHandler {
 		return Impls.CHECK_CEILING;
 	}
 
-	static CanSurviveHandler checkFace(Block block) {
-		for (Property<?> property : block.getStateDefinition().getProperties()) {
-			if (property instanceof DirectionProperty) {
-				return Impls.CHECK_FACE.computeIfAbsent((DirectionProperty) property, key -> new CanSurviveHandler() {
-					@Override
-					public boolean isSensitiveSide(BlockState state, Direction side) {
-						return side == state.getValue(key).getOpposite();
-					}
-
-					@Override
-					public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-						Direction direction = state.getValue(key);
-						BlockPos neighbor = pos.relative(direction);
-						return world.getBlockState(neighbor).isFaceSturdy(world, neighbor, direction.getOpposite(), SupportType.RIGID);
-					}
-				});
+	static CanSurviveHandler checkFace(DirectionProperty property) {
+		return Impls.CHECK_FACE.computeIfAbsent(property, key -> new CanSurviveHandler() {
+			@Override
+			public boolean isSensitiveSide(BlockState state, Direction side) {
+				return side == state.getValue(key).getOpposite();
 			}
-		}
-		throw new IllegalStateException("No direction property found for block " + block);
+
+			@Override
+			public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+				Direction direction = state.getValue(key);
+				BlockPos neighbor = pos.relative(direction);
+				return world.getBlockState(neighbor).isFaceSturdy(world, neighbor, direction.getOpposite(), SupportType.RIGID);
+			}
+		});
 	}
 
 	final class Impls {

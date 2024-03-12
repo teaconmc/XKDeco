@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -37,9 +38,12 @@ public class XKDBlockTagsProvider extends FabricTagProvider.BlockTagProvider {
 			} else if (block.getClass() == TrapDoorBlock.class) {
 				getOrCreateTagBuilder(BlockTags.TRAPDOORS).add(block); //TODO
 			}
-			if (settings.map($ -> $.glassType).isPresent()) {
+			if (settings.map($ -> $.glassType).filter(GlassType::skipRendering).isPresent()) {
 				getOrCreateTagBuilder(BlockTags.IMPERMEABLE).add(block);
 			}
 		});
+
+		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(XKDeco.id("steel_ladder"));
+		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(XKDeco.id("steel_safety_ladder"));
 	}
 }

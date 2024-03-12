@@ -12,7 +12,9 @@ import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
@@ -73,5 +75,9 @@ public class CommonProxy {
 
 	public static boolean isColorlessGlass(BlockState blockState) {
 		return blockState.is(Tags.Blocks.GLASS_COLORLESS);
+	}
+
+	public static boolean isLadder(BlockState blockState, LevelReader world, BlockPos pos) {
+		return blockState.isLadder(world, pos, null);
 	}
 }

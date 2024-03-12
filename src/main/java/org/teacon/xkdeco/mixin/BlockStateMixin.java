@@ -60,7 +60,7 @@ public abstract class BlockStateMixin {
 		}
 		XKBlockSettings settings = XKBlockSettings.of(getBlock());
 		if (settings != null) {
-			cir.setReturnValue(settings.updateShape(asState(), pDirection, pNeighborState, pLevel, pPos, pNeighborPos));
+			cir.setReturnValue(settings.updateShape(cir.getReturnValue(), pDirection, pNeighborState, pLevel, pPos, pNeighborPos));
 		}
 	}
 }

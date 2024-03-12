@@ -1,7 +1,8 @@
 package org.teacon.xkdeco.util;
 
+import java.util.List;
+
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -36,6 +37,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -149,22 +152,26 @@ public final class ClientProxy {
 			});
 		});
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
-			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct")), RenderType.cutout());
-			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("air_duct_oblique")), RenderType.cutout());
-			ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id("hollow_steel_beam")), RenderType.cutout());
+			event.enqueueWork(() -> {
+				for (String s : List.of("grass_block_slab")) {
+					RenderType cutout = RenderType.cutout();
+					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
+				}
 
-			//TODO temporary implementation. data-gen it in the future
-			for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
-				XKBlockSettings settings = XKBlockSettings.of(registryObject.get());
-				if (settings == null) {
-					continue;
+				//TODO temporary implementation. data-gen it in the future
+				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
+					Block block = registryObject.get();
+					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
+						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+						continue;
+					}
+					XKBlockSettings settings = XKBlockSettings.of(block);
+					if (settings == null || settings.glassType == null) {
+						continue;
+					}
+					ItemBlockRenderTypes.setRenderLayer(block, (RenderType) settings.glassType.renderType().value);
 				}
-				if (settings.glassType == GlassType.CLEAR) {
-					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), RenderType.cutout());
-				} else if (settings.glassType != null) {
-					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), RenderType.translucent());
-				}
-			}
+			});
 		});
 	}
 }
