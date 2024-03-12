@@ -101,6 +101,9 @@ public class XKBlockSettings {
 	public BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
 		for (XKBlockComponent component : components.values()) {
 			state = component.getStateForPlacement(state, context);
+			if (state == null || !state.is(state.getBlock())) {
+				return state;
+			}
 		}
 		return state;
 	}
@@ -211,6 +214,14 @@ public class XKBlockSettings {
 
 		public Builder horizontal(boolean customPlacement) {
 			return component(HorizontalComponent.getInstance(customPlacement));
+		}
+
+		public Builder directional() {
+			return directional(false);
+		}
+
+		public Builder directional(boolean customPlacement) {
+			return component(DirectionalComponent.getInstance(customPlacement));
 		}
 
 		public BlockBehaviour.Properties get() {

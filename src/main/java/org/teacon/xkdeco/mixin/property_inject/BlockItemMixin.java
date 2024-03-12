@@ -22,6 +22,9 @@ public class BlockItemMixin {
 					target = "Lnet/minecraft/world/level/block/Block;getStateForPlacement(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/level/block/state/BlockState;"))
 	private BlockState xkdeco$getPlacementState(Block block, BlockPlaceContext pContext, Operation<BlockState> original) {
 		BlockState state = original.call(block, pContext);
+		if (state == null || !state.is(block)) {
+			return state;
+		}
 		XKBlockSettings settings = XKBlockSettings.of(block);
 		if (settings != null) {
 			state = settings.getStateForPlacement(state, pContext);
