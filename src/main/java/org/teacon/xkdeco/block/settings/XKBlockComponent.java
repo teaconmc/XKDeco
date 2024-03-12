@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
@@ -34,6 +36,14 @@ public interface XKBlockComponent {
 			LevelAccessor pLevel,
 			BlockPos pPos,
 			BlockPos pNeighborPos) {
+		return pState;
+	}
+
+	default BlockState rotate(BlockState pState, Rotation pRotation) {
+		return pState;
+	}
+
+	default BlockState mirror(BlockState pState, Mirror pMirror) {
 		return pState;
 	}
 

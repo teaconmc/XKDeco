@@ -33,7 +33,7 @@ public abstract class BlockStateMixin {
 	}
 
 	@Inject(method = "updateShape", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$updateShape(
+	private void xkdeco$checkCanSurvive(
 			Direction pDirection,
 			BlockState pNeighborState,
 			LevelAccessor pLevel,
@@ -44,6 +44,23 @@ public abstract class BlockStateMixin {
 		if (settings != null && settings.canSurviveHandler != null && settings.canSurviveHandler.isSensitiveSide(asState(), pDirection) &&
 				!settings.canSurviveHandler.canSurvive(asState(), pLevel, pPos)) {
 			cir.setReturnValue(Blocks.AIR.defaultBlockState());
+		}
+	}
+
+	@Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
+	private void xkdeco$updateShape(
+			Direction pDirection,
+			BlockState pNeighborState,
+			LevelAccessor pLevel,
+			BlockPos pPos,
+			BlockPos pNeighborPos,
+			CallbackInfoReturnable<BlockState> cir) {
+		if (!cir.getReturnValue().is(getBlock())) {
+			return;
+		}
+		XKBlockSettings settings = XKBlockSettings.of(getBlock());
+		if (settings != null) {
+			cir.setReturnValue(settings.updateShape(asState(), pDirection, pNeighborState, pLevel, pPos, pNeighborPos));
 		}
 	}
 }

@@ -15,6 +15,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -116,6 +118,20 @@ public class XKBlockSettings {
 		return pState;
 	}
 
+	public BlockState rotate(BlockState pState, Rotation pRotation) {
+		for (XKBlockComponent component : components.values()) {
+			pState = component.rotate(pState, pRotation);
+		}
+		return pState;
+	}
+
+	public BlockState mirror(BlockState pState, Mirror pMirror) {
+		for (XKBlockComponent component : components.values()) {
+			pState = component.mirror(pState, pMirror);
+		}
+		return pState;
+	}
+
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean sustainsPlant;
@@ -187,6 +203,14 @@ public class XKBlockSettings {
 
 		public Builder waterLoggable() {
 			return component(WaterLoggableComponent.getInstance());
+		}
+
+		public Builder horizontal() {
+			return horizontal(false);
+		}
+
+		public Builder horizontal(boolean customPlacement) {
+			return component(HorizontalComponent.getInstance(customPlacement));
 		}
 
 		public BlockBehaviour.Properties get() {

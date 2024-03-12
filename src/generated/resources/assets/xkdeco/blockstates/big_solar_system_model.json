@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/big_solar_system_model",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/big_solar_system_model"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/big_solar_system_model",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/big_solar_system_model",
+      "y": 270
+    }
+  }
+}

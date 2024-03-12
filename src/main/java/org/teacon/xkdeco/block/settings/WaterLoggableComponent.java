@@ -25,6 +25,8 @@ public class WaterLoggableComponent implements XKBlockComponent {
 		return INSTANCE;
 	}
 
+	protected WaterLoggableComponent() {}
+
 	@Override
 	public Type<?> type() {
 		return TYPE;
