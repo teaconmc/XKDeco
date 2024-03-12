@@ -37,6 +37,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -151,18 +153,23 @@ public final class ClientProxy {
 		});
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
 			event.enqueueWork(() -> {
-				for (String s : List.of("hanging_willow_leaves")) {
+				for (String s : List.of("grass_block_slab")) {
 					RenderType cutout = RenderType.cutout();
 					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
 				}
 
 				//TODO temporary implementation. data-gen it in the future
 				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
-					XKBlockSettings settings = XKBlockSettings.of(registryObject.get());
+					Block block = registryObject.get();
+					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
+						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+						continue;
+					}
+					XKBlockSettings settings = XKBlockSettings.of(block);
 					if (settings == null || settings.glassType == null) {
 						continue;
 					}
-					ItemBlockRenderTypes.setRenderLayer(registryObject.get(), (RenderType) settings.glassType.renderType().value);
+					ItemBlockRenderTypes.setRenderLayer(block, (RenderType) settings.glassType.renderType().value);
 				}
 			});
 		});
