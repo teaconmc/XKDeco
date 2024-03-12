@@ -87,6 +87,6 @@ public interface BlockSettingPresets {
 	}
 
 	static XKBlockSettings.Builder lampBlock() {
-		return hardenedGlass().configure($ -> $.lightLevel($$ -> 15));
+		return XKBlockSettings.copyProperties(Blocks.REDSTONE_LAMP).configure($ -> $.strength(2f, 10f).lightLevel($$ -> 15));
 	}
 }

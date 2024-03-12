@@ -103,15 +103,12 @@ public final class XKDecoObjects {
 	public static final String WARDROBE_BLOCK_ENTITY = "wardrobe";
 
 	public static final String GRASS_PREFIX = "grass_";
-	public static final String GLASS_PREFIX = "glass_";
 	public static final String LINED_PREFIX = "lined_";
 	public static final String WILLOW_PREFIX = "willow_";
-	public static final String HOLLOW_PREFIX = "hollow_";
 	public static final String LUXURY_PREFIX = "luxury_";
 	public static final String PAINTED_PREFIX = "painted_";
 	public static final String CHISELED_PREFIX = "chiseled_";
 	public static final String PLANTABLE_PREFIX = "plantable_";
-	public static final String TRANSLUCENT_PREFIX = "translucent_";
 	public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
 	public static final String STONE_WATER_PREFIX = "stone_water_";
 
@@ -125,7 +122,6 @@ public final class XKDecoObjects {
 	public static final String STOOL_SUFFIX = "_stool";
 	public static final String CHAIR_SUFFIX = "_chair";
 	public static final String TABLE_SUFFIX = "_table";
-	public static final String GLASS_SUFFIX = "_glass";
 	public static final String STAIRS_SUFFIX = "_stairs";
 	public static final String PILLAR_SUFFIX = "_pillar";
 	public static final String LEAVES_SUFFIX = "_leaves";
@@ -163,16 +159,19 @@ public final class XKDecoObjects {
 			Collection<RegistryObject<Item>> tabContents) {
 		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
 		Preconditions.checkNotNull(northShape, "Missing shape for block: %s, shape: %s", id, northShapeId);
+		RegistryObject<BasicBlock> block;
 		if (northShape == Shapes.block()) {
-			var block = BLOCKS.register(id, () -> new BasicBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().horizontal().get()));
 		} else {
-			var block = BLOCKS.register(id, () -> new BasicBlock(BlockSettingPresets.thingy(null)
-					.shape(ShapeGenerator.horizontal(northShape))
-					.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
-					.get()));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			block = BLOCKS.register(
+					id,
+					() -> new BasicBlock(BlockSettingPresets.thingy(null)
+							.horizontal()
+							.shape(ShapeGenerator.horizontal(northShape))
+							.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
+							.get()));
 		}
+		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
 	private static void addDirectionalBasic(
@@ -197,7 +196,7 @@ public final class XKDecoObjects {
 			settings.glassType(GlassType.TRANSLUCENT);
 		} else if (id.startsWith("toughened_glass")) {
 			settings.glassType(GlassType.TOUGHENED);
-		} else {
+		} else if (id.contains("glass")) {
 			settings.glassType(GlassType.CLEAR);
 		}
 		Supplier<Block> blockSupplier;
@@ -732,9 +731,9 @@ public final class XKDecoObjects {
 		addIsotropic("tech_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("tech_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addIsotropic("translucent_lamp_block", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_block", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("steel_filings", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
 

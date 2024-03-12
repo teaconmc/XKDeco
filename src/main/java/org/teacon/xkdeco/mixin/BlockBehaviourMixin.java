@@ -12,6 +12,8 @@ import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -107,6 +109,22 @@ public class BlockBehaviourMixin {
 			cir.setReturnValue(pState.getValue(BlockStateProperties.WATERLOGGED) ?
 					Fluids.WATER.getSource(false) :
 					Fluids.EMPTY.defaultFluidState());
+		}
+	}
+
+	@Inject(method = "rotate", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$rotate(BlockState pState, Rotation pRotation, CallbackInfoReturnable<BlockState> cir) {
+		XKBlockSettings settings = XKBlockSettings.of(this);
+		if (settings != null) {
+			cir.setReturnValue(settings.rotate(pState, pRotation));
+		}
+	}
+
+	@Inject(method = "mirror", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$mirror(BlockState pState, Mirror pMirror, CallbackInfoReturnable<BlockState> cir) {
+		XKBlockSettings settings = XKBlockSettings.of(this);
+		if (settings != null) {
+			cir.setReturnValue(settings.mirror(pState, pMirror));
 		}
 	}
 }
