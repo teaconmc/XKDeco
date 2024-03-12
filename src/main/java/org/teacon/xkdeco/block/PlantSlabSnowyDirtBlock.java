@@ -15,12 +15,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class PlantSlabSnowyDirtBlock extends APlantSlabBlock {
+public final class PlantSlabSnowyDirtBlock extends PlantSlabBlock {
 
 	public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 
-	public PlantSlabSnowyDirtBlock(Properties properties, boolean isPath, String dirtSlabId) {
-		super(properties, isPath, dirtSlabId);
+	public PlantSlabSnowyDirtBlock(Properties properties, boolean isPath) {
+		super(properties, isPath);
 		this.registerDefaultState(this.stateDefinition.any().setValue(SNOWY, false));
 	}
 

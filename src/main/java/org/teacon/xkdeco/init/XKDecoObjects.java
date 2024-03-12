@@ -302,7 +302,7 @@ public final class XKDecoObjects {
 			var block = BLOCKS.register(id, () -> new LeavesBlock(settings.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(SLAB_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new PlantSlabBlock(settings.get(), isPath, "dirt_slab"));
+			var block = BLOCKS.register(id, () -> new PlantSlabBlock(settings.get(), isPath));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
