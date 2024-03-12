@@ -126,6 +126,10 @@ public class XKDModelProvider extends FabricModelProvider {
 		return true;
 	}
 
+	public static boolean createIfSpecialFence(Block block, BlockModelGenerators generators) {
+		return false; //TODO
+	}
+
 	public static boolean createIfSpecialFenceGate(Block block, BlockModelGenerators generators) {
 		if (!WOODEN_FENCE_GATES.contains(block)) {
 			return false;

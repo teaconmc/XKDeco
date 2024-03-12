@@ -62,10 +62,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -751,10 +753,9 @@ public final class XKDecoObjects {
 		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		//TODO gravity?
-		addIsotropic("steel_filings", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("quartz_sand", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("toughened_sand", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBlock("steel_filings", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBlock("quartz_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBlock("toughened_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("quartz_glass", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("quartz_glass_slab", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
