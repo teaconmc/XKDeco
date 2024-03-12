@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block.settings;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
@@ -25,7 +27,7 @@ public interface XKBlockComponent {
 
 	BlockState registerDefaultState(BlockState state);
 
-	default BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
+	default @Nullable BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
 		return state;
 	}
 

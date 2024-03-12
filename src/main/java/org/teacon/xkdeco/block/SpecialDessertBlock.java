@@ -35,7 +35,6 @@ public final class SpecialDessertBlock extends Block implements CheckedWaterlogg
 	public InteractionResult use(
 			BlockState state, Level world, BlockPos pos,
 			Player player, InteractionHand hand, BlockHitResult hit) {
-		// noinspection DuplicatedCode
 		var item = player.getItemInHand(hand);
 		if (world.isClientSide) {
 			if (this.eat(world, pos, state, player).consumesAction()) {

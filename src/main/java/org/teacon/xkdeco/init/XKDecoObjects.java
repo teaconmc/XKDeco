@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
-import org.teacon.xkdeco.block.BasicFullDirectionBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
@@ -181,7 +180,7 @@ public final class XKDecoObjects {
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
 		//TODO shape
-		var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties));
+		var block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().waterLoggable().directional().get()));
 		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
@@ -332,7 +331,7 @@ public final class XKDecoObjects {
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(VENT_FAN_SUFFIX)) {
 			//TODO shape
-			var block = BLOCKS.register(id, () -> new BasicFullDirectionBlock(properties));
+			var block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().waterLoggable().directional().get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(CONSOLE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new SpecialConsole(properties));
@@ -735,9 +734,8 @@ public final class XKDecoObjects {
 		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
-		addIsotropic("steel_filings", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
-
 		//TODO gravity?
+		addIsotropic("steel_filings", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("quartz_sand", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("toughened_sand", copyProperties(Blocks.SAND), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -1091,7 +1089,7 @@ public final class XKDecoObjects {
 					Shapes.or(box(0, 2, 2, 16, 14, 14), box(2, 0, 2, 14, 16, 14), box(2, 2, 0, 14, 14, 16)),
 					BooleanOp.ONLY_FIRST);
 			VoxelShape side = box(2, 0, 2, 14, 2, 14);
-			return new AirDuctBlock(XKBlockSettings.builder()
+			return new AirDuctBlock(BlockSettingPresets.hollowSteel()
 					.shape(ShapeGenerator.sixWay(base, Shapes.empty(), side))
 					.interactionShape(ShapeGenerator.unit(Shapes.block()))
 					.waterLoggable()
@@ -1100,7 +1098,7 @@ public final class XKDecoObjects {
 		addBlock("air_duct_oblique", () -> {
 			VoxelShape trueNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct"));
 			VoxelShape falseNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct2"));
-			return new HorizontalShiftBlock(XKBlockSettings.builder()
+			return new HorizontalShiftBlock(BlockSettingPresets.hollowSteel()
 					.shape(ShapeGenerator.horizontalShifted(trueNorth, falseNorth))
 					.interactionShape(ShapeGenerator.unit(Shapes.block()))
 					.get());
