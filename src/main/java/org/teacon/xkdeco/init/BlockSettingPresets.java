@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.init;
 
+import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 
 import net.minecraft.world.level.block.Blocks;
@@ -51,7 +52,7 @@ public interface BlockSettingPresets {
 	}
 
 	static XKBlockSettings.Builder hollowSteel() {
-		return steel().noOcclusion().configure($ -> $.strength(3, 6));
+		return steel().noOcclusion().glassType(GlassType.HOLLOW_STEEL).configure($ -> $.strength(3, 6));
 	}
 
 	static XKBlockSettings.Builder mudWall() {

@@ -1,0 +1,22 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/steel_safety_ladder_side",
+		"inner": "xkdeco:block/steel_safety_ladder_side"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 15],
+			"to": [15, 16, 16],
+			"faces": {
+				"north": {"uv": [15, 0, 1, 16], "texture": "#inner"},
+				"east": {"uv": [14, 0, 15, 16], "texture": "#inner"},
+				"south": {"uv": [1, 0, 15, 16], "texture": "#inner"},
+				"west": {"uv": [1, 0, 2, 16], "texture": "#inner"},
+				"up": {"uv": [1, 0, 15, 1], "texture": "#inner"},
+				"down": {"uv": [1, 15, 15, 16], "texture": "#inner"}
+			}
+		}
+	]
+}

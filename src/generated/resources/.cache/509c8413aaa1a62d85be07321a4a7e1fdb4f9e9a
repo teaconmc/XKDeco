@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-12T08:30:14.3616784	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-12T19:16:33.54483	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -361,6 +361,8 @@ fcd6cf5371257d96134535c479832984a32314d5 assets/xkdeco/blockstates/steel_block.j
 4d8e4f52e0d2007dfee6ae80403c13aa671b0f98 assets/xkdeco/blockstates/steel_floor.json
 9a4a250ea174a02f8cf5d5bad819de2d8dd595e8 assets/xkdeco/blockstates/steel_floor_slab.json
 62d5f616cb354e7a5d5e00640198f5afa285ac32 assets/xkdeco/blockstates/steel_floor_stairs.json
+d6bcd279cf140b7ef0536625b98602c93335f61b assets/xkdeco/blockstates/steel_ladder.json
+dc518547241ffd7a37d216474bbd3fea398f9af1 assets/xkdeco/blockstates/steel_safety_ladder.json
 bd17c12aefb12d5cb3c6e158db0413db3e8ac2b2 assets/xkdeco/blockstates/steel_tiles.json
 660fc1fd95a5ea8e978e43b75612854b4fa5d89a assets/xkdeco/blockstates/steel_tile_slab.json
 39e74a8fce7dcb653a13e56f65f2c48f3a9bf492 assets/xkdeco/blockstates/steel_tile_stairs.json
@@ -1753,6 +1755,8 @@ c3f4e290519eb3d616012ec47b9495b3f0e0e871 assets/xkdeco/models/item/steel_filings
 c5bd483b2bdf1d3ff087a894a793d2a149d845d3 assets/xkdeco/models/item/steel_floor.json
 0f1c89979032ef972f48e6007f7ee43097e99cb7 assets/xkdeco/models/item/steel_floor_slab.json
 3bf605b257d21a4f30cecae8b58048f6d781352a assets/xkdeco/models/item/steel_floor_stairs.json
+1828817b4b125552ac9ee00de58f641cde661e4e assets/xkdeco/models/item/steel_ladder.json
+93ceecce90acafc9dc9fba4952d650c2f4a56ffc assets/xkdeco/models/item/steel_safety_ladder.json
 3705548a7bae94a287b0d89abef16caeaa91fbf3 assets/xkdeco/models/item/steel_tiles.json
 7fded9ba996eb9a22367d53bbd948d81635f2765 assets/xkdeco/models/item/steel_tile_slab.json
 465c50d4061bd8a40e92494a56b9989a213951c4 assets/xkdeco/models/item/steel_tile_stairs.json

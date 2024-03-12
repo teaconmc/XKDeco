@@ -33,6 +33,7 @@ import org.teacon.xkdeco.block.SpecialDessertBlock;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
@@ -46,7 +47,6 @@ import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.item.MimicWallItem;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.DSL;
 
@@ -157,7 +157,6 @@ public final class XKDecoObjects {
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
 		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
-		Preconditions.checkNotNull(northShape, "Missing shape for block: %s, shape: %s", id, northShapeId);
 		RegistryObject<BasicBlock> block;
 		if (northShape == Shapes.block()) {
 			block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().horizontal().get()));
@@ -166,7 +165,7 @@ public final class XKDecoObjects {
 					id,
 					() -> new BasicBlock(BlockSettingPresets.thingy(null)
 							.horizontal()
-							.shape(ShapeGenerator.horizontal(northShape))
+							.shape(new ResourceLocation(northShapeId))
 							.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
 							.get()));
 		}
@@ -210,11 +209,11 @@ public final class XKDecoObjects {
 			blockSupplier = () -> new RotatedPillarBlock(settings.get());
 		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
 			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
-					.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("big_table"))))
+					.shape(XKDeco.id("big_table"))
 					.get());
 		} else if (id.contains(TABLE_SUFFIX)) {
 			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
-					.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("table"))))
+					.shape(XKDeco.id("table"))
 					.get());
 		} else if (id.contains("_trapdoor")) {
 			blockSupplier = () -> new TrapDoorBlock(
@@ -681,6 +680,23 @@ public final class XKDecoObjects {
 		addIsotropic("chiseled_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("hollow_steel_block", BlockSettingPresets.hollowSteel().waterLoggable(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("hollow_steel_trapdoor", BlockSettingPresets.hollowSteel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBlock(
+				"steel_safety_ladder",
+				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
+						.horizontal()
+						.waterLoggable()
+						.shape(XKDeco.id("safety_ladder")).get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"steel_ladder",
+				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
+						.horizontal()
+						.waterLoggable()
+						.shape(XKDeco.id("ladder"))
+						.canSurviveHandler(new MetalLadderCanSurviveHandler()).get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
 		addIsotropic("framed_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("factory_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
