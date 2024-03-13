@@ -1,6 +1,5 @@
 {
 	"credit": "Made by XeKr with Blockbench",
-	"render_type": "minecraft:cutout",
 	"parent": "block/cube_all",
 	"elements": [
 		{
