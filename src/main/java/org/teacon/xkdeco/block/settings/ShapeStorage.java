@@ -119,6 +119,9 @@ public class ShapeStorage {
 		put("dessert", box(1, 0, 1, 15, 2, 15));
 		put("ladder", box(0, 0, 13, 16, 16, 16));
 		put("safety_ladder", Shapes.join(Shapes.block(), box(1, 0, 1, 15, 16, 13), BooleanOp.ONLY_FIRST));
+		put("hollow_steel_half_beam_floor", box(3, -4, 0, 13, 4, 16));
+		put("hollow_steel_half_beam_ceiling", box(3, 12, 0, 13, 20, 16));
+		put("hollow_steel_half_beam_wall", box(3, 0, 12, 13, 16, 20));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

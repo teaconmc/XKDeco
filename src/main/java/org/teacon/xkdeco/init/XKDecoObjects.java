@@ -15,6 +15,7 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
+import org.teacon.xkdeco.block.HollowSteelHalfBeamBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
@@ -1124,6 +1125,17 @@ public final class XKDecoObjects {
 					.get());
 		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBlock("hollow_steel_beam", () -> new WallBlock(BlockSettingPresets.hollowSteel().get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBlock(
+				"hollow_steel_half_beam",
+				() -> new HollowSteelHalfBeamBlock(BlockSettingPresets.hollowSteel()
+						.waterLoggable()
+						.shape(ShapeGenerator.faceAttached(
+								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_floor")),
+								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_ceiling")),
+								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_wall"))))
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
 	}
 
 	private static void addBlock(
