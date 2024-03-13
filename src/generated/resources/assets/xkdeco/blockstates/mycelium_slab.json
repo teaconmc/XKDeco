@@ -1,13 +1,22 @@
 {
   "variants": {
-    "type=bottom": {
+    "snowy=false,type=bottom": {
       "model": "xkdeco:block/mycelium_slab"
     },
-    "type=double": {
+    "snowy=false,type=double": {
       "model": "minecraft:block/mycelium"
     },
-    "type=top": {
+    "snowy=false,type=top": {
       "model": "xkdeco:block/mycelium_slab_top"
+    },
+    "snowy=true,type=bottom": {
+      "model": "xkdeco:block/mycelium_slab"
+    },
+    "snowy=true,type=double": {
+      "model": "minecraft:block/grass_block_snow"
+    },
+    "snowy=true,type=top": {
+      "model": "xkdeco:block/snowy_slab_top"
     }
   }
 }

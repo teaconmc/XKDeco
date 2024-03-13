@@ -31,7 +31,7 @@ public interface BlockSettingPresets {
 						.pushReaction(PushReaction.DESTROY)
 						.ignitedByLava())
 				.shape(XKDeco.id("fallen_leaves"))
-				.renderType(KiwiModule.RenderLayer.Layer.CUTOUT)
+				.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 				.canSurviveHandler(FALLEN_LEAVES_CAN_SURVIVE);
 	}
 

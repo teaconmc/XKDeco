@@ -50,6 +50,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraftforge.registries.RegistryObject;
@@ -88,6 +89,8 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("bottle_stack"),
 			block("empty_bottle_stack"));
 	private BlockModelGenerators generators;
+	private ResourceLocation snowySlabDouble = new ResourceLocation("block/grass_block_snow");
+	private ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
 	public XKDModelProvider(FabricDataOutput output) {
 		super(output);
@@ -160,6 +163,9 @@ public class XKDModelProvider extends FabricModelProvider {
 		this.generators = generators;
 		var originalModelOutput = generators.modelOutput;
 		generators.modelOutput = (modelLocation, json) -> {
+			if (modelLocation.getPath().startsWith("block/grass_cobblestone")) {
+				return;
+			}
 			if (!SKIPPED_MODELS.contains(modelLocation.getPath())) {
 				originalModelOutput.accept(modelLocation, json);
 			}
@@ -244,6 +250,12 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		ResourceLocation dirtTexture = TextureMapping.getBlockTexture(Blocks.DIRT);
 		ResourceLocation netherrackTexture = TextureMapping.getBlockTexture(Blocks.NETHERRACK);
+		TextureMapping snowyMapping = new TextureMapping()
+				.put(TextureSlot.BOTTOM, dirtTexture)
+				.copyForced(TextureSlot.BOTTOM, TextureSlot.PARTICLE)
+				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.GRASS_BLOCK, "_top"))
+				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.GRASS_BLOCK, "_snow"));
+		ModelTemplates.SLAB_TOP.create(snowySlabTop, snowyMapping, generators.modelOutput);
 		createSlab(Blocks.DIRT, false, false, UnaryOperator.identity());
 		createSlab(Blocks.DIRT_PATH, true, true, $ -> $.put(TextureSlot.BOTTOM, dirtTexture));
 		createSlab(Blocks.GRASS_BLOCK, true, true, UnaryOperator.identity());
@@ -570,7 +582,21 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation bottomModel = bottomTemplate.create(slab, textureMapping, generators.modelOutput);
 		ResourceLocation topModel = ModelTemplates.SLAB_TOP.create(slab, textureMapping, generators.modelOutput);
 		ResourceLocation fullModel = ModelLocationUtils.getModelLocation(fullBlock);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, bottomModel, topModel, fullModel));
+		BlockStateGenerator generator;
+		if (slab.defaultBlockState().hasProperty(BlockStateProperties.SNOWY)) {
+			generator = MultiVariantGenerator.multiVariant(slab).with(PropertyDispatch.properties(
+							BlockStateProperties.SNOWY,
+							BlockStateProperties.SLAB_TYPE)
+					.select(true, SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottomModel))
+					.select(true, SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, snowySlabTop))
+					.select(true, SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, snowySlabDouble))
+					.select(false, SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottomModel))
+					.select(false, SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, topModel))
+					.select(false, SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, fullModel)));
+		} else {
+			generator = BlockModelGenerators.createSlab(slab, bottomModel, topModel, fullModel);
+		}
+		generators.blockStateOutput.accept(generator);
 	}
 
 	private void createBlockStateOnly(String id, boolean delegateItem) {

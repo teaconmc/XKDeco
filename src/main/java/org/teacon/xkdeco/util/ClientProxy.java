@@ -153,10 +153,10 @@ public final class ClientProxy {
 		});
 		modEventBus.addListener((FMLClientSetupEvent event) -> {
 			event.enqueueWork(() -> {
-				for (String s : List.of("grass_block_slab")) {
-					RenderType cutout = RenderType.cutout();
-					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
-				}
+//				for (String s : List.of("")) {
+//					RenderType cutout = RenderType.cutout();
+//					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
+//				}
 
 				//TODO temporary implementation. data-gen it in the future
 				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
