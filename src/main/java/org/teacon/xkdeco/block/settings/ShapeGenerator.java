@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.block.settings;
 
+import java.util.Map;
 import java.util.function.Predicate;
 
 import org.teacon.xkdeco.block.XKDStateProperties;
@@ -9,8 +10,11 @@ import org.teacon.xkdeco.util.RoofUtil;
 import com.google.common.base.Preconditions;
 
 import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -53,6 +57,10 @@ public interface ShapeGenerator {
 						falseGenerator.getShape(blockState, context);
 	}
 
+	static <T extends Enum<T> & StringRepresentable> ShapeGenerator shifted(EnumProperty<T> property, Map<T, ShapeGenerator> map) {
+		return (blockState, context) -> map.get(blockState.getValue(property)).getShape(blockState, context);
+	}
+
 	static ShapeGenerator horizontalShifted(VoxelShape trueNorth, VoxelShape falseNorth) {
 		return shifted(
 				state -> state.getValue(XKDStateProperties.ROOF_HALF) == RoofUtil.RoofHalf.BASE,
@@ -88,5 +96,11 @@ public interface ShapeGenerator {
 			}
 			return shape;
 		};
+	}
+
+	static ShapeGenerator faceAttached(VoxelShape floor, VoxelShape ceiling, VoxelShape wall) {
+		return shifted(
+				BlockStateProperties.ATTACH_FACE,
+				Map.of(AttachFace.FLOOR, horizontal(floor), AttachFace.CEILING, horizontal(ceiling), AttachFace.WALL, horizontal(wall)));
 	}
 }

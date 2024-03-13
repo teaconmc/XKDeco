@@ -4,7 +4,7 @@ license="BSD-3-Clause"
 
 [[mods]]
 modId="xkdeco"
-authors="TeaConMC"
+authors="XeKr, Snownee, TeaConMC"
 version="${file.jarVersion}"
 displayName="XeKr's Decorations"
 description='''
