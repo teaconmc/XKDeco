@@ -3,8 +3,7 @@ package org.teacon.xkdeco.util;
 import java.util.List;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.FallenLeavesBlock;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.settings.BlockRenderSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
@@ -162,16 +161,12 @@ public final class ClientProxy {
 				//TODO temporary implementation. data-gen it in the future
 				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
 					Block block = registryObject.get();
-					if (block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FallenLeavesBlock) {
+					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
 						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-						continue;
 					}
-					XKBlockSettings settings = XKBlockSettings.of(block);
-					if (settings == null || settings.glassType == null) {
-						continue;
-					}
-					ItemBlockRenderTypes.setRenderLayer(block, (RenderType) settings.glassType.renderType().value);
 				}
+
+				BlockRenderSettings.finalizeLoading();
 			});
 		});
 	}

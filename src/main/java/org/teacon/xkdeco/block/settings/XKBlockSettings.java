@@ -25,6 +25,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.KiwiModule;
+import snownee.kiwi.loader.Platform;
 
 public class XKBlockSettings {
 	public static final XKBlockSettings EMPTY = new XKBlockSettings(builder());
@@ -48,6 +50,14 @@ public class XKBlockSettings {
 		this.interactionShape = builder.interactionShape != null ? builder.interactionShape : builder.getShape(builder.interactionShapeId);
 		this.canSurviveHandler = builder.canSurviveHandler;
 		this.components = Map.copyOf(builder.components);
+		if (Platform.isPhysicalClient()) {
+			KiwiModule.RenderLayer.Layer renderType = builder.renderType;
+			if (renderType == null && glassType != null) {
+				renderType = glassType.renderType();
+			}
+			BlockRenderSettings renderSettings = new BlockRenderSettings(renderType);
+			BlockRenderSettings.putSettings(this, renderSettings);
+		}
 	}
 
 	public static XKBlockSettings.Builder builder() {
@@ -165,9 +175,17 @@ public class XKBlockSettings {
 		@Nullable
 		private CanSurviveHandler canSurviveHandler;
 		private final Map<XKBlockComponent.Type<?>, XKBlockComponent> components = Maps.newLinkedHashMap();
+		@Nullable
+		private KiwiModule.RenderLayer.Layer renderType;
 
 		private Builder(BlockBehaviour.Properties properties) {
 			this.properties = properties;
+		}
+
+		public BlockBehaviour.Properties get() {
+			XKBlockSettings settings = new XKBlockSettings(this);
+			((XKBlockProperties) properties).xkdeco$setSettings(settings);
+			return properties;
 		}
 
 		public Builder configure(UnaryOperator<BlockBehaviour.Properties> configurator) {
@@ -256,12 +274,6 @@ public class XKBlockSettings {
 			return component(DirectionalComponent.getInstance(customPlacement));
 		}
 
-		public BlockBehaviour.Properties get() {
-			XKBlockSettings settings = new XKBlockSettings(this);
-			((XKBlockProperties) properties).xkdeco$setSettings(settings);
-			return properties;
-		}
-
 		public boolean hasComponent(XKBlockComponent.Type<?> type) {
 			return components.containsKey(type);
 		}
@@ -283,6 +295,11 @@ public class XKBlockSettings {
 				return ShapeGenerator.moulding(shape);
 			}
 			return ShapeGenerator.unit(shape);
+		}
+
+		public Builder renderType(KiwiModule.RenderLayer.Layer renderType) {
+			this.renderType = renderType;
+			return this;
 		}
 	}
 }
