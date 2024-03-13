@@ -18,7 +18,6 @@ import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.HollowSteelHalfBeamBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
-import org.teacon.xkdeco.block.PlantSlabBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
@@ -27,11 +26,13 @@ import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
+import org.teacon.xkdeco.block.SnowySlabBlock;
 import org.teacon.xkdeco.block.SpecialBlockDisplayBlock;
 import org.teacon.xkdeco.block.SpecialConsole;
 import org.teacon.xkdeco.block.SpecialCupBlock;
 import org.teacon.xkdeco.block.SpecialDessertBlock;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
+import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
@@ -85,6 +86,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
+import snownee.kiwi.KiwiModule;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -116,7 +118,6 @@ public final class XKDecoObjects {
 	public static final String LOG_SUFFIX = "_log";
 	public static final String WOOD_SUFFIX = "_wood";
 	public static final String SLAB_SUFFIX = "_slab";
-	public static final String PATH_SUFFIX = "_path";
 	public static final String ROOF_SUFFIX = "_roof";
 	public static final String ROOF_END_SUFFIX = "_roof_end";
 	public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
@@ -289,7 +290,6 @@ public final class XKDecoObjects {
 			XKBlockSettings.Builder settings,
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
-		var isPath = id.contains(PATH_SUFFIX);
 		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
 			if (id.startsWith(FALLEN_LEAVES_PREFIX)) {
 				var block = BLOCKS.register(id, () -> new FallenLeavesBlock(settings.get()));
@@ -297,9 +297,6 @@ public final class XKDecoObjects {
 				return;
 			}
 			var block = BLOCKS.register(id, () -> new LeavesBlock(settings.get()));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(SLAB_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new PlantSlabBlock(settings.get(), isPath));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
@@ -593,7 +590,11 @@ public final class XKDecoObjects {
 		addIsotropic("maya_quad_screw_thread_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("maya_pictogram_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_skull_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"maya_skull_stone",
+				copyProperties(Blocks.STONE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
 
 		addIsotropic("maya_pillar", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_pillar", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -767,47 +768,96 @@ public final class XKDecoObjects {
 		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
 		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
 
-		addPlant("dirt_slab", copyProperties(Blocks.DIRT).sustainsPlant(), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("dirt_path_slab", copyProperties(Blocks.DIRT_PATH), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("grass_block_slab", copyProperties(Blocks.GRASS_BLOCK).sustainsPlant(), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("mycelium_slab", copyProperties(Blocks.MYCELIUM).sustainsPlant(), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("podzol_slab", copyProperties(Blocks.PODZOL).sustainsPlant(), ITEM_NATURE, TAB_NATURE_CONTENTS);
-
-		addIsotropic("netherrack_slab", copyProperties(Blocks.NETHERRACK), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("crimson_nylium_slab", copyProperties(Blocks.CRIMSON_NYLIUM), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("warped_nylium_slab", copyProperties(Blocks.WARPED_NYLIUM), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("end_stone_slab", copyProperties(Blocks.END_STONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addBlock("dirt_slab", () -> new SlabBlock(copyProperties(Blocks.DIRT).sustainsPlant().get()), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addBlock(
+				"dirt_path_slab",
+				() -> new SpecialSlabBlock(copyProperties(Blocks.DIRT_PATH).get(), SpecialSlabBlock.Type.PATH),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
+		addBlock(
+				"grass_block_slab",
+				() -> new SnowySlabBlock(copyProperties(Blocks.GRASS_BLOCK).sustainsPlant()
+						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+						.get()),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
+		addBlock(
+				"mycelium_slab",
+				() -> new SnowySlabBlock(copyProperties(Blocks.MYCELIUM).sustainsPlant().get()),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
+		addBlock(
+				"podzol_slab",
+				() -> new SnowySlabBlock(copyProperties(Blocks.PODZOL).sustainsPlant().get()),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
+		addBlock("netherrack_slab", () -> new SlabBlock(copyProperties(Blocks.NETHERRACK).get()), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addBlock(
+				"crimson_nylium_slab",
+				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
+		addBlock(
+				"warped_nylium_slab",
+				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
+		addBlock("end_stone_slab", () -> new SlabBlock(copyProperties(Blocks.END_STONE).get()), ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addIsotropic("dirt_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("grass_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic(
+				"grass_cobblestone",
+				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
 		addIsotropic("sandy_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("snowy_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addIsotropic("cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("dirt_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("grass_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic(
+				"grass_cobblestone_path",
+				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
 		addIsotropic("sandy_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("snowy_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addIsotropic("dirt_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("grass_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic(
+				"grass_cobblestone_slab",
+				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
 		addIsotropic("sandy_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("snowy_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addIsotropic("cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("dirt_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("grass_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic(
+				"grass_cobblestone_path_slab",
+				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
 		addIsotropic("sandy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("snowy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addIsotropic("dirt_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("grass_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic(
+				"grass_cobblestone_stairs",
+				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
 		addIsotropic("sandy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("snowy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 
 		addIsotropic("cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("dirt_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("grass_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic(
+				"grass_cobblestone_path_stairs",
+				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
+				ITEM_NATURE,
+				TAB_NATURE_CONTENTS);
 		addIsotropic("sandy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 		addIsotropic("snowy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
 

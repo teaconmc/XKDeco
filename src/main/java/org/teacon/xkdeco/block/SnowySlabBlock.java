@@ -4,24 +4,27 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.SlabType;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class PlantSlabSnowyDirtBlock extends PlantSlabBlock {
-
+public final class SnowySlabBlock extends SpecialSlabBlock {
 	public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 
-	public PlantSlabSnowyDirtBlock(Properties properties, boolean isPath) {
-		super(properties, isPath);
-		this.registerDefaultState(this.stateDefinition.any().setValue(SNOWY, false));
+	public SnowySlabBlock(Properties properties) {
+		super(properties, Type.DIRT);
+		this.registerDefaultState(this.stateDefinition.any()
+				.setValue(TYPE, SlabType.BOTTOM)
+				.setValue(WATERLOGGED, Boolean.FALSE)
+				.setValue(SNOWY, false));
 	}
 
 	@Override
@@ -31,21 +34,26 @@ public final class PlantSlabSnowyDirtBlock extends PlantSlabBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-		return pFacing == Direction.UP ? pState.setValue(SNOWY, isSnowySetting(pFacingState)) : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+	public BlockState updateShape(
+			BlockState pState,
+			Direction pFacing,
+			BlockState pFacingState,
+			LevelAccessor pLevel,
+			BlockPos pCurrentPos,
+			BlockPos pFacingPos) {
+		if (pFacing == Direction.UP) {
+			pState = pState.setValue(SNOWY, pState.getValue(TYPE) != SlabType.BOTTOM && SnowyDirtBlock.isSnowySetting(pFacingState));
+		}
+		return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState state = super.getStateForPlacement(pContext);
-        if (state != null) {
-            return state.setValue(SNOWY,isSnowySetting(state));
-        }
-        return pContext.getLevel().getBlockState(pContext.getClickedPos().above());
-    }
-
-	private static boolean isSnowySetting(BlockState pState) {
-		return pState.is(BlockTags.SNOW);
+		if (state != null && state.getValue(TYPE) != SlabType.BOTTOM) {
+			BlockState aboveState = pContext.getLevel().getBlockState(pContext.getClickedPos().above());
+			state = state.setValue(SNOWY, SnowyDirtBlock.isSnowySetting(aboveState));
+		}
+		return state;
 	}
-
 }
