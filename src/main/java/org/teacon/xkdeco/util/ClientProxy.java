@@ -3,6 +3,7 @@ package org.teacon.xkdeco.util;
 import java.util.List;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -161,7 +162,7 @@ public final class ClientProxy {
 				//TODO temporary implementation. data-gen it in the future
 				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
 					Block block = registryObject.get();
-					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
+					if (block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FallenLeavesBlock) {
 						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
 						continue;
 					}

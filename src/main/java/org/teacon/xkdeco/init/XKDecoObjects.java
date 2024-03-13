@@ -19,6 +19,7 @@ import org.teacon.xkdeco.block.HollowSteelHalfBeamBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.PlantSlabBlock;
+import org.teacon.xkdeco.block.PlantSlabSnowyDirtBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
@@ -112,6 +113,9 @@ public final class XKDecoObjects {
 	public static final String PLANTABLE_PREFIX = "plantable_";
 	public static final String DOUBLE_SCREW_PREFIX = "double_screw_";
 	public static final String STONE_WATER_PREFIX = "stone_water_";
+	public static final String GRASS_BLOCK_PREFIX = "grass_block_";
+	public static final String MYCELIUM__PREFIX = "mycelium_";
+	public static final String PODZOL_PREFIX = "podzol_";
 
 	public static final String LOG_SUFFIX = "_log";
 	public static final String WOOD_SUFFIX = "_wood";
@@ -299,7 +303,7 @@ public final class XKDecoObjects {
 			var block = BLOCKS.register(id, () -> new LeavesBlock(settings.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(SLAB_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new PlantSlabBlock(settings.get(), isPath, "dirt_slab"));
+			var block = BLOCKS.register(id, () -> new PlantSlabBlock(settings.get(), isPath));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");

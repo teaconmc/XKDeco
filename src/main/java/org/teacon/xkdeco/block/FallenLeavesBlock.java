@@ -7,9 +7,10 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.NamedRenderTypeManager;
 
 //FIXME do not extend LeavesBlock
-public final class FallenLeavesBlock extends LeavesBlock {
+public final class FallenLeavesBlock extends Block {
 	private static final VoxelShape AABB = Block.box(0, 0, 0, 16, 1, 16);
 
 
