@@ -1,0 +1,114 @@
+{
+  "variants": {
+    "facing=east,shape=inner_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "facing=east,shape=inner_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "x": 180
+    },
+    "facing=east,shape=outer_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "facing=east,shape=outer_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "x": 180
+    },
+    "facing=east,shape=straight": {
+      "model": "xkdeco:block/furniture/light_wall_base",
+      "x": 180
+    },
+    "facing=north,shape=inner_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "facing=north,shape=inner_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "facing=north,shape=outer_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "facing=north,shape=outer_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "facing=north,shape=straight": {
+      "model": "xkdeco:block/furniture/light_wall_base",
+      "uvlock": true,
+      "x": 180,
+      "y": 270
+    },
+    "facing=south,shape=inner_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "x": 180
+    },
+    "facing=south,shape=inner_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "facing=south,shape=outer_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "x": 180
+    },
+    "facing=south,shape=outer_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "facing=south,shape=straight": {
+      "model": "xkdeco:block/furniture/light_wall_base",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "facing=west,shape=inner_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "facing=west,shape=inner_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_inner",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "facing=west,shape=outer_left": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 90
+    },
+    "facing=west,shape=outer_right": {
+      "model": "xkdeco:block/furniture/light_wall_base_outer",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    },
+    "facing=west,shape=straight": {
+      "model": "xkdeco:block/furniture/light_wall_base",
+      "uvlock": true,
+      "x": 180,
+      "y": 180
+    }
+  }
+}

@@ -32,11 +32,11 @@ import org.teacon.xkdeco.block.SpecialConsole;
 import org.teacon.xkdeco.block.SpecialCupBlock;
 import org.teacon.xkdeco.block.SpecialDessertBlock;
 import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
-import org.teacon.xkdeco.block.SpecialLightBar;
 import org.teacon.xkdeco.block.SpecialWardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
 import org.teacon.xkdeco.block.settings.GlassType;
+import org.teacon.xkdeco.block.settings.MouldingComponent;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.ShapeStorage;
 import org.teacon.xkdeco.block.settings.WaterLoggableComponent;
@@ -62,7 +62,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -141,7 +140,6 @@ public final class XKDecoObjects {
 	public static final String REFRESHMENT_SPECIAL = "refreshments";
 	public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
 	public static final String ITEM_PROJECTOR_SPECIAL = "item_projector";
-	public static final String FACTORY_LIGHT_BAR_SPECIAL = "factory_light_bar";
 
 	private static void addCushionEntity() {
 		ENTITIES.register(CUSHION_ENTITY, () -> EntityType.Builder.<CushionEntity>of(CushionEntity::new, MobCategory.MISC).sized(
@@ -327,9 +325,6 @@ public final class XKDecoObjects {
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(WARDROBE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new SpecialWardrobeBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.equals(FACTORY_LIGHT_BAR_SPECIAL)) {
-			var block = BLOCKS.register(id, () -> new SpecialLightBar(properties));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(VENT_FAN_SUFFIX)) {
 			//TODO shape
@@ -1012,7 +1007,15 @@ public final class XKDecoObjects {
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addSpecial("factory_light_bar", BLOCK_METAL_LIGHT_NO_COLLISSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"factory_light_bar",
+				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
+						.noCollission()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("factory_light_bar"))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 
 		//FIXME non-directional
 		addBasic("factory_ceiling_lamp", "xkdeco:factory_ceiling_lamp", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
@@ -1133,6 +1136,43 @@ public final class XKDecoObjects {
 						.get()),
 				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
+
+		addBlock(
+				"dark_wall_base",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base"))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"dark_wall_base2",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2"))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"light_wall_base",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base"))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"light_wall_base2",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2"))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 	}
 
 	private static void addBlock(
@@ -1223,6 +1263,25 @@ public final class XKDecoObjects {
 		addBlock(
 				"hollow_" + id + "_column_wall",
 				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+
+		addBlock(
+				id + "_meiren_kao",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
+						.shape(XKDeco.id("meiren_kao"))
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				id + "_meiren_kao_with_column",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
+						.shape(XKDeco.id("meiren_kao_with_column"))
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 	}

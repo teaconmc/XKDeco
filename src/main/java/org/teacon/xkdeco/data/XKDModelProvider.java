@@ -50,6 +50,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -275,7 +276,22 @@ public class XKDModelProvider extends FabricModelProvider {
 				ModelLocationUtils.getModelLocation(block("steel_ladder").asItem()),
 				TextureMapping.layer0(TextureMapping.getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
-		generators.blockStateOutput.accept(createFaceAttached("hollow_steel_half_beam"));
+		createFaceAttached("hollow_steel_half_beam");
+		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
+		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
+		createMoulding(
+				"dark_wall_base2",
+				"furniture/light_wall_base",
+				true,
+				true,
+				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
+		createMoulding("light_wall_base", "furniture/light_wall_base", true, true);
+		createMoulding(
+				"light_wall_base2",
+				"furniture/light_wall_base",
+				true,
+				true,
+				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
 
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
@@ -293,9 +309,151 @@ public class XKDModelProvider extends FabricModelProvider {
 		}
 	}
 
-	private BlockStateGenerator createFaceAttached(String id) {
+	private void createMoulding(String id, String model, boolean uvLock, boolean itemModel, Variant... baseVariants) {
+		if (baseVariants.length == 0) {
+			baseVariants = new Variant[]{Variant.variant()};
+		}
 		Block block = block(id);
-		return MultiVariantGenerator.multiVariant(
+		ResourceLocation pStraightModelLocation = XKDeco.id("block/" + model);
+		ResourceLocation pOuterModelLocation = XKDeco.id("block/" + model + "_outer");
+		ResourceLocation pInnerModelLocation = XKDeco.id("block/" + model + "_inner");
+		if (itemModel) {
+			generators.delegateItemModel(block, pStraightModelLocation);
+		}
+		var generator = MultiVariantGenerator.multiVariant(block, baseVariants).with(PropertyDispatch.properties(
+						BlockStateProperties.HORIZONTAL_FACING,
+						BlockStateProperties.STAIRS_SHAPE)
+				.select(
+						Direction.EAST,
+						StairsShape.STRAIGHT,
+						Variant.variant().with(VariantProperties.MODEL, pStraightModelLocation))
+				.select(
+						Direction.WEST,
+						StairsShape.STRAIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pStraightModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.SOUTH,
+						StairsShape.STRAIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pStraightModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.NORTH,
+						StairsShape.STRAIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pStraightModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.EAST,
+						StairsShape.OUTER_RIGHT,
+						Variant.variant().with(VariantProperties.MODEL, pOuterModelLocation))
+				.select(
+						Direction.WEST,
+						StairsShape.OUTER_RIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pOuterModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.SOUTH,
+						StairsShape.OUTER_RIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pOuterModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.NORTH,
+						StairsShape.OUTER_RIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pOuterModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.EAST,
+						StairsShape.OUTER_LEFT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pOuterModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.WEST,
+						StairsShape.OUTER_LEFT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pOuterModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.SOUTH,
+						StairsShape.OUTER_LEFT,
+						Variant.variant().with(VariantProperties.MODEL, pOuterModelLocation))
+				.select(
+						Direction.NORTH,
+						StairsShape.OUTER_LEFT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pOuterModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.EAST,
+						StairsShape.INNER_RIGHT,
+						Variant.variant().with(VariantProperties.MODEL, pInnerModelLocation))
+				.select(
+						Direction.WEST,
+						StairsShape.INNER_RIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pInnerModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.SOUTH,
+						StairsShape.INNER_RIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pInnerModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.NORTH,
+						StairsShape.INNER_RIGHT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pInnerModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.EAST,
+						StairsShape.INNER_LEFT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pInnerModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.WEST,
+						StairsShape.INNER_LEFT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pInnerModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+								.with(VariantProperties.UV_LOCK, uvLock))
+				.select(
+						Direction.SOUTH,
+						StairsShape.INNER_LEFT,
+						Variant.variant().with(VariantProperties.MODEL, pInnerModelLocation))
+				.select(
+						Direction.NORTH,
+						StairsShape.INNER_LEFT,
+						Variant.variant()
+								.with(VariantProperties.MODEL, pInnerModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+								.with(VariantProperties.UV_LOCK, uvLock)));
+		generators.blockStateOutput.accept(generator);
+	}
+
+	private void createFaceAttached(String id) {
+		Block block = block(id);
+		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
 						block,
 						Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(block)))
 				.with(PropertyDispatch.properties(
@@ -330,6 +488,7 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(AttachFace.CEILING, Direction.NORTH, Variant.variant()
 								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
 								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180)));
+		generators.blockStateOutput.accept(generator);
 	}
 
 	private void createTreatedWood(String id) {
@@ -348,6 +507,9 @@ public class XKDModelProvider extends FabricModelProvider {
 		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
 		createWoodenWall(id + "_column_wall", "wooden_column_wall", textureMapping);
 		createWoodenWall("hollow_" + id + "_column_wall", "hollow_wooden_column_wall", textureMapping);
+
+		createMoulding(id + "_meiren_kao", "furniture/" + id + "_meiren_kao", false, true);
+		createMoulding(id + "_meiren_kao_with_column", "furniture/" + id + "_meiren_kao_with_column", false, true);
 	}
 
 	private void createWoodenWall(String id, String templateId, TextureMapping textureMapping) {
