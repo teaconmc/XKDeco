@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.block.settings;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -41,6 +42,14 @@ public interface CanSurviveHandler {
 		});
 	}
 
+	static Compound any(List<CanSurviveHandler> handlers) {
+		return new Compound(true, handlers);
+	}
+
+	static Compound all(List<CanSurviveHandler> handlers) {
+		return new Compound(false, handlers);
+	}
+
 	final class Impls {
 		private Impls() {
 		}
@@ -71,5 +80,27 @@ public interface CanSurviveHandler {
 		};
 
 		private static final Map<DirectionProperty, CanSurviveHandler> CHECK_FACE = Maps.newHashMap();
+	}
+
+	record Compound(boolean any, List<CanSurviveHandler> handlers) implements CanSurviveHandler {
+		@Override
+		public boolean isSensitiveSide(BlockState state, Direction side) {
+			for (CanSurviveHandler handler : handlers) {
+				if (handler.isSensitiveSide(state, side)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+			for (CanSurviveHandler handler : handlers) {
+				if (handler.canSurvive(state, world, pos) == any) {
+					return any;
+				}
+			}
+			return !any;
+		}
 	}
 }
