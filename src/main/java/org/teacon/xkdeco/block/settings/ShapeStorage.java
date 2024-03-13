@@ -122,6 +122,21 @@ public class ShapeStorage {
 		put("hollow_steel_half_beam_floor", box(3, -4, 0, 13, 4, 16));
 		put("hollow_steel_half_beam_ceiling", box(3, 12, 0, 13, 20, 16));
 		put("hollow_steel_half_beam_wall", box(3, 0, 12, 13, 16, 20));
+		put("factory_light_bar", box(13, 2, 0, 16, 6, 16));
+		put("wall_base", Shapes.or(
+				box(2, 0, 0, 16, 8, 16),
+				box(5, 8, 0, 16, 13, 16),
+				box(3, 13, 0, 16, 16, 16)));
+		put("wall_base2", Shapes.or(
+				box(2, 8, 0, 16, 16, 16),
+				box(5, 3, 0, 16, 8, 16),
+				box(3, 0, 0, 16, 3, 16)));
+		put("meiren_kao", Shapes.or(
+				box(0, 0, 0, 16, 8, 16),
+				box(8, 8, 0, 16, 16, 16)));
+		put("column", box(4, 0, 4, 12, 16, 12));
+		//noinspection DataFlowIssue
+		put("meiren_kao_with_column", Shapes.or(getInstance().get(XKDeco.id("meiren_kao")), getInstance().get(XKDeco.id("column"))));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

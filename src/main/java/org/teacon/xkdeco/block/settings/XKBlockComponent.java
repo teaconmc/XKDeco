@@ -49,6 +49,10 @@ public interface XKBlockComponent {
 		return pState;
 	}
 
+	default boolean useShapeForLightOcclusion(BlockState pState) {
+		return false;
+	}
+
 	record Type<T extends XKBlockComponent>(ResourceLocation name, Codec<T> codec) {
 		@Override
 		public String toString() {

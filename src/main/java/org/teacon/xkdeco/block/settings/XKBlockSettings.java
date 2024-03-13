@@ -136,6 +136,15 @@ public class XKBlockSettings {
 		return pState;
 	}
 
+	public boolean useShapeForLightOcclusion(BlockState pState) {
+		for (XKBlockComponent component : components.values()) {
+			if (component.useShapeForLightOcclusion(pState)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean sustainsPlant;
@@ -270,6 +279,8 @@ public class XKBlockSettings {
 			Preconditions.checkNotNull(shape, "Shape %s is not registered", shapeId);
 			if (hasComponent(HorizontalComponent.TYPE)) {
 				return ShapeGenerator.horizontal(shape);
+			} else if (hasComponent(MouldingComponent.TYPE)) {
+				return ShapeGenerator.moulding(shape);
 			}
 			return ShapeGenerator.unit(shape);
 		}

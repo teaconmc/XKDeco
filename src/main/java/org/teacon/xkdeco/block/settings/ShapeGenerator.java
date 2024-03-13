@@ -2,6 +2,7 @@ package org.teacon.xkdeco.block.settings;
 
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.teacon.xkdeco.block.XKDStateProperties;
 import org.teacon.xkdeco.util.MathUtil;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -102,5 +104,61 @@ public interface ShapeGenerator {
 		return shifted(
 				BlockStateProperties.ATTACH_FACE,
 				Map.of(AttachFace.FLOOR, horizontal(floor), AttachFace.CEILING, horizontal(ceiling), AttachFace.WALL, horizontal(wall)));
+	}
+
+	static ShapeGenerator moulding(VoxelShape northStraight) {
+		VoxelShape northInner = Shapes.or(northStraight, VoxelUtil.rotateHorizontal(northStraight, Direction.NORTH.getClockWise()));
+		VoxelShape northOuter = Shapes.join(
+				northStraight,
+				VoxelUtil.rotateHorizontal(northStraight, Direction.NORTH.getClockWise()),
+				BooleanOp.AND);
+		VoxelShape[] shapes = Stream.of(northStraight, northInner, northOuter)
+				.flatMap($ -> Direction.Plane.HORIZONTAL.stream().map(direction -> VoxelUtil.rotateHorizontal($, direction)))
+				.toArray(VoxelShape[]::new);
+		VoxelShape[] mappedShapes = new VoxelShape[5 * 4];
+		for (int i = 0; i < mappedShapes.length; i++) {
+			mappedShapes[i] = shapes[Moulding.mapping[i]];
+		}
+		return new Moulding(mappedShapes);
+	}
+
+	final class Moulding implements ShapeGenerator {
+		private static final int[] mapping = new int[5 * 4];
+
+		static {
+			prepareMapping();
+		}
+
+		private static void prepareMapping() {
+			StairsShape[] stairsShapes = StairsShape.values();
+			for (int i = 0; i < 5; i++) {
+				StairsShape stairsShape = stairsShapes[i];
+				int stairsShapeIndex = switch (stairsShape) {
+					case STRAIGHT -> 0;
+					case INNER_LEFT, INNER_RIGHT -> 1;
+					case OUTER_LEFT, OUTER_RIGHT -> 2;
+				};
+				int rotationOffset = switch (stairsShape) {
+					case INNER_LEFT, OUTER_LEFT -> 0;
+					default -> 1;
+				};
+				for (int j = 0; j < 4; j++) {
+					mapping[i * 4 + j] = stairsShapeIndex * 4 + (j + rotationOffset) % 4;
+				}
+			}
+		}
+
+		private final VoxelShape[] shapes;
+
+		private Moulding(VoxelShape[] shapes) {
+			this.shapes = shapes;
+		}
+
+		@Override
+		public VoxelShape getShape(BlockState blockState, CollisionContext context) {
+			int shape = blockState.getValue(BlockStateProperties.STAIRS_SHAPE).ordinal();
+			int facing = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue();
+			return shapes[shape * 4 + facing];
+		}
 	}
 }

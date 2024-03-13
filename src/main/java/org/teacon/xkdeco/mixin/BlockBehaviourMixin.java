@@ -127,4 +127,12 @@ public class BlockBehaviourMixin {
 			cir.setReturnValue(settings.mirror(pState, pMirror));
 		}
 	}
+
+	@Inject(method = "useShapeForLightOcclusion", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$useShapeForLightOcclusion(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
+		XKBlockSettings settings = XKBlockSettings.of(this);
+		if (settings != null) {
+			cir.setReturnValue(settings.useShapeForLightOcclusion(pState));
+		}
+	}
 }
