@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "xkdeco:block/cut_obsidian_pillar",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "xkdeco:block/cut_obsidian_pillar"
+    },
+    "axis=z": {
+      "model": "xkdeco:block/cut_obsidian_pillar",
+      "x": 90
+    }
+  }
+}

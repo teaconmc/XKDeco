@@ -306,6 +306,17 @@ public class XKDModelProvider extends FabricModelProvider {
 				true,
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
 
+		createPillar("sandstone_pillar");
+		createPillar("red_sandstone_pillar");
+		createPillar("stone_brick_pillar");
+		createPillar("blackstone_pillar");
+		createPillar("maya_pillar");
+		createPillar("maya_mossy_pillar");
+		createPillar("cut_obsidian_pillar");
+		createPillar("gold_pillar");
+		createPillar("bronze_pillar");
+		createPillar("steel_pillar");
+
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
@@ -938,6 +949,10 @@ public class XKDModelProvider extends FabricModelProvider {
 				}))
 				.with(createHorizontalFacingDispatchAlt());
 		generators.blockStateOutput.accept(generator);
+	}
+
+	private void createPillar(String id) {
+		generators.createAxisAlignedPillarBlock(block(id), TexturedModel.COLUMN);
 	}
 
 	public static PropertyDispatch createHorizontalFacingDispatchAlt() {

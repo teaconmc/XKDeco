@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "xkdeco:block/maya_pillar_top",
+    "side": "xkdeco:block/maya_pillar_side"
+  }
+}
