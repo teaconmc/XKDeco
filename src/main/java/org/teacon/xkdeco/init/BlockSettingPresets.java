@@ -1,15 +1,21 @@
 package org.teacon.xkdeco.init;
 
 import java.util.List;
+import java.util.Map;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.impl.BlockPredicateCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
 import org.teacon.xkdeco.block.settings.GlassType;
+import org.teacon.xkdeco.block.settings.ShapeGenerator;
+import org.teacon.xkdeco.block.settings.ShapeStorage;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.util.RoofUtil;
 
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
@@ -30,7 +36,9 @@ public interface BlockSettingPresets {
 						.noCollission()
 						.pushReaction(PushReaction.DESTROY)
 						.ignitedByLava())
-				.shape(XKDeco.id("fallen_leaves"))
+				.shape(ShapeGenerator.shifted(FallenLeavesBlock.HALF, Map.of(
+						RoofUtil.RoofHalf.TIP, ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("fallen_leaves"))),
+						RoofUtil.RoofHalf.BASE, ShapeGenerator.unit(ShapeStorage.getInstance().get("empty")))))
 				.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 				.canSurviveHandler(FALLEN_LEAVES_CAN_SURVIVE);
 	}
@@ -104,5 +112,9 @@ public interface BlockSettingPresets {
 
 	static XKBlockSettings.Builder lampBlock() {
 		return XKBlockSettings.copyProperties(Blocks.REDSTONE_LAMP).configure($ -> $.strength(2f, 10f).lightLevel($$ -> 15));
+	}
+
+	static XKBlockSettings.Builder stoneColumn(Block base, MapColor mapColor) {
+		return XKBlockSettings.copyProperties(base, mapColor == null ? TODO : mapColor).waterLoggable().shape(XKDeco.id("stone_column"));
 	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.RegistryObject;
 
+@Deprecated
 public final class XKDecoProperties {
 	public static final Item.Properties ITEM_BASIC = new Item.Properties();
 	public static final Item.Properties ITEM_STRUCTURE = new Item.Properties();
