@@ -309,6 +309,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createPillar("sandstone_pillar");
 		createPillar("red_sandstone_pillar");
 		createPillar("stone_brick_pillar");
+		createPillar("deepslate_pillar");
 		createPillar("blackstone_pillar");
 		createPillar("maya_pillar");
 		createPillar("maya_mossy_pillar");
