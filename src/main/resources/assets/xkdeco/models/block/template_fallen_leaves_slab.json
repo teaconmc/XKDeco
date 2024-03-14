@@ -1,0 +1,14 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube_all",
+	"elements": [
+		{
+			"from": [0, -7.5, 0],
+			"to": [16, -7.5, 16],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#all"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#all"}
+			}
+		}
+	]
+}

@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "half=base": {
+      "model": "xkdeco:block/fallen_white_cherry_blossom_slab"
+    },
+    "half=tip": {
       "model": "xkdeco:block/fallen_white_cherry_blossom"
     }
   }

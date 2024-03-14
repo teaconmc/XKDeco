@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BasicBlock;
+import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
@@ -239,12 +240,12 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.createTrivialBlock(block("plantable_leaves"), TexturedModel.LEAVES);
 		generators.createTrivialBlock(block("plantable_leaves_dark"), TexturedModel.LEAVES);
 		generators.createTrivialBlock(block("willow_leaves"), TexturedModel.LEAVES);
-		generators.createTrivialBlock(block("fallen_ginkgo_leaves"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
-		generators.createTrivialBlock(block("fallen_orange_maple_leaves"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
-		generators.createTrivialBlock(block("fallen_red_maple_leaves"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
-		generators.createTrivialBlock(block("fallen_peach_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
-		generators.createTrivialBlock(block("fallen_cherry_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
-		generators.createTrivialBlock(block("fallen_white_cherry_blossom"), XKDModelTemplates.FALLEN_LEAVES_PROVIDER);
+		createFallenLeaves("ginkgo_leaves");
+		createFallenLeaves("orange_maple_leaves");
+		createFallenLeaves("red_maple_leaves");
+		createFallenLeaves("peach_blossom");
+		createFallenLeaves("cherry_blossom");
+		createFallenLeaves("white_cherry_blossom");
 		createBlockStateOnly("hanging_willow_leaves", false);
 		generators.createSimpleFlatItemModel(block("hanging_willow_leaves"));
 
@@ -319,6 +320,19 @@ public class XKDModelProvider extends FabricModelProvider {
 			}
 			createGadget(block);
 		}
+	}
+
+	private void createFallenLeaves(String id) {
+		Block leaves = block(id);
+		Block fallenLeaves = block("fallen_" + id);
+		TextureMapping textureMapping = TextureMapping.cube(leaves);
+		ResourceLocation model0 = XKDModelTemplates.FALLEN_LEAVES.create(fallenLeaves, textureMapping, generators.modelOutput);
+		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
+		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
+				.with(PropertyDispatch.property(FallenLeavesBlock.HALF)
+						.select(RoofUtil.RoofHalf.TIP, Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(RoofUtil.RoofHalf.BASE, Variant.variant().with(VariantProperties.MODEL, model1)));
+		generators.blockStateOutput.accept(generator);
 	}
 
 	private void createMoulding(String id, String model, boolean uvLock, boolean itemModel, Variant... baseVariants) {

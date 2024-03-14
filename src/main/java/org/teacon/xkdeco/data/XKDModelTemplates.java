@@ -10,12 +10,10 @@ import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
 public class XKDModelTemplates {
@@ -74,14 +72,8 @@ public class XKDModelTemplates {
 			SLOT_INNER,
 			SLOT_RIDGE);
 	public static final ModelTemplate FALLEN_LEAVES = create("template_fallen_leaves", TextureSlot.ALL);
+	public static final ModelTemplate FALLEN_LEAVES_SLAB = create("template_fallen_leaves_slab", "_slab", TextureSlot.ALL);
 	public static final ModelTemplate NATURAL_SLAB = create("template_natural_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
-	public static final TexturedModel.Provider FALLEN_LEAVES_PROVIDER = block -> {
-		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
-		if (id.getPath().startsWith("fallen_")) {
-			block = BuiltInRegistries.BLOCK.get(id.withPath(id.getPath().substring(7)));
-		}
-		return new TexturedModel(TextureMapping.cube(block), FALLEN_LEAVES);
-	};
 	public static final TexturedModel.Provider WOODEN_TABLE_PROVIDER = createDefault(
 			XKDModelTemplates::allAndSide,
 			create("wooden_table", TextureSlot.ALL, TextureSlot.SIDE));

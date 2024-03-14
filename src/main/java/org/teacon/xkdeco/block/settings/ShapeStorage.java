@@ -134,10 +134,11 @@ public class ShapeStorage {
 		put("meiren_kao", Shapes.or(
 				box(0, 0, 0, 16, 8, 16),
 				box(8, 8, 0, 16, 16, 16)));
-		put("column", box(4, 0, 4, 12, 16, 12));
+		put("wooden_column", box(4, 0, 4, 12, 16, 12));
 		//noinspection DataFlowIssue
-		put("meiren_kao_with_column", Shapes.or(getInstance().get(XKDeco.id("meiren_kao")), getInstance().get(XKDeco.id("column"))));
+		put("meiren_kao_with_column", Shapes.or(getInstance().get(XKDeco.id("meiren_kao")), getInstance().get(XKDeco.id("wooden_column"))));
 		put("fallen_leaves", box(0, 0, 0, 16, 1, 16));
+		put("stone_column", box(2, 0, 2, 14, 16, 14));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

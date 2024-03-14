@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/template_fallen_leaves_slab",
+  "textures": {
+    "all": "xkdeco:block/cherry_blossom"
+  }
+}

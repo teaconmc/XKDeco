@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "half=base": {
+      "model": "xkdeco:block/fallen_orange_maple_leaves_slab"
+    },
+    "half=tip": {
       "model": "xkdeco:block/fallen_orange_maple_leaves"
     }
   }
