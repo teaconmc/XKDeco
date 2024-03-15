@@ -227,8 +227,6 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTrivialCube("steel_filings");
 		createTrivialCube("quartz_sand");
 		createTrivialCube("toughened_sand");
-		createTrivialCube("chiseled_gilded_blackstone");
-		createTrivialCube("luxury_gilded_blackstone");
 
 		createTrivialCube("ginkgo_leaves");
 		createTrivialCube("orange_maple_leaves");
@@ -314,6 +312,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		createPillar("deepslate_pillar");
 		createPillar("blackstone_pillar");
 		createPillar("gilded_blackstone_brick_pillar");
+		createPillar("chiseled_gilded_blackstone");
+		createPillar("luxury_gilded_blackstone");
 		createPillar("maya_pillar");
 		createPillar("maya_mossy_pillar");
 		createPillar("cut_obsidian_pillar");
