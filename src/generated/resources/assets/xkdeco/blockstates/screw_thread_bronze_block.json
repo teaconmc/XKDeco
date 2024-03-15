@@ -1,5 +1,9 @@
 {
   "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/screw_thread_bronze_block_e",
+      "y": 90
+    },
     "facing=north": {
       "model": "xkdeco:block/screw_thread_bronze_block"
     },
@@ -8,12 +12,8 @@
       "y": 180
     },
     "facing=west": {
-      "model": "xkdeco:block/screw_thread_bronze_block_w",
+      "model": "xkdeco:blockscrew_thread_bronze_block_w",
       "y": 270
-    },
-    "facing=east": {
-      "model": "xkdeco:block/screw_thread_bronze_block_e",
-      "y": 90
     }
   }
 }

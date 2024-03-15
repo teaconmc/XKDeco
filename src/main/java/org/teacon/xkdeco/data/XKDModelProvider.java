@@ -351,7 +351,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		createPillar("bronze_pillar");
 		createPillar("steel_pillar");
 
-		createMayaSingleScrewThreadStoneState();
+		createSingleScrewState("maya_single_screw_thread_stone");
+		createSingleScrewState("screw_thread_bronze_block");
 
 		createInscriptionBronzeBlock(generators);
 
@@ -394,27 +395,27 @@ public class XKDModelProvider extends FabricModelProvider {
 						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block2")))));
 	}
 
-	private void createMayaSingleScrewThreadStoneState() {
-		var mayaSingleScrewThreadStone = block("maya_single_screw_thread_stone");
+	private void createSingleScrewState(String id) {
+		var mayaSingleScrewThreadStone = block(id);
 		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(mayaSingleScrewThreadStone)
 				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
 						.select(
 								Direction.NORTH,
-								Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone")))
+								Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/" + id)))
 						.select(
 								Direction.SOUTH,
 								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_s"))
+										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_s"))
 										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
 						.select(
 								Direction.WEST,
 								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_w"))
+										.with(VariantProperties.MODEL, XKDeco.id("block" + id + "_w"))
 										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
 						.select(
 								Direction.EAST,
 								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_e"))
+										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_e"))
 										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
 				));
 	}

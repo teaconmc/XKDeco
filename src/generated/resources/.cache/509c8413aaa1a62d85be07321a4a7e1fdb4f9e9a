@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-16T01:04:32.4073113	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-16T01:26:03.6298696	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -281,7 +281,7 @@ f7dd182ae19bc792bb488612e66040c32fae4429 assets/xkdeco/blockstates/maya_pictogra
 5a6d5f0db589706a78034964441b05ac3c3b3537 assets/xkdeco/blockstates/maya_polished_stonebrick_slab.json
 9f2bd4ae55d26d3a5bce769747c44d5c454f3974 assets/xkdeco/blockstates/maya_polished_stonebrick_stairs.json
 9512f1c40379228656197f20a467e67a0b9d1902 assets/xkdeco/blockstates/maya_quad_screw_thread_stone.json
-e8bd34a52447a30cdc9e74207a68c4de07e94e57 assets/xkdeco/blockstates/maya_single_screw_thread_stone.json
+2f7bdc91d54fa17a84c38033acec23f1e00ab9c3 assets/xkdeco/blockstates/maya_single_screw_thread_stone.json
 1bbd0218a2c4515344a5678e48cfba21677faf0e assets/xkdeco/blockstates/maya_skull_stone.json
 0fa16cc1ac1aec36e4b96fc958189d8f33d8ae2e assets/xkdeco/blockstates/maya_stone.json
 90763dbc28dc42161841f90939a0187c0a3bf469 assets/xkdeco/blockstates/maya_stonebricks.json
@@ -366,6 +366,7 @@ c011ec5c45305bfddf61c26763fd9676a0da2168 assets/xkdeco/blockstates/screen_dna.js
 5d428a9f572a2cb8f97bc3dae594e804b3e54a81 assets/xkdeco/blockstates/screen_off.json
 52d13eb52db0ffe0aef9473a8681482bc728a0aa assets/xkdeco/blockstates/screen_threebodies.json
 26159507f106897a2a5d923e2728f6a37c9f0716 assets/xkdeco/blockstates/screen_transport.json
+fc5ab334d3b8c9d393a82c7cfc64cd8266ef9eab assets/xkdeco/blockstates/screw_thread_bronze_block.json
 8781d4890ee8c5c89b554d8d73b05195207d2418 assets/xkdeco/blockstates/sign_entrance.json
 aa81a7c1e070f2544f7757f2c47ea59d51db3aec assets/xkdeco/blockstates/sign_exit.json
 92b2b309c5cdc6dc7009f695a75f6b29fb2ce4f5 assets/xkdeco/blockstates/sign_left.json
@@ -1806,6 +1807,7 @@ d00295ebc84ec4031e684a0a3c2d4a73d5783be4 assets/xkdeco/models/item/screen_diagra
 fcd809d2a6da416f3a8f0f8c9908579fc83600ae assets/xkdeco/models/item/screen_off.json
 ce19275899cc8a176980c4772092e2e83b04e2f9 assets/xkdeco/models/item/screen_threebodies.json
 88c6c13bfbbffe8ab32c47849931909eefb4b64f assets/xkdeco/models/item/screen_transport.json
+c46433c1b8f8ac99c1f89bec58b369ced5930bcc assets/xkdeco/models/item/screw_thread_bronze_block.json
 3429473b1872d44f5258e5b2da67265f14015b65 assets/xkdeco/models/item/sign_entrance.json
 de547d73e60e70af2c8af15f569c9f294b446357 assets/xkdeco/models/item/sign_exit.json
 5b4f314fa22f9cfc9aa4a916020b01e6866e5c2f assets/xkdeco/models/item/sign_left.json
