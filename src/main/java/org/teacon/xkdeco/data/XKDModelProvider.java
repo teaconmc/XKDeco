@@ -351,6 +351,14 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
+	private void createMouldingWithModels(String id, String template, TextureMapping mapping, boolean itemModel) {
+		Block block = block(id);
+		XKDModelTemplates.MAP.get(template).create(block, mapping, generators.modelOutput);
+		XKDModelTemplates.MAP.get(template + "_inner").create(block, mapping, generators.modelOutput);
+		XKDModelTemplates.MAP.get(template + "_outer").create(block, mapping, generators.modelOutput);
+		createMoulding(id, id, false, itemModel);
+	}
+
 	private void createMoulding(String id, String model, boolean uvLock, boolean itemModel, Variant... baseVariants) {
 		if (baseVariants.length == 0) {
 			baseVariants = new Variant[]{Variant.variant()};
@@ -552,6 +560,11 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createMoulding(id + "_meiren_kao", "furniture/" + id + "_meiren_kao", false, true);
 		createMoulding(id + "_meiren_kao_with_column", "furniture/" + id + "_meiren_kao_with_column", false, true);
+
+		textureMapping = new TextureMapping().put(TextureSlot.SIDE, XKDeco.id("block/" + id + "_smooth"));
+		createMouldingWithModels(id + "_dougong", "template_dougong", textureMapping, true);
+		createMouldingWithModels(id + "_dougong_connection", "template_dougong_connection", textureMapping, true);
+		createMouldingWithModels(id + "_dougong_hollow_connection", "template_dougong_hollow_connection", textureMapping, true);
 	}
 
 	private void createWoodenWall(String id, String templateId, TextureMapping textureMapping) {
