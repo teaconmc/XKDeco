@@ -311,6 +311,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				true,
 				true,
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
+		createIronBarsLike("hollow_steel_bars", "hollow_steel_block", "steel_column_wall");
 
 		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
@@ -349,6 +350,64 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(RoofUtil.RoofHalf.TIP, Variant.variant().with(VariantProperties.MODEL, model0))
 						.select(RoofUtil.RoofHalf.BASE, Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
+	}
+
+	private void createIronBarsLike(String id, String paneTexture, String edgeTexture) {
+		Block block = block(id);
+		TextureMapping texturemapping = new TextureMapping()
+				.put(TextureSlot.PANE, XKDeco.id(paneTexture).withPrefix("block/"))
+				.put(TextureSlot.EDGE, XKDeco.id(edgeTexture).withPrefix("block/"));
+		ResourceLocation resourcelocation = ModelTemplates.STAINED_GLASS_PANE_POST.create(block, texturemapping, generators.modelOutput);
+		ResourceLocation resourcelocation1 = ModelTemplates.STAINED_GLASS_PANE_SIDE.create(block, texturemapping, generators.modelOutput);
+		ResourceLocation resourcelocation2 = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.create(
+				block,
+				texturemapping,
+				generators.modelOutput);
+		ResourceLocation resourcelocation3 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.create(block, texturemapping, generators.modelOutput);
+		ResourceLocation resourcelocation4 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.create(
+				block,
+				texturemapping,
+				generators.modelOutput);
+		Item item = block.asItem();
+		ModelTemplates.FLAT_ITEM.create(
+				ModelLocationUtils.getModelLocation(item),
+				TextureMapping.layer0(texturemapping.get(TextureSlot.PANE)),
+				generators.modelOutput);
+		generators.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
+				.with(Variant.variant()
+						.with(VariantProperties.MODEL, resourcelocation))
+				.with(
+						Condition.condition().term(BlockStateProperties.NORTH, true),
+						Variant.variant().with(VariantProperties.MODEL, resourcelocation1))
+				.with(
+						Condition.condition()
+								.term(BlockStateProperties.EAST, true),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation1)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(Condition.condition()
+						.term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, resourcelocation2))
+				.with(
+						Condition.condition().term(BlockStateProperties.WEST, true),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation2)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(
+						Condition.condition().term(BlockStateProperties.NORTH, false),
+						Variant.variant().with(VariantProperties.MODEL, resourcelocation3))
+				.with(
+						Condition.condition().term(BlockStateProperties.EAST, false),
+						Variant.variant().with(VariantProperties.MODEL, resourcelocation4))
+				.with(
+						Condition.condition().term(BlockStateProperties.SOUTH, false),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation4)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(
+						Condition.condition().term(BlockStateProperties.WEST, false),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation3)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
 	}
 
 	private void createMouldingWithModels(String id, String template, TextureMapping mapping, boolean itemModel) {
