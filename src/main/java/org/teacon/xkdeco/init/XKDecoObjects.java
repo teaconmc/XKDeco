@@ -65,6 +65,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SandBlock;
@@ -1420,6 +1421,13 @@ public final class XKDecoObjects {
 						.get()),
 				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
+		addBlock(
+				"hollow_steel_bars",
+				() -> new IronBarsBlock(XKBlockSettings.copyProperties(Blocks.IRON_BARS)
+						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 	}
 
 	private static void addBlock(
