@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-15T18:58:34.8570872	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-16T01:04:32.4073113	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -239,6 +239,7 @@ e04985cd7f0f5cf4912c31e609fe250b5a6f5a5d assets/xkdeco/blockstates/inca_stonebri
 5e2ab917736a0ebd76da510b18db3e72589b0f70 assets/xkdeco/blockstates/inca_stone_slab.json
 da018ce9047eaa0445ee2680b65421d568cf404e assets/xkdeco/blockstates/inca_stone_stairs.json
 97e983732e32149acca9500c9d98a1fb054a436f assets/xkdeco/blockstates/ink_painting.json
+dcd1da100ea9e915523ecec3087da4400a4f3687 assets/xkdeco/blockstates/inscription_bronze_block.json
 d6a000826b72d4b13506bc4babd8b65664e0cf00 assets/xkdeco/blockstates/light_wall_base.json
 3afb89160cca5ea94ef025f22df4198c6aa67fd3 assets/xkdeco/blockstates/light_wall_base2.json
 2ed62f7f4156cf539d6137121e2cc5a721fe8c97 assets/xkdeco/blockstates/lined_mud_wall_block.json
@@ -1031,6 +1032,9 @@ e2ccacdb0643e3f20b9fdd0b6ffd578b51a47b79 assets/xkdeco/models/block/inca_stone_s
 c6bd1037c30a40deece84f01ed00469bce05a58f assets/xkdeco/models/block/inca_stone_stairs.json
 5b8f9748fcbb0b98116d2c431d4c909980312194 assets/xkdeco/models/block/inca_stone_stairs_inner.json
 198b7d84b2c80996cd0925a1740003d0028cc368 assets/xkdeco/models/block/inca_stone_stairs_outer.json
+b8ea7f2af512a910bdca773602471208ca62edae assets/xkdeco/models/block/inscription_bronze_block.json
+0e3b9f4afded4cb2fb99702eadda8a5d565a65aa assets/xkdeco/models/block/inscription_bronze_block1.json
+22e47800012a6f7172eae59832ab7eee4e463898 assets/xkdeco/models/block/inscription_bronze_block2.json
 6fa075bfe63f1e639dade1b0ea7f8e25e41c5944 assets/xkdeco/models/block/lined_mud_wall_block.json
 221faac9015e2f50ba93a2f36de51d6a9ab62a34 assets/xkdeco/models/block/lined_mud_wall_block_horizontal.json
 a261ec269144d29fd0496131933074428b5432bd assets/xkdeco/models/block/lined_mud_wall_slab.json
@@ -1675,6 +1679,7 @@ aa8b4c6538833f7a1203cbddc8ad69750d346565 assets/xkdeco/models/item/inca_stonebri
 8719a0d408911fca68281463723808090e1b7a4c assets/xkdeco/models/item/inca_stone_slab.json
 ee7d26df9e4599caaf1285634f23a18148a68137 assets/xkdeco/models/item/inca_stone_stairs.json
 b543a095e4a00319ee8c9fa45b3b4cf3908d72c9 assets/xkdeco/models/item/ink_painting.json
+752ae42b42b7e731c93749dfa4637c8160f98c67 assets/xkdeco/models/item/inscription_bronze_block.json
 8fb3ac5ffc600aa637046d5f4b16b81ab804845c assets/xkdeco/models/item/light_wall_base.json
 8fb3ac5ffc600aa637046d5f4b16b81ab804845c assets/xkdeco/models/item/light_wall_base2.json
 e716fc183c23b87bee96e86f75c62c2986092693 assets/xkdeco/models/item/lined_mud_wall_block.json

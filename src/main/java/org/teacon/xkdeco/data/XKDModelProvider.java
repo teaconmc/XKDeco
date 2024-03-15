@@ -351,6 +351,50 @@ public class XKDModelProvider extends FabricModelProvider {
 		createPillar("bronze_pillar");
 		createPillar("steel_pillar");
 
+		createMayaSingleScrewThreadStoneState();
+
+		createInscriptionBronzeBlock(generators);
+
+		outer:
+		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
+			Block block = Block.byItem(item);
+			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
+				continue;
+			}
+			var id = BuiltInRegistries.BLOCK.getKey(block);
+			for (String prefix : GADGET_SKIP_PREFIXES) {
+				if (id.getPath().startsWith(prefix)) {
+					continue outer;
+				}
+			}
+			createGadget(block);
+		}
+	}
+
+	private static void createInscriptionBronzeBlock(final BlockModelGenerators generators) {
+		ModelTemplates.CUBE_ALL.create(
+				XKDeco.id("block/inscription_bronze_block"),
+				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block")),
+				generators.modelOutput);
+
+		ModelTemplates.CUBE_ALL.create(
+				XKDeco.id("block/inscription_bronze_block1"),
+				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block1")),
+				generators.modelOutput);
+
+		ModelTemplates.CUBE_ALL.create(
+				XKDeco.id("block/inscription_bronze_block2"),
+				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block2")),
+				generators.modelOutput);
+
+		generators.blockStateOutput.accept(MultiPartGenerator.multiPart(block("inscription_bronze_block"))
+				.with(List.of(
+						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block")),
+						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block1")),
+						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block2")))));
+	}
+
+	private void createMayaSingleScrewThreadStoneState() {
 		var mayaSingleScrewThreadStone = block("maya_single_screw_thread_stone");
 		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(mayaSingleScrewThreadStone)
 				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
@@ -373,21 +417,6 @@ public class XKDModelProvider extends FabricModelProvider {
 										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_e"))
 										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
 				));
-
-		outer:
-		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
-			Block block = Block.byItem(item);
-			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
-				continue;
-			}
-			var id = BuiltInRegistries.BLOCK.getKey(block);
-			for (String prefix : GADGET_SKIP_PREFIXES) {
-				if (id.getPath().startsWith(prefix)) {
-					continue outer;
-				}
-			}
-			createGadget(block);
-		}
 	}
 
 	private void createFallenLeaves(String id) {
