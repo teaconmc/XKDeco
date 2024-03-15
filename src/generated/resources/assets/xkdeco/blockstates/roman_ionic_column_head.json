@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/roman_ionic_column_head",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/roman_ionic_column_head"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/roman_ionic_column_head",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/roman_ionic_column_head",
+      "y": 270
+    }
+  }
+}

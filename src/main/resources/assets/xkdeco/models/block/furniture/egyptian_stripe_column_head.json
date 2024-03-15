@@ -1,0 +1,48 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/egyptian_stripe_column_head",
+		"side": "xkdeco:block/egyptian_stripe_column_head",
+		"bottom": "xkdeco:block/sandstone_pillar_top",
+		"top": "xkdeco:block/egyptian_stripe_column_top"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 12, 14],
+			"faces": {
+				"north": {"uv": [2, 4, 14, 16], "texture": "#side"},
+				"east": {"uv": [2, 4, 14, 16], "texture": "#side"},
+				"south": {"uv": [2, 4, 14, 16], "texture": "#side"},
+				"west": {"uv": [2, 4, 14, 16], "texture": "#side"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#top"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#top"}
+			}
+		},
+		{
+			"from": [1, 12, 1],
+			"to": [15, 14, 15],
+			"faces": {
+				"north": {"uv": [1, 2, 15, 4], "texture": "#side"},
+				"east": {"uv": [1, 2, 15, 4], "texture": "#side"},
+				"south": {"uv": [1, 2, 15, 4], "texture": "#side"},
+				"west": {"uv": [1, 2, 15, 4], "texture": "#side"},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#bottom"},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [0, 14, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 2], "texture": "#side"},
+				"east": {"uv": [0, 0, 16, 2], "texture": "#side"},
+				"south": {"uv": [0, 0, 16, 2], "texture": "#side"},
+				"west": {"uv": [0, 0, 16, 2], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		}
+	]
+}

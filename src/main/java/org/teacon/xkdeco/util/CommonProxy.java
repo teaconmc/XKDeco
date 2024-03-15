@@ -40,8 +40,8 @@ public class CommonProxy {
 		XKDecoCreativeModTab.TABS.register(modEventBus);
 
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlocks);
-		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallItems);
-		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addSpecialWallBlockEntity);
+		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallItems);
+		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlockEntity);
 
 		modEventBus.addListener(XKDecoEnUsLangProvider::register);
 		modEventBus.addListener((GatherDataEvent event) -> {
@@ -67,7 +67,7 @@ public class CommonProxy {
 
 		var forgeEventBus = MinecraftForge.EVENT_BUS;
 
-		forgeEventBus.addListener(XKDecoObjects::addSpecialWallTags);
+		forgeEventBus.addListener(XKDecoObjects::addMimicWallTags);
 
 		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
 		forgeEventBus.addListener(CushionEntity::onBreakBlock);

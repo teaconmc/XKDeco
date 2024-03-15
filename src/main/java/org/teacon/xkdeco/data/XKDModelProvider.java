@@ -290,6 +290,12 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping.layer0(TextureMapping.getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
 		createFaceAttached("hollow_steel_half_beam");
+		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
+		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
+		createMoulding("greek_moulding", "furniture/greek_moulding", false, true);
+		createMoulding("greek_moulding2", "furniture/greek_moulding", false, true);
+		createMoulding("roman_moulding", "furniture/roman_moulding", false, true);
+		createMoulding("roman_moulding2", "furniture/roman_moulding", false, true);
 		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
 		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
 		createMoulding(
@@ -306,6 +312,16 @@ public class XKDModelProvider extends FabricModelProvider {
 				true,
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
 
+		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
+			Block block = Block.byItem(item);
+			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
+				continue;
+			}
+			var id = BuiltInRegistries.BLOCK.getKey(block);
+			if (id.getPath().contains("column")) {
+				createBlockStateOnly(id.getPath(), "furniture/", true);
+			}
+		}
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
@@ -614,9 +630,13 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	private void createBlockStateOnly(String id, boolean delegateItem) {
+		createBlockStateOnly(id, "", delegateItem);
+	}
+
+	private void createBlockStateOnly(String id, String prefix, boolean delegateItem) {
 		Block block = block(id);
 		XKBlockSettings settings = XKBlockSettings.of(block);
-		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(block);
+		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" + prefix);
 		if (settings != null && settings.hasComponent(HorizontalComponent.TYPE)) {
 			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
 							block,

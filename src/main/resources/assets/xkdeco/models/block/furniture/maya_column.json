@@ -1,0 +1,23 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/maya_column_top",
+		"down": "xkdeco:block/maya_column_top",
+		"north": "xkdeco:block/maya_column_side"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 16], "texture": "#north"},
+				"east": {"uv": [2, 0, 14, 16], "texture": "#north"},
+				"south": {"uv": [2, 0, 14, 16], "texture": "#north"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#north"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#down"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#down"}
+			}
+		}
+	]
+}
