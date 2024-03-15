@@ -105,16 +105,17 @@ public class XKDModelProvider extends FabricModelProvider {
 		return true;
 	}
 
-	public static boolean createIfSpecialDoubleSlabs(Block block, BlockModelGenerators generators) {
+	public static boolean createIfSpecialDoubleSlabs(Block block, BlockModelGenerators generators, BlockFamily family) {
 		if (!SPECIAL_DOUBLE_SLABS.contains(block)) {
 			return false;
 		}
-		ResourceLocation texture = TextureMapping.getBlockTexture(block);
-		TextureMapping mapping = TextureMapping.column(texture, texture.withPath(s -> s.substring(0, s.length() - 5)));
-		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
-		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
-		ResourceLocation $$4 = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, $$2, $$3, $$4));
+		TextureMapping mapping = TextureMapping.column(
+				TextureMapping.getBlockTexture(block),
+				TextureMapping.getBlockTexture(family.getBaseBlock()));
+		ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
+		ResourceLocation top = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
+		ResourceLocation cube = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, bottom, top, cube));
 		return true;
 	}
 

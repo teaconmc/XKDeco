@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.teacon.xkdeco.data.XKDModelProvider;
 
+import javax.annotation.Nullable;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +25,10 @@ public class BlockFamilyProviderMixin {
 	@Final
 	private TextureMapping mapping;
 
+	@Shadow
+	@Nullable
+	private BlockFamily family;
+
 	@Inject(method = "fullBlockVariant", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$fullBlockVariant(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
@@ -34,7 +40,7 @@ public class BlockFamilyProviderMixin {
 	@Inject(method = "slab", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$slab(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
-		if (XKDModelProvider.createIfSpecialDoubleSlabs(pBlock, this$0)) {
+		if (XKDModelProvider.createIfSpecialDoubleSlabs(pBlock, this$0, family)) {
 			cir.setReturnValue(self);
 		}
 	}

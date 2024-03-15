@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-15T14:26:09.7626406	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-15T16:28:34.7202106	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -1091,9 +1091,9 @@ c85897cde232a7070e775e28d9c3b9b472adaa9c assets/xkdeco/models/block/maya_mossy_s
 c761653cbd2c2b39d3acf7978dc962c919b4300e assets/xkdeco/models/block/maya_pictogram_stone.json
 8cc35f050703de09464f729cf5718de9b7d972e3 assets/xkdeco/models/block/maya_pillar.json
 5e482d474a7eddfdbcdf3c354f7886327539ee04 assets/xkdeco/models/block/maya_polished_stonebricks.json
-34cb9119365176de461ff68252e7e7987acc5344 assets/xkdeco/models/block/maya_polished_stonebrick_slab.json
-3f6d345cb7810f742fa25e9ec7f421c8a86103b9 assets/xkdeco/models/block/maya_polished_stonebrick_slab_full.json
-baef04f1e8120aa61f65cf17e80b2c0505c300e4 assets/xkdeco/models/block/maya_polished_stonebrick_slab_top.json
+67ac0419704f35a3dd9425e191ea224a73f7246b assets/xkdeco/models/block/maya_polished_stonebrick_slab.json
+10d82987f3fcdd752231e829d90d68063a4cb3b9 assets/xkdeco/models/block/maya_polished_stonebrick_slab_full.json
+94bd6ca44a465820dc16bbd5ea5f533f693dae27 assets/xkdeco/models/block/maya_polished_stonebrick_slab_top.json
 30bfe061d897a16b2982db214c91093686a4a680 assets/xkdeco/models/block/maya_polished_stonebrick_stairs.json
 c18907c8064e130c3f1fb1b6b57fa08797c0eabe assets/xkdeco/models/block/maya_polished_stonebrick_stairs_inner.json
 145551139bd6ce638ddc4d25eadce0fd9235f11b assets/xkdeco/models/block/maya_polished_stonebrick_stairs_outer.json
