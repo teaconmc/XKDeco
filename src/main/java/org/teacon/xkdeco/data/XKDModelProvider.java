@@ -1,7 +1,10 @@
 package org.teacon.xkdeco.data;
 
+import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
+
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -22,7 +25,7 @@ import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
 import org.teacon.xkdeco.util.RoofUtil;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.logging.LogUtils;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -110,8 +113,8 @@ public class XKDModelProvider extends FabricModelProvider {
 			return false;
 		}
 		TextureMapping mapping = TextureMapping.column(
-				TextureMapping.getBlockTexture(block),
-				TextureMapping.getBlockTexture(family.getBaseBlock()));
+				getBlockTexture(block),
+				getBlockTexture(family.getBaseBlock()));
 		ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
 		ResourceLocation top = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
 		ResourceLocation cube = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
@@ -172,17 +175,31 @@ public class XKDModelProvider extends FabricModelProvider {
 				originalModelOutput.accept(modelLocation, json);
 			}
 		};
-		BlockModelGenerators.SHAPE_CONSUMERS = Maps.newHashMap(BlockModelGenerators.SHAPE_CONSUMERS);
-		BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.CUT, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant);
-		BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.POLISHED, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant);
+		BlockModelGenerators.SHAPE_CONSUMERS = ImmutableMap.<BlockFamily.Variant, BiConsumer<BlockModelGenerators.BlockFamilyProvider, Block>>builder()
+				.putAll(BlockModelGenerators.SHAPE_CONSUMERS)
+				.put(BlockFamily.Variant.CUT, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant)
+				.put(BlockFamily.Variant.POLISHED, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant)
+				.build();
+
+		var mayaCutStonebricks = block("maya_cut_stonebricks");
+		generators.texturedModels = ImmutableMap.<Block, TexturedModel>builder()
+				.putAll(generators.texturedModels)
+				.put(
+						mayaCutStonebricks,
+						new TexturedModel(
+								new TextureMapping().put(TextureSlot.SIDE, getBlockTexture(mayaCutStonebricks, "_side"))
+										.put(TextureSlot.END, getBlockTexture(block("maya_chiseled_stonebricks"), "_top")),
+								ModelTemplates.CUBE_COLUMN))
+				.build();
+
 		XKDBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> {
 			Block baseBlock = family.getBaseBlock();
 			LOGGER.info("Generating models for block family {}", baseBlock);
 			BlockModelGenerators.BlockFamilyProvider provider;
 			if (family == XKDBlockFamilies.LINED_MUD_WALL) {
 				TextureMapping textureMapping = TextureMapping.column(
-						TextureMapping.getBlockTexture(block("lined_mud_wall_block")),
-						TextureMapping.getBlockTexture(block("crossed_mud_wall_block")));
+						getBlockTexture(block("lined_mud_wall_block")),
+						getBlockTexture(block("crossed_mud_wall_block")));
 				provider = generators.new BlockFamilyProvider(textureMapping);
 				ResourceLocation blockModel = ModelTemplates.CUBE_COLUMN.create(
 						baseBlock,
@@ -250,24 +267,24 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("hanging_willow_leaves", false);
 		generators.createSimpleFlatItemModel(block("hanging_willow_leaves"));
 
-		ResourceLocation dirtTexture = TextureMapping.getBlockTexture(Blocks.DIRT);
-		ResourceLocation netherrackTexture = TextureMapping.getBlockTexture(Blocks.NETHERRACK);
+		ResourceLocation dirtTexture = getBlockTexture(Blocks.DIRT);
+		ResourceLocation netherrackTexture = getBlockTexture(Blocks.NETHERRACK);
 		TextureMapping snowyMapping = new TextureMapping()
 				.put(TextureSlot.BOTTOM, dirtTexture)
 				.copyForced(TextureSlot.BOTTOM, TextureSlot.PARTICLE)
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.GRASS_BLOCK, "_top"))
-				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.GRASS_BLOCK, "_snow"));
+				.put(TextureSlot.TOP, getBlockTexture(Blocks.GRASS_BLOCK, "_top"))
+				.put(TextureSlot.SIDE, getBlockTexture(Blocks.GRASS_BLOCK, "_snow"));
 		ModelTemplates.SLAB_TOP.create(snowySlabTop, snowyMapping, generators.modelOutput);
 		createSlab(Blocks.DIRT, false, false, UnaryOperator.identity());
 		createSlab(Blocks.DIRT_PATH, true, true, $ -> $.put(TextureSlot.BOTTOM, dirtTexture));
 		createSlab(Blocks.GRASS_BLOCK, true, true, UnaryOperator.identity());
 		createSlab(Blocks.MYCELIUM, true, true, $ -> $
 				.put(TextureSlot.BOTTOM, dirtTexture)
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.MYCELIUM, "_top")));
+				.put(TextureSlot.TOP, getBlockTexture(Blocks.MYCELIUM, "_top")));
 		createSlab(Blocks.NETHERRACK, false, false, UnaryOperator.identity());
 		createSlab(Blocks.PODZOL, true, true, $ -> $
 				.put(TextureSlot.BOTTOM, dirtTexture)
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.PODZOL, "_top")));
+				.put(TextureSlot.TOP, getBlockTexture(Blocks.PODZOL, "_top")));
 		createSlab(Blocks.CRIMSON_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.WARPED_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.END_STONE, false, false, UnaryOperator.identity());
@@ -288,7 +305,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("steel_ladder", false);
 		ModelTemplates.FLAT_ITEM.create(
 				ModelLocationUtils.getModelLocation(block("steel_ladder").asItem()),
-				TextureMapping.layer0(TextureMapping.getBlockTexture(block("steel_safety_ladder"), "_side")),
+				TextureMapping.layer0(getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
 		createFaceAttached("hollow_steel_half_beam");
 		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
@@ -605,7 +622,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		Block slab = block(id.getPath() + "_slab");
 		TextureMapping textureMapping = TextureMapping.cube(fullBlock);
 		if (sided) {
-			textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(fullBlock, "_side"));
+			textureMapping.put(TextureSlot.SIDE, getBlockTexture(fullBlock, "_side"));
 		}
 		textureMapping = textureMappingOperator.apply(textureMapping);
 		ModelTemplate bottomTemplate = natural ? XKDModelTemplates.NATURAL_SLAB : ModelTemplates.SLAB_BOTTOM;
@@ -657,9 +674,9 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	private void createRoof(String id, boolean asian) {
-		ResourceLocation roofTexture = TextureMapping.getBlockTexture(block(id));
-		ResourceLocation ridgeTexture = TextureMapping.getBlockTexture(block(id), "_ridge");
-		ResourceLocation smallRidgeTexture = TextureMapping.getBlockTexture(block(id), "_small_ridge");
+		ResourceLocation roofTexture = getBlockTexture(block(id));
+		ResourceLocation ridgeTexture = getBlockTexture(block(id), "_ridge");
+		ResourceLocation smallRidgeTexture = getBlockTexture(block(id), "_small_ridge");
 		createRoofNormal(id, roofTexture, ridgeTexture);
 		createRoofRidge(id + "_ridge", roofTexture, ridgeTexture, asian);
 		createRoofFlat(id + "_flat", roofTexture);
