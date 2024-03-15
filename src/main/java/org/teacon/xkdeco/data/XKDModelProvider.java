@@ -182,6 +182,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				.build();
 
 		var mayaCutStonebricks = block("maya_cut_stonebricks");
+		var aztecCutStonebricks = block("aztec_cut_stonebricks");
 		generators.texturedModels = ImmutableMap.<Block, TexturedModel>builder()
 				.putAll(generators.texturedModels)
 				.put(
@@ -190,6 +191,14 @@ public class XKDModelProvider extends FabricModelProvider {
 								new TextureMapping().put(TextureSlot.SIDE, getBlockTexture(mayaCutStonebricks, "_side"))
 										.put(TextureSlot.END, getBlockTexture(block("maya_chiseled_stonebricks"), "_top")),
 								ModelTemplates.CUBE_COLUMN))
+				.put(
+						aztecCutStonebricks,
+						new TexturedModel(
+								new TextureMapping()
+										.put(TextureSlot.SIDE, getBlockTexture(aztecCutStonebricks, "_side"))
+										.put(TextureSlot.TOP, getBlockTexture(block("aztec_chiseled_stonebricks")))
+										.put(TextureSlot.BOTTOM, getBlockTexture(aztecCutStonebricks, "_bottom")),
+								ModelTemplates.CUBE_BOTTOM_TOP))
 				.build();
 
 		XKDBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> {
@@ -339,6 +348,29 @@ public class XKDModelProvider extends FabricModelProvider {
 		createPillar("gold_pillar");
 		createPillar("bronze_pillar");
 		createPillar("steel_pillar");
+
+		var mayaSingleScrewThreadStone = block("maya_single_screw_thread_stone");
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(mayaSingleScrewThreadStone)
+				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+						.select(
+								Direction.NORTH,
+								Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone")))
+						.select(
+								Direction.SOUTH,
+								Variant.variant()
+										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_s"))
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						.select(
+								Direction.WEST,
+								Variant.variant()
+										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_w"))
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+						.select(
+								Direction.EAST,
+								Variant.variant()
+										.with(VariantProperties.MODEL, XKDeco.id("block/maya_single_screw_thread_stone_e"))
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				));
 
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {

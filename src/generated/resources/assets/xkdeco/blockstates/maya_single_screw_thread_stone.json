@@ -1,5 +1,9 @@
 {
   "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/maya_single_screw_thread_stone_e",
+      "y": 90
+    },
     "facing=north": {
       "model": "xkdeco:block/maya_single_screw_thread_stone"
     },
@@ -10,10 +14,6 @@
     "facing=west": {
       "model": "xkdeco:block/maya_single_screw_thread_stone_w",
       "y": 270
-    },
-    "facing=east": {
-      "model": "xkdeco:block/maya_single_screw_thread_stone_e",
-      "y": 90
     }
   }
 }
