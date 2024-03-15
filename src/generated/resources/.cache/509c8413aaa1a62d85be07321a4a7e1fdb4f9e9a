@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-15T18:51:54.7530393	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-15T18:58:34.8570872	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -60,6 +60,7 @@ cb56f4b4042ebb0564723a082c3cfb5699324105 assets/xkdeco/blockstates/calligraphy.j
 5c1da7be808770a3b7a85b469baf69d9f593c4b6 assets/xkdeco/blockstates/cherry_blossom_leaves.json
 74184bc6633bbcea5c92731b447afa7e02a14a65 assets/xkdeco/blockstates/chiseled_bronze_block.json
 f9f33b75e043737c3df9726c3fa5bbc10c68e060 assets/xkdeco/blockstates/chiseled_gilded_blackstone.json
+0ca522de1e910ffcc32184f91cbae48c32eeae90 assets/xkdeco/blockstates/chiseled_gold_block.json
 608593509a8a0daf8f4bbc2455ae0ee3ae8b9a6c assets/xkdeco/blockstates/chiseled_steel_block.json
 29559b08a971059b798f3d4582585382f9e733d2 assets/xkdeco/blockstates/cobblestone_path.json
 93d8c062e60bce99d760a80a0e5a66e26686be8f assets/xkdeco/blockstates/cobblestone_path_slab.json
@@ -307,6 +308,7 @@ ce5240a84660b6bcf4870915d955ff9131fc6dcf assets/xkdeco/blockstates/mud_wall_bloc
 d2df3bcffbdf42a79633a0bb9c5a54a12d8c7c8a assets/xkdeco/blockstates/mycelium_slab.json
 86938a15ff9733b9a607e3362cb1410bfedec146 assets/xkdeco/blockstates/netherrack_slab.json
 e1ae551a8a20f75782d4b5e4da4e1764de29d5da assets/xkdeco/blockstates/orange_maple_leaves.json
+e5db345d910a689a84cb99da3bc3364316d7492d assets/xkdeco/blockstates/painted_gold_block.json
 4a6a137ee0f0a4952a9022c0ca0044cfc26a7615 assets/xkdeco/blockstates/paper_lantern.json
 ebc20628f0d27e53a80ecb7132e42b23045469d2 assets/xkdeco/blockstates/peach_blossom.json
 bcdd3fb586b895309145419bd9a30dbdb2824f1a assets/xkdeco/blockstates/peach_blossom_leaves.json
@@ -636,6 +638,7 @@ b4aad0a56475faaff915a575424d2314c9c9f9b7 assets/xkdeco/models/block/cherry_bloss
 c8b5879ea4f77b14bbb3d6a6c425e9bf41e684c2 assets/xkdeco/models/block/chiseled_bronze_block.json
 de1df52ca23c5469f07ae2f5773e423acad98006 assets/xkdeco/models/block/chiseled_bronze_block_horizontal.json
 455e41074b6d8214b8442aa73df0c7299fe80ea9 assets/xkdeco/models/block/chiseled_gilded_blackstone.json
+b5107f254e234ba6785c9e7118147ebc5a467634 assets/xkdeco/models/block/chiseled_gold_block.json
 52175f217f3cccacd96b8098fe371b0021d4846f assets/xkdeco/models/block/chiseled_steel_block.json
 ad83962f850a5ee9e0a1fc2249b518d02e5fba6e assets/xkdeco/models/block/chiseled_steel_block_horizontal.json
 8e3b50ccc1f8fc4d8f3d9b9ece62c776367deb0a assets/xkdeco/models/block/cobblestone_path.json
@@ -1131,6 +1134,7 @@ ace8a991d48ad6b2596a41fb5aa932f1779d9a65 assets/xkdeco/models/block/mycelium_sla
 dca36b38781fb8a04b6596cbc085686b8c39e09c assets/xkdeco/models/block/netherrack_slab.json
 94ef66eae255a15e1ed09e0de1cb661fc4382c5e assets/xkdeco/models/block/netherrack_slab_top.json
 5e547c5777e857e33eb06f389c3e53a688864643 assets/xkdeco/models/block/orange_maple_leaves.json
+f512c170c513a835b9ea39f5f495d103fa9258cf assets/xkdeco/models/block/painted_gold_block.json
 dcf6cf3eb8f65d5121e14f5bf2a72209833097af assets/xkdeco/models/block/peach_blossom.json
 ddf35134c571d92f61d87456450b5cb64b1117c5 assets/xkdeco/models/block/peach_blossom_leaves.json
 473a3ce1e5b8f121f1e25fc202b5f2d11dcc0703 assets/xkdeco/models/block/plantable_leaves.json
@@ -1492,6 +1496,7 @@ f9119e7671a2560fa8a76f9e8d016d3bfaaab618 assets/xkdeco/models/item/celadon_porce
 306619953792808516f3d2ff137c99472f67ebe1 assets/xkdeco/models/item/cherry_blossom_leaves.json
 fedddac18fbc253b40ec3a46aaef8d393f22f097 assets/xkdeco/models/item/chiseled_bronze_block.json
 4ec09f4cd5df6dc6697cb41d97f4b2a425eee032 assets/xkdeco/models/item/chiseled_gilded_blackstone.json
+42f01afa9442e79a654a60b9d5e0a1ae25b655fb assets/xkdeco/models/item/chiseled_gold_block.json
 0842ccd899402d92c9dbbdc2948d2d8f239eaafa assets/xkdeco/models/item/chiseled_steel_block.json
 b3041adae5f5094f6ee87b3aebaf1158f0d8b685 assets/xkdeco/models/item/cobblestone_path.json
 b1b39bbcb64110b1e91d38000aec7ff3ec1e0e51 assets/xkdeco/models/item/cobblestone_path_slab.json
@@ -1739,6 +1744,7 @@ a6a5448947b3f0b621fb4cd6d8b01cb424c892c9 assets/xkdeco/models/item/mud_wall_bloc
 c3a9c0e067468bf5d49190bb82dce339d7715442 assets/xkdeco/models/item/mycelium_slab.json
 942a5488a12879c894033aa059b7bcbf8b71bd66 assets/xkdeco/models/item/netherrack_slab.json
 56334ccb296494b4b77a4a149b0e954e8b255e87 assets/xkdeco/models/item/orange_maple_leaves.json
+1c270249bd3cda9e671ec4c4db1e37474e12cea8 assets/xkdeco/models/item/painted_gold_block.json
 b06566e420655a7d82543f4e8fe2e5a165edf83e assets/xkdeco/models/item/paper_lantern.json
 09d6e86bb59f1a9032182a65f09f0dbfa224f92d assets/xkdeco/models/item/peach_blossom.json
 e354ab495b2a70a7b1909ebb87735ce5e8550dda assets/xkdeco/models/item/peach_blossom_leaves.json
