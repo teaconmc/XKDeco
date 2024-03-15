@@ -1531,5 +1531,35 @@ public final class XKDecoObjects {
 						.get()),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				id + "_dougong",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+						.waterLoggable()
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS
+		);
+		addBlock(
+				id + "_dougong_connection",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+						.waterLoggable()
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS
+		);
+		addBlock(
+				id + "_dougong_hollow_connection",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+						.waterLoggable()
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS
+		);
 	}
 }

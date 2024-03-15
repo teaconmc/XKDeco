@@ -185,6 +185,11 @@ public class XKDModelTemplates {
 			create("wooden_column_wall" + s, s, slots);
 			create("hollow_wooden_column_wall" + s, s, slots);
 		}
+		for (String template : List.of("", "_connection", "_hollow_connection")) {
+			for (String s : List.of("", "_inner", "_outer")) {
+				create("template_dougong" + template + s, s, TextureSlot.SIDE);
+			}
+		}
 	}
 
 	private static ModelTemplate createShift(String pBlockModelLocation, TextureSlot... pRequiredSlots) {

@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/template_dougong",
+  "textures": {
+    "side": "xkdeco:block/varnished_smooth"
+  }
+}
