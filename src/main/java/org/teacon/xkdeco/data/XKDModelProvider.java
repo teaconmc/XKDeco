@@ -227,6 +227,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTrivialCube("steel_filings");
 		createTrivialCube("quartz_sand");
 		createTrivialCube("toughened_sand");
+		createTrivialCube("chiseled_gilded_blackstone");
+		createTrivialCube("luxury_gilded_blackstone");
 
 		createTrivialCube("ginkgo_leaves");
 		createTrivialCube("orange_maple_leaves");
@@ -311,6 +313,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createPillar("stone_brick_pillar");
 		createPillar("deepslate_pillar");
 		createPillar("blackstone_pillar");
+		createPillar("gilded_blackstone_brick_pillar");
 		createPillar("maya_pillar");
 		createPillar("maya_mossy_pillar");
 		createPillar("cut_obsidian_pillar");
@@ -987,8 +990,7 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	private static Block block(String id) {
 		ResourceLocation resourceLocation = new ResourceLocation(XKDeco.ID, id);
-		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> {
-			return new IllegalStateException("Missing block: " + resourceLocation);
-		});
+		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> new IllegalStateException(
+				"Missing block: " + resourceLocation));
 	}
 }
