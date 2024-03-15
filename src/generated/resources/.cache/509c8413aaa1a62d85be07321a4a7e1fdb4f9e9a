@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-15T17:15:48.2839515	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-15T17:46:49.8881501	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -265,6 +265,7 @@ bd4faef410f23509901bbee0c090bd23bf2979d1 assets/xkdeco/blockstates/mahogany_wood
 8824dfb50488e07c67b21afe9d31c55c07c78c9c assets/xkdeco/blockstates/maya_chiseled_stonebricks.json
 28f28dbbf94811eb68f99907a2030926defe7461 assets/xkdeco/blockstates/maya_crystal_skull.json
 86d4634db9ad89ac113af57001b098db384744de assets/xkdeco/blockstates/maya_cut_stonebricks.json
+6411ea60085a6e880b8f5d79a066a4825fff3b77 assets/xkdeco/blockstates/maya_double_screw_thread_stone.json
 a352b0cd66661ceb6e8156360ae5f17e85035bb1 assets/xkdeco/blockstates/maya_mossy_bricks.json
 94c9176e38b5f8f4e29887afdfadc2e773fed555 assets/xkdeco/blockstates/maya_mossy_brick_slab.json
 5bd91fbb7a4a14dac7a87b1ffe374d562594c588 assets/xkdeco/blockstates/maya_mossy_brick_stairs.json
@@ -1075,6 +1076,7 @@ f71156bba17619bd37e31a58b79f6be3e47f550a assets/xkdeco/models/block/maya_brick_s
 72094541c974d575c08a3c85f9524acbdd9dca78 assets/xkdeco/models/block/maya_chiseled_stonebricks.json
 cd7e608528296aebb0d63f0a456a7f8e8044acab assets/xkdeco/models/block/maya_chiseled_stonebricks_horizontal.json
 52e0af098e0161306e6b73ff3fe46ed62b0a796f assets/xkdeco/models/block/maya_cut_stonebricks.json
+7c863cb8644fdd8872af5acc995d346927b5d8b7 assets/xkdeco/models/block/maya_double_screw_thread_stone.json
 166b50ca431c75a7f71dd00cd7ecb6fb89d43b6a assets/xkdeco/models/block/maya_mossy_bricks.json
 ed549a196ec25b1c3c994c6f1a124bbf5d8d7c36 assets/xkdeco/models/block/maya_mossy_brick_slab.json
 b19b74c96b00c63bbdd6dd6a262635d5fe890a6a assets/xkdeco/models/block/maya_mossy_brick_slab_top.json
@@ -1694,6 +1696,7 @@ cd8dd7d39fb890eca8f78de901f6d2ec66cfef27 assets/xkdeco/models/item/mahogany_trap
 f6efe95e854d4ad04b353e7380fac2fe9fea07e5 assets/xkdeco/models/item/maya_chiseled_stonebricks.json
 04100410927638917374fc39b97771f5b9d76ac6 assets/xkdeco/models/item/maya_crystal_skull.json
 c3afebd811d051505e5746ced2bcd85c3d040122 assets/xkdeco/models/item/maya_cut_stonebricks.json
+565ef997f2e06164172b5af7ea6707591d5307cf assets/xkdeco/models/item/maya_double_screw_thread_stone.json
 756749317445e9e9764b58788be84b4a3d62bf7f assets/xkdeco/models/item/maya_mossy_bricks.json
 762146ba268f28c0817e87f7a821c727f3b63686 assets/xkdeco/models/item/maya_mossy_brick_slab.json
 4fff35f8c42b8556b6d2b9bf827877c55ff27d54 assets/xkdeco/models/item/maya_mossy_brick_stairs.json
