@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "xkdeco:block/furniture/light_stone_handrail_head",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "xkdeco:block/furniture/light_stone_handrail_head",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/light_stone_handrail_head"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/light_stone_handrail_head",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "xkdeco:block/furniture/light_stone_handrail_head",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/light_stone_handrail_head",
+      "y": 270
+    }
+  }
+}

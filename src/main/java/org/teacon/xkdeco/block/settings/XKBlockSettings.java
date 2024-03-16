@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.function.UnaryOperator;
 
 import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.duck.XKBlockProperties;
 
 import com.google.common.base.Preconditions;
@@ -288,9 +289,15 @@ public class XKBlockSettings {
 				return null;
 			}
 			VoxelShape shape = ShapeStorage.getInstance().get(shapeId);
-			Preconditions.checkNotNull(shape, "Shape %s is not registered", shapeId);
+//			Preconditions.checkNotNull(shape, "Shape %s is not registered", shapeId);
+			if (shape == null) {
+				shape = Shapes.block();
+				XKDeco.LOGGER.warn("Shape {} is not registered", shapeId);
+			}
 			if (hasComponent(HorizontalComponent.TYPE)) {
 				return ShapeGenerator.horizontal(shape);
+			} else if (hasComponent(DirectionalComponent.TYPE)) {
+				return ShapeGenerator.directional(shape);
 			} else if (hasComponent(MouldingComponent.TYPE)) {
 				return ShapeGenerator.moulding(shape);
 			}

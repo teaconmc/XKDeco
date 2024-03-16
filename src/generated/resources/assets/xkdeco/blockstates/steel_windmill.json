@@ -1,27 +1,27 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "xkdeco:block/furniture/steel_windmill"
+    "facing=down": {
+      "model": "xkdeco:block/furniture/steel_windmill",
+      "x": 90
     },
     "facing=east": {
       "model": "xkdeco:block/furniture/steel_windmill",
       "y": 90
     },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/steel_windmill"
+    },
     "facing=south": {
       "model": "xkdeco:block/furniture/steel_windmill",
       "y": 180
-    },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/steel_windmill",
-      "y": 270
     },
     "facing=up": {
       "model": "xkdeco:block/furniture/steel_windmill",
       "x": 270
     },
-    "facing=down": {
+    "facing=west": {
       "model": "xkdeco:block/furniture/steel_windmill",
-      "x": 90
+      "y": 270
     }
   }
 }

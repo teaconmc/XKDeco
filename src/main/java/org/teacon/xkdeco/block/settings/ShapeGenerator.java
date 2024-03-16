@@ -52,6 +52,28 @@ public interface ShapeGenerator {
 		};
 	}
 
+	static ShapeGenerator directional(VoxelShape up) {
+		if (Shapes.block() == up) {
+			return unit(up);
+		}
+		VoxelShape[] shapes = new VoxelShape[6];
+		shapes[Direction.DOWN.get3DDataValue()] = VoxelUtil.rotate(up, Direction.UP);
+		return (blockState, context) -> {
+			Direction direction = blockState.getValue(BlockStateProperties.FACING);
+			int index = direction.get3DDataValue();
+			VoxelShape shape = shapes[index];
+			if (shape == null) {
+				synchronized (shapes) {
+					shape = shapes[index];
+					if (shape == null) {
+						shapes[index] = shape = VoxelUtil.rotate(shapes[Direction.DOWN.get3DDataValue()], direction);
+					}
+				}
+			}
+			return shape;
+		};
+	}
+
 	static ShapeGenerator shifted(Predicate<BlockState> predicate, ShapeGenerator trueGenerator, ShapeGenerator falseGenerator) {
 		return (blockState, context) ->
 				predicate.test(blockState) ?
