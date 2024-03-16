@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import org.jetbrains.annotations.NotNull;
-import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
+import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -62,7 +62,7 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 		var speed = 1;
 		var pos = pBlockEntity.getBlockPos();
 		var spin = pBlockEntity.getSpin();
-		if (!pBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
+		if (!pBlockEntity.getBlockState().getValue(ItemDisplayBlock.POWERED)) {
 			spin += pPartialTick / 20;
 		}
 

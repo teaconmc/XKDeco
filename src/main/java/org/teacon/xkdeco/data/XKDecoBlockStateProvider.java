@@ -15,7 +15,7 @@ import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
-import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import com.google.common.collect.ImmutableSet;
@@ -156,23 +156,23 @@ public final class XKDecoBlockStateProvider extends BlockStateProvider {
 						var facing2d = state.getValue(RoofBlock.FACING).get2DDataValue();
 						return ConfiguredModel.builder().modelFile(model).rotationY((1 + facing2d) % 4 * 90).build();
 					}, RoofBlock.WATERLOGGED);
-				} else if (block instanceof SpecialWardrobeBlock) {
+				} else if (block instanceof WardrobeBlock) {
 					this.getVariantBuilder(block).forAllStates(state -> {
 						var modelName = new StringBuilder(id);
-						if (state.getValue(SpecialWardrobeBlock.DOUBLE)) {
+						if (state.getValue(WardrobeBlock.DOUBLE)) {
 							modelName.insert(modelName.indexOf(XKDecoObjects.WARDROBE_SUFFIX), "_double");
 						}
-						modelName.append("_").append(state.getValue(SpecialWardrobeBlock.HINGE).getSerializedName());
-						modelName.append(switch (state.getValue(SpecialWardrobeBlock.HALF)) {
+						modelName.append("_").append(state.getValue(WardrobeBlock.HINGE).getSerializedName());
+						modelName.append(switch (state.getValue(WardrobeBlock.HALF)) {
 							case UPPER -> "_top";
 							case LOWER -> "_bottom";
 						});
-						if (state.getValue(SpecialWardrobeBlock.OPEN)) {
+						if (state.getValue(WardrobeBlock.OPEN)) {
 							modelName.append("_open");
 						}
 
 						var model = model(modelName.toString(), path, "");
-						var facing2d = state.getValue(SpecialWardrobeBlock.FACING).get2DDataValue();
+						var facing2d = state.getValue(WardrobeBlock.FACING).get2DDataValue();
 						return ConfiguredModel.builder().modelFile(model).rotationY(facing2d % 4 * 90 + 180).build();
 					});
 				} else if (block.defaultBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {

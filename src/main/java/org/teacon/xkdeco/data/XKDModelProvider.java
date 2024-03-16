@@ -368,6 +368,8 @@ public class XKDModelProvider extends FabricModelProvider {
 				true,
 				true,
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
+		createMoulding("mechanical_console", "furniture/mechanical_console", false, true);
+		createMoulding("tech_console", "furniture/tech_console", false, true);
 		createIronBarsLike("hollow_steel_bars", "hollow_steel_block", "steel_column_wall");
 
 		createPillar("sandstone_pillar");
