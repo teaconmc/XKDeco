@@ -1,0 +1,9 @@
+{
+	"parent": "xkdeco:block/furniture/egyptian_column_base",
+	"textures": {
+		"particle": "xkdeco:block/egyptian_carved_column_base",
+		"side": "xkdeco:block/egyptian_carved_column_base",
+		"top": "xkdeco:block/egyptian_carved_column_top",
+		"bottom": "xkdeco:block/polished_sandstone"
+	}
+}

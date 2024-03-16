@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side_alt",
+  "textures": {
+    "edge": "xkdeco:block/steel_column_wall",
+    "pane": "xkdeco:block/hollow_steel_block"
+  }
+}

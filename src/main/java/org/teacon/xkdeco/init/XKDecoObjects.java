@@ -65,6 +65,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SandBlock;
@@ -399,7 +400,7 @@ public final class XKDecoObjects {
 		}
 	}
 
-	public static void addSpecialWallItems(RegisterEvent event) {
+	public static void addMimicWallItems(RegisterEvent event) {
 		for (var entry : ForgeRegistries.BLOCKS.getEntries()) {
 			var block = entry.getValue();
 			if (block instanceof MimicWallBlock wall) {
@@ -410,7 +411,7 @@ public final class XKDecoObjects {
 		}
 	}
 
-	public static void addSpecialWallBlockEntity(RegisterEvent event) {
+	public static void addMimicWallBlockEntity(RegisterEvent event) {
 		var blocks = ForgeRegistries.BLOCKS.getValues().stream().filter(MimicWallBlock.class::isInstance).toArray(Block[]::new);
 		var registryName = new ResourceLocation(XKDeco.ID, WALL_BLOCK_ENTITY);
 		event.register(
@@ -419,7 +420,7 @@ public final class XKDecoObjects {
 				() -> BlockEntityType.Builder.of(MimicWallBlockEntity::new, blocks).build(DSL.remainderType()));
 	}
 
-	public static void addSpecialWallTags(TagsUpdatedEvent event) {
+	public static void addMimicWallTags(TagsUpdatedEvent event) {
 		var registry = event.getRegistryAccess().registry(ForgeRegistries.BLOCKS.getRegistryKey()).orElseThrow(RuntimeException::new);
 		registry.bindTags(registry.getTagNames().collect(Collectors.toMap(Function.identity(), tagKey -> {
 			var tags = Lists.newArrayList(registry.getTagOrEmpty(tagKey));
@@ -1186,7 +1187,6 @@ public final class XKDecoObjects {
 						.get()),
 				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-
 		addBlock(
 				"dark_wall_base",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
@@ -1220,6 +1220,211 @@ public final class XKDecoObjects {
 						.waterLoggable()
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2"))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+
+		addIsotropic("egyptian_brick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_brick_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_brick_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_bump_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_bump_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_bump_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_carved_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_carved_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_column_head", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_smooth_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_smooth_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_stripe_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_stripe_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"egyptian_stripe_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"egyptian_moulding",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2")) //TODO
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"egyptian_moulding2",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2")) //TODO
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+
+		addIsotropic("greek_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"greek_corinthian_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"greek_corinthian_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic("greek_doric_column_head", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("greek_ionic_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"greek_ionic_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"greek_ionic_column_head_corner",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"greek_moulding",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2")) //TODO
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"greek_moulding2",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2")) //TODO
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+
+		addIsotropic("maya_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebrick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+
+		addIsotropic("roman_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("roman_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_composite_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_composite_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_corinthian_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_corinthian_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_doric_column",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_doric_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_doric_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_ionic_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_ionic_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_ionic_column_head_corner",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_toscan_column",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_toscan_column_base",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addIsotropic(
+				"roman_toscan_column_head",
+				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"roman_moulding",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2")) //TODO
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"roman_moulding2",
+				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+						.waterLoggable()
+						.component(MouldingComponent.getInstance(false))
+						.shape(XKDeco.id("wall_base2")) //TODO
+						.get()),
+				ITEM_BASIC,
+				TAB_BASIC_CONTENTS);
+		addBlock(
+				"hollow_steel_bars",
+				() -> new IronBarsBlock(XKBlockSettings.copyProperties(Blocks.IRON_BARS)
+						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 						.get()),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
@@ -1334,5 +1539,35 @@ public final class XKDecoObjects {
 						.get()),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				id + "_dougong",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+						.waterLoggable()
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS
+		);
+		addBlock(
+				id + "_dougong_connection",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+						.waterLoggable()
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS
+		);
+		addBlock(
+				id + "_dougong_hollow_connection",
+				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+						.waterLoggable()
+						.noOcclusion()
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS
+		);
 	}
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/template_dougong_connection",
+  "textures": {
+    "side": "xkdeco:block/mahogany_smooth"
+  }
+}

@@ -1,0 +1,57 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/egyptian_column_head",
+		"down": "xkdeco:block/egyptian_column_head",
+		"top": "xkdeco:block/egyptian_column_top",
+		"bottom": "xkdeco:block/polished_sandstone"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 2, 15],
+			"faces": {
+				"north": {"uv": [1, 14, 15, 16], "texture": "#down"},
+				"east": {"uv": [1, 14, 15, 16], "texture": "#down"},
+				"south": {"uv": [1, 14, 15, 16], "texture": "#down"},
+				"west": {"uv": [1, 14, 15, 16], "texture": "#down"},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [1, 4, 1],
+			"to": [15, 8, 15],
+			"faces": {
+				"north": {"uv": [1, 8, 15, 12], "texture": "#down"},
+				"east": {"uv": [1, 8, 15, 12], "texture": "#down"},
+				"south": {"uv": [1, 8, 15, 12], "texture": "#down"},
+				"west": {"uv": [1, 8, 15, 12], "texture": "#down"},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [2, 8, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 8], "texture": "#down"},
+				"east": {"uv": [2, 0, 14, 8], "texture": "#down"},
+				"south": {"uv": [2, 0, 14, 8], "texture": "#down"},
+				"west": {"uv": [2, 0, 14, 8], "texture": "#down"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#top"}
+			}
+		},
+		{
+			"from": [0, 2, 0],
+			"to": [16, 4, 16],
+			"faces": {
+				"north": {"uv": [0, 12, 16, 14], "texture": "#down"},
+				"east": {"uv": [0, 12, 16, 14], "texture": "#down"},
+				"south": {"uv": [0, 12, 16, 14], "texture": "#down"},
+				"west": {"uv": [0, 12, 16, 14], "texture": "#down"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		}
+	]
+}

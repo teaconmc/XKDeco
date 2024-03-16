@@ -317,6 +317,12 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping.layer0(getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
 		createFaceAttached("hollow_steel_half_beam");
+		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
+		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
+		createMoulding("greek_moulding", "furniture/greek_moulding", false, true);
+		createMoulding("greek_moulding2", "furniture/greek_moulding", false, true);
+		createMoulding("roman_moulding", "furniture/roman_moulding", false, true);
+		createMoulding("roman_moulding2", "furniture/roman_moulding", false, true);
 		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
 		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
 		createMoulding(
@@ -332,6 +338,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				true,
 				true,
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
+		createIronBarsLike("hollow_steel_bars", "hollow_steel_block", "steel_column_wall");
 
 		createPillar("sandstone_pillar");
 		createPillar("red_sandstone_pillar");
@@ -356,6 +363,16 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createInscriptionBronzeBlock(generators);
 
+		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
+			Block block = Block.byItem(item);
+			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
+				continue;
+			}
+			var id = BuiltInRegistries.BLOCK.getKey(block);
+			if (id.getPath().contains("column")) {
+				createBlockStateOnly(id.getPath(), "furniture/", true);
+			}
+		}
 		outer:
 		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
@@ -431,6 +448,72 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(RoofUtil.RoofHalf.TIP, Variant.variant().with(VariantProperties.MODEL, model0))
 						.select(RoofUtil.RoofHalf.BASE, Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
+	}
+
+	private void createIronBarsLike(String id, String paneTexture, String edgeTexture) {
+		Block block = block(id);
+		TextureMapping texturemapping = new TextureMapping()
+				.put(TextureSlot.PANE, XKDeco.id(paneTexture).withPrefix("block/"))
+				.put(TextureSlot.EDGE, XKDeco.id(edgeTexture).withPrefix("block/"));
+		ResourceLocation resourcelocation = ModelTemplates.STAINED_GLASS_PANE_POST.create(block, texturemapping, generators.modelOutput);
+		ResourceLocation resourcelocation1 = ModelTemplates.STAINED_GLASS_PANE_SIDE.create(block, texturemapping, generators.modelOutput);
+		ResourceLocation resourcelocation2 = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.create(
+				block,
+				texturemapping,
+				generators.modelOutput);
+		ResourceLocation resourcelocation3 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.create(block, texturemapping, generators.modelOutput);
+		ResourceLocation resourcelocation4 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.create(
+				block,
+				texturemapping,
+				generators.modelOutput);
+		Item item = block.asItem();
+		ModelTemplates.FLAT_ITEM.create(
+				ModelLocationUtils.getModelLocation(item),
+				TextureMapping.layer0(texturemapping.get(TextureSlot.PANE)),
+				generators.modelOutput);
+		generators.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
+				.with(Variant.variant()
+						.with(VariantProperties.MODEL, resourcelocation))
+				.with(
+						Condition.condition().term(BlockStateProperties.NORTH, true),
+						Variant.variant().with(VariantProperties.MODEL, resourcelocation1))
+				.with(
+						Condition.condition()
+								.term(BlockStateProperties.EAST, true),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation1)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(Condition.condition()
+						.term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, resourcelocation2))
+				.with(
+						Condition.condition().term(BlockStateProperties.WEST, true),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation2)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(
+						Condition.condition().term(BlockStateProperties.NORTH, false),
+						Variant.variant().with(VariantProperties.MODEL, resourcelocation3))
+				.with(
+						Condition.condition().term(BlockStateProperties.EAST, false),
+						Variant.variant().with(VariantProperties.MODEL, resourcelocation4))
+				.with(
+						Condition.condition().term(BlockStateProperties.SOUTH, false),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation4)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(
+						Condition.condition().term(BlockStateProperties.WEST, false),
+						Variant.variant()
+								.with(VariantProperties.MODEL, resourcelocation3)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
+	}
+
+	private void createMouldingWithModels(String id, String template, TextureMapping mapping, boolean itemModel) {
+		Block block = block(id);
+		XKDModelTemplates.MAP.get(template).create(block, mapping, generators.modelOutput);
+		XKDModelTemplates.MAP.get(template + "_inner").create(block, mapping, generators.modelOutput);
+		XKDModelTemplates.MAP.get(template + "_outer").create(block, mapping, generators.modelOutput);
+		createMoulding(id, id, false, itemModel);
 	}
 
 	private void createMoulding(String id, String model, boolean uvLock, boolean itemModel, Variant... baseVariants) {
@@ -634,6 +717,11 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createMoulding(id + "_meiren_kao", "furniture/" + id + "_meiren_kao", false, true);
 		createMoulding(id + "_meiren_kao_with_column", "furniture/" + id + "_meiren_kao_with_column", false, true);
+
+		textureMapping = new TextureMapping().put(TextureSlot.SIDE, XKDeco.id("block/" + id + "_smooth"));
+		createMouldingWithModels(id + "_dougong", "template_dougong", textureMapping, true);
+		createMouldingWithModels(id + "_dougong_connection", "template_dougong_connection", textureMapping, true);
+		createMouldingWithModels(id + "_dougong_hollow_connection", "template_dougong_hollow_connection", textureMapping, true);
 	}
 
 	private void createWoodenWall(String id, String templateId, TextureMapping textureMapping) {
@@ -712,9 +800,13 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	private void createBlockStateOnly(String id, boolean delegateItem) {
+		createBlockStateOnly(id, "", delegateItem);
+	}
+
+	private void createBlockStateOnly(String id, String prefix, boolean delegateItem) {
 		Block block = block(id);
 		XKBlockSettings settings = XKBlockSettings.of(block);
-		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(block);
+		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" + prefix);
 		if (settings != null && settings.hasComponent(HorizontalComponent.TYPE)) {
 			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
 							block,
