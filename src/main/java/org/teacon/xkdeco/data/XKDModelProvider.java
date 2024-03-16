@@ -81,6 +81,10 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("varnished_trapdoor"),
 			block("ebony_trapdoor"),
 			block("mahogany_trapdoor"));
+	private static final Set<Block> SKIPPED_TRAPDOORS = Set.of(
+			block("glass_trapdoor"),
+			block("steel_trapdoor"),
+			block("hollow_steel_trapdoor"));
 	private static final Set<Block> WOODEN_FENCE_GATES = Set.of(
 			block("varnished_fence_gate"),
 			block("ebony_fence_gate"),
@@ -122,17 +126,39 @@ public class XKDModelProvider extends FabricModelProvider {
 		return true;
 	}
 
-	public static boolean createIfSpecialTrapdoor(Block block, BlockModelGenerators generators) {
-		if (!THIN_TRAPDOORS.contains(block)) {
-			return false;
+	public static boolean createIfSpecialTrapdoor(Block block, BlockModelGenerators generators, BlockFamily family) {
+		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(family.getBaseBlock());
+		if (id.getPath().startsWith("factory_")) {
+			createTrapdoor(block, family.getBaseBlock(), generators);
+			return true;
 		}
-		TextureMapping $$1 = TextureMapping.defaultTexture(block);
-		ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(block, $$1, generators.modelOutput);
-		ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(block, $$1, generators.modelOutput);
-		ResourceLocation $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(block, $$1, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(block, $$2, $$3, $$4));
-		generators.delegateItemModel(block, $$3);
-		return true;
+		if (THIN_TRAPDOORS.contains(block)) {
+			TextureMapping $$1 = TextureMapping.defaultTexture(block);
+			ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(block, $$1, generators.modelOutput);
+			ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(block, $$1, generators.modelOutput);
+			ResourceLocation $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(block, $$1, generators.modelOutput);
+			generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(block, $$2, $$3, $$4));
+			generators.delegateItemModel(block, $$3);
+			return true;
+		}
+		if (SKIPPED_TRAPDOORS.contains(block)) {
+			ResourceLocation model1 = ModelLocationUtils.getModelLocation(block, "_top");
+			ResourceLocation model2 = ModelLocationUtils.getModelLocation(block, "_bottom");
+			ResourceLocation model3 = ModelLocationUtils.getModelLocation(block, "_open");
+			generators.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, model1, model2, model3));
+			generators.delegateItemModel(block, model2);
+			return true;
+		}
+		return false;
+	}
+
+	private static void createTrapdoor(Block trapdoorBlock, Block fullBlock, BlockModelGenerators generators) {
+		TextureMapping mapping = TextureMapping.defaultTexture(fullBlock);
+		ResourceLocation model1 = ModelTemplates.TRAPDOOR_TOP.create(trapdoorBlock, mapping, generators.modelOutput);
+		ResourceLocation model2 = ModelTemplates.TRAPDOOR_BOTTOM.create(trapdoorBlock, mapping, generators.modelOutput);
+		ResourceLocation model3 = ModelTemplates.TRAPDOOR_OPEN.create(trapdoorBlock, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(trapdoorBlock, model1, model2, model3));
+		generators.delegateItemModel(trapdoorBlock, model2);
 	}
 
 	public static boolean createIfSpecialFence(Block block, BlockModelGenerators generators) {
@@ -327,7 +353,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
 		createMoulding(
 				"dark_wall_base2",
-				"furniture/light_wall_base",
+				"furniture/dark_wall_base",
 				true,
 				true,
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));

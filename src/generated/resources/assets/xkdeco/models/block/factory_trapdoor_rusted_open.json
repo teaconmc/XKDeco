@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/template_orientable_trapdoor_open",
+  "parent": "minecraft:block/template_trapdoor_open",
   "textures": {
-    "texture": "xkdeco:block/factory_trapdoor_rusted"
+    "texture": "xkdeco:block/factory_block_rusted"
   }
 }

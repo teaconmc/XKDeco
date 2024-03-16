@@ -1,0 +1,22 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"textures": {
+		"particle": "xkdeco:block/steel_trapdoor",
+		"face": "xkdeco:block/steel_trapdoor",
+		"side": "xkdeco:block/steel_door_side"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 13],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 16, 16, 0], "texture": "#face"},
+				"east": {"uv": [0, 16, 3, 0], "texture": "#side"},
+				"south": {"uv": [0, 16, 16, 0], "texture": "#face"},
+				"west": {"uv": [3, 0, 0, 16], "texture": "#side"},
+				"up": {"uv": [3, 0, 0, 16], "rotation": 90, "texture": "#side"},
+				"down": {"uv": [0, 16, 3, 0], "rotation": 90, "texture": "#side"}
+			}
+		}
+	]
+}
