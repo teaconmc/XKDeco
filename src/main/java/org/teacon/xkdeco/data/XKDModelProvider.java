@@ -13,7 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BasicBlock;
+import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
+import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
@@ -72,6 +74,7 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("polished_red_sandstone_slab"),
 			block("maya_polished_stonebrick_slab"));
 	private static final Set<String> SKIPPED_MODELS = Set.of(
+			"item/item_projector",
 			"block/dirt_path_slab",
 			"block/dirt_path_slab_top",
 			"block/grass_block_slab",
@@ -397,6 +400,17 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createWall("quartz_wall", "quartz_wall_side");
 
+		generators.skipAutoItemBlock(block("item_projector"));
+		for (Item item : XKDecoProperties.TAB_FUNCTIONAL_CONTENTS.stream().map(RegistryObject::get).toList()) {
+			Block block = Block.byItem(item);
+			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
+				continue;
+			}
+			var id = BuiltInRegistries.BLOCK.getKey(block);
+			if (block instanceof ItemDisplayBlock || block instanceof BlockDisplayBlock) {
+				createBlockStateOnly(id.getPath(), "furniture/", true);
+			}
+		}
 		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
 			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {

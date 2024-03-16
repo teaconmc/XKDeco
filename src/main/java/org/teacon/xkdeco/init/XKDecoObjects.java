@@ -326,7 +326,8 @@ public final class XKDecoObjects {
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(WARDROBE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(WaterLoggableComponent.TYPE).get()));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
+			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
 		}
