@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "xkdeco:block/maya_polished_stonebrick",
+    "end": "xkdeco:block/maya_polished_stonebricks",
     "side": "xkdeco:block/maya_polished_stonebrick_slab"
   }
 }

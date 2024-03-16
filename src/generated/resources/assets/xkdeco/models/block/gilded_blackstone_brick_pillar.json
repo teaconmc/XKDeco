@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "xkdeco:block/gilded_blackstone_brick_pillar_top",
+    "side": "xkdeco:block/gilded_blackstone_brick_pillar_side"
+  }
+}

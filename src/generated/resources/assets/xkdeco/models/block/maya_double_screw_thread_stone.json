@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "xkdeco:block/maya_double_screw_thread_stone_top",
+    "side": "xkdeco:block/maya_double_screw_thread_stone_side"
+  }
+}
