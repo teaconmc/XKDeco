@@ -184,7 +184,11 @@ public final class XKDecoObjects {
 		//TODO shape
 		var block = BLOCKS.register(
 				id,
-				() -> new BasicBlock(XKBlockSettings.builder().waterLoggable().directional().shape(new ResourceLocation(shapeDownId)).get()));
+				() -> new BasicBlock(XKBlockSettings.builder()
+						.waterLoggable()
+						.directional()
+						.shape(new ResourceLocation(shapeDownId))
+						.get()));
 		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
@@ -228,6 +232,8 @@ public final class XKDecoObjects {
 			blockSupplier = () -> new DoorBlock(
 					settings.get(),
 					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+		} else if (id.endsWith("_wall")) {
+			blockSupplier = () -> new WallBlock(settings.get());
 		} else if (settings.hasComponent(WaterLoggableComponent.TYPE)) {
 			blockSupplier = () -> new BasicBlock(settings.get());
 		} else {
@@ -482,6 +488,7 @@ public final class XKDecoObjects {
 		addIsotropic("mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("mud_wall_slab", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("mud_wall_stairs", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("mud_wall_wall", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("framed_mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
@@ -496,14 +503,17 @@ public final class XKDecoObjects {
 		addIsotropic("dirty_mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("dirty_mud_wall_slab", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("dirty_mud_wall_stairs", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("dirty_mud_wall_wall", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("cyan_bricks", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("cyan_brick_slab", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("cyan_brick_stairs", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_brick_wall", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("black_bricks", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("black_brick_slab", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("black_brick_stairs", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("black_brick_wall", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addTreatedWood("varnished", MapColor.WOOD);
 		addTreatedWood("ebony", MapColor.WOOD);
@@ -568,10 +578,12 @@ public final class XKDecoObjects {
 		addIsotropic("maya_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebrick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("maya_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_brick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("maya_polished_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_polished_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -580,10 +592,12 @@ public final class XKDecoObjects {
 		addIsotropic("maya_mossy_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_stonebrick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("maya_mossy_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_mossy_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_brick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("maya_chiseled_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("maya_cut_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -1293,6 +1307,7 @@ public final class XKDecoObjects {
 				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 
+		addIsotropic("quartz_wall", XKBlockSettings.copyProperties(Blocks.QUARTZ_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("greek_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"greek_corinthian_column_base",
