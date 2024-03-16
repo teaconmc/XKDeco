@@ -76,7 +76,8 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/grass_block_slab",
 			"block/grass_block_slab_top",
 			"block/air_duct_oblique",
-			"block/air_duct_oblique_top");
+			"block/air_duct_oblique_top",
+			"block/quartz_wall_post");
 	private static final Set<Block> THIN_TRAPDOORS = Set.of(
 			block("varnished_trapdoor"),
 			block("ebony_trapdoor"),
@@ -387,7 +388,9 @@ public class XKDModelProvider extends FabricModelProvider {
 		createSingleScrewState("maya_single_screw_thread_stone");
 		createSingleScrewState("screw_thread_bronze_block");
 
-		createInscriptionBronzeBlock(generators);
+		createInscriptionBronzeBlock();
+
+		createWall("quartz_wall", "quartz_wall_side");
 
 		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
@@ -415,7 +418,18 @@ public class XKDModelProvider extends FabricModelProvider {
 		}
 	}
 
-	private static void createInscriptionBronzeBlock(final BlockModelGenerators generators) {
+	private void createWall(String id, String texture) {
+		Block block = block(id);
+		TextureMapping mapping = new TextureMapping().put(TextureSlot.WALL, XKDeco.id("block/" + texture));
+		ResourceLocation $$1 = ModelTemplates.WALL_POST.create(block, mapping, generators.modelOutput);
+		ResourceLocation $$2 = ModelTemplates.WALL_LOW_SIDE.create(block, mapping, generators.modelOutput);
+		ResourceLocation $$3 = ModelTemplates.WALL_TALL_SIDE.create(block, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, $$1, $$2, $$3));
+		ResourceLocation $$4 = ModelTemplates.WALL_INVENTORY.create(block, mapping, generators.modelOutput);
+		generators.delegateItemModel(block, $$4);
+	}
+
+	private void createInscriptionBronzeBlock() {
 		ModelTemplates.CUBE_ALL.create(
 				XKDeco.id("block/inscription_bronze_block"),
 				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block")),

@@ -28,12 +28,12 @@ public class XKDBlockFamilies {
 			.trapdoor(block("glass_trapdoor"))
 			.door(block("glass_door"))
 			.getFamily();
-	public static final BlockFamily MUD_WALL = basicSetup("mud_wall_block").getFamily();
+	public static final BlockFamily MUD_WALL = basicSetup("mud_wall_block").wall(block("mud_wall_wall")).getFamily();
 	public static final BlockFamily LINED_MUD_WALL = basicSetup("lined_mud_wall_block").getFamily();
 	public static final BlockFamily CROSSED_MUD_WALL = basicSetup("crossed_mud_wall_block").getFamily();
-	public static final BlockFamily DIRTY_MUD_WALL = basicSetup("dirty_mud_wall_block").getFamily();
-	public static final BlockFamily CYAN_BRICKS = basicSetup("cyan_bricks").getFamily();
-	public static final BlockFamily BLACK_BRICKS = basicSetup("black_bricks").getFamily();
+	public static final BlockFamily DIRTY_MUD_WALL = basicSetup("dirty_mud_wall_block").wall(block("dirty_mud_wall_wall")).getFamily();
+	public static final BlockFamily CYAN_BRICKS = basicSetup("cyan_bricks").wall(block("cyan_brick_wall")).getFamily();
+	public static final BlockFamily BLACK_BRICKS = basicSetup("black_bricks").wall(block("black_brick_wall")).getFamily();
 	public static final BlockFamily VARNISHED_PLANKS = treatedPlanks("varnished").getFamily();
 	public static final BlockFamily EBONY_PLANKS = treatedPlanks("ebony").getFamily();
 	public static final BlockFamily MAHOGANY_PLANKS = treatedPlanks("mahogany").getFamily();
@@ -50,14 +50,16 @@ public class XKDBlockFamilies {
 	public static final BlockFamily GILDED_BLACKSTONE_BRICKS = basicSetup("gilded_blackstone_bricks").getFamily();
 	public static final BlockFamily MAYA_STONE = basicSetup("maya_stone").getFamily();
 	public static final BlockFamily MAYA_STONEBRICKS = basicSetup("maya_stonebricks")
+			.wall(block("maya_stonebrick_wall"))
 			.polished(block("maya_polished_stonebricks"))
 			.chiseled(block("maya_chiseled_stonebricks"))
 			.cut(block("maya_cut_stonebricks"))
 			.getFamily();
-	public static final BlockFamily MAYA_BRICKS = basicSetup("maya_bricks").getFamily();
+	public static final BlockFamily MAYA_BRICKS = basicSetup("maya_bricks").wall(block("maya_brick_wall")).getFamily();
 	public static final BlockFamily MAYA_POLISHED_STONEBRICKS = basicSetup("maya_polished_stonebricks").getFamily();
-	public static final BlockFamily MAYA_MOSSY_STONEBRICKS = basicSetup("maya_mossy_stonebricks").getFamily();
-	public static final BlockFamily MAYA_MOSSY_BRICKS = basicSetup("maya_mossy_bricks").getFamily();
+	public static final BlockFamily MAYA_MOSSY_STONEBRICKS = basicSetup("maya_mossy_stonebricks").wall(block("maya_mossy_stonebrick_wall"))
+			.getFamily();
+	public static final BlockFamily MAYA_MOSSY_BRICKS = basicSetup("maya_mossy_bricks").wall(block("maya_mossy_brick_wall")).getFamily();
 	public static final BlockFamily AZTEC_STONEBRICKS = basicSetup("aztec_stonebricks")
 			.chiseled(block("aztec_chiseled_stonebricks"))
 			.cut(block("aztec_cut_stonebricks"))
