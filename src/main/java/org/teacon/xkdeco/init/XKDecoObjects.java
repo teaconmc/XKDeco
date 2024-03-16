@@ -182,7 +182,9 @@ public final class XKDecoObjects {
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
 		//TODO shape
-		var block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().waterLoggable().directional().get()));
+		var block = BLOCKS.register(
+				id,
+				() -> new BasicBlock(XKBlockSettings.builder().waterLoggable().directional().shape(new ResourceLocation(shapeDownId)).get()));
 		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
@@ -604,7 +606,7 @@ public final class XKDecoObjects {
 				"maya_crystal_skull",
 				"xkdeco:maya_crystal_skull",
 				false,
-				copyProperties(Blocks.DEEPSLATE).get(),
+				copyProperties(Blocks.DEEPSLATE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT).get(),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
@@ -671,7 +673,7 @@ public final class XKDecoObjects {
 		addIsotropic("steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("smooth_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("steel_pillar", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_trapdoor", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("steel_trapdoor", BlockSettingPresets.steel().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 
 		addIsotropic("steel_floor", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic("steel_floor_slab", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
@@ -1423,7 +1425,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"hollow_steel_bars",
-				() -> new IronBarsBlock(XKBlockSettings.copyProperties(Blocks.IRON_BARS)
+				() -> new IronBarsBlock(BlockSettingPresets.hollowSteel()
 						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 						.get()),
 				ITEM_FURNITURE,

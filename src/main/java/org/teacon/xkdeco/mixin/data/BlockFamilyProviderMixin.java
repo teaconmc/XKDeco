@@ -55,7 +55,7 @@ public class BlockFamilyProviderMixin {
 
 	@Inject(method = "trapdoor", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$trapdoor(Block pBlock, CallbackInfo ci) {
-		if (XKDModelProvider.createIfSpecialTrapdoor(pBlock, this$0)) {
+		if (XKDModelProvider.createIfSpecialTrapdoor(pBlock, this$0, family)) {
 			ci.cancel();
 		}
 	}
