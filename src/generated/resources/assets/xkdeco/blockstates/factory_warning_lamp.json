@@ -1,27 +1,27 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "xkdeco:block/furniture/factory_warning_lamp"
+    "facing=down": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp",
+      "x": 90
     },
     "facing=east": {
       "model": "xkdeco:block/furniture/factory_warning_lamp",
       "y": 90
     },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/factory_warning_lamp"
+    },
     "facing=south": {
       "model": "xkdeco:block/furniture/factory_warning_lamp",
       "y": 180
-    },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/factory_warning_lamp",
-      "y": 270
     },
     "facing=up": {
       "model": "xkdeco:block/furniture/factory_warning_lamp",
       "x": 270
     },
-    "facing=down": {
+    "facing=west": {
       "model": "xkdeco:block/furniture/factory_warning_lamp",
-      "x": 90
+      "y": 270
     }
   }
 }

@@ -1,27 +1,27 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "xkdeco:block/furniture/fan_blade"
+    "facing=down": {
+      "model": "xkdeco:block/furniture/fan_blade",
+      "x": 90
     },
     "facing=east": {
       "model": "xkdeco:block/furniture/fan_blade",
       "y": 90
     },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/fan_blade"
+    },
     "facing=south": {
       "model": "xkdeco:block/furniture/fan_blade",
       "y": 180
-    },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/fan_blade",
-      "y": 270
     },
     "facing=up": {
       "model": "xkdeco:block/furniture/fan_blade",
       "x": 270
     },
-    "facing=down": {
+    "facing=west": {
       "model": "xkdeco:block/furniture/fan_blade",
-      "x": 90
+      "y": 270
     }
   }
 }

@@ -20,6 +20,7 @@ import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
+import org.teacon.xkdeco.block.settings.DirectionalComponent;
 import org.teacon.xkdeco.block.settings.HorizontalComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
@@ -96,7 +97,9 @@ public class XKDModelProvider extends FabricModelProvider {
 			"mahogany_");
 	private static final Set<Block> GADGET_SKIP_BLOCKS = Set.of(
 			block("bottle_stack"),
-			block("empty_bottle_stack"));
+			block("empty_bottle_stack"),
+			block("empty_candlestick"),
+			block("oil_lamp"));
 	private BlockModelGenerators generators;
 	private ResourceLocation snowySlabDouble = new ResourceLocation("block/grass_block_snow");
 	private ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
@@ -806,6 +809,13 @@ public class XKDModelProvider extends FabricModelProvider {
 							block,
 							Variant.variant().with(VariantProperties.MODEL, model))
 					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
+			generators.delegateItemModel(block, model);
+		} else if (block instanceof BasicBlock && settings.hasComponent(DirectionalComponent.TYPE)) {
+			ResourceLocation model = id.withPrefix("block/furniture/");
+			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+							block,
+							Variant.variant().with(VariantProperties.MODEL, model))
+					.with(BlockModelGenerators.createFacingDispatch()));
 			generators.delegateItemModel(block, model);
 		}
 	}

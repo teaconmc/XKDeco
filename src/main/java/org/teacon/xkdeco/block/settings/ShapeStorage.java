@@ -72,8 +72,8 @@ public class ShapeStorage {
 		put("water_tank", Shapes.join(box(1, 0, 1, 15, 16, 15), box(3, 3, 3, 13, 16, 13), BooleanOp.ONLY_FIRST));
 		put("oil_lamp", box(5, 4, 8, 11, 12, 16));
 		put("empty_candlestick", box(5, 5, 5, 11, 16, 16));
-		put("factory_lamp", box(4, 4, 8, 12, 12, 16));
-		put("fan", box(1, 1, 10, 15, 15, 16));
+		put("factory_lamp", box(4, 0, 4, 12, 8, 12));
+		put("fan", box(1, 0, 1, 15, 6, 15));
 		put("screen", box(0, 0, 14, 16, 16, 16));
 		put("screen2", box(0, 0, 13, 16, 16, 14));
 		put("vent_fan", box(0, 0, 2, 16, 16, 14));

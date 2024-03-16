@@ -74,15 +74,6 @@ public final class XKDecoProperties {
 			.noOcclusion()
 			.strength(0.5f, 0.5f)
 			.lightLevel(s -> 15);
-	public static final BlockBehaviour.Properties BLOCK_METAL_HALF_LIGHT = BlockBehaviour.Properties.of()
-			.mapColor(MapColor.METAL)
-			.noOcclusion()
-			.strength(0.5f, 0.5f)
-			.lightLevel(s -> 7);
-	public static final BlockBehaviour.Properties BLOCK_METAL_WITHOUT_LIGHT = BlockBehaviour.Properties.of()
-			.mapColor(MapColor.METAL)
-			.noOcclusion()
-			.strength(0.5f, 0.5f);
 	public static final BlockBehaviour.Properties BLOCK_STONE_LIGHT = BlockBehaviour.Properties.of()
 			.mapColor(MapColor.STONE)
 			.noOcclusion()
@@ -105,10 +96,6 @@ public final class XKDecoProperties {
 	public static final BlockBehaviour.Properties BLOCK_METAL_NO_OCCLUSION = BlockBehaviour.Properties.of()
 			.mapColor(MapColor.METAL)
 			.noOcclusion()
-			.strength(0.5f, 0.5f);
-	public static final BlockBehaviour.Properties BLOCK_METAL_NO_COLLISSION = BlockBehaviour.Properties.of()
-			.mapColor(MapColor.METAL)
-			.noCollission()
 			.strength(0.5f, 0.5f);
 	public static final BlockBehaviour.Properties BLOCK_METAL_LIGHT_NO_COLLISSION = BlockBehaviour.Properties.of()
 			.mapColor(MapColor.METAL)

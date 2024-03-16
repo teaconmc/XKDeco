@@ -2,7 +2,35 @@ package org.teacon.xkdeco.init;
 
 import static net.minecraft.world.level.block.Block.box;
 import static org.teacon.xkdeco.block.settings.XKBlockSettings.copyProperties;
-import static org.teacon.xkdeco.init.XKDecoProperties.*;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_BOARD;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_CARPET;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_DESSERT;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_GLASS_NO_OCCLUSION;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_GLASS_WARDROBE;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_LANTERN;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_DISPLAY;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_LIGHT;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_LIGHT_NO_COLLISSION;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_NO_OCCLUSION;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_WARDROBE;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_MINIATURE;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_PORCELAIN;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_STONE_DISPLAY;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_STONE_LIGHT;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_STONE_NO_OCCLUSION;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_WOOD_FURNITURE;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_WOOD_LIGHT;
+import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_WOOD_WARDROBE;
+import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_BASIC;
+import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_FUNCTIONAL;
+import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_FURNITURE;
+import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_NATURE;
+import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_STRUCTURE;
+import static org.teacon.xkdeco.init.XKDecoProperties.TAB_BASIC_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoProperties.TAB_FUNCTIONAL_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoProperties.TAB_FURNITURE_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoProperties.TAB_NATURE_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoProperties.TAB_STRUCTURE_CONTENTS;
 
 import java.util.Collection;
 import java.util.List;
@@ -137,7 +165,6 @@ public final class XKDecoObjects {
 	public static final String WARDROBE_SUFFIX = "_wardrobe";
 	public static final String FALLEN_LEAVES_PREFIX = "fallen_";
 	public static final String CONSOLE_SUFFIX = "_console";
-	public static final String VENT_FAN_SUFFIX = "_vent_fan";
 
 	public static final String REFRESHMENT_SPECIAL = "refreshments";
 	public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
@@ -177,18 +204,12 @@ public final class XKDecoObjects {
 
 	private static void addDirectionalBasic(
 			String id,
-			String shapeDownId,
-			BlockBehaviour.Properties properties,
+			XKBlockSettings.Builder settings,
 			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
-		//TODO shape
 		var block = BLOCKS.register(
 				id,
-				() -> new BasicBlock(XKBlockSettings.builder()
-						.waterLoggable()
-						.directional()
-						.shape(new ResourceLocation(shapeDownId))
-						.get()));
+				() -> new BasicBlock(settings.directional().get()));
 		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
@@ -331,10 +352,6 @@ public final class XKDecoObjects {
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(WARDROBE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new SpecialWardrobeBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(VENT_FAN_SUFFIX)) {
-			//TODO shape
-			var block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().waterLoggable().directional().get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(CONSOLE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new SpecialConsole(properties));
@@ -969,13 +986,16 @@ public final class XKDecoObjects {
 		addBasic("paper_lantern", "xkdeco:lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("red_lantern", "xkdeco:lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("festival_lantern", "xkdeco:festival_lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic("oil_lamp", "xkdeco:oil_lamp", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"oil_lamp",
+				BlockSettingPresets.lightThingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("oil_lamp")),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 		addBasic("candlestick", "xkdeco:candlestick", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("big_candlestick", "xkdeco:big_candlestick", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addDirectionalBasic(
 				"empty_candlestick",
-				"xkdeco:empty_candlestick",
-				BLOCK_METAL_WITHOUT_LIGHT,
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("empty_candlestick")),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBasic("covered_lamp", "xkdeco:covered_lamp", false, BLOCK_WOOD_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
@@ -1057,20 +1077,17 @@ public final class XKDecoObjects {
 
 		addDirectionalBasic(
 				"factory_lamp",
-				"xkdeco:factory_lamp",
-				BLOCK_METAL_LIGHT,
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp")),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addDirectionalBasic(
 				"factory_lamp_broken",
-				"xkdeco:factory_lamp",
-				BLOCK_METAL_WITHOUT_LIGHT,
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp")),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addDirectionalBasic(
 				"factory_warning_lamp",
-				"xkdeco:factory_lamp",
-				BLOCK_METAL_HALF_LIGHT,
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp")),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
@@ -1088,14 +1105,38 @@ public final class XKDecoObjects {
 		addBasic("factory_ceiling_lamp", "xkdeco:factory_ceiling_lamp", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("factory_pendant", "xkdeco:factory_pendant", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
-		addDirectionalBasic("fan_blade", "xkdeco:fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"fan_blade",
+				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 
-		addSpecial("factory_vent_fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addSpecial("factory_vent_fan_big", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"factory_vent_fan",
+				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"factory_vent_fan_big",
+				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 
-		addDirectionalBasic("steel_windmill", "xkdeco:fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic("iron_windmill", "xkdeco:fan", BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic("wooden_windmill", "xkdeco:fan", BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"steel_windmill",
+				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"iron_windmill",
+				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"wooden_windmill",
+				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 
 		addSpecial("mechanical_console", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
@@ -1134,8 +1175,7 @@ public final class XKDecoObjects {
 
 		addDirectionalBasic(
 				"hologram_base",
-				"xkdeco:hologram_base",
-				BLOCK_METAL_NO_COLLISSION,
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("hologram_base")),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addItem("hologram_planet", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
@@ -1143,6 +1183,17 @@ public final class XKDecoObjects {
 		addItem("hologram_pictures", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addItem("hologram_message", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addItem("hologram_xekr_logo", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+
+		addDirectionalBasic(
+				"item_frame_cover",
+				XKBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic(
+				"glow_item_frame_cover",
+				XKBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")).configure($ -> $.lightLevel($$ -> 15)),
+				ITEM_FURNITURE,
+				TAB_FURNITURE_CONTENTS);
 
 		addBasic("sign_entrance", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 		addBasic("sign_exit", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
@@ -1239,6 +1290,8 @@ public final class XKDecoObjects {
 						.get()),
 				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("dark_stone_handrail_head", BlockSettingPresets.thingy(null), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectionalBasic("light_stone_handrail_head", BlockSettingPresets.thingy(null), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
 
 		addIsotropic("egyptian_brick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
 		addIsotropic(
