@@ -1,7 +1,10 @@
 package org.teacon.xkdeco.data;
 
+import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
+
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -22,7 +25,7 @@ import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
 import org.teacon.xkdeco.util.RoofUtil;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.logging.LogUtils;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -105,16 +108,17 @@ public class XKDModelProvider extends FabricModelProvider {
 		return true;
 	}
 
-	public static boolean createIfSpecialDoubleSlabs(Block block, BlockModelGenerators generators) {
+	public static boolean createIfSpecialDoubleSlabs(Block block, BlockModelGenerators generators, BlockFamily family) {
 		if (!SPECIAL_DOUBLE_SLABS.contains(block)) {
 			return false;
 		}
-		ResourceLocation texture = TextureMapping.getBlockTexture(block);
-		TextureMapping mapping = TextureMapping.column(texture, texture.withPath(s -> s.substring(0, s.length() - 5)));
-		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
-		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
-		ResourceLocation $$4 = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, $$2, $$3, $$4));
+		TextureMapping mapping = TextureMapping.column(
+				getBlockTexture(block),
+				getBlockTexture(family.getBaseBlock()));
+		ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
+		ResourceLocation top = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
+		ResourceLocation cube = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, bottom, top, cube));
 		return true;
 	}
 
@@ -171,17 +175,40 @@ public class XKDModelProvider extends FabricModelProvider {
 				originalModelOutput.accept(modelLocation, json);
 			}
 		};
-		BlockModelGenerators.SHAPE_CONSUMERS = Maps.newHashMap(BlockModelGenerators.SHAPE_CONSUMERS);
-		BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.CUT, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant);
-		BlockModelGenerators.SHAPE_CONSUMERS.put(BlockFamily.Variant.POLISHED, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant);
+		BlockModelGenerators.SHAPE_CONSUMERS = ImmutableMap.<BlockFamily.Variant, BiConsumer<BlockModelGenerators.BlockFamilyProvider, Block>>builder()
+				.putAll(BlockModelGenerators.SHAPE_CONSUMERS)
+				.put(BlockFamily.Variant.CUT, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant)
+				.put(BlockFamily.Variant.POLISHED, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant)
+				.build();
+
+		var mayaCutStonebricks = block("maya_cut_stonebricks");
+		var aztecCutStonebricks = block("aztec_cut_stonebricks");
+		generators.texturedModels = ImmutableMap.<Block, TexturedModel>builder()
+				.putAll(generators.texturedModels)
+				.put(
+						mayaCutStonebricks,
+						new TexturedModel(
+								new TextureMapping().put(TextureSlot.SIDE, getBlockTexture(mayaCutStonebricks, "_side"))
+										.put(TextureSlot.END, getBlockTexture(block("maya_chiseled_stonebricks"), "_top")),
+								ModelTemplates.CUBE_COLUMN))
+				.put(
+						aztecCutStonebricks,
+						new TexturedModel(
+								new TextureMapping()
+										.put(TextureSlot.SIDE, getBlockTexture(aztecCutStonebricks, "_side"))
+										.put(TextureSlot.TOP, getBlockTexture(block("aztec_chiseled_stonebricks")))
+										.put(TextureSlot.BOTTOM, getBlockTexture(aztecCutStonebricks, "_bottom")),
+								ModelTemplates.CUBE_BOTTOM_TOP))
+				.build();
+
 		XKDBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> {
 			Block baseBlock = family.getBaseBlock();
 			LOGGER.info("Generating models for block family {}", baseBlock);
 			BlockModelGenerators.BlockFamilyProvider provider;
 			if (family == XKDBlockFamilies.LINED_MUD_WALL) {
 				TextureMapping textureMapping = TextureMapping.column(
-						TextureMapping.getBlockTexture(block("lined_mud_wall_block")),
-						TextureMapping.getBlockTexture(block("crossed_mud_wall_block")));
+						getBlockTexture(block("lined_mud_wall_block")),
+						getBlockTexture(block("crossed_mud_wall_block")));
 				provider = generators.new BlockFamilyProvider(textureMapping);
 				ResourceLocation blockModel = ModelTemplates.CUBE_COLUMN.create(
 						baseBlock,
@@ -249,24 +276,24 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("hanging_willow_leaves", false);
 		generators.createSimpleFlatItemModel(block("hanging_willow_leaves"));
 
-		ResourceLocation dirtTexture = TextureMapping.getBlockTexture(Blocks.DIRT);
-		ResourceLocation netherrackTexture = TextureMapping.getBlockTexture(Blocks.NETHERRACK);
+		ResourceLocation dirtTexture = getBlockTexture(Blocks.DIRT);
+		ResourceLocation netherrackTexture = getBlockTexture(Blocks.NETHERRACK);
 		TextureMapping snowyMapping = new TextureMapping()
 				.put(TextureSlot.BOTTOM, dirtTexture)
 				.copyForced(TextureSlot.BOTTOM, TextureSlot.PARTICLE)
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.GRASS_BLOCK, "_top"))
-				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.GRASS_BLOCK, "_snow"));
+				.put(TextureSlot.TOP, getBlockTexture(Blocks.GRASS_BLOCK, "_top"))
+				.put(TextureSlot.SIDE, getBlockTexture(Blocks.GRASS_BLOCK, "_snow"));
 		ModelTemplates.SLAB_TOP.create(snowySlabTop, snowyMapping, generators.modelOutput);
 		createSlab(Blocks.DIRT, false, false, UnaryOperator.identity());
 		createSlab(Blocks.DIRT_PATH, true, true, $ -> $.put(TextureSlot.BOTTOM, dirtTexture));
 		createSlab(Blocks.GRASS_BLOCK, true, true, UnaryOperator.identity());
 		createSlab(Blocks.MYCELIUM, true, true, $ -> $
 				.put(TextureSlot.BOTTOM, dirtTexture)
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.MYCELIUM, "_top")));
+				.put(TextureSlot.TOP, getBlockTexture(Blocks.MYCELIUM, "_top")));
 		createSlab(Blocks.NETHERRACK, false, false, UnaryOperator.identity());
 		createSlab(Blocks.PODZOL, true, true, $ -> $
 				.put(TextureSlot.BOTTOM, dirtTexture)
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(Blocks.PODZOL, "_top")));
+				.put(TextureSlot.TOP, getBlockTexture(Blocks.PODZOL, "_top")));
 		createSlab(Blocks.CRIMSON_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.WARPED_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.END_STONE, false, false, UnaryOperator.identity());
@@ -287,7 +314,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("steel_ladder", false);
 		ModelTemplates.FLAT_ITEM.create(
 				ModelLocationUtils.getModelLocation(block("steel_ladder").asItem()),
-				TextureMapping.layer0(TextureMapping.getBlockTexture(block("steel_safety_ladder"), "_side")),
+				TextureMapping.layer0(getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
 		createFaceAttached("hollow_steel_half_beam");
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
@@ -313,6 +340,29 @@ public class XKDModelProvider extends FabricModelProvider {
 				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
 		createIronBarsLike("hollow_steel_bars", "hollow_steel_block", "steel_column_wall");
 
+		createPillar("sandstone_pillar");
+		createPillar("red_sandstone_pillar");
+		createPillar("stone_brick_pillar");
+		createPillar("deepslate_pillar");
+		createPillar("blackstone_pillar");
+		createPillar("gilded_blackstone_brick_pillar");
+		createPillar("chiseled_gilded_blackstone");
+		createPillar("luxury_gilded_blackstone");
+		createPillar("maya_double_screw_thread_stone");
+		createPillar("maya_pillar");
+		createPillar("maya_mossy_pillar");
+		createPillar("cut_obsidian_pillar");
+		createPillar("gold_pillar");
+		createPillar("chiseled_gold_block");
+		createPillar("painted_gold_block");
+		createPillar("bronze_pillar");
+		createPillar("steel_pillar");
+
+		createSingleScrewState("maya_single_screw_thread_stone");
+		createSingleScrewState("screw_thread_bronze_block");
+
+		createInscriptionBronzeBlock(generators);
+
 		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
 			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
@@ -337,6 +387,54 @@ public class XKDModelProvider extends FabricModelProvider {
 			}
 			createGadget(block);
 		}
+	}
+
+	private static void createInscriptionBronzeBlock(final BlockModelGenerators generators) {
+		ModelTemplates.CUBE_ALL.create(
+				XKDeco.id("block/inscription_bronze_block"),
+				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block")),
+				generators.modelOutput);
+
+		ModelTemplates.CUBE_ALL.create(
+				XKDeco.id("block/inscription_bronze_block1"),
+				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block1")),
+				generators.modelOutput);
+
+		ModelTemplates.CUBE_ALL.create(
+				XKDeco.id("block/inscription_bronze_block2"),
+				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block2")),
+				generators.modelOutput);
+
+		generators.blockStateOutput.accept(MultiPartGenerator.multiPart(block("inscription_bronze_block"))
+				.with(List.of(
+						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block")),
+						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block1")),
+						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block2")))));
+	}
+
+	private void createSingleScrewState(String id) {
+		var mayaSingleScrewThreadStone = block(id);
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(mayaSingleScrewThreadStone)
+				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+						.select(
+								Direction.NORTH,
+								Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/" + id)))
+						.select(
+								Direction.SOUTH,
+								Variant.variant()
+										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_s"))
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						.select(
+								Direction.WEST,
+								Variant.variant()
+										.with(VariantProperties.MODEL, XKDeco.id("block" + id + "_w"))
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+						.select(
+								Direction.EAST,
+								Variant.variant()
+										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_e"))
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				));
 	}
 
 	private void createFallenLeaves(String id) {
@@ -677,7 +775,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		Block slab = block(id.getPath() + "_slab");
 		TextureMapping textureMapping = TextureMapping.cube(fullBlock);
 		if (sided) {
-			textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(fullBlock, "_side"));
+			textureMapping.put(TextureSlot.SIDE, getBlockTexture(fullBlock, "_side"));
 		}
 		textureMapping = textureMappingOperator.apply(textureMapping);
 		ModelTemplate bottomTemplate = natural ? XKDModelTemplates.NATURAL_SLAB : ModelTemplates.SLAB_BOTTOM;
@@ -733,9 +831,9 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	private void createRoof(String id, boolean asian) {
-		ResourceLocation roofTexture = TextureMapping.getBlockTexture(block(id));
-		ResourceLocation ridgeTexture = TextureMapping.getBlockTexture(block(id), "_ridge");
-		ResourceLocation smallRidgeTexture = TextureMapping.getBlockTexture(block(id), "_small_ridge");
+		ResourceLocation roofTexture = getBlockTexture(block(id));
+		ResourceLocation ridgeTexture = getBlockTexture(block(id), "_ridge");
+		ResourceLocation smallRidgeTexture = getBlockTexture(block(id), "_small_ridge");
 		createRoofNormal(id, roofTexture, ridgeTexture);
 		createRoofRidge(id + "_ridge", roofTexture, ridgeTexture, asian);
 		createRoofFlat(id + "_flat", roofTexture);
@@ -1032,6 +1130,10 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
+	private void createPillar(String id) {
+		generators.createAxisAlignedPillarBlock(block(id), TexturedModel.COLUMN);
+	}
+
 	public static PropertyDispatch createHorizontalFacingDispatchAlt() {
 		return PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
 				.select(Direction.EAST, Variant.variant())
@@ -1063,8 +1165,7 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	private static Block block(String id) {
 		ResourceLocation resourceLocation = new ResourceLocation(XKDeco.ID, id);
-		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> {
-			return new IllegalStateException("Missing block: " + resourceLocation);
-		});
+		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> new IllegalStateException(
+				"Missing block: " + resourceLocation));
 	}
 }

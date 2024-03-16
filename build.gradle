@@ -21,6 +21,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 

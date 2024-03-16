@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "xkdeco:block/inscription_bronze_block"
+        },
+        {
+          "model": "xkdeco:block/inscription_bronze_block1"
+        },
+        {
+          "model": "xkdeco:block/inscription_bronze_block2"
+        }
+      ]
+    }
+  ]
+}

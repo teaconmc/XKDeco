@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "xkdeco:block/aztec_cut_stonebricks"
+    "bottom": "xkdeco:block/aztec_cut_stonebricks_bottom",
+    "side": "xkdeco:block/aztec_cut_stonebricks_side",
+    "top": "xkdeco:block/aztec_chiseled_stonebricks"
   }
 }

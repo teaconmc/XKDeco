@@ -1,0 +1,84 @@
+{
+  "credit": "Made by XeKr with Blockbench",
+  "parent": "minecraft:block/block",
+  "textures": {
+    "0": "xkdeco:block/screw_thread_bronze_block",
+    "1": "xkdeco:block/screw_thread_bronze_block1",
+    "2": "xkdeco:block/screw_thread_bronze_block2",
+    "3": "xkdeco:block/screw_thread_bronze_block3",
+    "particle": "xkdeco:block/screw_thread_bronze_block"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#3"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "rotation": 180,
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "rotation": 180,
+          "texture": "#2"
+        }
+      }
+    }
+  ],
+  "render_type": "cutout"
+}
