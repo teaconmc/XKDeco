@@ -2,30 +2,6 @@ package org.teacon.xkdeco.init;
 
 import static net.minecraft.world.level.block.Block.box;
 import static org.teacon.xkdeco.block.settings.XKBlockSettings.copyProperties;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_BOARD;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_CARPET;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_DESSERT;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_GLASS_NO_OCCLUSION;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_GLASS_WARDROBE;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_LANTERN;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_DISPLAY;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_LIGHT;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_LIGHT_NO_COLLISSION;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_NO_OCCLUSION;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_METAL_WARDROBE;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_MINIATURE;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_PORCELAIN;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_STONE_DISPLAY;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_STONE_LIGHT;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_STONE_NO_OCCLUSION;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_WOOD_FURNITURE;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_WOOD_LIGHT;
-import static org.teacon.xkdeco.init.XKDecoProperties.BLOCK_WOOD_WARDROBE;
-import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_BASIC;
-import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_FUNCTIONAL;
-import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_FURNITURE;
-import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_NATURE;
-import static org.teacon.xkdeco.init.XKDecoProperties.ITEM_STRUCTURE;
 import static org.teacon.xkdeco.init.XKDecoProperties.TAB_BASIC_CONTENTS;
 import static org.teacon.xkdeco.init.XKDecoProperties.TAB_FUNCTIONAL_CONTENTS;
 import static org.teacon.xkdeco.init.XKDecoProperties.TAB_FURNITURE_CONTENTS;
@@ -42,9 +18,11 @@ import java.util.stream.Collectors;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
+import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.HollowSteelHalfBeamBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
+import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -55,13 +33,10 @@ import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SnowySlabBlock;
-import org.teacon.xkdeco.block.SpecialBlockDisplayBlock;
-import org.teacon.xkdeco.block.SpecialConsole;
 import org.teacon.xkdeco.block.SpecialCupBlock;
 import org.teacon.xkdeco.block.SpecialDessertBlock;
-import org.teacon.xkdeco.block.SpecialItemDisplayBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
-import org.teacon.xkdeco.block.SpecialWardrobeBlock;
+import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
 import org.teacon.xkdeco.block.settings.GlassType;
@@ -164,7 +139,6 @@ public final class XKDecoObjects {
 	public static final String BLOCK_DISPLAY_SUFFIX = "_block_display";
 	public static final String WARDROBE_SUFFIX = "_wardrobe";
 	public static final String FALLEN_LEAVES_PREFIX = "fallen_";
-	public static final String CONSOLE_SUFFIX = "_console";
 
 	public static final String REFRESHMENT_SPECIAL = "refreshments";
 	public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
@@ -183,17 +157,17 @@ public final class XKDecoObjects {
 			String id,
 			String northShapeId,
 			boolean isSupportNeeded,
-			BlockBehaviour.Properties properties,
-			Item.Properties itemProperties,
+			XKBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
+		var itemProperties = new Item.Properties();
 		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
 		RegistryObject<BasicBlock> block;
 		if (northShape == Shapes.block()) {
-			block = BLOCKS.register(id, () -> new BasicBlock(XKBlockSettings.builder().horizontal().get()));
+			block = BLOCKS.register(id, () -> new BasicBlock(settings.horizontal().get()));
 		} else {
 			block = BLOCKS.register(
 					id,
-					() -> new BasicBlock(BlockSettingPresets.thingy(null)
+					() -> new BasicBlock(settings
 							.horizontal()
 							.shape(new ResourceLocation(northShapeId))
 							.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
@@ -202,11 +176,11 @@ public final class XKDecoObjects {
 		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
-	private static void addDirectionalBasic(
+	private static void addDirectional(
 			String id,
 			XKBlockSettings.Builder settings,
-			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
+		var itemProperties = new Item.Properties();
 		var block = BLOCKS.register(
 				id,
 				() -> new BasicBlock(settings.directional().get()));
@@ -216,8 +190,8 @@ public final class XKDecoObjects {
 	private static void addIsotropic(
 			String id,
 			XKBlockSettings.Builder settings,
-			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
+		var itemProperties = new Item.Properties();
 		if (id.startsWith("quartz_glass")) {
 			settings.glassType(GlassType.QUARTZ);
 		} else if (id.startsWith("translucent_")) {
@@ -267,9 +241,9 @@ public final class XKDecoObjects {
 	private static void addRoof(
 			String id,
 			Supplier<BlockBehaviour.Properties> propFactory,
-			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents,
 			boolean asian) {
+		var itemProperties = new Item.Properties();
 		var roof = BLOCKS.register(id, () -> new RoofBlock(propFactory.get()));
 		tabContents.add(ITEMS.register(id, () -> new BlockItem(roof.get(), itemProperties)));
 		var roofRidge = BLOCKS.register(id + "_ridge", () -> new RoofRidgeBlock(propFactory.get(), asian));
@@ -318,8 +292,8 @@ public final class XKDecoObjects {
 	private static void addPlant(
 			String id,
 			XKBlockSettings.Builder settings,
-			Item.Properties itemProperties,
 			Collection<RegistryObject<Item>> tabContents) {
+		var itemProperties = new Item.Properties();
 		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
 			if (id.startsWith(FALLEN_LEAVES_PREFIX)) {
 				var block = BLOCKS.register(id, () -> new FallenLeavesBlock(settings.get()));
@@ -335,9 +309,9 @@ public final class XKDecoObjects {
 
 	private static void addSpecial(
 			String id,
-			BlockBehaviour.Properties properties,
-			Item.Properties itemProperties,
+			XKBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
+		var itemProperties = new Item.Properties();
 		if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
 			var block = BLOCKS.register(id, () -> new SpecialDessertBlock(BlockSettingPresets.thingy(null)
 					.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("dessert"))))
@@ -345,24 +319,22 @@ public final class XKDecoObjects {
 					.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(ITEM_DISPLAY_SUFFIX) || id.equals(ITEM_PROJECTOR_SPECIAL)) {
-			var block = BLOCKS.register(id, () -> new SpecialItemDisplayBlock(properties));
+			var block = BLOCKS.register(id, () -> new ItemDisplayBlock(settings.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(BLOCK_DISPLAY_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new SpecialBlockDisplayBlock(properties));
+			var block = BLOCKS.register(id, () -> new BlockDisplayBlock(settings.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(WARDROBE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new SpecialWardrobeBlock(properties));
-			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
-		} else if (id.contains(CONSOLE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new SpecialConsole(properties));
+			var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(WaterLoggableComponent.TYPE).get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
 			throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
 		}
 	}
 
-	private static void addItem(String id, Item.Properties itemProperties, Collection<RegistryObject<Item>> tabContents) {
-		tabContents.add(ITEMS.register(id, () -> new Item(itemProperties)));
+	private static void addItem(String id) {
+		var itemProperties = new Item.Properties();
+		TAB_FURNITURE_CONTENTS.add(ITEMS.register(id, () -> new Item(itemProperties)));
 	}
 
 	private static void addDisplayBlockEntity() {
@@ -371,14 +343,14 @@ public final class XKDecoObjects {
 				BLOCKS.getEntries()
 						.stream()
 						.map(RegistryObject::get)
-						.filter(b -> b instanceof SpecialItemDisplayBlock)
+						.filter(b -> b instanceof ItemDisplayBlock)
 						.toArray(Block[]::new)).build(DSL.remainderType()));
 		BLOCK_ENTITY.register(BLOCK_DISPLAY_BLOCK_ENTITY, () -> BlockEntityType.Builder.of(
 				BlockDisplayBlockEntity::new,
 				BLOCKS.getEntries()
 						.stream()
 						.map(RegistryObject::get)
-						.filter(b -> b instanceof SpecialBlockDisplayBlock)
+						.filter(b -> b instanceof BlockDisplayBlock)
 						.toArray(Block[]::new)).build(DSL.remainderType()));
 	}
 
@@ -388,7 +360,7 @@ public final class XKDecoObjects {
 				BLOCKS.getEntries()
 						.stream()
 						.map(RegistryObject::get)
-						.filter(b -> b instanceof SpecialWardrobeBlock)
+						.filter(b -> b instanceof WardrobeBlock)
 						.toArray(Block[]::new)).build(DSL.remainderType()));
 	}
 
@@ -430,7 +402,7 @@ public final class XKDecoObjects {
 			var block = entry.getValue();
 			if (block instanceof MimicWallBlock wall) {
 				var registryName = entry.getKey().location();
-				event.register(ForgeRegistries.Keys.ITEMS, registryName, () -> new MimicWallItem(wall, XKDecoProperties.ITEM_STRUCTURE));
+				event.register(ForgeRegistries.Keys.ITEMS, registryName, () -> new MimicWallItem(wall, new Item.Properties()));
 				TAB_STRUCTURE_CONTENTS.add(RegistryObject.create(registryName, ForgeRegistries.ITEMS));
 			}
 		}
@@ -464,262 +436,259 @@ public final class XKDecoObjects {
 	static {
 		addCushionEntity();
 
-		addIsotropic("black_tiles", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("black_tile_slab", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("black_tile_stairs", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("black_tiles", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("black_tile_slab", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("black_tile_stairs", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("cyan_tiles", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cyan_tile_slab", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cyan_tile_stairs", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_tiles", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_tile_slab", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_tile_stairs", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("yellow_tiles", BlockSettingPresets.yellowTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("yellow_tile_slab", BlockSettingPresets.yellowTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("yellow_tile_stairs", BlockSettingPresets.yellowTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("yellow_tiles", BlockSettingPresets.yellowTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("yellow_tile_slab", BlockSettingPresets.yellowTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("yellow_tile_stairs", BlockSettingPresets.yellowTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("blue_tiles", BlockSettingPresets.blueTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("blue_tile_slab", BlockSettingPresets.blueTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("blue_tile_stairs", BlockSettingPresets.blueTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("blue_tiles", BlockSettingPresets.blueTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("blue_tile_slab", BlockSettingPresets.blueTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("blue_tile_stairs", BlockSettingPresets.blueTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("green_tiles", BlockSettingPresets.greenTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("green_tile_slab", BlockSettingPresets.greenTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("green_tile_stairs", BlockSettingPresets.greenTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("green_tiles", BlockSettingPresets.greenTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("green_tile_slab", BlockSettingPresets.greenTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("green_tile_stairs", BlockSettingPresets.greenTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("red_tiles", BlockSettingPresets.redTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("red_tile_slab", BlockSettingPresets.redTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("red_tile_stairs", BlockSettingPresets.redTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("red_tiles", BlockSettingPresets.redTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("red_tile_slab", BlockSettingPresets.redTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("red_tile_stairs", BlockSettingPresets.redTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("steel_tiles", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_tile_slab", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_tile_stairs", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("steel_tiles", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("steel_tile_slab", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("steel_tile_stairs", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("copper_tiles", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("copper_tile_slab", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("copper_tile_stairs", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("copper_tiles", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("copper_tile_slab", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("copper_tile_stairs", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("glass_tiles", copyProperties(Blocks.GLASS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("glass_tile_slab", copyProperties(Blocks.GLASS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("glass_tile_stairs", copyProperties(Blocks.GLASS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("glass_trapdoor", copyProperties(Blocks.GLASS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("glass_door", copyProperties(Blocks.GLASS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("glass_tiles", copyProperties(Blocks.GLASS), TAB_BASIC_CONTENTS);
+		addIsotropic("glass_tile_slab", copyProperties(Blocks.GLASS), TAB_BASIC_CONTENTS);
+		addIsotropic("glass_tile_stairs", copyProperties(Blocks.GLASS), TAB_BASIC_CONTENTS);
+		addIsotropic("glass_trapdoor", copyProperties(Blocks.GLASS), TAB_BASIC_CONTENTS);
+		addIsotropic("glass_door", copyProperties(Blocks.GLASS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mud_wall_slab", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mud_wall_stairs", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mud_wall_wall", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("mud_wall_block", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("mud_wall_slab", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("mud_wall_stairs", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("mud_wall_wall", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("framed_mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("framed_mud_wall_block", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("lined_mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("lined_mud_wall_slab", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("lined_mud_wall_stairs", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("lined_mud_wall_block", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("lined_mud_wall_slab", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("lined_mud_wall_stairs", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("crossed_mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("crossed_mud_wall_slab", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("crossed_mud_wall_stairs", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("crossed_mud_wall_block", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("crossed_mud_wall_slab", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("crossed_mud_wall_stairs", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("dirty_mud_wall_block", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("dirty_mud_wall_slab", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("dirty_mud_wall_stairs", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("dirty_mud_wall_wall", BlockSettingPresets.mudWall(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("dirty_mud_wall_block", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("dirty_mud_wall_slab", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("dirty_mud_wall_stairs", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
+		addIsotropic("dirty_mud_wall_wall", BlockSettingPresets.mudWall(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("cyan_bricks", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cyan_brick_slab", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cyan_brick_stairs", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cyan_brick_wall", BlockSettingPresets.cyanTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_bricks", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_brick_slab", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_brick_stairs", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("cyan_brick_wall", BlockSettingPresets.cyanTiles(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("black_bricks", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("black_brick_slab", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("black_brick_stairs", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("black_brick_wall", BlockSettingPresets.blackTiles(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("black_bricks", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("black_brick_slab", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("black_brick_stairs", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
+		addIsotropic("black_brick_wall", BlockSettingPresets.blackTiles(), TAB_BASIC_CONTENTS);
 
 		addTreatedWood("varnished", MapColor.WOOD);
 		addTreatedWood("ebony", MapColor.WOOD);
 		addTreatedWood("mahogany", MapColor.WOOD);
 
-		addIsotropic("sandstone_pillar", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_pillar", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("polished_sandstone", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("polished_sandstone_slab", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-//		addIsotropic("polished_sandstone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("polished_sandstone", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("polished_sandstone_slab", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+//		addIsotropic("polished_sandstone_stairs", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("sandstone_bricks", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("sandstone_brick_slab", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("sandstone_brick_stairs", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_bricks", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_brick_slab", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_brick_stairs", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("sandstone_small_bricks", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("sandstone_small_brick_slab", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("sandstone_small_brick_stairs", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_small_bricks", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_small_brick_slab", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("sandstone_small_brick_stairs", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("red_sandstone_pillar", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_pillar", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("polished_red_sandstone", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("polished_red_sandstone_slab", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-//		addIsotropic("polished_red_sandstone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("polished_red_sandstone", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("polished_red_sandstone_slab", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
+//		addIsotropic("polished_red_sandstone_stairs", copyProperties(Blocks.SANDSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("red_sandstone_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("red_sandstone_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("red_sandstone_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("red_sandstone_small_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("red_sandstone_small_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("red_sandstone_small_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_small_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_small_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("red_sandstone_small_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("stone_brick_pillar", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("stone_brick_pavement", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("stone_brick_pavement_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("stone_brick_pillar", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("stone_brick_pavement", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("stone_brick_pavement_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("deepslate_pillar", copyProperties(Blocks.DEEPSLATE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("deepslate_pavement", copyProperties(Blocks.DEEPSLATE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("deepslate_pavement_slab", copyProperties(Blocks.DEEPSLATE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("deepslate_pillar", copyProperties(Blocks.DEEPSLATE), TAB_BASIC_CONTENTS);
+		addIsotropic("deepslate_pavement", copyProperties(Blocks.DEEPSLATE), TAB_BASIC_CONTENTS);
+		addIsotropic("deepslate_pavement_slab", copyProperties(Blocks.DEEPSLATE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("mossy_deepslate_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mossy_deepslate_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("mossy_deepslate_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("mossy_deepslate_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("mossy_deepslate_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("mossy_deepslate_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("blackstone_pillar", copyProperties(Blocks.BLACKSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("blackstone_pavement", copyProperties(Blocks.BLACKSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("blackstone_pavement_slab", copyProperties(Blocks.BLACKSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("blackstone_pillar", copyProperties(Blocks.BLACKSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("blackstone_pavement", copyProperties(Blocks.BLACKSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("blackstone_pavement_slab", copyProperties(Blocks.BLACKSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("gilded_blackstone_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("gilded_blackstone_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("gilded_blackstone_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("gilded_blackstone_brick_pillar", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("gilded_blackstone_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("gilded_blackstone_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("gilded_blackstone_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("gilded_blackstone_brick_pillar", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("chiseled_gilded_blackstone", copyProperties(Blocks.GILDED_BLACKSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("luxury_gilded_blackstone", copyProperties(Blocks.GILDED_BLACKSTONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("chiseled_gilded_blackstone", copyProperties(Blocks.GILDED_BLACKSTONE), TAB_BASIC_CONTENTS);
+		addIsotropic("luxury_gilded_blackstone", copyProperties(Blocks.GILDED_BLACKSTONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_stone_slab", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_stone_stairs", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stone", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stone_slab", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stone_stairs", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_stonebrick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebrick_wall", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_brick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_brick_wall", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_polished_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_polished_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_polished_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_polished_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_polished_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_polished_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_mossy_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_stonebrick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_stonebrick_wall", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_mossy_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_brick_wall", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_brick_wall", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_chiseled_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_cut_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_chiseled_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_cut_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addBasic("maya_single_screw_thread_stone", "block", false, copyProperties(Blocks.STONE).get(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_double_screw_thread_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_quad_screw_thread_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBasic("maya_single_screw_thread_stone", "block", false, copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_double_screw_thread_stone", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_quad_screw_thread_stone", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_pictogram_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_pictogram_stone", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"maya_skull_stone",
 				copyProperties(Blocks.STONE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_pillar", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_mossy_pillar", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_pillar", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_mossy_pillar", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
 
 		addBasic(
 				"maya_crystal_skull",
 				"xkdeco:maya_crystal_skull",
 				false,
-				copyProperties(Blocks.DEEPSLATE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT).get(),
-				ITEM_FURNITURE,
+				copyProperties(Blocks.DEEPSLATE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT),
 				TAB_FURNITURE_CONTENTS);
 
-		addIsotropic("aztec_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("aztec_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("aztec_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("aztec_mossy_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("aztec_mossy_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("aztec_mossy_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_mossy_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_mossy_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_mossy_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("aztec_sculpture_stone", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("aztec_chiseled_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("aztec_cut_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_sculpture_stone", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_chiseled_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("aztec_cut_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("inca_stone", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inca_stone_slab", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inca_stone_stairs", copyProperties(Blocks.STONE), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("inca_stone", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("inca_stone_slab", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
+		addIsotropic("inca_stone_stairs", copyProperties(Blocks.STONE), TAB_BASIC_CONTENTS);
 
-		addIsotropic("inca_stonebricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inca_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inca_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("inca_stonebricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("inca_stonebrick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("inca_stonebrick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("inca_bricks", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inca_brick_slab", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inca_brick_stairs", copyProperties(Blocks.STONE_BRICKS), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("inca_bricks", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("inca_brick_slab", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
+		addIsotropic("inca_brick_stairs", copyProperties(Blocks.STONE_BRICKS), TAB_BASIC_CONTENTS);
 
-		addIsotropic("cut_obsidian", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_obsidian_slab", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_obsidian_pillar", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cut_obsidian", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_obsidian_slab", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_obsidian_pillar", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
 
-		addIsotropic("cut_obsidian_bricks", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_obsidian_brick_slab", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_obsidian_brick_stairs", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cut_obsidian_bricks", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_obsidian_brick_slab", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_obsidian_brick_stairs", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
 
-		addIsotropic("crying_obsidian_bricks", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("crying_obsidian_brick_slab", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("crying_obsidian_brick_stairs", copyProperties(Blocks.OBSIDIAN), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("crying_obsidian_bricks", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
+		addIsotropic("crying_obsidian_brick_slab", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
+		addIsotropic("crying_obsidian_brick_stairs", copyProperties(Blocks.OBSIDIAN), TAB_BASIC_CONTENTS);
 
-		addIsotropic("cut_gold_block", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_gold_block_slab", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_gold_block_stairs", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cut_gold_block", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_gold_block_slab", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_gold_block_stairs", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("gold_bricks", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("gold_brick_slab", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("gold_brick_stairs", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("gold_pillar", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("gold_bricks", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("gold_brick_slab", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("gold_brick_stairs", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("gold_pillar", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("chiseled_gold_block", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("painted_gold_block", copyProperties(Blocks.GOLD_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("chiseled_gold_block", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("painted_gold_block", copyProperties(Blocks.GOLD_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("bronze_block", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("smooth_bronze_block", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("inscription_bronze_block", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("bronze_block", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("smooth_bronze_block", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("inscription_bronze_block", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("cut_bronze_block", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_bronze_block_slab", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("cut_bronze_block_stairs", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("cut_bronze_block", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_bronze_block_slab", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("cut_bronze_block_stairs", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("chiseled_bronze_block", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addBasic("screw_thread_bronze_block", "block", false, copyProperties(Blocks.COPPER_BLOCK).get(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("bronze_pillar", copyProperties(Blocks.COPPER_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("chiseled_bronze_block", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addBasic("screw_thread_bronze_block", "block", false, copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("bronze_pillar", copyProperties(Blocks.COPPER_BLOCK), TAB_BASIC_CONTENTS);
 
-		addIsotropic("steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("smooth_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_pillar", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_trapdoor", BlockSettingPresets.steel().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("steel_block", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("smooth_steel_block", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("steel_pillar", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("steel_trapdoor", BlockSettingPresets.steel().noOcclusion(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("steel_floor", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_floor_slab", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("steel_floor_stairs", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("steel_floor", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("steel_floor_slab", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("steel_floor_stairs", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("chiseled_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("hollow_steel_block", BlockSettingPresets.hollowSteel().waterLoggable(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("hollow_steel_trapdoor", BlockSettingPresets.hollowSteel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("chiseled_steel_block", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("hollow_steel_block", BlockSettingPresets.hollowSteel().waterLoggable(), TAB_BASIC_CONTENTS);
+		addIsotropic("hollow_steel_trapdoor", BlockSettingPresets.hollowSteel(), TAB_BASIC_CONTENTS);
 		addBlock(
 				"steel_safety_ladder",
 				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
 						.horizontal()
 						.waterLoggable()
 						.shape(XKDeco.id("safety_ladder")).get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"steel_ladder",
@@ -728,367 +697,373 @@ public final class XKDecoObjects {
 						.waterLoggable()
 						.shape(XKDeco.id("ladder"))
 						.canSurviveHandler(new MetalLadderCanSurviveHandler()).get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-		addIsotropic("framed_steel_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("framed_steel_block", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_block", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_slab", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_stairs", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_trapdoor", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_block", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_slab", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_stairs", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_trapdoor", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_block_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_slab_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_stairs_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_trapdoor_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_block_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_slab_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_stairs_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_trapdoor_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_block_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_slab_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_stairs_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_trapdoor_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_block_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_slab_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_stairs_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_trapdoor_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_danger", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_danger_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_danger_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_danger", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_danger_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_danger_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_attention", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_attention_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_attention_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_attention", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_attention_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_attention_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_electricity", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_electricity_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_electricity_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_electricity", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_electricity_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_electricity_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_toxic", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_toxic_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_toxic_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_toxic", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_toxic_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_toxic_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_radiation", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_radiation_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_radiation_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_radiation", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_radiation_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_radiation_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_biohazard", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_biohazard_rusting", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_biohazard_rusted", BlockSettingPresets.steel(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_biohazard", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_biohazard_rusting", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_biohazard_rusted", BlockSettingPresets.steel(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("factory_lamp_block", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("factory_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("factory_lamp_block", BlockSettingPresets.lampBlock(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_lamp_slab", BlockSettingPresets.lampBlock(), TAB_BASIC_CONTENTS);
+		addIsotropic("factory_lamp_stairs", BlockSettingPresets.lampBlock(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("tech_lamp_block", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("tech_lamp_slab", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("tech_lamp_stairs", BlockSettingPresets.lampBlock(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("tech_lamp_block", BlockSettingPresets.lampBlock(), TAB_BASIC_CONTENTS);
+		addIsotropic("tech_lamp_slab", BlockSettingPresets.lampBlock(), TAB_BASIC_CONTENTS);
+		addIsotropic("tech_lamp_stairs", BlockSettingPresets.lampBlock(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("translucent_lamp_block", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock().noOcclusion(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_block", BlockSettingPresets.lampBlock().noOcclusion(), TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock().noOcclusion(), TAB_BASIC_CONTENTS);
+		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock().noOcclusion(), TAB_BASIC_CONTENTS);
 
-		addBlock("steel_filings", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addBlock("quartz_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addBlock("toughened_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addBlock("steel_filings", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), TAB_BASIC_CONTENTS);
+		addBlock("quartz_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), TAB_BASIC_CONTENTS);
+		addBlock("toughened_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()), TAB_BASIC_CONTENTS);
 
-		addIsotropic("quartz_glass", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("quartz_glass_slab", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("quartz_glass_stairs", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("quartz_glass", BlockSettingPresets.hardenedGlass(), TAB_BASIC_CONTENTS);
+		addIsotropic("quartz_glass_slab", BlockSettingPresets.hardenedGlass(), TAB_BASIC_CONTENTS);
+		addIsotropic("quartz_glass_stairs", BlockSettingPresets.hardenedGlass(), TAB_BASIC_CONTENTS);
 
-		addIsotropic("toughened_glass", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("toughened_glass_slab", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("toughened_glass_stairs", BlockSettingPresets.hardenedGlass(), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("toughened_glass", BlockSettingPresets.hardenedGlass(), TAB_BASIC_CONTENTS);
+		addIsotropic("toughened_glass_slab", BlockSettingPresets.hardenedGlass(), TAB_BASIC_CONTENTS);
+		addIsotropic("toughened_glass_stairs", BlockSettingPresets.hardenedGlass(), TAB_BASIC_CONTENTS);
 
-		addRoof("black_roof", () -> BlockSettingPresets.blackTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, true);
-		addRoof("cyan_roof", () -> BlockSettingPresets.cyanTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, true);
-		addRoof("yellow_roof", () -> BlockSettingPresets.yellowTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, true);
-		addRoof("blue_roof", () -> BlockSettingPresets.blueTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
-		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
-		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), ITEM_STRUCTURE, TAB_STRUCTURE_CONTENTS, false);
+		addRoof("black_roof", () -> BlockSettingPresets.blackTiles().noOcclusion().get(), TAB_STRUCTURE_CONTENTS, true);
+		addRoof("cyan_roof", () -> BlockSettingPresets.cyanTiles().noOcclusion().get(), TAB_STRUCTURE_CONTENTS, true);
+		addRoof("yellow_roof", () -> BlockSettingPresets.yellowTiles().noOcclusion().get(), TAB_STRUCTURE_CONTENTS, true);
+		addRoof("blue_roof", () -> BlockSettingPresets.blueTiles().noOcclusion().get(), TAB_STRUCTURE_CONTENTS, false);
+		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), TAB_STRUCTURE_CONTENTS, false);
+		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), TAB_STRUCTURE_CONTENTS, false);
 
-		addBlock("dirt_slab", () -> new SlabBlock(copyProperties(Blocks.DIRT).sustainsPlant().get()), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addBlock("dirt_slab", () -> new SlabBlock(copyProperties(Blocks.DIRT).sustainsPlant().get()), TAB_NATURE_CONTENTS);
 		addBlock(
 				"dirt_path_slab",
 				() -> new SpecialSlabBlock(copyProperties(Blocks.DIRT_PATH).get(), SpecialSlabBlock.Type.PATH),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
 		addBlock(
 				"grass_block_slab",
 				() -> new SnowySlabBlock(copyProperties(Blocks.GRASS_BLOCK).sustainsPlant()
 						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 						.get()),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
 		addBlock(
 				"mycelium_slab",
 				() -> new SnowySlabBlock(copyProperties(Blocks.MYCELIUM).sustainsPlant().get()),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
 		addBlock(
 				"podzol_slab",
 				() -> new SnowySlabBlock(copyProperties(Blocks.PODZOL).sustainsPlant().get()),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addBlock("netherrack_slab", () -> new SlabBlock(copyProperties(Blocks.NETHERRACK).get()), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addBlock("netherrack_slab", () -> new SlabBlock(copyProperties(Blocks.NETHERRACK).get()), TAB_NATURE_CONTENTS);
 		addBlock(
 				"crimson_nylium_slab",
 				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
 		addBlock(
 				"warped_nylium_slab",
 				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addBlock("end_stone_slab", () -> new SlabBlock(copyProperties(Blocks.END_STONE).get()), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addBlock("end_stone_slab", () -> new SlabBlock(copyProperties(Blocks.END_STONE).get()), TAB_NATURE_CONTENTS);
 
-		addIsotropic("dirt_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("dirt_cobblestone", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 		addIsotropic(
 				"grass_cobblestone",
 				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addIsotropic("sandy_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("snowy_cobblestone", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("sandy_cobblestone", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("snowy_cobblestone", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 
-		addIsotropic("cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("dirt_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("cobblestone_path", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("dirt_cobblestone_path", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 		addIsotropic(
 				"grass_cobblestone_path",
 				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addIsotropic("sandy_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("snowy_cobblestone_path", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("sandy_cobblestone_path", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("snowy_cobblestone_path", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 
-		addIsotropic("dirt_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("dirt_cobblestone_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 		addIsotropic(
 				"grass_cobblestone_slab",
 				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addIsotropic("sandy_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("snowy_cobblestone_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("sandy_cobblestone_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("snowy_cobblestone_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 
-		addIsotropic("cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("dirt_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("dirt_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 		addIsotropic(
 				"grass_cobblestone_path_slab",
 				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addIsotropic("sandy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("snowy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("sandy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("snowy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 
-		addIsotropic("dirt_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("dirt_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 		addIsotropic(
 				"grass_cobblestone_stairs",
 				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addIsotropic("sandy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("snowy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("sandy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("snowy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 
-		addIsotropic("cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("dirt_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("dirt_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 		addIsotropic(
 				"grass_cobblestone_path_stairs",
 				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED),
-				ITEM_NATURE,
 				TAB_NATURE_CONTENTS);
-		addIsotropic("sandy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addIsotropic("snowy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addIsotropic("sandy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
+		addIsotropic("snowy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE), TAB_NATURE_CONTENTS);
 
-		addPlant("ginkgo_leaves", copyProperties(Blocks.OAK_LEAVES, MapColor.GOLD), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("orange_maple_leaves", copyProperties(Blocks.OAK_LEAVES, MapColor.COLOR_ORANGE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("red_maple_leaves", copyProperties(Blocks.OAK_LEAVES, MapColor.COLOR_RED), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("peach_blossom", copyProperties(Blocks.CHERRY_LEAVES), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("peach_blossom_leaves", copyProperties(Blocks.CHERRY_LEAVES), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("cherry_blossom", copyProperties(Blocks.CHERRY_LEAVES), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("cherry_blossom_leaves", copyProperties(Blocks.CHERRY_LEAVES), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("white_cherry_blossom", copyProperties(Blocks.CHERRY_LEAVES, MapColor.SNOW), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("white_cherry_blossom_leaves", copyProperties(Blocks.CHERRY_LEAVES, MapColor.SNOW), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("plantable_leaves", copyProperties(Blocks.OAK_LEAVES).sustainsPlant(), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("plantable_leaves_dark", copyProperties(Blocks.OAK_LEAVES).sustainsPlant(), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("willow_leaves", copyProperties(Blocks.OAK_LEAVES), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("hanging_willow_leaves", copyProperties(Blocks.VINE), ITEM_NATURE, TAB_NATURE_CONTENTS); //TODO proper class
+		addPlant("ginkgo_leaves", copyProperties(Blocks.OAK_LEAVES, MapColor.GOLD), TAB_NATURE_CONTENTS);
+		addPlant("orange_maple_leaves", copyProperties(Blocks.OAK_LEAVES, MapColor.COLOR_ORANGE), TAB_NATURE_CONTENTS);
+		addPlant("red_maple_leaves", copyProperties(Blocks.OAK_LEAVES, MapColor.COLOR_RED), TAB_NATURE_CONTENTS);
+		addPlant("peach_blossom", copyProperties(Blocks.CHERRY_LEAVES), TAB_NATURE_CONTENTS);
+		addPlant("peach_blossom_leaves", copyProperties(Blocks.CHERRY_LEAVES), TAB_NATURE_CONTENTS);
+		addPlant("cherry_blossom", copyProperties(Blocks.CHERRY_LEAVES), TAB_NATURE_CONTENTS);
+		addPlant("cherry_blossom_leaves", copyProperties(Blocks.CHERRY_LEAVES), TAB_NATURE_CONTENTS);
+		addPlant("white_cherry_blossom", copyProperties(Blocks.CHERRY_LEAVES, MapColor.SNOW), TAB_NATURE_CONTENTS);
+		addPlant("white_cherry_blossom_leaves", copyProperties(Blocks.CHERRY_LEAVES, MapColor.SNOW), TAB_NATURE_CONTENTS);
+		addPlant("plantable_leaves", copyProperties(Blocks.OAK_LEAVES).sustainsPlant(), TAB_NATURE_CONTENTS);
+		addPlant("plantable_leaves_dark", copyProperties(Blocks.OAK_LEAVES).sustainsPlant(), TAB_NATURE_CONTENTS);
+		addPlant("willow_leaves", copyProperties(Blocks.OAK_LEAVES), TAB_NATURE_CONTENTS);
+		addPlant("hanging_willow_leaves", copyProperties(Blocks.VINE), TAB_NATURE_CONTENTS); //TODO proper class
 
-		addBasic("miniature_tree", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_cherry", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_ginkgo", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_maple", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_bamboo", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_coral", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_red_coral", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_mount", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("miniature_succulents", "xkdeco:miniature", false, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_tree", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_cherry", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_ginkgo", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_maple", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_bamboo", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_coral", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_red_coral", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_mount", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("miniature_succulents", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addBasic("teapot", "xkdeco:teapot", true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("teapot", "xkdeco:teapot", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"cup",
 				() -> new SpecialCupBlock(BlockSettingPresets.thingy(null).canSurviveHandler(CanSurviveHandler.checkFloor()).get()),
-				ITEM_FURNITURE,
+
 				TAB_FURNITURE_CONTENTS);
-		addBasic("tea_ware", "xkdeco:tea_ware", true, BLOCK_MINIATURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addSpecial("refreshments", BLOCK_DESSERT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addSpecial("fruit_platter", BLOCK_DESSERT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("calligraphy", "carpet", true, BLOCK_CARPET, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("ink_painting", "carpet", true, BLOCK_CARPET, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("weiqi_board", "xkdeco:board", true, BLOCK_BOARD, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("xiangqi_board", "xkdeco:board", true, BLOCK_BOARD, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("tea_ware", "xkdeco:tea_ware", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addSpecial("refreshments", BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addSpecial("fruit_platter", BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("calligraphy", "carpet", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("ink_painting", "carpet", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("weiqi_board", "xkdeco:board", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("xiangqi_board", "xkdeco:board", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addSpecial("plain_item_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("gorgeous_item_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("mechanical_item_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("tech_item_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("item_projector", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("plain_item_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("gorgeous_item_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("mechanical_item_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("tech_item_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("item_projector", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
 
-		addSpecial("plain_block_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("gorgeous_block_display", BLOCK_STONE_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("mechanical_block_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("tech_block_display", BLOCK_METAL_DISPLAY, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("plain_block_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("gorgeous_block_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("mechanical_block_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("tech_block_display", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
 
 		addDisplayBlockEntity();
 
-		addSpecial("varnished_wardrobe", BLOCK_WOOD_WARDROBE, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("ebony_wardrobe", BLOCK_WOOD_WARDROBE, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("mahogany_wardrobe", BLOCK_WOOD_WARDROBE, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("iron_wardrobe", BLOCK_METAL_WARDROBE, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("glass_wardrobe", BLOCK_METAL_WARDROBE, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
-		addSpecial("full_glass_wardrobe", BLOCK_GLASS_WARDROBE, ITEM_FUNCTIONAL, TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("varnished_wardrobe", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("ebony_wardrobe", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("mahogany_wardrobe", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("iron_wardrobe", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("glass_wardrobe", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
+		addSpecial("full_glass_wardrobe", BlockSettingPresets.thingy(null), TAB_FUNCTIONAL_CONTENTS);
 
 		addWardrobeBlockEntity();
 
-		addBasic("white_porcelain", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("white_porcelain_tall", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("white_porcelain", "xkdeco:porcelain", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("white_porcelain_tall", "xkdeco:porcelain", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"white_porcelain_small",
 				"xkdeco:porcelain_small",
 				false,
-				BLOCK_PORCELAIN,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("bluewhite_porcelain", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("bluewhite_porcelain_tall", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("bluewhite_porcelain", "xkdeco:porcelain", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("bluewhite_porcelain_tall", "xkdeco:porcelain", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bluewhite_porcelain_small",
 				"xkdeco:porcelain_small",
 				false,
-				BLOCK_PORCELAIN,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("celadon_porcelain", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("celadon_porcelain_tall", "xkdeco:porcelain", false, BLOCK_PORCELAIN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("celadon_porcelain", "xkdeco:porcelain", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"celadon_porcelain_tall",
+				"xkdeco:porcelain",
+				false,
+				BlockSettingPresets.thingy(null),
+				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"celadon_porcelain_small",
 				"xkdeco:porcelain_small",
 				false,
-				BLOCK_PORCELAIN,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 
-		addBasic("paper_lantern", "xkdeco:lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("red_lantern", "xkdeco:lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("festival_lantern", "xkdeco:festival_lantern", false, BLOCK_LANTERN, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addBasic("paper_lantern", "xkdeco:lantern", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("red_lantern", "xkdeco:lantern", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"festival_lantern",
+				"xkdeco:festival_lantern",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addDirectional(
 				"oil_lamp",
 				BlockSettingPresets.lightThingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("oil_lamp")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("candlestick", "xkdeco:candlestick", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("big_candlestick", "xkdeco:big_candlestick", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addBasic("candlestick", "xkdeco:candlestick", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"big_candlestick",
+				"xkdeco:big_candlestick",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addDirectional(
 				"empty_candlestick",
 				BlockSettingPresets.thingy(null).shape(XKDeco.id("empty_candlestick")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addBasic("covered_lamp", "xkdeco:covered_lamp", false, BLOCK_WOOD_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("roofed_lamp", "xkdeco:big_candlestick", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("stone_lamp", "xkdeco:stone_lamp", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("deepslate_lamp", "xkdeco:stone_lamp", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("blackstone_lamp", "xkdeco:stone_lamp", false, BLOCK_STONE_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("fish_bowl", "xkdeco:fish_bowl", false, BLOCK_STONE_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("dark_fish_bowl", "xkdeco:fish_bowl", false, BLOCK_STONE_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"covered_lamp",
+				"xkdeco:covered_lamp",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"roofed_lamp",
+				"xkdeco:big_candlestick",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addBasic("stone_lamp", "xkdeco:stone_lamp", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"deepslate_lamp",
+				"xkdeco:stone_lamp",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"blackstone_lamp",
+				"xkdeco:stone_lamp",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addBasic("fish_bowl", "xkdeco:fish_bowl", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("dark_fish_bowl", "xkdeco:fish_bowl", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"stone_water_bowl",
 				"xkdeco:water_bowl",
 				false,
-				BLOCK_STONE_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"stone_water_tank",
 				"xkdeco:water_tank",
 				false,
-				BLOCK_STONE_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("fish_tank", "xkdeco:fish_tank", false, BLOCK_GLASS_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("fish_tank", "xkdeco:fish_tank", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"empty_fish_tank",
 				"xkdeco:fish_tank",
 				false,
-				BLOCK_GLASS_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 
 		addBasic(
 				"small_book_stack",
 				"xkdeco:small_book_stack",
 				false,
-				BLOCK_WOOD_FURNITURE,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"big_book_stack",
 				"xkdeco:big_book_stack",
 				false,
-				BLOCK_WOOD_FURNITURE,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"empty_bottle_stack",
 				"xkdeco:bottle_stack",
 				false,
-				BLOCK_GLASS_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bottle_stack",
 				"xkdeco:bottle_stack",
 				false,
-				BLOCK_GLASS_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("wood_globe", "xkdeco:covered_lamp", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("globe", "xkdeco:covered_lamp", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("wood_globe", "xkdeco:covered_lamp", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("globe", "xkdeco:covered_lamp", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"solar_system_model",
 				"xkdeco:solar_system_model",
 				false,
-				BLOCK_WOOD_FURNITURE,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("big_solar_system_model", "block", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("telescope", "block", false, BLOCK_WOOD_FURNITURE, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("big_solar_system_model", "block", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("telescope", "block", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addPlant("fallen_ginkgo_leaves", BlockSettingPresets.fallenLeaves(MapColor.GOLD), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("fallen_orange_maple_leaves", BlockSettingPresets.fallenLeaves(MapColor.COLOR_ORANGE), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("fallen_red_maple_leaves", BlockSettingPresets.fallenLeaves(MapColor.COLOR_RED), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("fallen_peach_blossom", BlockSettingPresets.fallenLeaves(MapColor.COLOR_PINK), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("fallen_cherry_blossom", BlockSettingPresets.fallenLeaves(MapColor.COLOR_PINK), ITEM_NATURE, TAB_NATURE_CONTENTS);
-		addPlant("fallen_white_cherry_blossom", BlockSettingPresets.fallenLeaves(MapColor.SNOW), ITEM_NATURE, TAB_NATURE_CONTENTS);
+		addPlant("fallen_ginkgo_leaves", BlockSettingPresets.fallenLeaves(MapColor.GOLD), TAB_NATURE_CONTENTS);
+		addPlant("fallen_orange_maple_leaves", BlockSettingPresets.fallenLeaves(MapColor.COLOR_ORANGE), TAB_NATURE_CONTENTS);
+		addPlant("fallen_red_maple_leaves", BlockSettingPresets.fallenLeaves(MapColor.COLOR_RED), TAB_NATURE_CONTENTS);
+		addPlant("fallen_peach_blossom", BlockSettingPresets.fallenLeaves(MapColor.COLOR_PINK), TAB_NATURE_CONTENTS);
+		addPlant("fallen_cherry_blossom", BlockSettingPresets.fallenLeaves(MapColor.COLOR_PINK), TAB_NATURE_CONTENTS);
+		addPlant("fallen_white_cherry_blossom", BlockSettingPresets.fallenLeaves(MapColor.SNOW), TAB_NATURE_CONTENTS);
 
-		addDirectionalBasic(
+		addDirectional(
 				"factory_lamp",
 				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addDirectional(
 				"factory_lamp_broken",
 				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addDirectional(
 				"factory_warning_lamp",
 				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
 		addBlock(
@@ -1098,128 +1073,127 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("factory_light_bar"))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
 		//FIXME non-directional
-		addBasic("factory_ceiling_lamp", "xkdeco:factory_ceiling_lamp", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("factory_pendant", "xkdeco:factory_pendant", false, BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic(
+				"factory_ceiling_lamp",
+				"xkdeco:factory_ceiling_lamp",
+				false,
+				BlockSettingPresets.lightThingy(null),
+				TAB_FURNITURE_CONTENTS);
+		addBasic("factory_pendant", "xkdeco:factory_pendant", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
 
-		addDirectionalBasic(
+		addDirectional(
 				"fan_blade",
 				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addDirectionalBasic(
+		addDirectional(
 				"factory_vent_fan",
 				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addDirectional(
 				"factory_vent_fan_big",
 				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addDirectionalBasic(
+		addDirectional(
 				"steel_windmill",
 				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addDirectional(
 				"iron_windmill",
 				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addDirectional(
 				"wooden_windmill",
 				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addSpecial("mechanical_console", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"mechanical_console",
+				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				TAB_FURNITURE_CONTENTS);
+		addBasic("mechanical_screen", "xkdeco:screen2", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("mechanical_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addBasic("mechanical_screen", "xkdeco:screen2", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("mechanical_chair", "xkdeco:chair", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"tech_console",
+				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
+						.component(MouldingComponent.getInstance(false))
+						.get()),
+				TAB_FURNITURE_CONTENTS);
+		addBasic("tech_screen", "xkdeco:screen2", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("tech_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addSpecial("tech_console", BLOCK_METAL_LIGHT, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("tech_screen", "xkdeco:screen2", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("tech_chair", "xkdeco:chair", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("screen_off", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_cube", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_diagram", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_dna", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_list", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_message", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_threebodies", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("screen_transport", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addBasic("screen_off", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_cube", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_diagram", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_dna", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_list", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_message", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_threebodies", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("screen_transport", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-
-		addBasic("tech_table", "xkdeco:tech_table", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("tech_table", "xkdeco:tech_table", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"tech_table_circle",
 				"xkdeco:tech_table",
 				false,
-				BLOCK_METAL_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"tech_table_bigcircle",
 				"xkdeco:tech_table",
 				false,
-				BLOCK_METAL_NO_OCCLUSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 
-		addDirectionalBasic(
+		addDirectional(
 				"hologram_base",
 				BlockSettingPresets.thingy(null).shape(XKDeco.id("hologram_base")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addItem("hologram_planet", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addItem("hologram_dna", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addItem("hologram_pictures", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addItem("hologram_message", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addItem("hologram_xekr_logo", ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addItem("hologram_planet");
+		addItem("hologram_dna");
+		addItem("hologram_pictures");
+		addItem("hologram_message");
+		addItem("hologram_xekr_logo");
 
-		addDirectionalBasic(
+		addDirectional(
 				"item_frame_cover",
 				XKBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic(
+		addDirectional(
 				"glow_item_frame_cover",
 				XKBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")).configure($ -> $.lightLevel($$ -> 15)),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
-		addBasic("sign_entrance", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("sign_exit", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("sign_left", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBasic("sign_right", "xkdeco:screen", false, BLOCK_METAL_NO_OCCLUSION, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addBasic("sign_entrance", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("sign_exit", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("sign_left", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("sign_right", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
 		addBasic(
 				"small_sign_left",
 				"xkdeco:screen",
 				false,
-				BLOCK_METAL_LIGHT_NO_COLLISSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.lightThingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"small_sign_right",
 				"xkdeco:screen",
 				false,
-				BLOCK_METAL_LIGHT_NO_COLLISSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.lightThingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"small_sign_ground",
 				"carpet",
 				false,
-				BLOCK_METAL_LIGHT_NO_COLLISSION,
-				ITEM_FURNITURE,
+				BlockSettingPresets.lightThingy(null),
 				TAB_FURNITURE_CONTENTS);
 
 		addBlock("air_duct", () -> {
@@ -1233,7 +1207,7 @@ public final class XKDecoObjects {
 					.interactionShape(ShapeGenerator.unit(Shapes.block()))
 					.waterLoggable()
 					.get());
-		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		}, TAB_FURNITURE_CONTENTS);
 		addBlock("air_duct_oblique", () -> {
 			VoxelShape trueNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct"));
 			VoxelShape falseNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct2"));
@@ -1241,8 +1215,8 @@ public final class XKDecoObjects {
 					.shape(ShapeGenerator.horizontalShifted(trueNorth, falseNorth))
 					.interactionShape(ShapeGenerator.unit(Shapes.block()))
 					.get());
-		}, ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addBlock("hollow_steel_beam", () -> new WallBlock(BlockSettingPresets.hollowSteel().get()), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		}, TAB_FURNITURE_CONTENTS);
+		addBlock("hollow_steel_beam", () -> new WallBlock(BlockSettingPresets.hollowSteel().get()), TAB_BASIC_CONTENTS);
 		addBlock(
 				"hollow_steel_half_beam",
 				() -> new HollowSteelHalfBeamBlock(BlockSettingPresets.hollowSteel()
@@ -1252,7 +1226,6 @@ public final class XKDecoObjects {
 								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_ceiling")),
 								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_wall"))))
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"dark_wall_base",
@@ -1261,7 +1234,6 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base"))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"dark_wall_base2",
@@ -1270,7 +1242,6 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2"))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"light_wall_base",
@@ -1279,7 +1250,6 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base"))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"light_wall_base2",
@@ -1288,58 +1258,49 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2"))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic("dark_stone_handrail_head", BlockSettingPresets.thingy(null), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addDirectionalBasic("light_stone_handrail_head", BlockSettingPresets.thingy(null), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addDirectional("dark_stone_handrail_head", BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addDirectional("light_stone_handrail_head", BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addIsotropic("egyptian_brick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_brick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_brick_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_brick_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_bump_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_bump_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_bump_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_bump_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_carved_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_carved_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_carved_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_column_head", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_smooth_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_column_head", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_smooth_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_smooth_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-		addIsotropic("egyptian_stripe_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("egyptian_stripe_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_stripe_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"egyptian_stripe_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"egyptian_moulding",
@@ -1348,7 +1309,6 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"egyptian_moulding2",
@@ -1357,32 +1317,27 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 
-		addIsotropic("quartz_wall", XKBlockSettings.copyProperties(Blocks.QUARTZ_BLOCK), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("greek_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("quartz_wall", XKBlockSettings.copyProperties(Blocks.QUARTZ_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("greek_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"greek_corinthian_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"greek_corinthian_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
-		addIsotropic("greek_doric_column_head", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("greek_ionic_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("greek_doric_column_head", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
+		addIsotropic("greek_ionic_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"greek_ionic_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"greek_ionic_column_head_corner",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"greek_moulding",
@@ -1391,7 +1346,6 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"greek_moulding2",
@@ -1400,78 +1354,64 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 
-		addIsotropic("maya_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("maya_stonebrick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("maya_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
+		addIsotropic("maya_stonebrick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 
-		addIsotropic("roman_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic("roman_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic("roman_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
+		addIsotropic("roman_column_base", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_composite_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_composite_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_corinthian_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_corinthian_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_doric_column",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_doric_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_doric_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_ionic_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_ionic_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_ionic_column_head_corner",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal(),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_toscan_column",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_toscan_column_base",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"roman_toscan_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"roman_moulding",
@@ -1480,7 +1420,6 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"roman_moulding2",
@@ -1489,106 +1428,93 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
-				ITEM_BASIC,
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"hollow_steel_bars",
 				() -> new IronBarsBlock(BlockSettingPresets.hollowSteel()
 						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 	}
 
 	private static void addBlock(
 			String id,
 			Supplier<Block> blockSupplier,
-			Item.Properties itemProp,
 			Collection<RegistryObject<Item>> tabContents) {
+		var itemProperties = new Item.Properties();
 		var block = BLOCKS.register(id, blockSupplier);
-		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProp)));
+		tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 	}
 
 	public static void addTreatedWood(String id, MapColor mapColor) {
-		addIsotropic(id + "_wood", copyProperties(Blocks.OAK_WOOD, mapColor), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic(id + "_log", copyProperties(Blocks.OAK_LOG, mapColor), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic(id + "_log_slab", copyProperties(Blocks.OAK_LOG, mapColor), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_wood", copyProperties(Blocks.OAK_WOOD, mapColor), TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_log", copyProperties(Blocks.OAK_LOG, mapColor), TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_log_slab", copyProperties(Blocks.OAK_LOG, mapColor), TAB_BASIC_CONTENTS);
 
-		addIsotropic(id + "_planks", copyProperties(Blocks.OAK_PLANKS, mapColor), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic(id + "_slab", copyProperties(Blocks.OAK_SLAB, mapColor), ITEM_BASIC, TAB_BASIC_CONTENTS);
-		addIsotropic(id + "_stairs", copyProperties(Blocks.OAK_STAIRS, mapColor), ITEM_BASIC, TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_planks", copyProperties(Blocks.OAK_PLANKS, mapColor), TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_slab", copyProperties(Blocks.OAK_SLAB, mapColor), TAB_BASIC_CONTENTS);
+		addIsotropic(id + "_stairs", copyProperties(Blocks.OAK_STAIRS, mapColor), TAB_BASIC_CONTENTS);
 
-		addIsotropic(id + "_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic(id + "_big_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
-		addIsotropic(id + "_tall_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_big_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_tall_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_desk",
 				"xkdeco:big_table",
 				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD).get(),
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_stool",
 				"xkdeco:long_stool",
 				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD).get(),
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_chair",
 				"xkdeco:chair",
 				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD).get(),
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_empty_shelf",
 				"xkdeco:shelf",
 				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD).get(),
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_shelf",
 				"xkdeco:shelf",
 				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD).get(),
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_divided_shelf",
 				"xkdeco:shelf",
 				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD).get(),
-				ITEM_FURNITURE,
+				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
 				TAB_FURNITURE_CONTENTS);
 
 		addBlock(
 				id + "_fence",
 				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_fence_gate",
 				() -> new FenceGateBlock(copyProperties(Blocks.OAK_FENCE_GATE, mapColor).get(), WoodType.OAK),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
-		addIsotropic(id + "_door", copyProperties(Blocks.OAK_DOOR, mapColor), ITEM_FURNITURE, TAB_FURNITURE_CONTENTS);
+		addIsotropic(id + "_door", copyProperties(Blocks.OAK_DOOR, mapColor), TAB_FURNITURE_CONTENTS);
 		addIsotropic(
 				id + "_trapdoor",
 				copyProperties(Blocks.OAK_TRAPDOOR, mapColor),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_column_wall",
 				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"hollow_" + id + "_column_wall",
 				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 
 		addBlock(
@@ -1598,7 +1524,6 @@ public final class XKDecoObjects {
 						.noOcclusion()
 						.component(MouldingComponent.getInstance(false))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_meiren_kao_with_column",
@@ -1607,7 +1532,6 @@ public final class XKDecoObjects {
 						.noOcclusion()
 						.component(MouldingComponent.getInstance(false))
 						.get()),
-				ITEM_FURNITURE,
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_dougong",
@@ -1616,9 +1540,7 @@ public final class XKDecoObjects {
 						.noOcclusion()
 						.component(MouldingComponent.getInstance(false))
 						.get()),
-				ITEM_FURNITURE,
-				TAB_FURNITURE_CONTENTS
-		);
+				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_dougong_connection",
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
@@ -1626,9 +1548,7 @@ public final class XKDecoObjects {
 						.noOcclusion()
 						.component(MouldingComponent.getInstance(false))
 						.get()),
-				ITEM_FURNITURE,
-				TAB_FURNITURE_CONTENTS
-		);
+				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_dougong_hollow_connection",
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
@@ -1636,8 +1556,6 @@ public final class XKDecoObjects {
 						.noOcclusion()
 						.component(MouldingComponent.getInstance(false))
 						.get()),
-				ITEM_FURNITURE,
-				TAB_FURNITURE_CONTENTS
-		);
+				TAB_FURNITURE_CONTENTS);
 	}
 }

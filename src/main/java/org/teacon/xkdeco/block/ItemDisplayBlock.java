@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -40,7 +41,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialItemDisplayBlock extends BaseEntityBlock {
+public final class ItemDisplayBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	private static final VoxelShape TOP = Block.box(0, 13, 0, 16, 16, 16);
 	private static final VoxelShape SHAPE = Shapes.or(
 			Block.box(3, 0, 3, 13, 4, 13),
@@ -50,7 +51,7 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock {
 	);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public SpecialItemDisplayBlock(Properties properties) {
+	public ItemDisplayBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false));
 	}
@@ -151,7 +152,7 @@ public final class SpecialItemDisplayBlock extends BaseEntityBlock {
 		return (level, pos, blockState, blockEntity) -> {
 			if (blockEntity instanceof ItemDisplayBlockEntity itemDisplayBlockEntity) {
 				var spin = itemDisplayBlockEntity.getSpin();
-				if (itemDisplayBlockEntity.getBlockState().getValue(SpecialItemDisplayBlock.POWERED)) {
+				if (itemDisplayBlockEntity.getBlockState().getValue(ItemDisplayBlock.POWERED)) {
 					spin = (float) (Math.round(spin / (TAU / 8)) * (TAU / 8));
 				} else {
 					spin += 0.05f;

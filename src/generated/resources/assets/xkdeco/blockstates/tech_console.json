@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "facing=east,shape=inner_left": {
+      "model": "xkdeco:block/furniture/tech_console_inner",
+      "uvlock": false,
+      "y": 270
+    },
+    "facing=east,shape=inner_right": {
+      "model": "xkdeco:block/furniture/tech_console_inner"
+    },
+    "facing=east,shape=outer_left": {
+      "model": "xkdeco:block/furniture/tech_console_outer",
+      "uvlock": false,
+      "y": 270
+    },
+    "facing=east,shape=outer_right": {
+      "model": "xkdeco:block/furniture/tech_console_outer"
+    },
+    "facing=east,shape=straight": {
+      "model": "xkdeco:block/furniture/tech_console"
+    },
+    "facing=north,shape=inner_left": {
+      "model": "xkdeco:block/furniture/tech_console_inner",
+      "uvlock": false,
+      "y": 180
+    },
+    "facing=north,shape=inner_right": {
+      "model": "xkdeco:block/furniture/tech_console_inner",
+      "uvlock": false,
+      "y": 270
+    },
+    "facing=north,shape=outer_left": {
+      "model": "xkdeco:block/furniture/tech_console_outer",
+      "uvlock": false,
+      "y": 180
+    },
+    "facing=north,shape=outer_right": {
+      "model": "xkdeco:block/furniture/tech_console_outer",
+      "uvlock": false,
+      "y": 270
+    },
+    "facing=north,shape=straight": {
+      "model": "xkdeco:block/furniture/tech_console",
+      "uvlock": false,
+      "y": 270
+    },
+    "facing=south,shape=inner_left": {
+      "model": "xkdeco:block/furniture/tech_console_inner"
+    },
+    "facing=south,shape=inner_right": {
+      "model": "xkdeco:block/furniture/tech_console_inner",
+      "uvlock": false,
+      "y": 90
+    },
+    "facing=south,shape=outer_left": {
+      "model": "xkdeco:block/furniture/tech_console_outer"
+    },
+    "facing=south,shape=outer_right": {
+      "model": "xkdeco:block/furniture/tech_console_outer",
+      "uvlock": false,
+      "y": 90
+    },
+    "facing=south,shape=straight": {
+      "model": "xkdeco:block/furniture/tech_console",
+      "uvlock": false,
+      "y": 90
+    },
+    "facing=west,shape=inner_left": {
+      "model": "xkdeco:block/furniture/tech_console_inner",
+      "uvlock": false,
+      "y": 90
+    },
+    "facing=west,shape=inner_right": {
+      "model": "xkdeco:block/furniture/tech_console_inner",
+      "uvlock": false,
+      "y": 180
+    },
+    "facing=west,shape=outer_left": {
+      "model": "xkdeco:block/furniture/tech_console_outer",
+      "uvlock": false,
+      "y": 90
+    },
+    "facing=west,shape=outer_right": {
+      "model": "xkdeco:block/furniture/tech_console_outer",
+      "uvlock": false,
+      "y": 180
+    },
+    "facing=west,shape=straight": {
+      "model": "xkdeco:block/furniture/tech_console",
+      "uvlock": false,
+      "y": 180
+    }
+  }
+}

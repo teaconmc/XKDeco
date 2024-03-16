@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -39,7 +40,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class SpecialBlockDisplayBlock extends BaseEntityBlock {
+public final class BlockDisplayBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	private static final VoxelShape TOP = Block.box(0, 11, 0, 16, 16, 16);
 	private static final VoxelShape NECK = Block.box(2, 8, 2, 14, 11, 14);
 	private static final VoxelShape BOTTOM = Shapes.or(
@@ -50,7 +51,7 @@ public final class SpecialBlockDisplayBlock extends BaseEntityBlock {
 			Block.box(0, 2, 0, 16, 8, 16));
 	private static final VoxelShape SHAPE = Shapes.or(TOP, NECK, BOTTOM);
 
-	public SpecialBlockDisplayBlock(Properties properties) {
+	public BlockDisplayBlock(Properties properties) {
 		super(properties);
 	}
 

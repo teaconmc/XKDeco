@@ -279,8 +279,9 @@ public class XKBlockSettings {
 			return components.containsKey(type);
 		}
 
-		public void removeComponent(XKBlockComponent.Type<?> type) {
+		public Builder removeComponent(XKBlockComponent.Type<?> type) {
 			components.remove(type);
+			return this;
 		}
 
 		@Nullable

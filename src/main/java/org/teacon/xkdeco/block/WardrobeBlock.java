@@ -37,7 +37,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class SpecialWardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity> {
+public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity> {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final EnumProperty<DoorHingeSide> HINGE = BlockStateProperties.DOOR_HINGE;
@@ -49,7 +49,7 @@ public final class SpecialWardrobeBlock extends AbstractChestBlock<WardrobeBlock
 	public static final VoxelShape SHAPE_WEST_OPEN = Block.box(1, 0, 0, 16, 16, 16);
 	public static final VoxelShape SHAPE_EAST_OPEN = Block.box(0, 0, 0, 15, 16, 16);
 
-	public SpecialWardrobeBlock(Properties pProperties) {
+	public WardrobeBlock(Properties pProperties) {
 		super(pProperties.pushReaction(PushReaction.BLOCK), WardrobeBlockEntity.TYPE::get);
 	}
 
