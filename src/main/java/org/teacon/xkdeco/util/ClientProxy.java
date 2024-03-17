@@ -1,8 +1,5 @@
 package org.teacon.xkdeco.util;
 
-import java.util.List;
-
-import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.settings.BlockRenderSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -29,7 +26,6 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.BlockItem;

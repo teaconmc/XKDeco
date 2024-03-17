@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/template_screen",
+  "textures": {
+    "particle": "xkdeco:block/screen_list"
+  }
+}

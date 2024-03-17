@@ -59,6 +59,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 		return RenderShape.MODEL;
 	}
 
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, OPEN, HINGE, HALF, DOUBLE);
 	}
@@ -109,10 +110,12 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 		}
 	}
 
+	@Override
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
 		pLevel.setBlock(pPos.above(), pState.setValue(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 
+	@Override
 	public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
 		if (!pLevel.isClientSide && pPlayer.isCreative()) {
 			preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
@@ -123,6 +126,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	/**
 	 * Borrowed from DoorBlock#updateShape
 	 */
+	@Override
 	@SuppressWarnings("deprecation")
 	public BlockState updateShape(
 			BlockState pState,

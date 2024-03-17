@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.block.settings;
 
 import java.util.Map;
-import java.util.function.UnaryOperator;
+import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
@@ -17,11 +17,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -189,8 +191,8 @@ public class XKBlockSettings {
 			return properties;
 		}
 
-		public Builder configure(UnaryOperator<BlockBehaviour.Properties> configurator) {
-			configurator.apply(properties);
+		public Builder configure(Consumer<BlockBehaviour.Properties> configurator) {
+			configurator.accept(properties);
 			return this;
 		}
 
@@ -298,9 +300,11 @@ public class XKBlockSettings {
 			if (hasComponent(HorizontalComponent.TYPE)) {
 				return ShapeGenerator.horizontal(shape);
 			} else if (hasComponent(DirectionalComponent.TYPE)) {
-				return ShapeGenerator.directional(shape);
+				return ShapeGenerator.directional(shape, state -> state.getValue(BlockStateProperties.FACING));
 			} else if (hasComponent(MouldingComponent.TYPE)) {
 				return ShapeGenerator.moulding(shape);
+			} else if (hasComponent(FrontAndTopComponent.TYPE)) {
+				return ShapeGenerator.directional(shape, JigsawBlock::getFrontFacing);
 			}
 			return ShapeGenerator.unit(shape);
 		}

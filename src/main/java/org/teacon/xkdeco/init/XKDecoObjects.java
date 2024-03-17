@@ -39,6 +39,7 @@ import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
+import org.teacon.xkdeco.block.settings.FrontAndTopComponent;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.MouldingComponent;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
@@ -1118,7 +1119,7 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("mechanical_screen", "xkdeco:screen2", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("mechanical_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("mechanical_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
 		addBlock(
@@ -1127,18 +1128,8 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance(false))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("tech_screen", "xkdeco:screen2", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		addBasic("tech_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("tech_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-
-		addBasic("screen_off", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_cube", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_diagram", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_dna", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_list", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_message", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_threebodies", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("screen_transport", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
 		addBasic("tech_table", "xkdeco:tech_table", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic(
@@ -1436,6 +1427,29 @@ public final class XKDecoObjects {
 						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 						.get()),
 				TAB_FURNITURE_CONTENTS);
+
+		addScreen("off");
+		addScreen("wave");
+		addScreen("cube");
+		addScreen("diagram");
+		addScreen("dna");
+		addScreen("list");
+		addScreen("message");
+		addScreen("three_bodies");
+		addScreen("transport");
+	}
+
+	private static void addScreen(String id) {
+		var settings = XKBlockSettings.builder()
+				.waterLoggable()
+				.component(FrontAndTopComponent.getInstance(false))
+				.shape(XKDeco.id("screen"))
+				.configure($ -> {
+					if (!"off".equals(id)) {
+						$.lightLevel($$ -> 9);
+					}
+				});
+		addBlock("screen_" + id, () -> new BasicBlock(settings.get()), TAB_FURNITURE_CONTENTS);
 	}
 
 	private static void addBlock(

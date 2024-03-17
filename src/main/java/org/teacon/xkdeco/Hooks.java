@@ -23,6 +23,7 @@ public final class Hooks {
 		Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<>(
 				CACHE_SIZE,
 				0.25F) {
+			@Override
 			protected void rehash(int needed) {
 			}
 		};

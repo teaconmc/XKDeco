@@ -99,11 +99,6 @@ public final class CushionEntity extends Entity {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
-	}
-
-	@Override
 	public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
 		var targetPosition = this.position().add(this.getStandingDiffLocation());
 		var targetBelow = new BlockPos((int) targetPosition.x, (int) (targetPosition.y - 1.0), (int) targetPosition.z);

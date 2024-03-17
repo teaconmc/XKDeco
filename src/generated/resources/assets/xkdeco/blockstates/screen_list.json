@@ -1,18 +1,56 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "xkdeco:block/furniture/screen_list",
+    "orientation=down_east": {
+      "model": "xkdeco:block/screen_list",
+      "x": 90,
       "y": 90
     },
-    "facing=north": {
-      "model": "xkdeco:block/furniture/screen_list"
+    "orientation=down_north": {
+      "model": "xkdeco:block/screen_list",
+      "x": 90
     },
-    "facing=south": {
-      "model": "xkdeco:block/furniture/screen_list",
+    "orientation=down_south": {
+      "model": "xkdeco:block/screen_list",
+      "x": 90,
       "y": 180
     },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/screen_list",
+    "orientation=down_west": {
+      "model": "xkdeco:block/screen_list",
+      "x": 90,
+      "y": 270
+    },
+    "orientation=east_up": {
+      "model": "xkdeco:block/screen_list",
+      "y": 90
+    },
+    "orientation=north_up": {
+      "model": "xkdeco:block/screen_list"
+    },
+    "orientation=south_up": {
+      "model": "xkdeco:block/screen_list",
+      "y": 180
+    },
+    "orientation=up_east": {
+      "model": "xkdeco:block/screen_list",
+      "x": 270,
+      "y": 270
+    },
+    "orientation=up_north": {
+      "model": "xkdeco:block/screen_list",
+      "x": 270,
+      "y": 180
+    },
+    "orientation=up_south": {
+      "model": "xkdeco:block/screen_list",
+      "x": 270
+    },
+    "orientation=up_west": {
+      "model": "xkdeco:block/screen_list",
+      "x": 270,
+      "y": 90
+    },
+    "orientation=west_up": {
+      "model": "xkdeco:block/screen_list",
       "y": 270
     }
   }

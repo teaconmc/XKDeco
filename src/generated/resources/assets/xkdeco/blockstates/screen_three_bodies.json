@@ -1,56 +1,56 @@
 {
   "variants": {
     "orientation=down_east": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 90,
       "y": 90
     },
     "orientation=down_north": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 90
     },
     "orientation=down_south": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 90,
       "y": 180
     },
     "orientation=down_west": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 90,
       "y": 270
     },
     "orientation=east_up": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "y": 90
     },
     "orientation=north_up": {
-      "model": "xkdeco:block/screen_diagram"
+      "model": "xkdeco:block/screen_three_bodies"
     },
     "orientation=south_up": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "y": 180
     },
     "orientation=up_east": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 270,
       "y": 270
     },
     "orientation=up_north": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 270,
       "y": 180
     },
     "orientation=up_south": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 270
     },
     "orientation=up_west": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "x": 270,
       "y": 90
     },
     "orientation=west_up": {
-      "model": "xkdeco:block/screen_diagram",
+      "model": "xkdeco:block/screen_three_bodies",
       "y": 270
     }
   }

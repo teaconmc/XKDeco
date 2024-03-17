@@ -97,6 +97,7 @@ public class XKDModelTemplates {
 	public static final ModelTemplate GLASS_STAIRS = create("glass_stairs", TextureSlot.SIDE);
 	public static final ModelTemplate GLASS_STAIRS_INNER = create("glass_stairs_inner", "_inner", TextureSlot.SIDE);
 	public static final ModelTemplate GLASS_STAIRS_OUTER = create("glass_stairs_outer", "_outer", TextureSlot.SIDE);
+	public static final ModelTemplate SCREEN = create("template_screen", TextureSlot.PARTICLE);
 
 	static {
 		bootstrap();
