@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.block.settings;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -52,14 +53,14 @@ public interface ShapeGenerator {
 		};
 	}
 
-	static ShapeGenerator directional(VoxelShape up) {
+	static ShapeGenerator directional(VoxelShape up, Function<BlockState, Direction> directionGetter) {
 		if (Shapes.block() == up) {
 			return unit(up);
 		}
 		VoxelShape[] shapes = new VoxelShape[6];
 		shapes[Direction.DOWN.get3DDataValue()] = VoxelUtil.rotate(up, Direction.UP);
 		return (blockState, context) -> {
-			Direction direction = blockState.getValue(BlockStateProperties.FACING);
+			Direction direction = directionGetter.apply(blockState);
 			int index = direction.get3DDataValue();
 			VoxelShape shape = shapes[index];
 			if (shape == null) {

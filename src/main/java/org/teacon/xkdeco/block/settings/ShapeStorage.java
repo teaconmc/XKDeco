@@ -74,8 +74,8 @@ public class ShapeStorage {
 		put("empty_candlestick", box(5, 5, 5, 11, 16, 16));
 		put("factory_lamp", box(4, 0, 4, 12, 8, 12));
 		put("fan", box(1, 0, 1, 15, 6, 15));
-		put("screen", box(0, 0, 14, 16, 16, 16));
-		put("screen2", box(0, 0, 13, 16, 16, 14));
+		put("screen", box(0, 0, 0, 16, 2, 16));
+		put("wide_screen", box(0, 0, 13, 16, 16, 14));
 		put("vent_fan", box(0, 0, 2, 16, 16, 14));
 		put("tech_table", Shapes.or(box(2, 0, 2, 14, 10, 14), box(0, 10, 0, 16, 16, 16)));
 		put("hologram_base", box(1, 0, 1, 15, 2, 15));

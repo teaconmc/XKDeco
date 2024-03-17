@@ -23,6 +23,7 @@ import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.settings.DirectionalComponent;
+import org.teacon.xkdeco.block.settings.FrontAndTopComponent;
 import org.teacon.xkdeco.block.settings.HorizontalComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
@@ -100,8 +101,8 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("empty_candlestick"),
 			block("oil_lamp"));
 	private BlockModelGenerators generators;
-	private ResourceLocation snowySlabDouble = new ResourceLocation("block/grass_block_snow");
-	private ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
+	private final ResourceLocation snowySlabDouble = new ResourceLocation("block/grass_block_snow");
+	private final ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
 	public XKDModelProvider(FabricDataOutput output) {
 		super(output);
@@ -881,15 +882,33 @@ public class XKDModelProvider extends FabricModelProvider {
 		if (settings == null) {
 			return;
 		}
-		if (block instanceof BasicBlock && settings.hasComponent(HorizontalComponent.TYPE)) {
+		if (!(block instanceof BasicBlock)) {
+			return;
+		}
+		if (settings.hasComponent(HorizontalComponent.TYPE)) {
 			ResourceLocation model = id.withPrefix("block/furniture/");
 			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
 							block,
 							Variant.variant().with(VariantProperties.MODEL, model))
 					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
 			generators.delegateItemModel(block, model);
-		} else if (block instanceof BasicBlock && settings.hasComponent(DirectionalComponent.TYPE)) {
+		} else if (settings.hasComponent(DirectionalComponent.TYPE)) {
 			createDirectional(id.getPath(), "furniture/");
+		} else if (settings.hasComponent(FrontAndTopComponent.TYPE)) {
+			ResourceLocation model;
+			if (id.getPath().startsWith("screen_")) {
+				TextureMapping mapping = TextureMapping.particle(block);
+				model = XKDModelTemplates.SCREEN.create(block, mapping, generators.modelOutput);
+			} else {
+				throw new IllegalStateException("Unknown block type: " + id);
+			}
+			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
+							block,
+							Variant.variant().with(VariantProperties.MODEL, model))
+					.with(PropertyDispatch.property(BlockStateProperties.ORIENTATION).generate(frontAndTop -> {
+						return generators.applyRotation(frontAndTop, Variant.variant());
+					}));
+			generators.blockStateOutput.accept(generator);
 		}
 	}
 
