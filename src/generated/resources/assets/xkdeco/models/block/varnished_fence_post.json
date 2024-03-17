@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/fence_post",
+  "parent": "xkdeco:block/wooden_fence_post",
   "textures": {
-    "texture": "xkdeco:block/varnished_planks"
+    "texture": "xkdeco:block/varnished_fence_post"
   }
 }

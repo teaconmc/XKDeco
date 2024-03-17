@@ -63,7 +63,7 @@ public class BlockFamilyProviderMixin {
 	@Inject(method = "fence", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$fence(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
-		if (XKDModelProvider.createIfSpecialFence(pBlock, this$0)) {
+		if (XKDModelProvider.createIfSpecialFence(pBlock, this$0, family)) {
 			cir.setReturnValue(self);
 		}
 	}
@@ -71,7 +71,7 @@ public class BlockFamilyProviderMixin {
 	@Inject(method = "fenceGate", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$fenceGate(Block pBlock, CallbackInfoReturnable<BlockModelGenerators.BlockFamilyProvider> cir) {
 		BlockModelGenerators.BlockFamilyProvider self = (BlockModelGenerators.BlockFamilyProvider) (Object) this;
-		if (XKDModelProvider.createIfSpecialFenceGate(pBlock, this$0)) {
+		if (XKDModelProvider.createIfSpecialFenceGate(pBlock, this$0, family)) {
 			cir.setReturnValue(self);
 		}
 	}

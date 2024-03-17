@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/fence_inventory",
+  "parent": "xkdeco:block/wooden_fence_inventory",
   "textures": {
     "texture": "xkdeco:block/varnished_planks"
   }
