@@ -1077,14 +1077,11 @@ public final class XKDecoObjects {
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 
-		//FIXME non-directional
-		addBasic(
+		addIsotropic(
 				"factory_ceiling_lamp",
-				"xkdeco:factory_ceiling_lamp",
-				false,
-				BlockSettingPresets.lightThingy(null),
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_ceiling_lamp")),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("factory_pendant", "xkdeco:factory_pendant", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
+		addIsotropic("factory_pendant", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_pendant")), TAB_FURNITURE_CONTENTS);
 
 		addDirectional(
 				"fan_blade",
@@ -1473,7 +1470,7 @@ public final class XKDecoObjects {
 		addIsotropic(id + "_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_big_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_tall_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addBasic( //TODO horizontal axis
 				id + "_desk",
 				"xkdeco:big_table",
 				false,

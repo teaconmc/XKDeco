@@ -383,6 +383,10 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping.layer0(getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
 		createFaceAttached("hollow_steel_half_beam");
+
+		createBlockStateOnly("factory_ceiling_lamp", "furniture/", true);
+		createBlockStateOnly("factory_pendant", "furniture/", true);
+
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
 		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
 		createMoulding("greek_moulding", "furniture/greek_moulding", false, true);
