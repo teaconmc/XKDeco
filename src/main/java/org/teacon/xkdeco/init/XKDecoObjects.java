@@ -1500,6 +1500,10 @@ public final class XKDecoObjects {
 				id + "_fence",
 				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get()),
 				TAB_FURNITURE_CONTENTS);
+		addDirectional(
+				id + "_fence_head",
+				copyProperties(Blocks.OAK_FENCE, mapColor).shape(XKDeco.id("wooden_fence_head")),
+				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_fence_gate",
 				() -> new FenceGateBlock(copyProperties(Blocks.OAK_FENCE_GATE, mapColor).get(), WoodType.OAK),

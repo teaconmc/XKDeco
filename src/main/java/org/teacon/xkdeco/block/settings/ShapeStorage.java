@@ -139,6 +139,7 @@ public class ShapeStorage {
 		put("meiren_kao_with_column", Shapes.or(getInstance().get(XKDeco.id("meiren_kao")), getInstance().get(XKDeco.id("wooden_column"))));
 		put("fallen_leaves", box(0, 0, 0, 16, 1, 16));
 		put("stone_column", box(2, 0, 2, 14, 16, 14));
+		put("wooden_fence_head", box(6, 0, 6, 10, 8, 10));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

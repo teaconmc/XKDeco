@@ -82,10 +82,6 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/air_duct_oblique",
 			"block/air_duct_oblique_top",
 			"block/quartz_wall_post");
-	private static final Set<Block> THIN_TRAPDOORS = Set.of(
-			block("varnished_trapdoor"),
-			block("ebony_trapdoor"),
-			block("mahogany_trapdoor"));
 	private static final Set<Block> SKIPPED_TRAPDOORS = Set.of(
 			block("glass_trapdoor"),
 			block("steel_trapdoor"),
@@ -139,7 +135,7 @@ public class XKDModelProvider extends FabricModelProvider {
 			createTrapdoor(block, family.getBaseBlock(), generators);
 			return true;
 		}
-		if (THIN_TRAPDOORS.contains(block)) {
+		if (TREATED_WOOD_FAMILIES.contains(family)) {
 			TextureMapping $$1 = TextureMapping.defaultTexture(block);
 			ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(block, $$1, generators.modelOutput);
 			ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(block, $$1, generators.modelOutput);
@@ -817,6 +813,36 @@ public class XKDModelProvider extends FabricModelProvider {
 		createMouldingWithModels(id + "_dougong", "template_dougong", textureMapping, true);
 		createMouldingWithModels(id + "_dougong_connection", "template_dougong_connection", textureMapping, true);
 		createMouldingWithModels(id + "_dougong_hollow_connection", "template_dougong_hollow_connection", textureMapping, true);
+
+		createWoodenFenceHead(id);
+	}
+
+	private void createWoodenFenceHead(String id) {
+		Block block = block(id + "_fence_head");
+		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block(id + "_fence"), "_post"));
+		ResourceLocation model = XKDModelTemplates.WOODEN_FENCE_HEAD.create(block, mapping, generators.modelOutput);
+		ResourceLocation flipModel = XKDModelTemplates.WOODEN_FENCE_HEAD_FLIP.create(block, mapping, generators.modelOutput);
+		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
+				.with(PropertyDispatch.property(BlockStateProperties.FACING)
+						.select(Direction.DOWN, Variant.variant()
+								.with(VariantProperties.MODEL, flipModel)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+						.select(Direction.UP, Variant.variant()
+								.with(VariantProperties.MODEL, model)
+								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+						.select(Direction.NORTH, Variant.variant()
+								.with(VariantProperties.MODEL, model))
+						.select(Direction.SOUTH, Variant.variant()
+								.with(VariantProperties.MODEL, model)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						.select(Direction.WEST, Variant.variant()
+								.with(VariantProperties.MODEL, model)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+						.select(Direction.EAST, Variant.variant()
+								.with(VariantProperties.MODEL, model)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
+		generators.blockStateOutput.accept(generator);
+		generators.delegateItemModel(block, model);
 	}
 
 	private void createWoodenWall(String id, String templateId, TextureMapping textureMapping) {
@@ -863,13 +889,18 @@ public class XKDModelProvider extends FabricModelProvider {
 					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
 			generators.delegateItemModel(block, model);
 		} else if (block instanceof BasicBlock && settings.hasComponent(DirectionalComponent.TYPE)) {
-			ResourceLocation model = id.withPrefix("block/furniture/");
-			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
-							block,
-							Variant.variant().with(VariantProperties.MODEL, model))
-					.with(BlockModelGenerators.createFacingDispatch()));
-			generators.delegateItemModel(block, model);
+			createDirectional(id.getPath(), "furniture/");
 		}
+	}
+
+	private void createDirectional(String id, String prefix) {
+		Block block = block(id);
+		ResourceLocation model = XKDeco.id(id).withPrefix("block/" + prefix);
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+						block,
+						Variant.variant().with(VariantProperties.MODEL, model))
+				.with(BlockModelGenerators.createFacingDispatch()));
+		generators.delegateItemModel(block, model);
 	}
 
 	private void createSlab(Block fullBlock, boolean sided, boolean natural, UnaryOperator<TextureMapping> textureMappingOperator) {
