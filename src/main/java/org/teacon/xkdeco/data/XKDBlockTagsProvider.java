@@ -10,8 +10,10 @@ import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -29,14 +31,17 @@ public class XKDBlockTagsProvider extends FabricTagProvider.BlockTagProvider {
 	protected void addTags(HolderLookup.Provider provider) {
 		GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
 			Optional<XKBlockSettings> settings = Optional.ofNullable(XKBlockSettings.of(block));
+			var id = BuiltInRegistries.BLOCK.getKey(block).getPath();
 			if (block instanceof WallBlock) {
 				getOrCreateTagBuilder(BlockTags.WALLS).add(block);
 			} else if (block.getClass() == StairBlock.class) {
 				getOrCreateTagBuilder(BlockTags.STAIRS).add(block); //TODO BlockTags.WOODEN_STAIRS
 			} else if (block instanceof SlabBlock) {
 				getOrCreateTagBuilder(BlockTags.SLABS).add(block); //TODO
-			} else if (block.getClass() == TrapDoorBlock.class) {
+			} else if (block.getClass() == TrapDoorBlock.class && !id.contains("window")) {
 				getOrCreateTagBuilder(BlockTags.TRAPDOORS).add(block); //TODO
+			} else if (block.getClass() == FenceBlock.class) {
+				getOrCreateTagBuilder(BlockTags.FENCES).add(block); //TODO
 			}
 			if (settings.map($ -> $.glassType).filter(GlassType::skipRendering).isPresent()) {
 				getOrCreateTagBuilder(BlockTags.IMPERMEABLE).add(block);

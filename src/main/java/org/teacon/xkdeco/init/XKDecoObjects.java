@@ -1498,7 +1498,7 @@ public final class XKDecoObjects {
 
 		addBlock(
 				id + "_fence",
-				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get()),
+				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get()),
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				id + "_fence_gate",
@@ -1557,6 +1557,18 @@ public final class XKDecoObjects {
 						.noOcclusion()
 						.component(MouldingComponent.getInstance(false))
 						.get()),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				id + "_window",
+				() -> new TrapDoorBlock(
+						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get(),
+						BlockSetType.OAK),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				id + "_awning_window",
+				() -> new TrapDoorBlock(
+						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get(),
+						BlockSetType.OAK),
 				TAB_FURNITURE_CONTENTS);
 	}
 }

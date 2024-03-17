@@ -7,8 +7,7 @@
     },
     {
       "apply": {
-        "model": "xkdeco:block/mahogany_fence_side",
-        "uvlock": true
+        "model": "xkdeco:block/mahogany_fence_side"
       },
       "when": {
         "north": "true"
@@ -17,7 +16,6 @@
     {
       "apply": {
         "model": "xkdeco:block/mahogany_fence_side",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -27,7 +25,6 @@
     {
       "apply": {
         "model": "xkdeco:block/mahogany_fence_side",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -37,7 +34,6 @@
     {
       "apply": {
         "model": "xkdeco:block/mahogany_fence_side",
-        "uvlock": true,
         "y": 270
       },
       "when": {

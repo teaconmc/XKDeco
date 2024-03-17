@@ -1,0 +1,65 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/fence_side",
+	"elements": [
+		{
+			"from": [7, 0, 0],
+			"to": [9, 2, 6],
+			"faces": {
+				"north": {"uv": [7, 14, 9, 16], "rotation": 90, "texture": "#texture"},
+				"east": {"uv": [10, 14, 16, 16], "texture": "#texture"},
+				"west": {"uv": [0, 14, 6, 16], "texture": "#texture"},
+				"up": {"uv": [5, 2, 11, 4], "rotation": 90, "texture": "#texture"},
+				"down": {"uv": [5, 6, 11, 8], "rotation": 90, "texture": "#texture"}
+			}
+		},
+		{
+			"from": [7, 2, 3],
+			"to": [9, 8, 5],
+			"faces": {
+				"north": {"uv": [3, 8, 5, 14], "texture": "#texture"},
+				"east": {"uv": [11, 8, 13, 14], "texture": "#texture"},
+				"south": {"uv": [3, 8, 5, 14], "texture": "#texture"},
+				"west": {"uv": [3, 8, 5, 14], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [8, 3, 0],
+			"to": [8, 7, 3],
+			"faces": {
+				"east": {"uv": [13, 9, 16, 13], "texture": "#texture"},
+				"west": {"uv": [0, 9, 3, 13], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [8, 10, 0],
+			"to": [8, 12, 1],
+			"faces": {
+				"east": {"uv": [15, 4, 16, 6], "texture": "#texture"},
+				"west": {"uv": [0, 4, 1, 6], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [7, 12, 0],
+			"to": [9, 14, 6],
+			"faces": {
+				"north": {"uv": [7, 2, 9, 4], "rotation": 90, "texture": "#texture"},
+				"east": {"uv": [10, 2, 16, 4], "texture": "#texture"},
+				"west": {"uv": [0, 2, 6, 4], "texture": "#texture"},
+				"up": {"uv": [5, 2, 11, 4], "rotation": 90, "texture": "#texture"},
+				"down": {"uv": [5, 6, 11, 8], "rotation": 90, "texture": "#texture"}
+			}
+		},
+		{
+			"from": [7, 8, 0],
+			"to": [9, 10, 6],
+			"faces": {
+				"north": {"uv": [7, 6, 9, 8], "rotation": 90, "texture": "#texture"},
+				"east": {"uv": [10, 6, 16, 8], "texture": "#texture"},
+				"west": {"uv": [0, 6, 6, 8], "texture": "#texture"},
+				"up": {"uv": [5, 2, 11, 4], "rotation": 90, "texture": "#texture"},
+				"down": {"uv": [5, 6, 11, 8], "rotation": 90, "texture": "#texture"}
+			}
+		}
+	]
+}

@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/fence_side",
+  "parent": "xkdeco:block/wooden_fence_side",
   "textures": {
-    "texture": "xkdeco:block/varnished_planks"
+    "texture": "xkdeco:block/varnished_fence"
   }
 }

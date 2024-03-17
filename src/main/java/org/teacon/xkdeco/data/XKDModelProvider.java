@@ -90,10 +90,10 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("glass_trapdoor"),
 			block("steel_trapdoor"),
 			block("hollow_steel_trapdoor"));
-	private static final Set<Block> WOODEN_FENCE_GATES = Set.of(
-			block("varnished_fence_gate"),
-			block("ebony_fence_gate"),
-			block("mahogany_fence_gate"));
+	private static final Set<BlockFamily> TREATED_WOOD_FAMILIES = Set.of(
+			XKDBlockFamilies.VARNISHED_PLANKS,
+			XKDBlockFamilies.EBONY_PLANKS,
+			XKDBlockFamilies.MAHOGANY_PLANKS);
 	private static final List<String> GADGET_SKIP_PREFIXES = List.of(
 			"varnished_",
 			"ebony_",
@@ -168,12 +168,48 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.delegateItemModel(trapdoorBlock, model2);
 	}
 
-	public static boolean createIfSpecialFence(Block block, BlockModelGenerators generators) {
-		return false; //TODO
+	public static boolean createIfSpecialFence(Block block, BlockModelGenerators generators, BlockFamily family) {
+		if (!TREATED_WOOD_FAMILIES.contains(family)) {
+			return false;
+		}
+		ResourceLocation post = XKDModelTemplates.WOODEN_FENCE_POST.create(
+				block,
+				TextureMapping.defaultTexture(getBlockTexture(block, "_post")),
+				generators.modelOutput);
+		ResourceLocation side = XKDModelTemplates.WOODEN_FENCE_SIDE.create(
+				block,
+				TextureMapping.defaultTexture(block),
+				generators.modelOutput);
+		ResourceLocation inventory = XKDModelTemplates.WOODEN_FENCE_INVENTORY.create(
+				block,
+				TextureMapping.defaultTexture(family.getBaseBlock()),
+				generators.modelOutput);
+		generators.blockStateOutput.accept(createFenceNoUvLock(block, post, side));
+		generators.delegateItemModel(block, inventory);
+		return true;
 	}
 
-	public static boolean createIfSpecialFenceGate(Block block, BlockModelGenerators generators) {
-		if (!WOODEN_FENCE_GATES.contains(block)) {
+	public static BlockStateGenerator createFenceNoUvLock(
+			Block pFenceBlock,
+			ResourceLocation pFencePostModelLocation,
+			ResourceLocation pFenceSideModelLocation) {
+		return MultiPartGenerator.multiPart(pFenceBlock)
+				.with(Variant.variant().with(VariantProperties.MODEL, pFencePostModelLocation))
+				.with(Condition.condition().term(BlockStateProperties.NORTH, true), Variant.variant()
+						.with(VariantProperties.MODEL, pFenceSideModelLocation))
+				.with(Condition.condition().term(BlockStateProperties.EAST, true), Variant.variant()
+						.with(VariantProperties.MODEL, pFenceSideModelLocation)
+						.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(Condition.condition().term(BlockStateProperties.SOUTH, true), Variant.variant()
+						.with(VariantProperties.MODEL, pFenceSideModelLocation)
+						.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+				.with(Condition.condition().term(BlockStateProperties.WEST, true), Variant.variant()
+						.with(VariantProperties.MODEL, pFenceSideModelLocation)
+						.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+	}
+
+	public static boolean createIfSpecialFenceGate(Block block, BlockModelGenerators generators, BlockFamily family) {
+		if (!TREATED_WOOD_FAMILIES.contains(family)) {
 			return false;
 		}
 		TextureMapping textureMapping = TextureMapping.defaultTexture(block);
