@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_fence_head",
+  "textures": {
+    "particle": "xkdeco:block/ebony_fence_post"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_fence_head_flip",
+  "textures": {
+    "particle": "xkdeco:block/varnished_fence_post"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "xkdeco:block/varnished_fence_head_flip",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "xkdeco:block/varnished_fence_head",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/varnished_fence_head"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/varnished_fence_head",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "xkdeco:block/varnished_fence_head",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "xkdeco:block/varnished_fence_head",
+      "y": 270
+    }
+  }
+}
