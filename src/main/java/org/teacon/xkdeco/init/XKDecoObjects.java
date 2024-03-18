@@ -1007,11 +1007,9 @@ public final class XKDecoObjects {
 				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 		addBasic("fish_tank", "xkdeco:fish_tank", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addIsotropic(
 				"empty_fish_tank",
-				"xkdeco:fish_tank",
-				false,
-				BlockSettingPresets.thingy(null),
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("fish_tank")),
 				TAB_FURNITURE_CONTENTS);
 
 		addBasic(

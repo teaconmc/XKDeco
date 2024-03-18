@@ -387,6 +387,7 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createBlockStateOnly("factory_ceiling_lamp", "furniture/", true);
 		createBlockStateOnly("factory_pendant", "furniture/", true);
+		createBlockStateOnly("empty_fish_tank", "furniture/", true);
 
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
 		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);

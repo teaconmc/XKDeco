@@ -4,6 +4,5 @@
     "top": "xkdeco:block/blackstone_lamp_top",
     "particle": "xkdeco:block/blackstone_lamp",
     "lamp": "xkdeco:block/blackstone_lamp"
-  },
-  "render_type": "cutout"
+  }
 }

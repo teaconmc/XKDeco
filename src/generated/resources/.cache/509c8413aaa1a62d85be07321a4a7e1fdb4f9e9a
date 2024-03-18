@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-19T03:04:50.6751309	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-19T03:44:23.2442394	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -167,7 +167,7 @@ ca310c41a5507684e2a510a060d3dcb0e4e220e0 assets/xkdeco/blockstates/egyptian_smoo
 9a9ac79026dc913db5144b9ac6309612774e2da6 assets/xkdeco/blockstates/egyptian_stripe_column.json
 b285386b670912d86904c5c31c4a29374c0c52b6 assets/xkdeco/blockstates/egyptian_stripe_column_base.json
 ee7047541447ab14f6695e1cd56ec2ba86808c58 assets/xkdeco/blockstates/egyptian_stripe_column_head.json
-45a05db63594b340617edf88b865db6902a0953c assets/xkdeco/blockstates/empty_fish_tank.json
+4c73041a05a1281c45a729c5983413b89c1e23e4 assets/xkdeco/blockstates/empty_fish_tank.json
 b8156996f9418da8559ba989f0d9e78e15ab96f4 assets/xkdeco/blockstates/end_stone_slab.json
 d769b83cae1398f04c0ca2816f5b3468504076a8 assets/xkdeco/blockstates/factory_attention.json
 67825bd25017956e3bb84e37c3af1c0f0f86047d assets/xkdeco/blockstates/factory_attention_rusted.json
