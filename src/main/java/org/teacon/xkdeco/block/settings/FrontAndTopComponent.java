@@ -3,7 +3,6 @@ package org.teacon.xkdeco.block.settings;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -16,18 +15,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-public record FrontAndTopComponent(boolean customPlacement) implements XKBlockComponent {
+public record FrontAndTopComponent() implements XKBlockComponent {
 	public static final EnumProperty<FrontAndTop> ORIENTATION = BlockStateProperties.ORIENTATION;
-	private static final FrontAndTopComponent TRUE = new FrontAndTopComponent(true);
-	private static final FrontAndTopComponent FALSE = new FrontAndTopComponent(false);
+	private static final FrontAndTopComponent INSTANCE = new FrontAndTopComponent();
 	public static final Type<FrontAndTopComponent> TYPE = XKBlockComponent.register(
 			"front_and_top",
-			RecordCodecBuilder.create(instance -> instance.group(
-					Codec.BOOL.optionalFieldOf("custom_placement", false).forGetter(FrontAndTopComponent::customPlacement)
-			).apply(instance, FrontAndTopComponent::getInstance)));
+			Codec.unit(INSTANCE));
 
-	public static FrontAndTopComponent getInstance(boolean customPlacement) {
-		return customPlacement ? TRUE : FALSE;
+	public static FrontAndTopComponent getInstance() {
+		return INSTANCE;
 	}
 
 	@Override
@@ -46,8 +42,8 @@ public record FrontAndTopComponent(boolean customPlacement) implements XKBlockCo
 	}
 
 	@Override
-	public @Nullable BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
-		if (customPlacement) {
+	public @Nullable BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+		if (settings.customPlacement) {
 			return state;
 		}
 		Direction front = context.getClickedFace();

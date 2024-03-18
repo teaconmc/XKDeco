@@ -20,6 +20,7 @@ import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
+import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.HollowSteelHalfBeamBlock;
 import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
@@ -1072,7 +1073,7 @@ public final class XKDecoObjects {
 				"factory_light_bar",
 				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
 						.noCollission()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("factory_light_bar"))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
@@ -1113,7 +1114,7 @@ public final class XKDecoObjects {
 		addBlock(
 				"mechanical_console",
 				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBasic("mechanical_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
@@ -1122,7 +1123,7 @@ public final class XKDecoObjects {
 		addBlock(
 				"tech_console",
 				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBasic("tech_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
@@ -1220,7 +1221,7 @@ public final class XKDecoObjects {
 				"dark_wall_base",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base"))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
@@ -1228,7 +1229,7 @@ public final class XKDecoObjects {
 				"dark_wall_base2",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2"))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
@@ -1236,7 +1237,7 @@ public final class XKDecoObjects {
 				"light_wall_base",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base"))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
@@ -1244,7 +1245,7 @@ public final class XKDecoObjects {
 				"light_wall_base2",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2"))
 						.get()),
 				TAB_FURNITURE_CONTENTS);
@@ -1295,7 +1296,7 @@ public final class XKDecoObjects {
 				"egyptian_moulding",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
@@ -1303,7 +1304,7 @@ public final class XKDecoObjects {
 				"egyptian_moulding2",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
@@ -1332,7 +1333,7 @@ public final class XKDecoObjects {
 				"greek_moulding",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
@@ -1340,7 +1341,7 @@ public final class XKDecoObjects {
 				"greek_moulding2",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
@@ -1406,7 +1407,7 @@ public final class XKDecoObjects {
 				"roman_moulding",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
@@ -1414,7 +1415,7 @@ public final class XKDecoObjects {
 				"roman_moulding2",
 				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
@@ -1439,7 +1440,7 @@ public final class XKDecoObjects {
 	private static void addScreen(String id) {
 		var settings = XKBlockSettings.builder()
 				.waterLoggable()
-				.component(FrontAndTopComponent.getInstance(false))
+				.component(FrontAndTopComponent.getInstance())
 				.shape(XKDeco.id("screen"))
 				.configure($ -> {
 					if (!"off".equals(id)) {
@@ -1470,12 +1471,10 @@ public final class XKDecoObjects {
 		addIsotropic(id + "_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_big_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
 		addIsotropic(id + "_tall_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD), TAB_FURNITURE_CONTENTS);
-		addBasic( //TODO horizontal axis
-				id + "_desk",
-				"xkdeco:big_table",
-				false,
-				BlockSettingPresets.thingy(mapColor, SoundType.WOOD),
-				TAB_FURNITURE_CONTENTS);
+		addBlock(id + "_desk", () -> new BasicBlock(BlockSettingPresets.thingy(mapColor, SoundType.WOOD)
+				.horizontalAxis()
+				.shape(XKDeco.id("big_table"))
+				.get()), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				id + "_stool",
 				"xkdeco:long_stool",
@@ -1538,7 +1537,7 @@ public final class XKDecoObjects {
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
 						.shape(XKDeco.id("meiren_kao"))
 						.noOcclusion()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
@@ -1546,7 +1545,7 @@ public final class XKDecoObjects {
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
 						.shape(XKDeco.id("meiren_kao_with_column"))
 						.noOcclusion()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
@@ -1554,7 +1553,7 @@ public final class XKDecoObjects {
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
 						.waterLoggable()
 						.noOcclusion()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
@@ -1562,7 +1561,7 @@ public final class XKDecoObjects {
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
 						.waterLoggable()
 						.noOcclusion()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
@@ -1570,7 +1569,7 @@ public final class XKDecoObjects {
 				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
 						.waterLoggable()
 						.noOcclusion()
-						.component(MouldingComponent.getInstance(false))
+						.component(MouldingComponent.getInstance())
 						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
@@ -1584,6 +1583,10 @@ public final class XKDecoObjects {
 				() -> new TrapDoorBlock(
 						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get(),
 						BlockSetType.OAK),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				id + "_hanging_fascia",
+				() -> new HangingFasciaBlock(copyProperties(Blocks.OAK_PLANKS, mapColor).shape(XKDeco.id("hanging_fascia"))),
 				TAB_FURNITURE_CONTENTS);
 	}
 }

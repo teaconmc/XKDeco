@@ -98,6 +98,8 @@ public class XKDModelTemplates {
 	public static final ModelTemplate GLASS_STAIRS_INNER = create("glass_stairs_inner", "_inner", TextureSlot.SIDE);
 	public static final ModelTemplate GLASS_STAIRS_OUTER = create("glass_stairs_outer", "_outer", TextureSlot.SIDE);
 	public static final ModelTemplate SCREEN = create("template_screen", TextureSlot.PARTICLE);
+	public static final ModelTemplate HANGING_FASCIA_SIDE = create("hanging_fascia_side", "_side", TextureSlot.PARTICLE);
+	public static final ModelTemplate HANGING_FASCIA_MIDDLE = create("hanging_fascia_middle", "_middle", TextureSlot.PARTICLE);
 
 	static {
 		bootstrap();

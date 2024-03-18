@@ -1,7 +1,6 @@
 package org.teacon.xkdeco.block.settings;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,19 +17,16 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 
-public record MouldingComponent(boolean customPlacement) implements XKBlockComponent {
+public record MouldingComponent() implements XKBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
-	private static final MouldingComponent TRUE = new MouldingComponent(true);
-	private static final MouldingComponent FALSE = new MouldingComponent(false);
+	private static final MouldingComponent INSTANCE = new MouldingComponent();
 	public static final Type<MouldingComponent> TYPE = XKBlockComponent.register(
 			"moulding",
-			RecordCodecBuilder.create(instance -> instance.group(
-					Codec.BOOL.optionalFieldOf("custom_placement", false).forGetter(MouldingComponent::customPlacement)
-			).apply(instance, MouldingComponent::getInstance)));
+			Codec.unit(INSTANCE));
 
-	public static MouldingComponent getInstance(boolean customPlacement) {
-		return customPlacement ? TRUE : FALSE;
+	public static MouldingComponent getInstance() {
+		return INSTANCE;
 	}
 
 	@Override
@@ -91,8 +87,8 @@ public record MouldingComponent(boolean customPlacement) implements XKBlockCompo
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
-		if (customPlacement) {
+	public BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+		if (settings.customPlacement) {
 			return state;
 		}
 		BlockPos blockpos = context.getClickedPos();

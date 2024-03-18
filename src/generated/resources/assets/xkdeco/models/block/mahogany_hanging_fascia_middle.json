@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/hanging_fascia_middle",
+  "textures": {
+    "particle": "xkdeco:block/mahogany_hanging_fascia_middle"
+  }
+}

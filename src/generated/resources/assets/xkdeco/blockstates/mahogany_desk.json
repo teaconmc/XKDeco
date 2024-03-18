@@ -1,19 +1,11 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "xkdeco:block/mahogany_desk",
-      "y": 90
-    },
-    "facing=north": {
+    "axis=x": {
       "model": "xkdeco:block/mahogany_desk"
     },
-    "facing=south": {
+    "axis=z": {
       "model": "xkdeco:block/mahogany_desk",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "xkdeco:block/mahogany_desk",
-      "y": 270
+      "y": 90
     }
   }
 }

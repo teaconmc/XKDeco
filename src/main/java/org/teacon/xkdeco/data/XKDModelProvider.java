@@ -15,6 +15,7 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
+import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
@@ -805,7 +806,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTrivialBlock(id + "_table", XKDModelTemplates.WOODEN_TABLE_PROVIDER);
 //		createTrivialBlock(id + "_big_table", XKDModelTemplates.BIG_TABLE_PROVIDER);
 //		createTrivialBlock(id + "_tall_table", XKDModelTemplates.TALL_TABLE_PROVIDER);
-		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
+		createHorizontalAxis(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
+//		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
 
 		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
 		createWoodenWall(id + "_column_wall", "wooden_column_wall", textureMapping);
@@ -820,6 +822,47 @@ public class XKDModelProvider extends FabricModelProvider {
 		createMouldingWithModels(id + "_dougong_hollow_connection", "template_dougong_hollow_connection", textureMapping, true);
 
 		createWoodenFenceHead(id);
+		createHangingFascia(id);
+	}
+
+	private void createHorizontalAxis(String id, TexturedModel.Provider provider) {
+		Block block = block(id);
+		ResourceLocation model = provider.create(block, generators.modelOutput);
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+						block,
+						Variant.variant().with(VariantProperties.MODEL, model))
+				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
+						.select(Direction.Axis.X, Variant.variant())
+						.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
+	}
+
+	private void createHangingFascia(String id) {
+		Block block = block(id + "_hanging_fascia");
+		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block, "_side"));
+		ResourceLocation sideModel = XKDModelTemplates.HANGING_FASCIA_SIDE.create(block, mapping, generators.modelOutput);
+		mapping = TextureMapping.particle(getBlockTexture(block, "_middle"));
+		ResourceLocation middleModel = XKDModelTemplates.HANGING_FASCIA_MIDDLE.create(block, mapping, generators.modelOutput);
+		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
+				.with(PropertyDispatch.properties(HangingFasciaBlock.SIDE, BlockStateProperties.HORIZONTAL_AXIS)
+						.generate((side, axis) -> {
+							int rotation = 0;
+							var variant = Variant.variant();
+							if (side == HangingFasciaBlock.Side.NONE) {
+								variant.with(VariantProperties.MODEL, middleModel);
+							} else {
+								variant.with(VariantProperties.MODEL, sideModel);
+								if (side == HangingFasciaBlock.Side.POSITIVE) {
+									rotation += 180;
+								}
+							}
+							if (axis == Direction.Axis.Z) {
+								rotation += 90;
+							}
+							variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.valueOf("R" + rotation));
+							return variant;
+						}));
+		generators.blockStateOutput.accept(generator);
+		generators.delegateItemModel(block, sideModel);
 	}
 
 	private void createWoodenFenceHead(String id) {
