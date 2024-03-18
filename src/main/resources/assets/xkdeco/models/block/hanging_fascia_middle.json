@@ -1,0 +1,26 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/template_fence_gate_open",
+	"elements": [
+		{
+			"from": [0, 14, 7],
+			"to": [16, 16, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 2], "texture": "#particle"},
+				"east": {"uv": [0, 0, 2, 2], "texture": "#particle"},
+				"south": {"uv": [0, 0, 16, 2], "texture": "#particle"},
+				"west": {"uv": [0, 0, 2, 2], "texture": "#particle"},
+				"up": {"uv": [0, 0, 16, 2], "texture": "#particle"},
+				"down": {"uv": [0, 0, 16, 2], "texture": "#particle"}
+			}
+		},
+		{
+			"from": [0, 10, 8],
+			"to": [16, 14, 8],
+			"faces": {
+				"north": {"uv": [0, 2, 16, 6], "texture": "#particle"},
+				"south": {"uv": [0, 2, 16, 6], "texture": "#particle"}
+			}
+		}
+	]
+}

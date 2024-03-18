@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,side=negative": {
+      "model": "xkdeco:block/ebony_hanging_fascia_side",
+      "y": 0
+    },
+    "axis=x,side=none": {
+      "model": "xkdeco:block/ebony_hanging_fascia_middle",
+      "y": 0
+    },
+    "axis=x,side=positive": {
+      "model": "xkdeco:block/ebony_hanging_fascia_side",
+      "y": 180
+    },
+    "axis=z,side=negative": {
+      "model": "xkdeco:block/ebony_hanging_fascia_side",
+      "y": 90
+    },
+    "axis=z,side=none": {
+      "model": "xkdeco:block/ebony_hanging_fascia_middle",
+      "y": 90
+    },
+    "axis=z,side=positive": {
+      "model": "xkdeco:block/ebony_hanging_fascia_side",
+      "y": 270
+    }
+  }
+}

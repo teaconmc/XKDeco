@@ -44,7 +44,7 @@ public class WaterLoggableComponent implements XKBlockComponent {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
+	public BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 		return state.setValue(BlockStateProperties.WATERLOGGED, fluidState.getType().isSame(Fluids.WATER));
 	}

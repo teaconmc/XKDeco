@@ -5,21 +5,20 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-public record HorizontalComponent() implements XKBlockComponent {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final HorizontalComponent INSTANCE = new HorizontalComponent();
-	public static final XKBlockComponent.Type<HorizontalComponent> TYPE = XKBlockComponent.register(
-			"horizontal",
+public record HorizontalAxisComponent() implements XKBlockComponent {
+	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+	private static final HorizontalAxisComponent INSTANCE = new HorizontalAxisComponent();
+	public static final Type<HorizontalAxisComponent> TYPE = XKBlockComponent.register(
+			"horizontal_axis",
 			Codec.unit(INSTANCE));
 
-	public static HorizontalComponent getInstance() {
+	public static HorizontalAxisComponent getInstance() {
 		return INSTANCE;
 	}
 
@@ -30,12 +29,12 @@ public record HorizontalComponent() implements XKBlockComponent {
 
 	@Override
 	public void injectProperties(Block block, StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(AXIS);
 	}
 
 	@Override
 	public BlockState registerDefaultState(BlockState state) {
-		return state.setValue(FACING, Direction.NORTH);
+		return state.setValue(AXIS, Direction.Axis.X);
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public record HorizontalComponent() implements XKBlockComponent {
 			if (direction.getAxis().isVertical()) {
 				continue;
 			}
-			BlockState blockstate = state.setValue(FACING, direction.getOpposite());
+			BlockState blockstate = state.setValue(AXIS, direction.getClockWise().getAxis());
 			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
 				return blockstate;
 			}
@@ -55,14 +54,20 @@ public record HorizontalComponent() implements XKBlockComponent {
 		return null;
 	}
 
-	@Override
-	public BlockState rotate(BlockState pState, Rotation pRotation) {
-		return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState pState, Mirror pMirror) {
-		//noinspection deprecation
-		return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+	public BlockState rotate(BlockState pState, Rotation pRot) {
+		switch (pRot) {
+			case COUNTERCLOCKWISE_90:
+			case CLOCKWISE_90:
+				switch (pState.getValue(AXIS)) {
+					case Z:
+						return pState.setValue(AXIS, Direction.Axis.X);
+					case X:
+						return pState.setValue(AXIS, Direction.Axis.Z);
+					default:
+						return pState;
+				}
+			default:
+				return pState;
+		}
 	}
 }

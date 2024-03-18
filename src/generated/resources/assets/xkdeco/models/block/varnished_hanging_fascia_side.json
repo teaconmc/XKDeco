@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/hanging_fascia_side",
+  "textures": {
+    "particle": "xkdeco:block/varnished_hanging_fascia_side"
+  }
+}

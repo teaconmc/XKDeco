@@ -27,7 +27,7 @@ public interface XKBlockComponent {
 
 	BlockState registerDefaultState(BlockState state);
 
-	default @Nullable BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
+	default @Nullable BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		return state;
 	}
 

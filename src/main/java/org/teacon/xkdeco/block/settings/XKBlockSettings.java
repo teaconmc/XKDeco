@@ -30,9 +30,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.loader.Platform;
+import snownee.kiwi.util.VoxelUtil;
 
 public class XKBlockSettings {
 	public static final XKBlockSettings EMPTY = new XKBlockSettings(builder());
+	public final boolean customPlacement;
 	public final boolean sustainsPlant;
 	public final GlassType glassType;
 	@Nullable
@@ -46,6 +48,7 @@ public class XKBlockSettings {
 	public final Map<XKBlockComponent.Type<?>, XKBlockComponent> components;
 
 	private XKBlockSettings(Builder builder) {
+		this.customPlacement = builder.customPlacement;
 		this.sustainsPlant = builder.sustainsPlant;
 		this.glassType = builder.glassType;
 		this.shape = builder.shape != null ? builder.shape : builder.getShape(builder.shapeId);
@@ -114,7 +117,7 @@ public class XKBlockSettings {
 
 	public BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
 		for (XKBlockComponent component : components.values()) {
-			state = component.getStateForPlacement(state, context);
+			state = component.getStateForPlacement(this, state, context);
 			if (state == null || !state.is(state.getBlock())) {
 				return state;
 			}
@@ -160,6 +163,7 @@ public class XKBlockSettings {
 
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
+		private boolean customPlacement;
 		private boolean sustainsPlant;
 		@Nullable
 		private GlassType glassType;
@@ -203,6 +207,11 @@ public class XKBlockSettings {
 
 		public Builder noCollission() {
 			properties.noCollission();
+			return this;
+		}
+
+		public Builder customPlacement() {
+			this.customPlacement = true;
 			return this;
 		}
 
@@ -262,19 +271,15 @@ public class XKBlockSettings {
 		}
 
 		public Builder horizontal() {
-			return horizontal(false);
-		}
-
-		public Builder horizontal(boolean customPlacement) {
-			return component(HorizontalComponent.getInstance(customPlacement));
+			return component(HorizontalComponent.getInstance());
 		}
 
 		public Builder directional() {
-			return directional(false);
+			return component(DirectionalComponent.getInstance());
 		}
 
-		public Builder directional(boolean customPlacement) {
-			return component(DirectionalComponent.getInstance(customPlacement));
+		public Builder horizontalAxis() {
+			return component(HorizontalAxisComponent.getInstance());
 		}
 
 		public boolean hasComponent(XKBlockComponent.Type<?> type) {
@@ -305,6 +310,11 @@ public class XKBlockSettings {
 				return ShapeGenerator.moulding(shape);
 			} else if (hasComponent(FrontAndTopComponent.TYPE)) {
 				return ShapeGenerator.directional(shape, JigsawBlock::getFrontFacing);
+			} else if (hasComponent(HorizontalAxisComponent.TYPE)) {
+				return ShapeGenerator.shifted(
+						state -> state.getValue(BlockStateProperties.HORIZONTAL_AXIS) == Direction.Axis.X,
+						ShapeGenerator.unit(shape),
+						ShapeGenerator.unit(VoxelUtil.rotateHorizontal(shape, Direction.EAST)));
 			}
 			return ShapeGenerator.unit(shape);
 		}

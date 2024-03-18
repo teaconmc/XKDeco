@@ -3,7 +3,6 @@ package org.teacon.xkdeco.block.settings;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,18 +14,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public record DirectionalComponent(boolean customPlacement) implements XKBlockComponent {
+public record DirectionalComponent() implements XKBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	private static final DirectionalComponent TRUE = new DirectionalComponent(true);
-	private static final DirectionalComponent FALSE = new DirectionalComponent(false);
+	private static final DirectionalComponent INSTANCE = new DirectionalComponent();
 	public static final Type<DirectionalComponent> TYPE = XKBlockComponent.register(
 			"directional",
-			RecordCodecBuilder.create(instance -> instance.group(
-					Codec.BOOL.optionalFieldOf("custom_placement", false).forGetter(DirectionalComponent::customPlacement)
-			).apply(instance, DirectionalComponent::getInstance)));
+			Codec.unit(INSTANCE));
 
-	public static DirectionalComponent getInstance(boolean customPlacement) {
-		return customPlacement ? TRUE : FALSE;
+	public static DirectionalComponent getInstance() {
+		return INSTANCE;
 	}
 
 	@Override
@@ -45,13 +41,12 @@ public record DirectionalComponent(boolean customPlacement) implements XKBlockCo
 	}
 
 	@Override
-	public @Nullable BlockState getStateForPlacement(BlockState state, BlockPlaceContext context) {
-		if (customPlacement) {
+	public @Nullable BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+		if (settings.customPlacement) {
 			return state;
 		}
 		for (Direction direction : context.getNearestLookingDirections()) {
-			BlockState blockstate;
-			blockstate = state.setValue(FACING, direction.getOpposite());
+			BlockState blockstate = state.setValue(FACING, direction.getOpposite());
 			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
 				return blockstate;
 			}
