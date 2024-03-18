@@ -12,7 +12,7 @@
 		"HalfTransparentBlockMixin",
 		"data.BlockFamilyProviderMixin",
 		"forge.BlockMixin",
-		"property_inject.BlockItemMixin",
+		"BlockItemMixin",
 		"property_inject.BlockMixin",
 		"property_inject.StateDefinitionBuilderMixin"
 	],
