@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.block.settings;
 
 import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
 
 import com.mojang.serialization.Codec;
 
@@ -51,6 +52,17 @@ public interface XKBlockComponent {
 
 	default boolean useShapeForLightOcclusion(BlockState pState) {
 		return false;
+	}
+
+	default boolean hasAnalogOutputSignal() {
+		return false;
+	}
+
+	default int getAnalogOutputSignal(BlockState state) {
+		return 0;
+	}
+
+	default void addBehaviors(BlockBehaviorRegistry registry) {
 	}
 
 	record Type<T extends XKBlockComponent>(ResourceLocation name, Codec<T> codec) {

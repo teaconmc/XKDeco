@@ -1,19 +1,7 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "xkdeco:block/furniture/festival_lantern",
-      "y": 90
-    },
-    "facing=north": {
+    "": {
       "model": "xkdeco:block/furniture/festival_lantern"
-    },
-    "facing=south": {
-      "model": "xkdeco:block/furniture/festival_lantern",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/festival_lantern",
-      "y": 270
     }
   }
 }

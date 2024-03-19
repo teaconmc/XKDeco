@@ -1,6 +1,8 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.settings.XKBlockComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
@@ -14,11 +16,13 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -53,10 +57,18 @@ public class CommonProxy {
 				return;
 			}
 			// set an empty settings to all blocks, to make them water-loggable correctly
+			// seems unnecessary anymore
 			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
 				XKBlockSettings settings = XKBlockSettings.of(block);
 				if (settings == null) {
 					((XKBlockProperties) block.properties).xkdeco$setSettings(XKBlockSettings.EMPTY);
+				} else {
+					BlockBehaviorRegistry behaviorRegistry = BlockBehaviorRegistry.getInstance();
+					for (XKBlockComponent component : settings.components.values()) {
+						behaviorRegistry.setContext(block);
+						component.addBehaviors(behaviorRegistry);
+					}
+					behaviorRegistry.setContext(null);
 				}
 			});
 		});
@@ -71,6 +83,18 @@ public class CommonProxy {
 
 		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
 		forgeEventBus.addListener(CushionEntity::onBreakBlock);
+
+		forgeEventBus.addListener((PlayerInteractEvent.RightClickBlock event) -> {
+			InteractionResult result = BlockBehaviorRegistry.getInstance().onUseBlock(
+					event.getEntity(),
+					event.getLevel(),
+					event.getHand(),
+					event.getHitVec());
+			if (result.consumesAction()) {
+				event.setCanceled(true);
+				event.setCancellationResult(result);
+			}
+		});
 	}
 
 	public static boolean isColorlessGlass(BlockState blockState) {

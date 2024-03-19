@@ -12,6 +12,7 @@ import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -133,6 +134,22 @@ public class BlockBehaviourMixin {
 		XKBlockSettings settings = XKBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.useShapeForLightOcclusion(pState));
+		}
+	}
+
+	@Inject(method = "hasAnalogOutputSignal", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$hasAnalogOutputSignal(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
+		XKBlockSettings settings = XKBlockSettings.of(this);
+		if (settings != null && settings.analogOutputSignal != null) {
+			cir.setReturnValue(true);
+		}
+	}
+
+	@Inject(method = "getAnalogOutputSignal", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos, CallbackInfoReturnable<Integer> cir) {
+		XKBlockSettings settings = XKBlockSettings.of(this);
+		if (settings != null && settings.analogOutputSignal != null) {
+			cir.setReturnValue(settings.analogOutputSignal.applyAsInt(pState));
 		}
 	}
 }
