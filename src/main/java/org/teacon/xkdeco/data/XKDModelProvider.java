@@ -26,6 +26,7 @@ import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.settings.DirectionalComponent;
 import org.teacon.xkdeco.block.settings.FrontAndTopComponent;
 import org.teacon.xkdeco.block.settings.HorizontalComponent;
+import org.teacon.xkdeco.block.settings.LayeredComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoProperties;
 import org.teacon.xkdeco.util.RoofUtil;
@@ -388,6 +389,18 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("factory_ceiling_lamp", "furniture/", true);
 		createBlockStateOnly("factory_pendant", "furniture/", true);
 		createBlockStateOnly("empty_fish_tank", "furniture/", true);
+		createBlockStateOnly("covered_lamp", "furniture/", true);
+		createBlockStateOnly("festival_lantern", "furniture/", true);
+		createBlockStateOnly("paper_lantern", "furniture/", true);
+		createBlockStateOnly("red_lantern", "furniture/", true);
+		createBlockStateOnly("roofed_lamp", "furniture/", true);
+		createBlockStateOnly("stone_lamp", "furniture/", true);
+		createBlockStateOnly("deepslate_lamp", "furniture/", true);
+		createBlockStateOnly("blackstone_lamp", "furniture/", true);
+		createBlockStateOnly("stone_water_bowl", "furniture/", true);
+		createBlockStateOnly("stone_water_tank", "furniture/", true);
+		createBlockStateOnly("candlestick", "furniture/", true);
+		createBlockStateOnly("big_candlestick", "furniture/", true);
 
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
 		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
@@ -935,11 +948,23 @@ public class XKDModelProvider extends FabricModelProvider {
 		}
 		if (settings.hasComponent(HorizontalComponent.TYPE)) {
 			ResourceLocation model = id.withPrefix("block/furniture/");
-			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+			LayeredComponent layered = (LayeredComponent) settings.components.values()
+					.stream()
+					.filter($ -> $ instanceof LayeredComponent)
+					.findAny()
+					.orElse(null);
+			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
 							block,
-							Variant.variant().with(VariantProperties.MODEL, model))
-					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
-			generators.delegateItemModel(block, model);
+							layered == null ? Variant.variant().with(VariantProperties.MODEL, model) : Variant.variant())
+					.with(BlockModelGenerators.createHorizontalFacingDispatch());
+			if (layered != null) {
+				generator.with(PropertyDispatch.property(layered.getLayerProperty())
+						.generate(layer -> Variant.variant().with(VariantProperties.MODEL, model.withSuffix("_" + layer))));
+				generators.delegateItemModel(block, model.withSuffix("_" + layered.getDefaultLayer()));
+			} else {
+				generators.delegateItemModel(block, model);
+			}
+			generators.blockStateOutput.accept(generator);
 		} else if (settings.hasComponent(DirectionalComponent.TYPE)) {
 			createDirectional(id.getPath(), "furniture/");
 		} else if (settings.hasComponent(FrontAndTopComponent.TYPE)) {

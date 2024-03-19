@@ -1,0 +1,109 @@
+{
+  "variants": {
+    "facing=east,uses=1": {
+      "model": "xkdeco:block/furniture/refreshments2_1",
+      "y": 90
+    },
+    "facing=east,uses=2": {
+      "model": "xkdeco:block/furniture/refreshments2_2",
+      "y": 90
+    },
+    "facing=east,uses=3": {
+      "model": "xkdeco:block/furniture/refreshments2_3",
+      "y": 90
+    },
+    "facing=east,uses=4": {
+      "model": "xkdeco:block/furniture/refreshments2_4",
+      "y": 90
+    },
+    "facing=east,uses=5": {
+      "model": "xkdeco:block/furniture/refreshments2_5",
+      "y": 90
+    },
+    "facing=east,uses=6": {
+      "model": "xkdeco:block/furniture/refreshments2_6",
+      "y": 90
+    },
+    "facing=east,uses=7": {
+      "model": "xkdeco:block/furniture/refreshments2_7",
+      "y": 90
+    },
+    "facing=north,uses=1": {
+      "model": "xkdeco:block/furniture/refreshments2_1"
+    },
+    "facing=north,uses=2": {
+      "model": "xkdeco:block/furniture/refreshments2_2"
+    },
+    "facing=north,uses=3": {
+      "model": "xkdeco:block/furniture/refreshments2_3"
+    },
+    "facing=north,uses=4": {
+      "model": "xkdeco:block/furniture/refreshments2_4"
+    },
+    "facing=north,uses=5": {
+      "model": "xkdeco:block/furniture/refreshments2_5"
+    },
+    "facing=north,uses=6": {
+      "model": "xkdeco:block/furniture/refreshments2_6"
+    },
+    "facing=north,uses=7": {
+      "model": "xkdeco:block/furniture/refreshments2_7"
+    },
+    "facing=south,uses=1": {
+      "model": "xkdeco:block/furniture/refreshments2_1",
+      "y": 180
+    },
+    "facing=south,uses=2": {
+      "model": "xkdeco:block/furniture/refreshments2_2",
+      "y": 180
+    },
+    "facing=south,uses=3": {
+      "model": "xkdeco:block/furniture/refreshments2_3",
+      "y": 180
+    },
+    "facing=south,uses=4": {
+      "model": "xkdeco:block/furniture/refreshments2_4",
+      "y": 180
+    },
+    "facing=south,uses=5": {
+      "model": "xkdeco:block/furniture/refreshments2_5",
+      "y": 180
+    },
+    "facing=south,uses=6": {
+      "model": "xkdeco:block/furniture/refreshments2_6",
+      "y": 180
+    },
+    "facing=south,uses=7": {
+      "model": "xkdeco:block/furniture/refreshments2_7",
+      "y": 180
+    },
+    "facing=west,uses=1": {
+      "model": "xkdeco:block/furniture/refreshments2_1",
+      "y": 270
+    },
+    "facing=west,uses=2": {
+      "model": "xkdeco:block/furniture/refreshments2_2",
+      "y": 270
+    },
+    "facing=west,uses=3": {
+      "model": "xkdeco:block/furniture/refreshments2_3",
+      "y": 270
+    },
+    "facing=west,uses=4": {
+      "model": "xkdeco:block/furniture/refreshments2_4",
+      "y": 270
+    },
+    "facing=west,uses=5": {
+      "model": "xkdeco:block/furniture/refreshments2_5",
+      "y": 270
+    },
+    "facing=west,uses=6": {
+      "model": "xkdeco:block/furniture/refreshments2_6",
+      "y": 270
+    },
+    "facing=west,uses=7": {
+      "model": "xkdeco:block/furniture/refreshments2_7",
+      "y": 270
+    }
+  }
+}

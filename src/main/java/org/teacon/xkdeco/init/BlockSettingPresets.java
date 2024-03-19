@@ -3,18 +3,23 @@ package org.teacon.xkdeco.init;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.impl.BlockPredicateCanSurviveHandler;
 import org.teacon.xkdeco.block.settings.CanSurviveHandler;
+import org.teacon.xkdeco.block.settings.ConsumableComponent;
 import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.ShapeStorage;
+import org.teacon.xkdeco.block.settings.WaterLoggableComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -116,5 +121,13 @@ public interface BlockSettingPresets {
 
 	static XKBlockSettings.Builder stoneColumn(Block base, MapColor mapColor) {
 		return XKBlockSettings.copyProperties(base, mapColor == null ? TODO : mapColor).waterLoggable().shape(XKDeco.id("stone_column"));
+	}
+
+	static XKBlockSettings.Builder food(int min, int max, FoodProperties foodProperties, @Nullable ResourceLocation stat) {
+		return thingy(null)
+				.component(ConsumableComponent.create(min, max).withFood(foodProperties, stat))
+				.removeComponent(WaterLoggableComponent.TYPE)
+				.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("dessert"))))
+				.canSurviveHandler(CanSurviveHandler.checkFloor());
 	}
 }

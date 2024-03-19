@@ -5,6 +5,7 @@
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
 		"BlockBehaviourMixin",
+		"BlockItemMixin",
 		"BlockMixin",
 		"BlockPropertiesMixin",
 		"BlockStateMixin",
@@ -12,7 +13,6 @@
 		"HalfTransparentBlockMixin",
 		"data.BlockFamilyProviderMixin",
 		"forge.BlockMixin",
-		"BlockItemMixin",
 		"property_inject.BlockMixin",
 		"property_inject.StateDefinitionBuilderMixin"
 	],

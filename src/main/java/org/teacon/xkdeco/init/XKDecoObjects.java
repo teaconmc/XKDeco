@@ -35,7 +35,6 @@ import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SnowySlabBlock;
 import org.teacon.xkdeco.block.SpecialCupBlock;
-import org.teacon.xkdeco.block.SpecialDessertBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
@@ -63,6 +62,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -143,7 +143,6 @@ public final class XKDecoObjects {
 	public static final String FALLEN_LEAVES_PREFIX = "fallen_";
 
 	public static final String REFRESHMENT_SPECIAL = "refreshments";
-	public static final String FRUIT_PLATTER_SPECIAL = "fruit_platter";
 	public static final String ITEM_PROJECTOR_SPECIAL = "item_projector";
 
 	private static void addCushionEntity() {
@@ -314,11 +313,8 @@ public final class XKDecoObjects {
 			XKBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
 		var itemProperties = new Item.Properties();
-		if (id.equals(REFRESHMENT_SPECIAL) || id.equals(FRUIT_PLATTER_SPECIAL)) {
-			var block = BLOCKS.register(id, () -> new SpecialDessertBlock(BlockSettingPresets.thingy(null)
-					.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("dessert"))))
-					.canSurviveHandler(CanSurviveHandler.checkFloor())
-					.get()));
+		if (id.equals(REFRESHMENT_SPECIAL)) {
+			var block = BLOCKS.register(id, () -> new BasicBlock(settings.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(ITEM_DISPLAY_SUFFIX) || id.equals(ITEM_PROJECTOR_SPECIAL)) {
 			var block = BLOCKS.register(id, () -> new ItemDisplayBlock(settings.get()));
@@ -885,8 +881,39 @@ public final class XKDecoObjects {
 
 				TAB_FURNITURE_CONTENTS);
 		addBasic("tea_ware", "xkdeco:tea_ware", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addSpecial("refreshments", BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addSpecial("fruit_platter", BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+
+		FoodProperties refreshmentsFood = new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build();
+		addBlock(
+				"refreshments",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"refreshments2",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"refreshments3",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"refreshments4",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"refreshments5",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+		addBlock(
+				"refreshments6",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+
+		FoodProperties fruitPlatterFood = new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build();
+		addBlock(
+				"fruit_platter",
+				() -> new BasicBlock(BlockSettingPresets.food(1, 7, fruitPlatterFood, null).horizontal().get()),
+				TAB_FURNITURE_CONTENTS);
+
 		addBasic("calligraphy", "carpet", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("ink_painting", "carpet", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("weiqi_board", "xkdeco:board", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
@@ -944,68 +971,34 @@ public final class XKDecoObjects {
 				BlockSettingPresets.thingy(null),
 				TAB_FURNITURE_CONTENTS);
 
-		addBasic("paper_lantern", "xkdeco:lantern", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic("red_lantern", "xkdeco:lantern", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addIsotropic("paper_lantern", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("lantern")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("red_lantern", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("lantern")), TAB_FURNITURE_CONTENTS);
+		addIsotropic(
 				"festival_lantern",
-				"xkdeco:festival_lantern",
-				false,
-				BlockSettingPresets.lightThingy(null),
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("festival_lantern")),
 				TAB_FURNITURE_CONTENTS);
 		addDirectional(
 				"oil_lamp",
 				BlockSettingPresets.lightThingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("oil_lamp")),
 				TAB_FURNITURE_CONTENTS);
-		addBasic("candlestick", "xkdeco:candlestick", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic(
+		addIsotropic("candlestick", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("candlestick")), TAB_FURNITURE_CONTENTS);
+		addIsotropic(
 				"big_candlestick",
-				"xkdeco:big_candlestick",
-				false,
-				BlockSettingPresets.lightThingy(null),
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("big_candlestick")),
 				TAB_FURNITURE_CONTENTS);
 		addDirectional(
 				"empty_candlestick",
 				BlockSettingPresets.thingy(null).shape(XKDeco.id("empty_candlestick")),
 				TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"covered_lamp",
-				"xkdeco:covered_lamp",
-				false,
-				BlockSettingPresets.lightThingy(null),
-				TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"roofed_lamp",
-				"xkdeco:big_candlestick",
-				false,
-				BlockSettingPresets.lightThingy(null),
-				TAB_FURNITURE_CONTENTS);
-		addBasic("stone_lamp", "xkdeco:stone_lamp", false, BlockSettingPresets.lightThingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"deepslate_lamp",
-				"xkdeco:stone_lamp",
-				false,
-				BlockSettingPresets.lightThingy(null),
-				TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"blackstone_lamp",
-				"xkdeco:stone_lamp",
-				false,
-				BlockSettingPresets.lightThingy(null),
-				TAB_FURNITURE_CONTENTS);
+		addIsotropic("covered_lamp", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("covered_lamp")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("roofed_lamp", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("roofed_lamp")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("stone_lamp", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("stone_lamp")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("deepslate_lamp", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("stone_lamp")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("blackstone_lamp", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("stone_lamp")), TAB_FURNITURE_CONTENTS);
 		addBasic("fish_bowl", "xkdeco:fish_bowl", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("dark_fish_bowl", "xkdeco:fish_bowl", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"stone_water_bowl",
-				"xkdeco:water_bowl",
-				false,
-				BlockSettingPresets.thingy(null),
-				TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"stone_water_tank",
-				"xkdeco:water_tank",
-				false,
-				BlockSettingPresets.thingy(null),
-				TAB_FURNITURE_CONTENTS);
+		addIsotropic("stone_water_bowl", BlockSettingPresets.thingy(null).shape(XKDeco.id("water_bowl")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("stone_water_tank", BlockSettingPresets.thingy(null).shape(XKDeco.id("water_tank")), TAB_FURNITURE_CONTENTS);
 		addBasic("fish_tank", "xkdeco:fish_tank", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addIsotropic(
 				"empty_fish_tank",

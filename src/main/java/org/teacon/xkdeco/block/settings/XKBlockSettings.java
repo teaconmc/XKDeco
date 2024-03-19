@@ -2,6 +2,7 @@ package org.teacon.xkdeco.block.settings;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.ToIntFunction;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
@@ -45,6 +46,8 @@ public class XKBlockSettings {
 	public final ShapeGenerator interactionShape;
 	@Nullable
 	public final CanSurviveHandler canSurviveHandler;
+	@Nullable
+	public final ToIntFunction<BlockState> analogOutputSignal;
 	public final Map<XKBlockComponent.Type<?>, XKBlockComponent> components;
 
 	private XKBlockSettings(Builder builder) {
@@ -55,6 +58,7 @@ public class XKBlockSettings {
 		this.collisionShape = builder.collisionShape != null ? builder.collisionShape : builder.getShape(builder.collisionShapeId);
 		this.interactionShape = builder.interactionShape != null ? builder.interactionShape : builder.getShape(builder.interactionShapeId);
 		this.canSurviveHandler = builder.canSurviveHandler;
+		this.analogOutputSignal = builder.getAnalogOutputSignal();
 		this.components = Map.copyOf(builder.components);
 		if (Platform.isPhysicalClient()) {
 			KiwiModule.RenderLayer.Layer renderType = builder.renderType;
@@ -184,6 +188,8 @@ public class XKBlockSettings {
 		private final Map<XKBlockComponent.Type<?>, XKBlockComponent> components = Maps.newLinkedHashMap();
 		@Nullable
 		private KiwiModule.RenderLayer.Layer renderType;
+		@Nullable
+		private ToIntFunction<BlockState> analogOutputSignal;
 
 		private Builder(BlockBehaviour.Properties properties) {
 			this.properties = properties;
@@ -322,6 +328,18 @@ public class XKBlockSettings {
 		public Builder renderType(KiwiModule.RenderLayer.Layer renderType) {
 			this.renderType = renderType;
 			return this;
+		}
+
+		public @Nullable ToIntFunction<BlockState> getAnalogOutputSignal() {
+			if (analogOutputSignal != null) {
+				return analogOutputSignal;
+			}
+			for (XKBlockComponent component : components.values()) {
+				if (component.hasAnalogOutputSignal()) {
+					return component::getAnalogOutputSignal;
+				}
+			}
+			return null;
 		}
 	}
 }
