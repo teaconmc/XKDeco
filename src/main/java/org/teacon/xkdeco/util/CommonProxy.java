@@ -2,8 +2,8 @@ package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
-import org.teacon.xkdeco.block.settings.XKBlockComponent;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.XKBlockComponent;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
 import org.teacon.xkdeco.duck.XKBlockProperties;

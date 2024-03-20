@@ -23,11 +23,11 @@ import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
-import org.teacon.xkdeco.block.settings.DirectionalComponent;
-import org.teacon.xkdeco.block.settings.FrontAndTopComponent;
-import org.teacon.xkdeco.block.settings.HorizontalComponent;
-import org.teacon.xkdeco.block.settings.LayeredComponent;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.DirectionalComponent;
+import org.teacon.xkdeco.block.setting.FrontAndTopComponent;
+import org.teacon.xkdeco.block.setting.HorizontalComponent;
+import org.teacon.xkdeco.block.setting.LayeredComponent;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoCreativeTabs;
 import org.teacon.xkdeco.util.RoofUtil;
 

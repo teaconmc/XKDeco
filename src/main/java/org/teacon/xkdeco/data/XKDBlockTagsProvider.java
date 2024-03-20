@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.settings.GlassType;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.GlassType;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;

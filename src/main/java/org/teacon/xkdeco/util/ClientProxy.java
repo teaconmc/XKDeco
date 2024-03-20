@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.util;
 
-import org.teacon.xkdeco.block.settings.BlockRenderSettings;
+import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;

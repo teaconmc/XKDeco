@@ -1,8 +1,8 @@
 package org.teacon.xkdeco;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.block.settings.GlassType;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.GlassType;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.util.CommonProxy;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;

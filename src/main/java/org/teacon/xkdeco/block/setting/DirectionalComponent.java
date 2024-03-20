@@ -1,11 +1,10 @@
-package org.teacon.xkdeco.block.settings;
+package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.FrontAndTop;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -13,16 +12,16 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public record FrontAndTopComponent() implements XKBlockComponent {
-	public static final EnumProperty<FrontAndTop> ORIENTATION = BlockStateProperties.ORIENTATION;
-	private static final FrontAndTopComponent INSTANCE = new FrontAndTopComponent();
-	public static final Type<FrontAndTopComponent> TYPE = XKBlockComponent.register(
-			"front_and_top",
+public record DirectionalComponent() implements XKBlockComponent {
+	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	private static final DirectionalComponent INSTANCE = new DirectionalComponent();
+	public static final Type<DirectionalComponent> TYPE = XKBlockComponent.register(
+			"directional",
 			Codec.unit(INSTANCE));
 
-	public static FrontAndTopComponent getInstance() {
+	public static DirectionalComponent getInstance() {
 		return INSTANCE;
 	}
 
@@ -33,12 +32,12 @@ public record FrontAndTopComponent() implements XKBlockComponent {
 
 	@Override
 	public void injectProperties(Block block, StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(ORIENTATION);
+		builder.add(FACING);
 	}
 
 	@Override
 	public BlockState registerDefaultState(BlockState state) {
-		return state.setValue(ORIENTATION, FrontAndTop.NORTH_UP);
+		return state.setValue(FACING, Direction.DOWN);
 	}
 
 	@Override
@@ -46,23 +45,23 @@ public record FrontAndTopComponent() implements XKBlockComponent {
 		if (settings.customPlacement) {
 			return state;
 		}
-		Direction front = context.getClickedFace();
-		Direction top;
-		if (front.getAxis() == Direction.Axis.Y) {
-			top = context.getHorizontalDirection();
-		} else {
-			top = Direction.UP;
+		for (Direction direction : context.getNearestLookingDirections()) {
+			BlockState blockstate = state.setValue(FACING, direction.getOpposite());
+			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
+				return blockstate;
+			}
 		}
-		return state.setValue(ORIENTATION, FrontAndTop.fromFrontAndTop(front, top));
+		return null;
 	}
 
 	@Override
 	public BlockState rotate(BlockState pState, Rotation pRotation) {
-		return pState.setValue(ORIENTATION, pRotation.rotation().rotate(pState.getValue(ORIENTATION)));
+		return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState pState, Mirror pMirror) {
-		return pState.setValue(ORIENTATION, pMirror.rotation().rotate(pState.getValue(ORIENTATION)));
+		//noinspection deprecation
+		return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
 	}
 }

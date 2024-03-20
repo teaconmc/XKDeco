@@ -2,7 +2,7 @@ package org.teacon.xkdeco.block.impl;
 
 import java.util.function.Predicate;
 
-import org.teacon.xkdeco.block.settings.CanSurviveHandler;
+import org.teacon.xkdeco.block.setting.CanSurviveHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
