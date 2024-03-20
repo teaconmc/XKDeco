@@ -38,6 +38,7 @@ import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.setting.CanSurviveHandler;
+import org.teacon.xkdeco.block.setting.CycleVariantsComponent;
 import org.teacon.xkdeco.block.setting.FrontAndTopComponent;
 import org.teacon.xkdeco.block.setting.GlassType;
 import org.teacon.xkdeco.block.setting.MouldingComponent;
@@ -1026,13 +1027,13 @@ public final class XKDecoObjects {
 				"empty_bottle_stack",
 				"xkdeco:bottle_stack",
 				false,
-				BlockSettingPresets.thingy(null).component(StackableComponent.create(3)),
+				BlockSettingPresets.thingy(null).component(CycleVariantsComponent.create(3)),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bottle_stack",
 				"xkdeco:bottle_stack",
 				false,
-				BlockSettingPresets.thingy(null).component(StackableComponent.create(3)),
+				BlockSettingPresets.thingy(null).component(CycleVariantsComponent.create(3)),
 				TAB_FURNITURE_CONTENTS);
 		addBasic("wood_globe", "xkdeco:covered_lamp", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("globe", "xkdeco:covered_lamp", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);

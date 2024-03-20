@@ -1,47 +1,47 @@
 {
   "variants": {
-    "c=1,facing=east": {
+    "facing=east,variant=1": {
       "model": "xkdeco:block/furniture/bottle_stack_1",
       "y": 90
     },
-    "c=1,facing=north": {
+    "facing=east,variant=2": {
+      "model": "xkdeco:block/furniture/bottle_stack_2",
+      "y": 90
+    },
+    "facing=east,variant=3": {
+      "model": "xkdeco:block/furniture/bottle_stack_3",
+      "y": 90
+    },
+    "facing=north,variant=1": {
       "model": "xkdeco:block/furniture/bottle_stack_1"
     },
-    "c=1,facing=south": {
-      "model": "xkdeco:block/furniture/bottle_stack_1",
-      "y": 180
-    },
-    "c=1,facing=west": {
-      "model": "xkdeco:block/furniture/bottle_stack_1",
-      "y": 270
-    },
-    "c=2,facing=east": {
-      "model": "xkdeco:block/furniture/bottle_stack_2",
-      "y": 90
-    },
-    "c=2,facing=north": {
+    "facing=north,variant=2": {
       "model": "xkdeco:block/furniture/bottle_stack_2"
     },
-    "c=2,facing=south": {
+    "facing=north,variant=3": {
+      "model": "xkdeco:block/furniture/bottle_stack_3"
+    },
+    "facing=south,variant=1": {
+      "model": "xkdeco:block/furniture/bottle_stack_1",
+      "y": 180
+    },
+    "facing=south,variant=2": {
       "model": "xkdeco:block/furniture/bottle_stack_2",
       "y": 180
     },
-    "c=2,facing=west": {
+    "facing=south,variant=3": {
+      "model": "xkdeco:block/furniture/bottle_stack_3",
+      "y": 180
+    },
+    "facing=west,variant=1": {
+      "model": "xkdeco:block/furniture/bottle_stack_1",
+      "y": 270
+    },
+    "facing=west,variant=2": {
       "model": "xkdeco:block/furniture/bottle_stack_2",
       "y": 270
     },
-    "c=3,facing=east": {
-      "model": "xkdeco:block/furniture/bottle_stack_3",
-      "y": 90
-    },
-    "c=3,facing=north": {
-      "model": "xkdeco:block/furniture/bottle_stack_3"
-    },
-    "c=3,facing=south": {
-      "model": "xkdeco:block/furniture/bottle_stack_3",
-      "y": 180
-    },
-    "c=3,facing=west": {
+    "facing=west,variant=3": {
       "model": "xkdeco:block/furniture/bottle_stack_3",
       "y": 270
     }
