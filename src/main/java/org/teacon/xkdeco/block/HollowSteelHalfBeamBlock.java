@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.block;
 
-import org.teacon.xkdeco.block.settings.CheckedWaterloggedBlock;
+import org.teacon.xkdeco.block.setting.CheckedWaterloggedBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

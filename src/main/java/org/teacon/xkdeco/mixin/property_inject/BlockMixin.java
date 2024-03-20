@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

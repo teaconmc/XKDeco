@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.settings;
+package org.teacon.xkdeco.block.setting;
 
 import java.util.Map;
 import java.util.function.Consumer;

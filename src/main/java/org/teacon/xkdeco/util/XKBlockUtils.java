@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.util;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

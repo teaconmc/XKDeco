@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.settings;
+package org.teacon.xkdeco.block.setting;
 
 import static net.minecraft.world.level.block.Block.box;
 

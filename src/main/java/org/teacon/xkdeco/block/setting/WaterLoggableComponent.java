@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.settings;
+package org.teacon.xkdeco.block.setting;
 
 import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;

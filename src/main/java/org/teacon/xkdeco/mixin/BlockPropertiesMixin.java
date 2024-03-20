@@ -3,7 +3,7 @@ package org.teacon.xkdeco.mixin;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.teacon.xkdeco.block.settings.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.duck.XKBlockProperties;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;

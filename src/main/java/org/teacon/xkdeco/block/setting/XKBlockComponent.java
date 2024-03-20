@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.settings;
+package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
