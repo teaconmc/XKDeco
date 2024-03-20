@@ -11,5 +11,6 @@ public class XKDDataGen implements DataGeneratorEntrypoint {
 		pack.addProvider(XKDItemTagsProvider::new);
 		pack.addProvider(XKDBlockTagsProvider::new);
 		pack.addProvider(XKDModelProvider::new);
+		pack.addProvider(XKDBlockLootTableProvider::new);
 	}
 }
