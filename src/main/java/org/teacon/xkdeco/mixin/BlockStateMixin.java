@@ -9,6 +9,7 @@ import org.teacon.xkdeco.block.settings.XKBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -61,6 +62,18 @@ public abstract class BlockStateMixin {
 		XKBlockSettings settings = XKBlockSettings.of(getBlock());
 		if (settings != null) {
 			cir.setReturnValue(settings.updateShape(cir.getReturnValue(), pDirection, pNeighborState, pLevel, pPos, pNeighborPos));
+		}
+	}
+
+	@Inject(method = "canBeReplaced(Lnet/minecraft/world/item/context/BlockPlaceContext;)Z", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$canBeReplaced(BlockPlaceContext pUseContext, CallbackInfoReturnable<Boolean> cir) {
+		XKBlockSettings settings = XKBlockSettings.of(getBlock());
+		if (settings == null) {
+			return;
+		}
+		Boolean triState = settings.canBeReplaced(asState(), pUseContext);
+		if (triState != null) {
+			cir.setReturnValue(triState);
 		}
 	}
 }

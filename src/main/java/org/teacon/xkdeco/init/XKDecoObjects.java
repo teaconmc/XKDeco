@@ -2,11 +2,11 @@ package org.teacon.xkdeco.init;
 
 import static net.minecraft.world.level.block.Block.box;
 import static org.teacon.xkdeco.block.settings.XKBlockSettings.copyProperties;
-import static org.teacon.xkdeco.init.XKDecoProperties.TAB_BASIC_CONTENTS;
-import static org.teacon.xkdeco.init.XKDecoProperties.TAB_FUNCTIONAL_CONTENTS;
-import static org.teacon.xkdeco.init.XKDecoProperties.TAB_FURNITURE_CONTENTS;
-import static org.teacon.xkdeco.init.XKDecoProperties.TAB_NATURE_CONTENTS;
-import static org.teacon.xkdeco.init.XKDecoProperties.TAB_STRUCTURE_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_BASIC_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_FUNCTIONAL_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_FURNITURE_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_NATURE_CONTENTS;
+import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_STRUCTURE_CONTENTS;
 
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +34,6 @@ import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SnowySlabBlock;
-import org.teacon.xkdeco.block.SpecialCupBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
@@ -44,6 +43,7 @@ import org.teacon.xkdeco.block.settings.GlassType;
 import org.teacon.xkdeco.block.settings.MouldingComponent;
 import org.teacon.xkdeco.block.settings.ShapeGenerator;
 import org.teacon.xkdeco.block.settings.ShapeStorage;
+import org.teacon.xkdeco.block.settings.StackableComponent;
 import org.teacon.xkdeco.block.settings.WaterLoggableComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
@@ -875,10 +875,15 @@ public final class XKDecoObjects {
 		addBasic("miniature_succulents", "xkdeco:miniature", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
 		addBasic("teapot", "xkdeco:teapot", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
+		StackableComponent component = StackableComponent.create(4);
 		addBlock(
 				"cup",
-				() -> new SpecialCupBlock(BlockSettingPresets.thingy(null).canSurviveHandler(CanSurviveHandler.checkFloor()).get()),
-
+				() -> new BasicBlock(BlockSettingPresets.thingy(null)
+						.horizontal()
+						.component(component)
+						.canSurviveHandler(CanSurviveHandler.checkFloor())
+						.shape(ShapeGenerator.layered(component, XKDeco.id("cup")))
+						.get()),
 				TAB_FURNITURE_CONTENTS);
 		addBasic("tea_ware", "xkdeco:tea_ware", true, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
@@ -1021,13 +1026,13 @@ public final class XKDecoObjects {
 				"empty_bottle_stack",
 				"xkdeco:bottle_stack",
 				false,
-				BlockSettingPresets.thingy(null),
+				BlockSettingPresets.thingy(null).component(StackableComponent.create(3)),
 				TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"bottle_stack",
 				"xkdeco:bottle_stack",
 				false,
-				BlockSettingPresets.thingy(null),
+				BlockSettingPresets.thingy(null).component(StackableComponent.create(3)),
 				TAB_FURNITURE_CONTENTS);
 		addBasic("wood_globe", "xkdeco:covered_lamp", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("globe", "xkdeco:covered_lamp", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);

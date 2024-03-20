@@ -3,7 +3,7 @@ package org.teacon.xkdeco.item;
 import java.util.Objects;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.init.XKDecoProperties;
+import org.teacon.xkdeco.init.XKDecoCreativeTabs;
 
 import com.google.common.base.Suppliers;
 
@@ -51,23 +51,23 @@ public final class XKDecoCreativeModTab {
 	@SubscribeEvent
 	public static void tabs(BuildCreativeModeTabContentsEvent event) {
 		if (event.getTab() == BASIC_TAB.get()) {
-			for (var regObj : XKDecoProperties.TAB_BASIC_CONTENTS) {
+			for (var regObj : XKDecoCreativeTabs.TAB_BASIC_CONTENTS) {
 				event.accept(regObj.get());
 			}
 		} else if (event.getTab() == STRUCTURE_TAB.get()) {
-			for (var regObj : XKDecoProperties.TAB_STRUCTURE_CONTENTS) {
+			for (var regObj : XKDecoCreativeTabs.TAB_STRUCTURE_CONTENTS) {
 				event.accept(regObj.get());
 			}
 		} else if (event.getTab() == NATURE_TAB.get()) {
-			for (var regObj : XKDecoProperties.TAB_NATURE_CONTENTS) {
+			for (var regObj : XKDecoCreativeTabs.TAB_NATURE_CONTENTS) {
 				event.accept(regObj.get());
 			}
 		} else if (event.getTab() == FURNITURE_TAB.get()) {
-			for (var regObj : XKDecoProperties.TAB_FURNITURE_CONTENTS) {
+			for (var regObj : XKDecoCreativeTabs.TAB_FURNITURE_CONTENTS) {
 				event.accept(regObj.get());
 			}
 		} else if (event.getTab() == FUNCTIONAL_TAB.get()) {
-			for (var regObj : XKDecoProperties.TAB_FUNCTIONAL_CONTENTS) {
+			for (var regObj : XKDecoCreativeTabs.TAB_FUNCTIONAL_CONTENTS) {
 				event.accept(regObj.get());
 			}
 		}

@@ -28,7 +28,7 @@ import org.teacon.xkdeco.block.settings.FrontAndTopComponent;
 import org.teacon.xkdeco.block.settings.HorizontalComponent;
 import org.teacon.xkdeco.block.settings.LayeredComponent;
 import org.teacon.xkdeco.block.settings.XKBlockSettings;
-import org.teacon.xkdeco.init.XKDecoProperties;
+import org.teacon.xkdeco.init.XKDecoCreativeTabs;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.collect.ImmutableMap;
@@ -98,8 +98,6 @@ public class XKDModelProvider extends FabricModelProvider {
 			"ebony_",
 			"mahogany_");
 	private static final Set<Block> GADGET_SKIP_BLOCKS = Set.of(
-			block("bottle_stack"),
-			block("empty_bottle_stack"),
 			block("empty_candlestick"),
 			block("oil_lamp"));
 	private BlockModelGenerators generators;
@@ -453,7 +451,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createWall("quartz_wall", "quartz_wall_side");
 
 		generators.skipAutoItemBlock(block("item_projector"));
-		for (Item item : XKDecoProperties.TAB_FUNCTIONAL_CONTENTS.stream().map(RegistryObject::get).toList()) {
+		for (Item item : XKDecoCreativeTabs.TAB_FUNCTIONAL_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
 			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
 				continue;
@@ -463,7 +461,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				createBlockStateOnly(id.getPath(), "furniture/", true);
 			}
 		}
-		for (Item item : XKDecoProperties.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
+		for (Item item : XKDecoCreativeTabs.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
 			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
 				continue;
@@ -474,7 +472,7 @@ public class XKDModelProvider extends FabricModelProvider {
 			}
 		}
 		outer:
-		for (Item item : XKDecoProperties.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
+		for (Item item : XKDecoCreativeTabs.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
 			Block block = Block.byItem(item);
 			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
 				continue;
@@ -946,13 +944,13 @@ public class XKDModelProvider extends FabricModelProvider {
 		if (!(block instanceof BasicBlock)) {
 			return;
 		}
+		LayeredComponent layered = (LayeredComponent) settings.components.values()
+				.stream()
+				.filter($ -> $ instanceof LayeredComponent)
+				.findAny()
+				.orElse(null);
 		if (settings.hasComponent(HorizontalComponent.TYPE)) {
 			ResourceLocation model = id.withPrefix("block/furniture/");
-			LayeredComponent layered = (LayeredComponent) settings.components.values()
-					.stream()
-					.filter($ -> $ instanceof LayeredComponent)
-					.findAny()
-					.orElse(null);
 			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
 							block,
 							layered == null ? Variant.variant().with(VariantProperties.MODEL, model) : Variant.variant())
@@ -981,6 +979,13 @@ public class XKDModelProvider extends FabricModelProvider {
 					.with(PropertyDispatch.property(BlockStateProperties.ORIENTATION).generate(frontAndTop -> {
 						return generators.applyRotation(frontAndTop, Variant.variant());
 					}));
+			generators.blockStateOutput.accept(generator);
+		} else if (layered != null) {
+			ResourceLocation model = id.withPrefix("block/furniture/");
+			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
+					.with(PropertyDispatch.property(layered.getLayerProperty())
+							.generate(layer -> Variant.variant().with(VariantProperties.MODEL, model.withSuffix("_" + layer))));
+			generators.delegateItemModel(block, model.withSuffix("_" + layered.getDefaultLayer()));
 			generators.blockStateOutput.accept(generator);
 		}
 	}

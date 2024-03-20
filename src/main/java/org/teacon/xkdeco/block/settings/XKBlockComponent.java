@@ -65,6 +65,11 @@ public interface XKBlockComponent {
 	default void addBehaviors(BlockBehaviorRegistry registry) {
 	}
 
+	@Nullable
+	default Boolean canBeReplaced(BlockState blockState, BlockPlaceContext context) {
+		return null;
+	}
+
 	record Type<T extends XKBlockComponent>(ResourceLocation name, Codec<T> codec) {
 		@Override
 		public String toString() {

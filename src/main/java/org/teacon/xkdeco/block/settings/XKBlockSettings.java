@@ -165,6 +165,17 @@ public class XKBlockSettings {
 		return false;
 	}
 
+	@Nullable
+	public Boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+		for (XKBlockComponent component : components.values()) {
+			Boolean result = component.canBeReplaced(state, context);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean customPlacement;
