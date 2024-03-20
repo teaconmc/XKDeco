@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-21T05:39:01.2119552	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-21T06:25:50.3557512	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -50,7 +50,7 @@ d525c69eb82976b41da146f17e4cfc8bb51ee4fc assets/xkdeco/blockstates/blue_roof_sma
 dfbbe0b362e7896ba1c9470f7954f32ba8c4ef41 assets/xkdeco/blockstates/blue_tiles.json
 ff8dbc4c69eaaa30c05d59f6dfdb18b2772e854e assets/xkdeco/blockstates/blue_tile_slab.json
 8b18d2848a16b8b047b2a1a832dd8b997431f94b assets/xkdeco/blockstates/blue_tile_stairs.json
-142a96f591cfe23d32ddf05c20957640281cda7d assets/xkdeco/blockstates/bottle_stack.json
+ed9225550bda90bfa1ee3b89c09284df2fa1a799 assets/xkdeco/blockstates/bottle_stack.json
 edbd14c0438d6ba6e0bf26462d5edbb1ecfca18d assets/xkdeco/blockstates/bronze_block.json
 634fc3ef727421af0c162ab8e92b18ef1a85ae8c assets/xkdeco/blockstates/bronze_pillar.json
 cb56f4b4042ebb0564723a082c3cfb5699324105 assets/xkdeco/blockstates/calligraphy.json
@@ -169,7 +169,7 @@ ca310c41a5507684e2a510a060d3dcb0e4e220e0 assets/xkdeco/blockstates/egyptian_smoo
 9a9ac79026dc913db5144b9ac6309612774e2da6 assets/xkdeco/blockstates/egyptian_stripe_column.json
 b285386b670912d86904c5c31c4a29374c0c52b6 assets/xkdeco/blockstates/egyptian_stripe_column_base.json
 ee7047541447ab14f6695e1cd56ec2ba86808c58 assets/xkdeco/blockstates/egyptian_stripe_column_head.json
-876b0fdf94a62e9fa3293150dd2977d6e2abd94d assets/xkdeco/blockstates/empty_bottle_stack.json
+638adb71dff043b7a522a11fd534f23a09faf3d3 assets/xkdeco/blockstates/empty_bottle_stack.json
 4c73041a05a1281c45a729c5983413b89c1e23e4 assets/xkdeco/blockstates/empty_fish_tank.json
 b8156996f9418da8559ba989f0d9e78e15ab96f4 assets/xkdeco/blockstates/end_stone_slab.json
 d769b83cae1398f04c0ca2816f5b3468504076a8 assets/xkdeco/blockstates/factory_attention.json
