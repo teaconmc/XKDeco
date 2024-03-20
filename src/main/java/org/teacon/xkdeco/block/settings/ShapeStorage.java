@@ -141,6 +141,10 @@ public class ShapeStorage {
 		put("stone_column", box(2, 0, 2, 14, 16, 14));
 		put("wooden_fence_head", box(6, 0, 6, 10, 8, 10));
 		put("hanging_fascia", box(0, 0, 7, 16, 16, 9));
+		put("cup_1", box(6, 0, 6, 10, 6, 10));
+		put("cup_2", box(3, 0, 3, 13, 6, 13));
+		put("cup_3", box(2, 0, 2, 14, 6, 14));
+		put("cup_4", box(2, 0, 2, 14, 7, 14));
 	}
 
 	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();

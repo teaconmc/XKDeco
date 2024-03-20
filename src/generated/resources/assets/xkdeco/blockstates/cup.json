@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "c=1,facing=east": {
+      "model": "xkdeco:block/furniture/cup_1",
+      "y": 90
+    },
+    "c=1,facing=north": {
+      "model": "xkdeco:block/furniture/cup_1"
+    },
+    "c=1,facing=south": {
+      "model": "xkdeco:block/furniture/cup_1",
+      "y": 180
+    },
+    "c=1,facing=west": {
+      "model": "xkdeco:block/furniture/cup_1",
+      "y": 270
+    },
+    "c=2,facing=east": {
+      "model": "xkdeco:block/furniture/cup_2",
+      "y": 90
+    },
+    "c=2,facing=north": {
+      "model": "xkdeco:block/furniture/cup_2"
+    },
+    "c=2,facing=south": {
+      "model": "xkdeco:block/furniture/cup_2",
+      "y": 180
+    },
+    "c=2,facing=west": {
+      "model": "xkdeco:block/furniture/cup_2",
+      "y": 270
+    },
+    "c=3,facing=east": {
+      "model": "xkdeco:block/furniture/cup_3",
+      "y": 90
+    },
+    "c=3,facing=north": {
+      "model": "xkdeco:block/furniture/cup_3"
+    },
+    "c=3,facing=south": {
+      "model": "xkdeco:block/furniture/cup_3",
+      "y": 180
+    },
+    "c=3,facing=west": {
+      "model": "xkdeco:block/furniture/cup_3",
+      "y": 270
+    },
+    "c=4,facing=east": {
+      "model": "xkdeco:block/furniture/cup_4",
+      "y": 90
+    },
+    "c=4,facing=north": {
+      "model": "xkdeco:block/furniture/cup_4"
+    },
+    "c=4,facing=south": {
+      "model": "xkdeco:block/furniture/cup_4",
+      "y": 180
+    },
+    "c=4,facing=west": {
+      "model": "xkdeco:block/furniture/cup_4",
+      "y": 270
+    }
+  }
+}

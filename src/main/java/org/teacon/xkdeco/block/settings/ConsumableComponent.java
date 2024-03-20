@@ -28,7 +28,7 @@ public record ConsumableComponent(
 	public static final Type<ConsumableComponent> TYPE = XKBlockComponent.register(
 			"consumable",
 			RecordCodecBuilder.create(instance -> instance.group(
-					ExtraCodecs.NON_NEGATIVE_INT.fieldOf("min").forGetter(ConsumableComponent::minValue),
+					ExtraCodecs.intRange(0, 1).fieldOf("min").forGetter(ConsumableComponent::minValue),
 					ExtraCodecs.POSITIVE_INT.fieldOf("max").forGetter(ConsumableComponent::maxValue)
 			).apply(instance, ConsumableComponent::create)));
 
@@ -53,7 +53,7 @@ public record ConsumableComponent(
 
 	@Override
 	public BlockState registerDefaultState(BlockState state) {
-		return state.setValue(property, maxValue());
+		return state.setValue(property, getDefaultLayer());
 	}
 
 	public int minValue() {
@@ -71,53 +71,52 @@ public record ConsumableComponent(
 
 	@Override
 	public int getAnalogOutputSignal(BlockState state) {
-		return state.getValue(property) - minValue() + 1;
+		return Math.min(state.getValue(property) - minValue() + 1, 15);
 	}
 
 	@Override
 	public void addBehaviors(BlockBehaviorRegistry registry) {
-		registry.addUseHandler((
-				(pState, pPlayer, pLevel, pHand, pHit) -> {
-					int value = pState.getValue(property);
-					if (value == 0) {
-						return InteractionResult.PASS;
-					}
-					if (stat != null) {
-						pPlayer.awardStat(stat);
-					}
-					BlockPos pos = pHit.getBlockPos();
-					if (food != null) { //TODO block tag based drinking type
-						if (!pPlayer.canEat(food.canAlwaysEat())) {
-							return InteractionResult.FAIL;
+		registry.addUseHandler((pState, pPlayer, pLevel, pHand, pHit) -> {
+			int value = pState.getValue(property);
+			if (value == 0) {
+				return InteractionResult.PASS;
+			}
+			if (stat != null) {
+				pPlayer.awardStat(stat);
+			}
+			BlockPos pos = pHit.getBlockPos();
+			if (food != null) { //TODO block tag based drinking type
+				if (!pPlayer.canEat(food.canAlwaysEat())) {
+					return InteractionResult.FAIL;
+				}
+				Item item = pState.getBlock().asItem();
+				pLevel.playSound(
+						pPlayer,
+						pPlayer.getX(),
+						pPlayer.getY(),
+						pPlayer.getZ(),
+						item.getEatingSound(),
+						SoundSource.NEUTRAL,
+						1.0f,
+						1.0f + (pLevel.random.nextFloat() - pLevel.random.nextFloat()) * 0.4f);
+				if (!pLevel.isClientSide) {
+					pPlayer.getFoodData().eat(food.getNutrition(), food.getSaturationModifier());
+					for (var pair : food.getEffects()) {
+						if (pair.getFirst() == null || !(pLevel.random.nextFloat() < pair.getSecond())) {
+							continue;
 						}
-						Item item = pState.getBlock().asItem();
-						pLevel.playSound(
-								pPlayer,
-								pPlayer.getX(),
-								pPlayer.getY(),
-								pPlayer.getZ(),
-								item.getEatingSound(),
-								SoundSource.NEUTRAL,
-								1.0f,
-								1.0f + (pLevel.random.nextFloat() - pLevel.random.nextFloat()) * 0.4f);
-						if (!pLevel.isClientSide) {
-							pPlayer.getFoodData().eat(food.getNutrition(), food.getSaturationModifier());
-							for (var pair : food.getEffects()) {
-								if (pair.getFirst() == null || !(pLevel.random.nextFloat() < pair.getSecond())) {
-									continue;
-								}
-								pPlayer.addEffect(new MobEffectInstance(pair.getFirst()));
-							}
-						}
-						pLevel.gameEvent(pPlayer, GameEvent.EAT, pos);
+						pPlayer.addEffect(new MobEffectInstance(pair.getFirst()));
 					}
-					if (value == minValue()) {
-						pLevel.removeBlock(pos, false);
-					} else {
-						pLevel.setBlockAndUpdate(pos, pState.setValue(property, value - 1));
-					}
-					return InteractionResult.sidedSuccess(pLevel.isClientSide);
-				}));
+				}
+				pLevel.gameEvent(pPlayer, GameEvent.EAT, pos);
+			}
+			if (value == minValue()) {
+				pLevel.removeBlock(pos, false);
+			} else {
+				pLevel.setBlockAndUpdate(pos, pState.setValue(property, value - 1));
+			}
+			return InteractionResult.sidedSuccess(pLevel.isClientSide);
+		});
 	}
 
 	@Override

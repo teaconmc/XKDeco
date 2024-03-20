@@ -12,11 +12,13 @@ import org.teacon.xkdeco.util.RoofUtil;
 import com.google.common.base.Preconditions;
 
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -143,6 +145,17 @@ public interface ShapeGenerator {
 			mappedShapes[i] = shapes[Moulding.mapping[i]];
 		}
 		return new Moulding(mappedShapes);
+	}
+
+	static ShapeGenerator layered(LayeredComponent component, ResourceLocation shapeId) {
+		IntegerProperty property = component.getLayerProperty();
+		int min = property.min;
+		int max = property.max;
+		VoxelShape[] shapes = new VoxelShape[max - min + 1];
+		for (int i = min; i <= max; i++) {
+			shapes[i - min] = ShapeStorage.getInstance().get(shapeId.withSuffix("_" + i));
+		}
+		return (blockState, context) -> shapes[blockState.getValue(property) - property.min];
 	}
 
 	final class Moulding implements ShapeGenerator {
