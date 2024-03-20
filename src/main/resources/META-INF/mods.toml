@@ -24,3 +24,10 @@ mandatory=true
 versionRange="[1.20,)"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.xkdeco]]
+modId="kiwi"
+mandatory=true
+versionRange="[11.5.5,12)"
+ordering="NONE"
+side="BOTH"
