@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.0,
+  "ingredient": {
+    "item": "minecraft:dark_oak_wood"
+  },
+  "result": "xkdeco:ebony_wood"
+}

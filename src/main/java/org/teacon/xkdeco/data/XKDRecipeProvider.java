@@ -11,8 +11,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
 public class XKDRecipeProvider extends FabricRecipeProvider {
@@ -26,6 +29,17 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 			generateRecipes(consumer, family);
 		});
 
+		for (String s : List.of("_log", "_wood", "_planks")) {
+			smokingRecipe(consumer, i("ebony" + s), i("minecraft:dark_oak" + s));
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, i("mahogany" + s))
+					.requires(i("minecraft:acacia" + s))
+					.requires(Items.RED_DYE)
+					.unlockedBy("has_item", has(i("minecraft:acacia" + s)))
+					.save(consumer);
+		}
+
+		smokingRecipe(consumer, i("steel_block"), Blocks.IRON_BLOCK);
+
 		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, i("glass_tiles"), Blocks.GLASS);
 		stonecutterResultFromBase(consumer, RecipeCategory.DECORATIONS, i("item_frame_cover"), Blocks.GLASS);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, i("glow_item_frame_cover"))
@@ -34,6 +48,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.unlockedBy("has_item", has(i("item_frame_cover")))
 				.save(consumer);
 
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, i("factory_block"), Blocks.IRON_BLOCK, 32);
 		for (String s : List.of("danger", "attention", "electricity", "toxic", "radiation", "biohazard")) {
 			for (String suffix : List.of("", "_rusting", "_rusted")) {
 				stonecutterResultFromBase(
@@ -48,7 +63,11 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 //		stonecutterManyToManyStr(
 //				consumer,
 //				RecipeCategory.BUILDING_BLOCKS,
-//				List.of("factory_block", "factory_block_rusting", "factory_block_rusted", "steel_tiles"));
+//				List.of("factory_block", "factory_block_rusting", "factory_block_rusted"));
+	}
+
+	private static void smokingRecipe(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike material) {
+		simpleCookingRecipe(consumer, "smoking", RecipeSerializer.SMOKING_RECIPE, 100, material, result, 0);
 	}
 
 	private static void stonecutterManyToManyStr(Consumer<FinishedRecipe> consumer, RecipeCategory category, List<String> items) {
@@ -66,6 +85,12 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	}
 
 	private static Item i(String id) {
-		return BuiltInRegistries.ITEM.getOptional(XKDeco.id(id)).orElseThrow();
+		ResourceLocation resourceLocation;
+		if (id.contains(":")) {
+			resourceLocation = new ResourceLocation(id);
+		} else {
+			resourceLocation = XKDeco.id(id);
+		}
+		return BuiltInRegistries.ITEM.getOptional(resourceLocation).orElseThrow();
 	}
 }
