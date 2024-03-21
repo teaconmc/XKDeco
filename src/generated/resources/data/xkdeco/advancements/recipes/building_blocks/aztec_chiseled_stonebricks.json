@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_aztec_stonebrick_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:aztec_stonebrick_slab"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:aztec_chiseled_stonebricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_aztec_stonebrick_slab",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:aztec_chiseled_stonebricks"
+    ]
+  },
+  "sends_telemetry_event": false
+}

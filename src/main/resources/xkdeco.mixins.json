@@ -12,6 +12,7 @@
 		"BushBlockMixin",
 		"HalfTransparentBlockMixin",
 		"data.BlockFamilyProviderMixin",
+		"data.RecipeProviderMixin",
 		"forge.BlockMixin",
 		"property_inject.BlockMixin",
 		"property_inject.StateDefinitionBuilderMixin"
