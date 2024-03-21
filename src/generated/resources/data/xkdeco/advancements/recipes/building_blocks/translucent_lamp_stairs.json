@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:translucent_lamp_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_translucent_lamp_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:translucent_lamp_block"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_translucent_lamp_block",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:translucent_lamp_stairs"
+    ]
+  },
+  "sends_telemetry_event": false
+}

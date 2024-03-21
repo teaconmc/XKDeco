@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_factory_block_rusted": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:factory_block_rusted"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:factory_trapdoor_rusted"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_factory_block_rusted",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:factory_trapdoor_rusted"
+    ]
+  },
+  "sends_telemetry_event": false
+}
