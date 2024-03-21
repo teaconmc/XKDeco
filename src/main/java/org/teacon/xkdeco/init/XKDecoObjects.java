@@ -1126,13 +1126,8 @@ public final class XKDecoObjects {
 		addBasic("tech_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 		addBasic("tech_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
 
-		addBasic("tech_table", "xkdeco:tech_table", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
-		addBasic(
-				"tech_table_circle",
-				"xkdeco:tech_table",
-				false,
-				BlockSettingPresets.thingy(null),
-				TAB_FURNITURE_CONTENTS);
+		addIsotropic("tech_table", BlockSettingPresets.thingy(null).shape(XKDeco.id("tech_table")), TAB_FURNITURE_CONTENTS);
+		addIsotropic("tech_table_circle", BlockSettingPresets.thingy(null).shape(XKDeco.id("tech_table")), TAB_FURNITURE_CONTENTS);
 		addBasic(
 				"tech_table_bigcircle",
 				"xkdeco:tech_table",

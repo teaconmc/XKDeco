@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-21T06:25:50.3557512	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-03-21T09:05:57.9078659	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -509,9 +509,9 @@ b8ad9a1d76dbd2aa0392a5863d3156d9d132feea assets/xkdeco/blockstates/tech_lamp_blo
 9d376ae10d8f4382764a104c4f6621bbe643d4fe assets/xkdeco/blockstates/tech_lamp_slab.json
 4f6dda7619dd3e1c5d8bbb11918319a545c79595 assets/xkdeco/blockstates/tech_lamp_stairs.json
 d49a9c3985576415481d2585d0e436b205c4c1b8 assets/xkdeco/blockstates/tech_screen.json
-a31d62589afad84476c0241517bfe7693806aa8b assets/xkdeco/blockstates/tech_table.json
+d4b333f020c28ae3f25996f46bc9d2333342d0c4 assets/xkdeco/blockstates/tech_table.json
 ca7490f97b17c278c73e61a4f9e485e0f9efb5d2 assets/xkdeco/blockstates/tech_table_bigcircle.json
-98e6276a09f975795e32c8a6e68eed16bc47eba4 assets/xkdeco/blockstates/tech_table_circle.json
+9a8a353d43df144572c482fce883efb4a7176ce3 assets/xkdeco/blockstates/tech_table_circle.json
 519bb9ef0972331e9410f4e1c19ca0f8ced4e83e assets/xkdeco/blockstates/telescope.json
 9e4a1423cea221b390245c4600e9687c8145976f assets/xkdeco/blockstates/toughened_glass.json
 d894d796563d8c902361471c21b575af44828d5d assets/xkdeco/blockstates/toughened_glass_slab.json
