@@ -26,16 +26,17 @@ import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.block.setting.LayeredComponent;
-import org.teacon.xkdeco.init.XKDecoCreativeTabs;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
@@ -61,7 +62,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
-import net.minecraftforge.registries.RegistryObject;
+import snownee.kiwi.datagen.GameObjectLookup;
 
 public class XKDModelProvider extends FabricModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -99,6 +100,7 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("empty_candlestick"),
 			block("oil_lamp"));
 	private BlockModelGenerators generators;
+	private static final Set<Block> generated = Sets.newHashSet();
 	private final ResourceLocation snowySlabDouble = new ResourceLocation("block/grass_block_snow");
 	private final ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
@@ -230,6 +232,11 @@ public class XKDModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators generators) {
 		this.generators = generators;
+		var originalBlockStateOutput = generators.blockStateOutput;
+		generators.blockStateOutput = generator -> {
+			generated.add(generator.getBlock());
+			originalBlockStateOutput.accept(generator);
+		};
 		var originalModelOutput = generators.modelOutput;
 		generators.modelOutput = (modelLocation, json) -> {
 			if (modelLocation.getPath().startsWith("block/grass_cobblestone")) {
@@ -451,33 +458,25 @@ public class XKDModelProvider extends FabricModelProvider {
 		createWall("quartz_wall", "quartz_wall_side");
 
 		generators.skipAutoItemBlock(block("item_projector"));
-		for (Item item : XKDecoCreativeTabs.TAB_FUNCTIONAL_CONTENTS.stream().map(RegistryObject::get).toList()) {
+		outer:
+		for (Item item : GameObjectLookup.all(Registries.ITEM, XKDeco.ID).toList()) {
 			Block block = Block.byItem(item);
-			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
+			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block) || generated.contains(block)) {
 				continue;
 			}
 			var id = BuiltInRegistries.BLOCK.getKey(block);
 			if (block instanceof ItemDisplayBlock || block instanceof BlockDisplayBlock) {
 				createBlockStateOnly(id.getPath(), "furniture/", true);
-			}
-		}
-		for (Item item : XKDecoCreativeTabs.TAB_BASIC_CONTENTS.stream().map(RegistryObject::get).toList()) {
-			Block block = Block.byItem(item);
-			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
 				continue;
 			}
-			var id = BuiltInRegistries.BLOCK.getKey(block);
-			if (id.getPath().contains("column")) {
+			if (id.getPath().endsWith("column_base") || id.getPath().endsWith("column_head")) {
 				createBlockStateOnly(id.getPath(), "furniture/", true);
-			}
-		}
-		outer:
-		for (Item item : XKDecoCreativeTabs.TAB_FURNITURE_CONTENTS.stream().map(RegistryObject::get).toList()) {
-			Block block = Block.byItem(item);
-			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block)) {
 				continue;
 			}
-			var id = BuiltInRegistries.BLOCK.getKey(block);
+			if (id.getPath().endsWith("column") && !id.getPath().endsWith("with_column")) {
+				createBlockStateOnly(id.getPath(), "furniture/", true);
+				continue;
+			}
 			for (String prefix : GADGET_SKIP_PREFIXES) {
 				if (id.getPath().startsWith(prefix)) {
 					continue outer;
