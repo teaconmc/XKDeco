@@ -12,12 +12,14 @@ from script.TranslationProvider import TranslationProvider
 class Pack:
     def __init__(self, config):
         self.config = config
+        self.providers = []
+        self.tempDir = tempfile.mkdtemp()
         if 'json_pretty_print' not in self.config:
             self.config['json_pretty_print'] = False
         if 'translation_file_name' not in self.config:
             self.config['translation_file_name'] = '{}.json'
-        self.providers = []
-        self.tempDir = tempfile.mkdtemp()
+        if 'translation_dest' in self.config:
+            self.config['translation_dest'] = self.config['translation_dest'].replace('%TEMP%', self.tempDir)
         self.creativeTabs = CreativeTabProvider(self)
         self.translations = TranslationProvider(self)
         print('Temp directory:', self.tempDir)

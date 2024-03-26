@@ -1,9 +1,11 @@
 package org.teacon.xkdeco.util;
 
-import java.util.Map;
+import java.util.Comparator;
+import java.util.Objects;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.loader.KCreativeTab;
 import org.teacon.xkdeco.block.loader.KMaterial;
 import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
@@ -12,12 +14,10 @@ import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.duck.XKBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
-import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,8 +25,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -39,6 +43,7 @@ import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryBuilder;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.KiwiTabBuilder;
 import snownee.kiwi.datagen.GameObjectLookup;
 
 @Mod(XKDeco.ID)
@@ -52,7 +57,6 @@ public class CommonProxy {
 		XKDecoObjects.BLOCKS.register(modEventBus);
 		XKDecoObjects.ITEMS.register(modEventBus);
 		XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
-		XKDecoCreativeModTab.TABS.register(modEventBus);
 
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallItems);
@@ -118,10 +122,26 @@ public class CommonProxy {
 		});
 	}
 
-	public static void initLoader() {
-		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-		Map<ResourceLocation, KMaterial> materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.CODEC);
-		XKDeco.LOGGER.info(materials.toString());
+	public static void initLoader(ResourceManager resourceManager) {
+		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.CODEC);
+		var tabs = JsonLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
+		tabs.entrySet().stream().sorted(Comparator.comparingInt($ -> $.getValue()
+				.order())).forEach(entry -> {
+			KCreativeTab value = entry.getValue();
+			CreativeModeTab tab = new KiwiTabBuilder(entry.getKey())
+					.icon(() -> BuiltInRegistries.ITEM.getOptional(value.icon()).orElse(Items.BARRIER).getDefaultInstance())
+					.displayItems((params, output) -> {
+						output.acceptAll(value.contents()
+								.stream()
+								.map(BuiltInRegistries.ITEM::get)
+								.filter(Objects::nonNull)
+								.map(Item::getDefaultInstance)
+								.toList());
+					})
+					.build();
+			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, entry.getKey(), tab);
+		});
+		CreativeModeTabRegistry.sortTabs();
 	}
 
 	public static boolean isColorlessGlass(BlockState blockState) {
