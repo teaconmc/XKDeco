@@ -588,7 +588,7 @@ public final class XKDecoObjects {
 		addIsotropic("maya_pictogram_stone", copyProperties(Blocks.STONE));
 		addIsotropic(
 				"maya_skull_stone",
-				copyProperties(Blocks.STONE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT)
+				copyProperties(Blocks.STONE)
 		);
 
 		addIsotropic("maya_pillar", copyProperties(Blocks.STONE));
@@ -598,7 +598,7 @@ public final class XKDecoObjects {
 				"maya_crystal_skull",
 				"xkdeco:maya_crystal_skull",
 				false,
-				copyProperties(Blocks.DEEPSLATE).renderType(KiwiModule.RenderLayer.Layer.TRANSLUCENT)
+				copyProperties(Blocks.DEEPSLATE)
 		);
 
 		addIsotropic("aztec_stonebricks", copyProperties(Blocks.STONE_BRICKS));
@@ -768,7 +768,7 @@ public final class XKDecoObjects {
 		addBlock(
 				"grass_block_slab",
 				() -> new SnowySlabBlock(copyProperties(Blocks.GRASS_BLOCK).sustainsPlant()
-						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+						
 						.get())
 		);
 		addBlock(
@@ -793,7 +793,7 @@ public final class XKDecoObjects {
 		addIsotropic("dirt_cobblestone", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
 				"grass_cobblestone",
-				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+				copyProperties(Blocks.SANDSTONE)
 		);
 		addIsotropic("sandy_cobblestone", copyProperties(Blocks.SANDSTONE));
 		addIsotropic("snowy_cobblestone", copyProperties(Blocks.SANDSTONE));
@@ -802,7 +802,7 @@ public final class XKDecoObjects {
 		addIsotropic("dirt_cobblestone_path", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
 				"grass_cobblestone_path",
-				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+				copyProperties(Blocks.SANDSTONE)
 		);
 		addIsotropic("sandy_cobblestone_path", copyProperties(Blocks.SANDSTONE));
 		addIsotropic("snowy_cobblestone_path", copyProperties(Blocks.SANDSTONE));
@@ -810,7 +810,7 @@ public final class XKDecoObjects {
 		addIsotropic("dirt_cobblestone_slab", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
 				"grass_cobblestone_slab",
-				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+				copyProperties(Blocks.SANDSTONE)
 		);
 		addIsotropic("sandy_cobblestone_slab", copyProperties(Blocks.SANDSTONE));
 		addIsotropic("snowy_cobblestone_slab", copyProperties(Blocks.SANDSTONE));
@@ -819,7 +819,7 @@ public final class XKDecoObjects {
 		addIsotropic("dirt_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
 				"grass_cobblestone_path_slab",
-				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+				copyProperties(Blocks.SANDSTONE)
 		);
 		addIsotropic("sandy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE));
 		addIsotropic("snowy_cobblestone_path_slab", copyProperties(Blocks.SANDSTONE));
@@ -827,7 +827,7 @@ public final class XKDecoObjects {
 		addIsotropic("dirt_cobblestone_stairs", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
 				"grass_cobblestone_stairs",
-				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+				copyProperties(Blocks.SANDSTONE)
 		);
 		addIsotropic("sandy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE));
 		addIsotropic("snowy_cobblestone_stairs", copyProperties(Blocks.SANDSTONE));
@@ -836,7 +836,7 @@ public final class XKDecoObjects {
 		addIsotropic("dirt_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
 				"grass_cobblestone_path_stairs",
-				copyProperties(Blocks.SANDSTONE).renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+				copyProperties(Blocks.SANDSTONE)
 		);
 		addIsotropic("sandy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE));
 		addIsotropic("snowy_cobblestone_path_stairs", copyProperties(Blocks.SANDSTONE));
@@ -975,7 +975,7 @@ public final class XKDecoObjects {
 		);
 		addDirectional(
 				"oil_lamp",
-				BlockSettingPresets.lightThingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("oil_lamp"))
+				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("oil_lamp"))
 		);
 		addIsotropic("candlestick", BlockSettingPresets.lightThingy(null).shape(XKDeco.id("candlestick")));
 		addIsotropic(
@@ -1073,29 +1073,29 @@ public final class XKDecoObjects {
 
 		addDirectional(
 				"fan_blade",
-				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan"))
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("fan"))
 		);
 
 		addDirectional(
 				"factory_vent_fan",
-				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT)
+				BlockSettingPresets.thingy(null)
 		);
 		addDirectional(
 				"factory_vent_fan_big",
-				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT)
+				BlockSettingPresets.thingy(null)
 		);
 
 		addDirectional(
 				"steel_windmill",
-				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan"))
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("fan"))
 		);
 		addDirectional(
 				"iron_windmill",
-				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan"))
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("fan"))
 		);
 		addDirectional(
 				"wooden_windmill",
-				BlockSettingPresets.thingy(null).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).shape(XKDeco.id("fan"))
+				BlockSettingPresets.thingy(null).shape(XKDeco.id("fan"))
 		);
 
 		addBlock(
@@ -1404,7 +1404,7 @@ public final class XKDecoObjects {
 		addBlock(
 				"hollow_steel_bars",
 				() -> new IronBarsBlock(BlockSettingPresets.hollowSteel()
-						.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
+						
 						.get())
 		);
 
@@ -1487,7 +1487,7 @@ public final class XKDecoObjects {
 
 		addBlock(
 				id + "_fence",
-				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get())
+				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
 		);
 		addDirectional(
 				id + "_fence_head",
@@ -1554,13 +1554,13 @@ public final class XKDecoObjects {
 		addBlock(
 				id + "_window",
 				() -> new TrapDoorBlock(
-						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get(),
+						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
 						BlockSetType.OAK)
 		);
 		addBlock(
 				id + "_awning_window",
 				() -> new TrapDoorBlock(
-						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).renderType(KiwiModule.RenderLayer.Layer.CUTOUT).get(),
+						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
 						BlockSetType.OAK)
 		);
 		addBlock(

@@ -1,7 +1,6 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
-import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
@@ -164,8 +163,6 @@ public final class ClientProxy {
 						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
 					}
 				}
-
-				BlockRenderSettings.finalizeLoading();
 			});
 		});
 

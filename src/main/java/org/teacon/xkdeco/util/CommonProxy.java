@@ -9,9 +9,12 @@ import java.util.function.Consumer;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.block.loader.KCreativeTab;
 import org.teacon.xkdeco.block.loader.KMaterial;
+import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
+import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
@@ -23,7 +26,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,7 +40,6 @@ import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTab;
@@ -46,13 +47,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.loading.ClientModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.fml.Logging;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingStage;
 import net.minecraftforge.fml.ModLoadingWarning;
@@ -71,6 +70,7 @@ import net.minecraftforge.resource.ResourcePackLoader;
 import snownee.kiwi.Kiwi;
 import snownee.kiwi.KiwiTabBuilder;
 import snownee.kiwi.datagen.GameObjectLookup;
+import snownee.kiwi.loader.Platform;
 
 @Mod(XKDeco.ID)
 @MethodsReturnNonnullByDefault
@@ -92,7 +92,7 @@ public class CommonProxy {
 			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
 			new XKDDataGen().onInitializeDataGenerator(dataGenerator);
 		});
-		modEventBus.addListener((RegisterEvent event) -> {
+		modEventBus.addListener(EventPriority.LOW, (RegisterEvent event) -> {
 			if (!Registries.BLOCK.equals(event.getRegistryKey())) {
 				return;
 			}
@@ -127,7 +127,7 @@ public class CommonProxy {
 		});
 		modEventBus.addListener(XKDecoObjects::addMimicWallsToTab);
 
-		if (FMLEnvironment.dist.isClient()) {
+		if (Platform.isPhysicalClient()) {
 			ClientProxy.init();
 		}
 
@@ -164,7 +164,11 @@ public class CommonProxy {
 		packRepository.reload();
 		packRepository.setSelected(packRepository.getAvailableIds());
 		ResourceManager resourceManager = new MultiPackResourceManager(PackType.CLIENT_RESOURCES, packRepository.openAllSelected());
-		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.CODEC);
+		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
+		var blocks = JsonLoader.load(resourceManager, "kiwi/block", KBlockDefinition.codec(LoaderExtraCodecs.simpleByNameCodec(materials)));
+		if (Platform.isPhysicalClient()) {
+			BlockRenderSettings.init(blocks);
+		}
 		var tabs = JsonLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
 		tabs.entrySet().stream().sorted(Comparator.comparingInt($ -> $.getValue()
 				.order())).forEach(entry -> {

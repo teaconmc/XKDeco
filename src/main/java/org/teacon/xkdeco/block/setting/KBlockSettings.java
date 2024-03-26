@@ -31,7 +31,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import snownee.kiwi.KiwiModule;
-import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.VoxelUtil;
 
 public class KBlockSettings {
@@ -61,14 +60,6 @@ public class KBlockSettings {
 		this.canSurviveHandler = builder.canSurviveHandler;
 		this.analogOutputSignal = builder.getAnalogOutputSignal();
 		this.components = Map.copyOf(builder.components);
-		if (Platform.isPhysicalClient()) {
-			KiwiModule.RenderLayer.Layer renderType = builder.renderType;
-			if (renderType == null && glassType != null) {
-				renderType = glassType.renderType();
-			}
-			BlockRenderSettings renderSettings = new BlockRenderSettings(renderType);
-			BlockRenderSettings.putSettings(this, renderSettings);
-		}
 	}
 
 	public static KBlockSettings.Builder builder() {
@@ -198,8 +189,6 @@ public class KBlockSettings {
 		@Nullable
 		private CanSurviveHandler canSurviveHandler;
 		private final Map<KBlockComponent.Type<?>, KBlockComponent> components = Maps.newLinkedHashMap();
-		@Nullable
-		private KiwiModule.RenderLayer.Layer renderType;
 		@Nullable
 		private ToIntFunction<BlockState> analogOutputSignal;
 
@@ -335,11 +324,6 @@ public class KBlockSettings {
 						ShapeGenerator.unit(VoxelUtil.rotateHorizontal(shape, Direction.EAST)));
 			}
 			return ShapeGenerator.unit(shape);
-		}
-
-		public Builder renderType(KiwiModule.RenderLayer.Layer renderType) {
-			this.renderType = renderType;
-			return this;
 		}
 
 		public @Nullable ToIntFunction<BlockState> getAnalogOutputSignal() {

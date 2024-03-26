@@ -18,7 +18,7 @@ public record KMaterial(
 		boolean ignitedByLava,
 		int igniteOdds,
 		int burnOdds) {
-	public static final Codec<KMaterial> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final Codec<KMaterial> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.FLOAT.optionalFieldOf("destroy_time", 1.5f).forGetter(KMaterial::destroyTime),
 			Codec.FLOAT.optionalFieldOf("explosion_resistance", 6f).forGetter(KMaterial::explosionResistance),
 			LoaderExtraCodecs.SOUND_TYPE_CODEC.optionalFieldOf("sound_type", SoundType.STONE).forGetter(KMaterial::soundType),

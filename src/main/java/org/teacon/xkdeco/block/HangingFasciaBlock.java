@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import snownee.kiwi.KiwiModule;
 
 public class HangingFasciaBlock extends BasicBlock {
 	public static final EnumProperty<Side> SIDE = EnumProperty.create("side", Side.class);
@@ -29,7 +28,6 @@ public class HangingFasciaBlock extends BasicBlock {
 				.horizontalAxis()
 				.noOcclusion()
 				.customPlacement()
-				.renderType(KiwiModule.RenderLayer.Layer.CUTOUT)
 				.get());
 		this.registerDefaultState(this.stateDefinition.any().setValue(SIDE, Side.NONE));
 	}

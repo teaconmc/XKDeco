@@ -1,41 +1,28 @@
 package org.teacon.xkdeco.block.setting;
 
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.teacon.xkdeco.block.loader.KBlockDefinition;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import snownee.kiwi.KiwiModule;
 
-public record BlockRenderSettings(KiwiModule.RenderLayer.Layer renderType) {
-	private static final List<Pair<Block, RenderType>> RENDER_LAYER = Lists.newArrayList();
-	private static final Map<KBlockSettings, BlockRenderSettings> BUILD_CACHE = Maps.newIdentityHashMap();
-
-	public static void finalizeLoading() {
-		for (Pair<Block, RenderType> pair : RENDER_LAYER) {
-			ItemBlockRenderTypes.setRenderLayer(pair.getLeft(), pair.getRight());
+public interface BlockRenderSettings {
+	static void init(Map<ResourceLocation, KBlockDefinition> blocks) {
+		for (var entry : blocks.entrySet()) {
+			KBlockDefinition definition = entry.getValue();
+			var renderType = definition.renderType();
+			if (renderType == null && definition.settings().glassType != null) {
+				renderType = definition.settings().glassType.renderType();
+			}
+			if (renderType != null) {
+				Block block = BuiltInRegistries.BLOCK.get(entry.getKey());
+				ItemBlockRenderTypes.setRenderLayer(block, (RenderType) renderType.value);
+//				XKDeco.LOGGER.info("Set render renderType for block {} to {}", entry.getKey(), definition.renderType());
+			}
 		}
-		RENDER_LAYER.clear();
-		BUILD_CACHE.clear();
-	}
-
-	public static void onBlockInit(Block block, KBlockSettings settings) {
-		var builder = BUILD_CACHE.get(settings);
-		if (builder == null) {
-			return;
-		}
-		if (builder.renderType != null) {
-			RENDER_LAYER.add(Pair.of(block, (RenderType) builder.renderType.value));
-		}
-	}
-
-	public static void putSettings(KBlockSettings settings, BlockRenderSettings builder) {
-		BUILD_CACHE.put(settings, builder);
 	}
 }
