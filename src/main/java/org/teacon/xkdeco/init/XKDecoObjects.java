@@ -125,9 +125,6 @@ public final class XKDecoObjects {
 	public static final String LOG_SUFFIX = "_log";
 	public static final String WOOD_SUFFIX = "_wood";
 	public static final String SLAB_SUFFIX = "_slab";
-	public static final String ROOF_SUFFIX = "_roof";
-	public static final String ROOF_END_SUFFIX = "_roof_end";
-	public static final String ROOF_FLAT_SUFFIX = "_roof_flat";
 	public static final String STOOL_SUFFIX = "_stool";
 	public static final String CHAIR_SUFFIX = "_chair";
 	public static final String TABLE_SUFFIX = "_table";

@@ -213,8 +213,6 @@ processResources {
     from('src/main/java') {
         include '**/*.json'
     }
-    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
-    exclude("/assets/${project.mod_id}/lang/*.kiwi.json")
 }
 
 tasks.jarJar.configure {
@@ -233,6 +231,8 @@ jar {
                     "Implementation-Version"  : mod_version,
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
+
+    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
 
     preserveFileTimestamps = false
     reproducibleFileOrder = true

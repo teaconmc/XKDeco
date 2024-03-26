@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.util;
 
+import java.io.BufferedReader;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -22,8 +23,8 @@ public class JsonLoader {
 		Map<ResourceLocation, T> results = Maps.newHashMap();
 		for (Map.Entry<ResourceLocation, Resource> entry : fileToIdConverter.listMatchingResources(resourceManager).entrySet()) {
 			ResourceLocation id = fileToIdConverter.fileToId(entry.getKey());
-			try {
-				JsonObject json = GSON.fromJson(entry.getValue().openAsReader(), JsonObject.class);
+			try (BufferedReader reader = entry.getValue().openAsReader()) {
+				JsonObject json = GSON.fromJson(reader, JsonObject.class);
 				T value = codec.parse(JsonOps.INSTANCE, json).result().orElseThrow();
 				results.put(id, value);
 			} catch (Exception e) {

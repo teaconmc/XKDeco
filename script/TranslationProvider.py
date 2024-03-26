@@ -24,7 +24,7 @@ class TranslationProvider(DataProvider):
         for lang, translations in self.data.items():
             self.writeJson(self.pack.defaultResourceLocation(format.format(lang)), translations)
 
-    def writeJson(self, file: ResourceLocation, data: dict):
+    def writeJson(self, file, data: dict):
         if 'translation_dest' in self.pack.config:
             file = os.path.join(self.pack.config['translation_dest'], file.path + '.json')
         else:

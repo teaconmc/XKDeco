@@ -1,8 +1,8 @@
 {
 	"namespace": "xkdeco",
 	"dest": "src/kiwi_generated/resources",
-	"translation_file_name": "{}.kiwi.json",
-	"#translation_dest": "src/main/resources/assets/xkdeco/lang",
+	"translation_file_name": "{}.json",
+	"translation_dest": "%TEMP%/assets/xkdeco_extra/lang",
 	"json_pretty_print": false,
 	"materials": [
 		"script/xkdeco.xlsx"
