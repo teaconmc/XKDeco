@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import snownee.kiwi.KiwiModule;
 
 public interface BlockSettingPresets {
 	MapColor TODO = MapColor.GLOW_LICHEN;
@@ -44,7 +43,6 @@ public interface BlockSettingPresets {
 				.shape(ShapeGenerator.shifted(FallenLeavesBlock.HALF, Map.of(
 						RoofUtil.RoofHalf.TIP, ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("fallen_leaves"))),
 						RoofUtil.RoofHalf.BASE, ShapeGenerator.unit(ShapeStorage.getInstance().get("empty")))))
-				.renderType(KiwiModule.RenderLayer.Layer.CUTOUT_MIPPED)
 				.canSurviveHandler(FALLEN_LEAVES_CAN_SURVIVE);
 	}
 

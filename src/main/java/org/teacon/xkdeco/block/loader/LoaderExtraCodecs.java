@@ -1,5 +1,8 @@
 package org.teacon.xkdeco.block.loader;
 
+import java.util.Locale;
+import java.util.Map;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.serialization.Codec;
@@ -9,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import snownee.kiwi.KiwiModule;
 
 public class LoaderExtraCodecs {
 	public static final BiMap<ResourceLocation, SoundType> SOUND_TYPES = HashBiMap.create();
@@ -17,6 +21,11 @@ public class LoaderExtraCodecs {
 	public static final Codec<NoteBlockInstrument> INSTRUMENT_CODEC = simpleByNameCodec(INSTRUMENTS);
 	public static final BiMap<ResourceLocation, MapColor> MAP_COLORS = HashBiMap.create();
 	public static final Codec<MapColor> MAP_COLOR_CODEC = simpleByNameCodec(MAP_COLORS);
+	public static final Codec<KiwiModule.RenderLayer.Layer> RENDER_TYPE = Codec.STRING.xmap(s -> {
+		return KiwiModule.RenderLayer.Layer.valueOf(s.toUpperCase(Locale.ENGLISH));
+	}, e -> {
+		return e.name().toLowerCase(Locale.ENGLISH);
+	});
 
 	static {
 		SOUND_TYPES.put(new ResourceLocation("empty"), SoundType.EMPTY);
@@ -50,7 +59,19 @@ public class LoaderExtraCodecs {
 		MAP_COLORS.put(new ResourceLocation("stone"), MapColor.STONE);
 	}
 
-	private static <T> Codec<T> simpleByNameCodec(BiMap<ResourceLocation, T> map) {
+	public static <T> Codec<T> simpleByNameCodec(Map<ResourceLocation, T> map) {
+		return ResourceLocation.CODEC.flatXmap(key -> {
+			T value = map.get(key);
+			if (value == null) {
+				return DataResult.error(() -> "Unknown key: " + key);
+			}
+			return DataResult.success(value);
+		}, value -> {
+			return DataResult.error(() -> "Unsupported operation");
+		});
+	}
+
+	public static <T> Codec<T> simpleByNameCodec(BiMap<ResourceLocation, T> map) {
 		return ResourceLocation.CODEC.flatXmap(key -> {
 			T value = map.get(key);
 			if (value == null) {
