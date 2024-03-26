@@ -1,0 +1,16 @@
+{
+	"namespace": "xkdeco",
+	"dest": "src/kiwi_generated/resources",
+	"translation_file_name": "{}.kiwi.json",
+	"#translation_dest": "src/main/resources/assets/xkdeco/lang",
+	"json_pretty_print": false,
+	"materials": [
+		"script/xkdeco.xlsx"
+	],
+	"blocks": [
+		"script/xkdeco.xlsx"
+	],
+	"creative_tabs": [
+		"script/xkdeco.xlsx"
+	]
+}

@@ -1,7 +1,9 @@
 package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -12,14 +14,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public record StackableComponent(IntegerProperty property) implements XKBlockComponent, LayeredComponent {
+public record StackableComponent(IntegerProperty property) implements KBlockComponent, LayeredComponent {
 	private static final Int2ObjectOpenHashMap<IntegerProperty> PROPERTY_INTERN = new Int2ObjectOpenHashMap<>();
-	public static final Type<StackableComponent> TYPE = XKBlockComponent.register(
-			"stackable",
-			RecordCodecBuilder.create(instance -> instance.group(
-					ExtraCodecs.intRange(0, 1).optionalFieldOf("min", 1).forGetter(StackableComponent::minValue),
-					ExtraCodecs.POSITIVE_INT.fieldOf("max").forGetter(StackableComponent::maxValue)
-			).apply(instance, StackableComponent::create)));
+	public static final Codec<StackableComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			ExtraCodecs.intRange(0, 1).optionalFieldOf("min", 1).forGetter(StackableComponent::minValue),
+			ExtraCodecs.POSITIVE_INT.fieldOf("max").forGetter(StackableComponent::maxValue)
+	).apply(instance, StackableComponent::create));
 
 	public static StackableComponent create(int max) {
 		return create(1, max);
@@ -32,7 +32,7 @@ public record StackableComponent(IntegerProperty property) implements XKBlockCom
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.STACKABLE.getOrCreate();
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public record StackableComponent(IntegerProperty property) implements XKBlockCom
 	}
 
 	@Override
-	public BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+	public BlockState getStateForPlacement(KBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos());
 		if (blockState.is(state.getBlock())) {
 			return blockState.setValue(property, Math.min(maxValue(), blockState.getValue(property) + 1));

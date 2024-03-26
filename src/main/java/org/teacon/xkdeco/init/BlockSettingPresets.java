@@ -7,13 +7,13 @@ import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.impl.BlockPredicateCanSurviveHandler;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.setting.CanSurviveHandler;
 import org.teacon.xkdeco.block.setting.ConsumableComponent;
 import org.teacon.xkdeco.block.setting.GlassType;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.block.setting.ShapeGenerator;
 import org.teacon.xkdeco.block.setting.ShapeStorage;
-import org.teacon.xkdeco.block.setting.WaterLoggableComponent;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import net.minecraft.core.Direction;
@@ -33,8 +33,8 @@ public interface BlockSettingPresets {
 			CanSurviveHandler.checkFloor(),
 			new BlockPredicateCanSurviveHandler(state -> state.is(BlockTags.SLABS), Direction.DOWN)));
 
-	static XKBlockSettings.Builder fallenLeaves(MapColor mapColor) {
-		return XKBlockSettings.builder().configure($ -> $.mapColor(mapColor)
+	static KBlockSettings.Builder fallenLeaves(MapColor mapColor) {
+		return KBlockSettings.builder().configure($ -> $.mapColor(mapColor)
 						.strength(0.1F)
 						.sound(SoundType.CHERRY_LEAVES)
 						.noOcclusion()
@@ -48,85 +48,85 @@ public interface BlockSettingPresets {
 				.canSurviveHandler(FALLEN_LEAVES_CAN_SURVIVE);
 	}
 
-	static XKBlockSettings.Builder thingy(MapColor mapColor) {
+	static KBlockSettings.Builder thingy(MapColor mapColor) {
 		return thingy(mapColor, SoundType.WOOL);
 	}
 
-	static XKBlockSettings.Builder thingy(MapColor mapColor, SoundType soundType) {
-		return XKBlockSettings.builder().waterLoggable().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
+	static KBlockSettings.Builder thingy(MapColor mapColor, SoundType soundType) {
+		return KBlockSettings.builder().waterLoggable().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
 				.strength(0.5F)
 				.noOcclusion()
 				.sound(soundType));
 	}
 
-	static XKBlockSettings.Builder lightThingy(MapColor mapColor) {
+	static KBlockSettings.Builder lightThingy(MapColor mapColor) {
 		return lightThingy(mapColor, SoundType.STONE);
 	}
 
-	static XKBlockSettings.Builder lightThingy(MapColor mapColor, SoundType soundType) {
+	static KBlockSettings.Builder lightThingy(MapColor mapColor, SoundType soundType) {
 		return lightThingy(mapColor, soundType, 15);
 	}
 
-	static XKBlockSettings.Builder lightThingy(MapColor mapColor, SoundType soundType, int light) {
-		return XKBlockSettings.builder().waterLoggable().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
+	static KBlockSettings.Builder lightThingy(MapColor mapColor, SoundType soundType, int light) {
+		return KBlockSettings.builder().waterLoggable().configure($ -> $.mapColor(mapColor == null ? TODO : mapColor)
 				.strength(0.5F)
 				.noOcclusion()
 				.sound(soundType)
 				.lightLevel($$ -> light));
 	}
 
-	static XKBlockSettings.Builder steel() {
-		return XKBlockSettings.copyProperties(Blocks.IRON_BLOCK, MapColor.COLOR_GRAY);
+	static KBlockSettings.Builder steel() {
+		return KBlockSettings.copyProperties(Blocks.IRON_BLOCK, MapColor.COLOR_GRAY);
 	}
 
-	static XKBlockSettings.Builder hollowSteel() {
+	static KBlockSettings.Builder hollowSteel() {
 		return steel().noOcclusion().glassType(GlassType.HOLLOW_STEEL).configure($ -> $.strength(3, 6));
 	}
 
-	static XKBlockSettings.Builder mudWall() {
-		return XKBlockSettings.builder().configure($ -> $.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 3f));
+	static KBlockSettings.Builder mudWall() {
+		return KBlockSettings.builder().configure($ -> $.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5f, 3f));
 	}
 
-	static XKBlockSettings.Builder blackTiles() {
-		return XKBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_BLACK);
+	static KBlockSettings.Builder blackTiles() {
+		return KBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_BLACK);
 	}
 
-	static XKBlockSettings.Builder cyanTiles() {
-		return XKBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_CYAN);
+	static KBlockSettings.Builder cyanTiles() {
+		return KBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_CYAN);
 	}
 
-	static XKBlockSettings.Builder yellowTiles() {
-		return XKBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_YELLOW);
+	static KBlockSettings.Builder yellowTiles() {
+		return KBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_YELLOW);
 	}
 
-	static XKBlockSettings.Builder blueTiles() {
-		return XKBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_BLUE);
+	static KBlockSettings.Builder blueTiles() {
+		return KBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_BLUE);
 	}
 
-	static XKBlockSettings.Builder greenTiles() {
-		return XKBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_GREEN);
+	static KBlockSettings.Builder greenTiles() {
+		return KBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_GREEN);
 	}
 
-	static XKBlockSettings.Builder redTiles() {
-		return XKBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_RED);
+	static KBlockSettings.Builder redTiles() {
+		return KBlockSettings.copyProperties(Blocks.STONE_BRICKS, MapColor.COLOR_RED);
 	}
 
-	static XKBlockSettings.Builder hardenedGlass() {
-		return XKBlockSettings.copyProperties(Blocks.GLASS).configure($ -> $.strength(2f, 10f));
+	static KBlockSettings.Builder hardenedGlass() {
+		return KBlockSettings.copyProperties(Blocks.GLASS).configure($ -> $.strength(2f, 10f));
 	}
 
-	static XKBlockSettings.Builder lampBlock() {
-		return XKBlockSettings.copyProperties(Blocks.REDSTONE_LAMP).configure($ -> $.strength(2f, 10f).lightLevel($$ -> 15));
+	static KBlockSettings.Builder lampBlock() {
+		return KBlockSettings.copyProperties(Blocks.REDSTONE_LAMP).configure($ -> $.strength(2f, 10f).lightLevel($$ -> 15));
 	}
 
-	static XKBlockSettings.Builder stoneColumn(Block base, MapColor mapColor) {
-		return XKBlockSettings.copyProperties(base, mapColor == null ? TODO : mapColor).waterLoggable().shape(XKDeco.id("stone_column"));
+	static KBlockSettings.Builder stoneColumn(Block base, MapColor mapColor) {
+		return KBlockSettings.copyProperties(base, mapColor == null ? TODO : mapColor).waterLoggable().shape(XKDeco.id("stone_column"));
 	}
 
-	static XKBlockSettings.Builder food(int min, int max, FoodProperties foodProperties, @Nullable ResourceLocation stat) {
+	static KBlockSettings.Builder food(int min, int max, FoodProperties foodProperties, @Nullable ResourceLocation stat) {
 		return thingy(null)
 				.component(ConsumableComponent.create(min, max).withFood(foodProperties, stat))
-				.removeComponent(WaterLoggableComponent.TYPE)
+				.removeComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())
 				.shape(ShapeGenerator.unit(ShapeStorage.getInstance().get(XKDeco.id("dessert"))))
 				.canSurviveHandler(CanSurviveHandler.checkFloor());
 	}

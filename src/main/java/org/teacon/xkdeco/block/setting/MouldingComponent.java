@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.block.setting;
 
-import com.mojang.serialization.Codec;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,13 +17,10 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 
-public record MouldingComponent() implements XKBlockComponent {
+public record MouldingComponent() implements KBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
 	private static final MouldingComponent INSTANCE = new MouldingComponent();
-	public static final Type<MouldingComponent> TYPE = XKBlockComponent.register(
-			"moulding",
-			Codec.unit(INSTANCE));
 
 	public static MouldingComponent getInstance() {
 		return INSTANCE;
@@ -31,7 +28,7 @@ public record MouldingComponent() implements XKBlockComponent {
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.MOULDING.getOrCreate();
 	}
 
 	@Override
@@ -87,7 +84,7 @@ public record MouldingComponent() implements XKBlockComponent {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+	public BlockState getStateForPlacement(KBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		if (settings.customPlacement) {
 			return state;
 		}

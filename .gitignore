@@ -24,3 +24,5 @@ run_test
 run_server
 run_client
 jsondiff
+/script/__pycache__
+/script/xkdeco.xlsx

@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.block.setting;
 
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -13,14 +14,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public record CycleVariantsComponent(IntegerProperty property, boolean rightClickToCycle) implements XKBlockComponent, LayeredComponent {
+public record CycleVariantsComponent(IntegerProperty property, boolean rightClickToCycle) implements KBlockComponent, LayeredComponent {
 	private static final Int2ObjectOpenHashMap<IntegerProperty> PROPERTY_INTERN = new Int2ObjectOpenHashMap<>();
-	public static final Type<CycleVariantsComponent> TYPE = XKBlockComponent.register(
-			"cycle_variants",
-			RecordCodecBuilder.create(instance -> instance.group(
-					ExtraCodecs.POSITIVE_INT.fieldOf("amount").forGetter(CycleVariantsComponent::maxValue),
-					Codec.BOOL.optionalFieldOf("right_click_to_cycle", true).forGetter(CycleVariantsComponent::rightClickToCycle)
-			).apply(instance, CycleVariantsComponent::create)));
+	public static final Codec<CycleVariantsComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			ExtraCodecs.POSITIVE_INT.fieldOf("amount").forGetter(CycleVariantsComponent::maxValue),
+			Codec.BOOL.optionalFieldOf("right_click_to_cycle", true).forGetter(CycleVariantsComponent::rightClickToCycle)
+	).apply(instance, CycleVariantsComponent::create));
 
 	public static CycleVariantsComponent create(int amount) {
 		return create(amount, true);
@@ -33,7 +32,7 @@ public record CycleVariantsComponent(IntegerProperty property, boolean rightClic
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.CYCLE_VARIANTS.getOrCreate();
 	}
 
 	@Override

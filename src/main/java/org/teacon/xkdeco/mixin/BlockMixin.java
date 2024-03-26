@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.teacon.xkdeco.block.setting.BlockRenderSettings;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -20,7 +20,7 @@ public abstract class BlockMixin {
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void xkdeco$init(BlockBehaviour.Properties pProperties, CallbackInfo ci) {
 		if (Platform.isPhysicalClient()) {
-			XKBlockSettings settings = XKBlockSettings.of(this);
+			KBlockSettings settings = KBlockSettings.of(this);
 			if (settings != null) {
 				BlockRenderSettings.onBlockInit((Block) (Object) this, settings);
 			}
@@ -29,7 +29,7 @@ public abstract class BlockMixin {
 
 	@Inject(method = "propagatesSkylightDown", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.glassType != null) {
 			cir.setReturnValue(true);
 		}

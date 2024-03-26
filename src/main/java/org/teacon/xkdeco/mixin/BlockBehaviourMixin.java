@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.teacon.xkdeco.Hooks;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,7 +40,7 @@ public class BlockBehaviourMixin {
 			BlockPos pPos,
 			CollisionContext pContext,
 			CallbackInfoReturnable<VoxelShape> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.shape != null) {
 			cir.setReturnValue(settings.shape.getShape(pState, pContext));
 		}
@@ -56,7 +56,7 @@ public class BlockBehaviourMixin {
 		if (!hasCollision) {
 			return;
 		}
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.collisionShape != null) {
 			cir.setReturnValue(settings.collisionShape.getShape(pState, pContext));
 		}
@@ -64,7 +64,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "getInteractionShape", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<VoxelShape> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.interactionShape != null) {
 			cir.setReturnValue(settings.interactionShape.getShape(pState, CollisionContext.empty()));
 		}
@@ -72,7 +72,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "getShadeBrightness", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.glassType != null) {
 			cir.setReturnValue(settings.glassType.shadeBrightness());
 		}
@@ -84,7 +84,7 @@ public class BlockBehaviourMixin {
 			BlockState pAdjacentState,
 			Direction pDirection,
 			CallbackInfoReturnable<Boolean> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.glassType != null && Hooks.skipGlassRendering(pState, pAdjacentState, pDirection)) {
 			cir.setReturnValue(true);
 		}
@@ -97,7 +97,7 @@ public class BlockBehaviourMixin {
 			BlockPos pPos,
 			CollisionContext pContext,
 			CallbackInfoReturnable<VoxelShape> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.glassType != null) {
 			cir.setReturnValue(Shapes.empty());
 		}
@@ -105,7 +105,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "getFluidState", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$getFluidState(BlockState pState, CallbackInfoReturnable<FluidState> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && pState.hasProperty(BlockStateProperties.WATERLOGGED)) {
 			cir.setReturnValue(pState.getValue(BlockStateProperties.WATERLOGGED) ?
 					Fluids.WATER.getSource(false) :
@@ -115,7 +115,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "rotate", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$rotate(BlockState pState, Rotation pRotation, CallbackInfoReturnable<BlockState> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.rotate(pState, pRotation));
 		}
@@ -123,7 +123,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "mirror", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$mirror(BlockState pState, Mirror pMirror, CallbackInfoReturnable<BlockState> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.mirror(pState, pMirror));
 		}
@@ -131,7 +131,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "useShapeForLightOcclusion", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$useShapeForLightOcclusion(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.useShapeForLightOcclusion(pState));
 		}
@@ -139,7 +139,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "hasAnalogOutputSignal", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$hasAnalogOutputSignal(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.analogOutputSignal != null) {
 			cir.setReturnValue(true);
 		}
@@ -147,7 +147,7 @@ public class BlockBehaviourMixin {
 
 	@Inject(method = "getAnalogOutputSignal", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos, CallbackInfoReturnable<Integer> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.analogOutputSignal != null) {
 			cir.setReturnValue(settings.analogOutputSignal.applyAsInt(pState));
 		}

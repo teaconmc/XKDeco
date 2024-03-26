@@ -1,8 +1,7 @@
 package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.mojang.serialization.Codec;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -15,12 +14,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-public record FrontAndTopComponent() implements XKBlockComponent {
+public record FrontAndTopComponent() implements KBlockComponent {
 	public static final EnumProperty<FrontAndTop> ORIENTATION = BlockStateProperties.ORIENTATION;
 	private static final FrontAndTopComponent INSTANCE = new FrontAndTopComponent();
-	public static final Type<FrontAndTopComponent> TYPE = XKBlockComponent.register(
-			"front_and_top",
-			Codec.unit(INSTANCE));
 
 	public static FrontAndTopComponent getInstance() {
 		return INSTANCE;
@@ -28,7 +24,7 @@ public record FrontAndTopComponent() implements XKBlockComponent {
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.FRONT_AND_TOP.getOrCreate();
 	}
 
 	@Override
@@ -42,7 +38,7 @@ public record FrontAndTopComponent() implements XKBlockComponent {
 	}
 
 	@Override
-	public @Nullable BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+	public @Nullable BlockState getStateForPlacement(KBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		if (settings.customPlacement) {
 			return state;
 		}

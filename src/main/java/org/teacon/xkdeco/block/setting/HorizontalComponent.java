@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.block.setting;
 
-import com.mojang.serialization.Codec;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -12,12 +12,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public record HorizontalComponent() implements XKBlockComponent {
+public record HorizontalComponent() implements KBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final HorizontalComponent INSTANCE = new HorizontalComponent();
-	public static final XKBlockComponent.Type<HorizontalComponent> TYPE = XKBlockComponent.register(
-			"horizontal",
-			Codec.unit(INSTANCE));
 
 	public static HorizontalComponent getInstance() {
 		return INSTANCE;
@@ -25,7 +22,7 @@ public record HorizontalComponent() implements XKBlockComponent {
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.HORIZONTAL.getOrCreate();
 	}
 
 	@Override
@@ -39,7 +36,7 @@ public record HorizontalComponent() implements XKBlockComponent {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+	public BlockState getStateForPlacement(KBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		if (settings.customPlacement) {
 			return state;
 		}

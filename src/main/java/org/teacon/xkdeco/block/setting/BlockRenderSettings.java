@@ -15,7 +15,7 @@ import snownee.kiwi.KiwiModule;
 
 public record BlockRenderSettings(KiwiModule.RenderLayer.Layer renderType) {
 	private static final List<Pair<Block, RenderType>> RENDER_LAYER = Lists.newArrayList();
-	private static final Map<XKBlockSettings, BlockRenderSettings> BUILD_CACHE = Maps.newIdentityHashMap();
+	private static final Map<KBlockSettings, BlockRenderSettings> BUILD_CACHE = Maps.newIdentityHashMap();
 
 	public static void finalizeLoading() {
 		for (Pair<Block, RenderType> pair : RENDER_LAYER) {
@@ -25,7 +25,7 @@ public record BlockRenderSettings(KiwiModule.RenderLayer.Layer renderType) {
 		BUILD_CACHE.clear();
 	}
 
-	public static void onBlockInit(Block block, XKBlockSettings settings) {
+	public static void onBlockInit(Block block, KBlockSettings settings) {
 		var builder = BUILD_CACHE.get(settings);
 		if (builder == null) {
 			return;
@@ -35,7 +35,7 @@ public record BlockRenderSettings(KiwiModule.RenderLayer.Layer renderType) {
 		}
 	}
 
-	public static void putSettings(XKBlockSettings settings, BlockRenderSettings builder) {
+	public static void putSettings(KBlockSettings settings, BlockRenderSettings builder) {
 		BUILD_CACHE.put(settings, builder);
 	}
 }

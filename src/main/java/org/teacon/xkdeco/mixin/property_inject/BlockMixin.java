@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,7 +17,7 @@ public class BlockMixin {
 
 	@Inject(method = "registerDefaultState", at = @At("RETURN"))
 	private void xkdeco$registerDefaultState(BlockState pState, CallbackInfo ci) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			defaultBlockState = settings.registerDefaultState(defaultBlockState);
 		}

@@ -23,11 +23,9 @@ import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
-import org.teacon.xkdeco.block.setting.DirectionalComponent;
-import org.teacon.xkdeco.block.setting.FrontAndTopComponent;
-import org.teacon.xkdeco.block.setting.HorizontalComponent;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.block.setting.LayeredComponent;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.init.XKDecoCreativeTabs;
 import org.teacon.xkdeco.util.RoofUtil;
 
@@ -217,7 +215,7 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	public static boolean createIfSpecialStairs(Block block, TextureMapping mapping, BlockModelGenerators generators) {
-		XKBlockSettings settings = XKBlockSettings.of(block);
+		KBlockSettings settings = KBlockSettings.of(block);
 		if (settings == null || settings.glassType == null) {
 			return false;
 		}
@@ -939,7 +937,7 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	private void createGadget(Block block) {
 		var id = BuiltInRegistries.BLOCK.getKey(block);
-		XKBlockSettings settings = XKBlockSettings.of(block);
+		KBlockSettings settings = KBlockSettings.of(block);
 		if (settings == null) {
 			return;
 		}
@@ -951,7 +949,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				.filter($ -> $ instanceof LayeredComponent)
 				.findAny()
 				.orElse(null);
-		if (settings.hasComponent(HorizontalComponent.TYPE)) {
+		if (settings.hasComponent(KBlockComponents.HORIZONTAL.get())) {
 			ResourceLocation model = id.withPrefix("block/furniture/");
 			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
 							block,
@@ -965,9 +963,9 @@ public class XKDModelProvider extends FabricModelProvider {
 				generators.delegateItemModel(block, model);
 			}
 			generators.blockStateOutput.accept(generator);
-		} else if (settings.hasComponent(DirectionalComponent.TYPE)) {
+		} else if (settings.hasComponent(KBlockComponents.DIRECTIONAL.get())) {
 			createDirectional(id.getPath(), "furniture/");
-		} else if (settings.hasComponent(FrontAndTopComponent.TYPE)) {
+		} else if (settings.hasComponent(KBlockComponents.FRONT_AND_TOP.get())) {
 			ResourceLocation model;
 			if (id.getPath().startsWith("screen_")) {
 				TextureMapping mapping = TextureMapping.particle(block);
@@ -1037,9 +1035,9 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	private void createBlockStateOnly(String id, String prefix, boolean delegateItem) {
 		Block block = block(id);
-		XKBlockSettings settings = XKBlockSettings.of(block);
+		KBlockSettings settings = KBlockSettings.of(block);
 		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" + prefix);
-		if (settings != null && settings.hasComponent(HorizontalComponent.TYPE)) {
+		if (settings != null && settings.hasComponent(KBlockComponents.HORIZONTAL.get())) {
 			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
 							block,
 							Variant.variant().with(VariantProperties.MODEL, modelLocation))
