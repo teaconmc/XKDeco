@@ -18,7 +18,6 @@
 		"property_inject.StateDefinitionBuilderMixin"
 	],
 	"client": [
-		"loader.MinecraftMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
