@@ -2,7 +2,7 @@ package org.teacon.xkdeco.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -25,7 +25,7 @@ public class BlockItemMixin {
 		if (state == null || !state.is(block)) {
 			return state;
 		}
-		XKBlockSettings settings = XKBlockSettings.of(block);
+		KBlockSettings settings = KBlockSettings.of(block);
 		if (settings != null) {
 			state = settings.getStateForPlacement(state, pContext);
 		}

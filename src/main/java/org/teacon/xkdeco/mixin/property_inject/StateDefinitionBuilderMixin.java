@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +23,7 @@ public abstract class StateDefinitionBuilderMixin<O, S extends StateHolder<O, S>
 		if (!(pOwner instanceof Block block)) {
 			return;
 		}
-		XKBlockSettings settings = XKBlockSettings.of(block);
+		KBlockSettings settings = KBlockSettings.of(block);
 		if (settings == null) {
 			return;
 		}

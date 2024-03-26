@@ -38,7 +38,7 @@ public final class MimicWallResources implements PackResources {
 	private static final String BLOCK_MODEL = "{\"variants\":{\"\":{\"model\":\"" + BLOCK_MODEL_LOCATION + "\"}}}";
 	private static final String ITEM_MODEL = "{\"parent\":\"" + ITEM_MODEL_LOCATION + "\"}";
 	private static final String PACK_META = "{\"pack\":{\"description\":\"XKDeco: Mimic Walls\",\"pack_format\":8}}";
-	private static final String NAME_KEY = "pack.xkdeco.mimic_wall";
+	private static final String NAME_KEY = "pack.xkdeco.mimic_walls";
 	private static final String ID = XKDeco.ID + "_" + XKDecoObjects.WALL_BLOCK_ENTITY;
 
 	private static final Pack.Info PACK_INFO = new Pack.Info(Component.translatable(NAME_KEY), 13, 13, FeatureFlagSet.of(), true);

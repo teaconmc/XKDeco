@@ -2,7 +2,9 @@ package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -23,14 +25,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 public record ConsumableComponent(
 		IntegerProperty property,
 		@Nullable FoodProperties food,
-		@Nullable ResourceLocation stat) implements XKBlockComponent, LayeredComponent {
+		@Nullable ResourceLocation stat) implements KBlockComponent, LayeredComponent {
 	private static final Int2ObjectOpenHashMap<IntegerProperty> PROPERTY_INTERN = new Int2ObjectOpenHashMap<>();
-	public static final Type<ConsumableComponent> TYPE = XKBlockComponent.register(
-			"consumable",
-			RecordCodecBuilder.create(instance -> instance.group(
-					ExtraCodecs.intRange(0, 1).fieldOf("min").forGetter(ConsumableComponent::minValue),
-					ExtraCodecs.POSITIVE_INT.fieldOf("max").forGetter(ConsumableComponent::maxValue)
-			).apply(instance, ConsumableComponent::create)));
+	public static final Codec<ConsumableComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			ExtraCodecs.intRange(0, 1).fieldOf("min").forGetter(ConsumableComponent::minValue),
+			ExtraCodecs.POSITIVE_INT.fieldOf("max").forGetter(ConsumableComponent::maxValue)
+	).apply(instance, ConsumableComponent::create));
 
 	public static ConsumableComponent create(int min, int max) {
 		IntegerProperty property = PROPERTY_INTERN.computeIfAbsent(min << 16 | max, key -> IntegerProperty.create("uses", min, max));
@@ -43,7 +43,7 @@ public record ConsumableComponent(
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.CONSUMABLE.getOrCreate();
 	}
 
 	@Override

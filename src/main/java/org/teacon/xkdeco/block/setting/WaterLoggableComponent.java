@@ -1,7 +1,8 @@
 package org.teacon.xkdeco.block.setting;
 
+import org.teacon.xkdeco.block.loader.KBlockComponents;
+
 import com.google.common.base.Preconditions;
-import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,11 +16,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
-public class WaterLoggableComponent implements XKBlockComponent {
+public class WaterLoggableComponent implements KBlockComponent {
 	private static final WaterLoggableComponent INSTANCE = new WaterLoggableComponent();
-	public static final XKBlockComponent.Type<WaterLoggableComponent> TYPE = XKBlockComponent.register(
-			"water_loggable",
-			Codec.unit(INSTANCE));
 
 	public static WaterLoggableComponent getInstance() {
 		return INSTANCE;
@@ -29,7 +27,7 @@ public class WaterLoggableComponent implements XKBlockComponent {
 
 	@Override
 	public Type<?> type() {
-		return TYPE;
+		return KBlockComponents.WATER_LOGGABLE.getOrCreate();
 	}
 
 	@Override
@@ -44,7 +42,7 @@ public class WaterLoggableComponent implements XKBlockComponent {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(XKBlockSettings settings, BlockState state, BlockPlaceContext context) {
+	public BlockState getStateForPlacement(KBlockSettings settings, BlockState state, BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 		return state.setValue(BlockStateProperties.WATERLOGGED, fluidState.getType().isSame(Fluids.WATER));
 	}

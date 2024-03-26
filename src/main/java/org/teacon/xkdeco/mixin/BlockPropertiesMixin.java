@@ -3,7 +3,7 @@ package org.teacon.xkdeco.mixin;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.duck.XKBlockProperties;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -11,15 +11,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 @Mixin(BlockBehaviour.Properties.class)
 public class BlockPropertiesMixin implements XKBlockProperties {
 	@Unique
-	private XKBlockSettings settings;
+	private KBlockSettings settings;
 
 	@Override
-	public @Nullable XKBlockSettings xkdeco$getSettings() {
+	public @Nullable KBlockSettings xkdeco$getSettings() {
 		return settings;
 	}
 
 	@Override
-	public void xkdeco$setSettings(XKBlockSettings settings) {
+	public void xkdeco$setSettings(KBlockSettings settings) {
 		this.settings = settings;
 	}
 }

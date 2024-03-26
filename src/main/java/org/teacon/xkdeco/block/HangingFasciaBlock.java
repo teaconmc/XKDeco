@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,7 @@ public class HangingFasciaBlock extends BasicBlock {
 	public static final EnumProperty<Side> SIDE = EnumProperty.create("side", Side.class);
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-	public HangingFasciaBlock(XKBlockSettings.Builder settings) {
+	public HangingFasciaBlock(KBlockSettings.Builder settings) {
 		super(settings.waterLoggable()
 				.horizontalAxis()
 				.noOcclusion()

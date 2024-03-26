@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.setting.GlassType;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -30,7 +30,7 @@ public class XKDBlockTagsProvider extends FabricTagProvider.BlockTagProvider {
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
-			Optional<XKBlockSettings> settings = Optional.ofNullable(XKBlockSettings.of(block));
+			Optional<KBlockSettings> settings = Optional.ofNullable(KBlockSettings.of(block));
 			var id = BuiltInRegistries.BLOCK.getKey(block).getPath();
 			if (block instanceof WallBlock) {
 				getOrCreateTagBuilder(BlockTags.WALLS).add(block);

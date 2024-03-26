@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.util;
 
+import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -37,9 +38,11 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -165,5 +168,8 @@ public final class ClientProxy {
 				BlockRenderSettings.finalizeLoading();
 			});
 		});
+
+		var forgeEventBus = MinecraftForge.EVENT_BUS;
+		forgeEventBus.addListener((RegisterClientCommandsEvent event) -> ExportBlocksCommand.register(event.getDispatcher()));
 	}
 }

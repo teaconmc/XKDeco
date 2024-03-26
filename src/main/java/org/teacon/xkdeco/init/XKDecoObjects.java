@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.init;
 
 import static net.minecraft.world.level.block.Block.box;
-import static org.teacon.xkdeco.block.setting.XKBlockSettings.copyProperties;
+import static org.teacon.xkdeco.block.setting.KBlockSettings.copyProperties;
 import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_BASIC_CONTENTS;
 import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_FUNCTIONAL_CONTENTS;
 import static org.teacon.xkdeco.init.XKDecoCreativeTabs.TAB_FURNITURE_CONTENTS;
@@ -37,16 +37,16 @@ import org.teacon.xkdeco.block.SnowySlabBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.setting.CanSurviveHandler;
 import org.teacon.xkdeco.block.setting.CycleVariantsComponent;
 import org.teacon.xkdeco.block.setting.FrontAndTopComponent;
 import org.teacon.xkdeco.block.setting.GlassType;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.block.setting.MouldingComponent;
 import org.teacon.xkdeco.block.setting.ShapeGenerator;
 import org.teacon.xkdeco.block.setting.ShapeStorage;
 import org.teacon.xkdeco.block.setting.StackableComponent;
-import org.teacon.xkdeco.block.setting.WaterLoggableComponent;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
@@ -159,7 +159,7 @@ public final class XKDecoObjects {
 			String id,
 			String northShapeId,
 			boolean isSupportNeeded,
-			XKBlockSettings.Builder settings,
+			KBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
 		var itemProperties = new Item.Properties();
 		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
@@ -180,7 +180,7 @@ public final class XKDecoObjects {
 
 	private static void addDirectional(
 			String id,
-			XKBlockSettings.Builder settings,
+			KBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
 		var itemProperties = new Item.Properties();
 		var block = BLOCKS.register(
@@ -191,7 +191,7 @@ public final class XKDecoObjects {
 
 	private static void addIsotropic(
 			String id,
-			XKBlockSettings.Builder settings,
+			KBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
 		var itemProperties = new Item.Properties();
 		if (id.startsWith("quartz_glass")) {
@@ -231,7 +231,7 @@ public final class XKDecoObjects {
 					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
 		} else if (id.endsWith("_wall")) {
 			blockSupplier = () -> new WallBlock(settings.get());
-		} else if (settings.hasComponent(WaterLoggableComponent.TYPE)) {
+		} else if (settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
 			blockSupplier = () -> new BasicBlock(settings.get());
 		} else {
 			blockSupplier = () -> new Block(settings.get());
@@ -293,7 +293,7 @@ public final class XKDecoObjects {
 
 	private static void addPlant(
 			String id,
-			XKBlockSettings.Builder settings,
+			KBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
 		var itemProperties = new Item.Properties();
 		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
@@ -311,7 +311,7 @@ public final class XKDecoObjects {
 
 	private static void addSpecial(
 			String id,
-			XKBlockSettings.Builder settings,
+			KBlockSettings.Builder settings,
 			Collection<RegistryObject<Item>> tabContents) {
 		var itemProperties = new Item.Properties();
 		if (id.equals(REFRESHMENT_SPECIAL)) {
@@ -324,7 +324,7 @@ public final class XKDecoObjects {
 			var block = BLOCKS.register(id, () -> new BlockDisplayBlock(settings.get()));
 			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else if (id.contains(WARDROBE_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(WaterLoggableComponent.TYPE).get()));
+			var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(KBlockComponents.WATER_LOGGABLE.get()).get()));
 			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
 //			tabContents.add(ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties)));
 		} else {
@@ -1147,11 +1147,11 @@ public final class XKDecoObjects {
 
 		addDirectional(
 				"item_frame_cover",
-				XKBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")),
+				KBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")),
 				TAB_FURNITURE_CONTENTS);
 		addDirectional(
 				"glow_item_frame_cover",
-				XKBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")).configure($ -> $.lightLevel($$ -> 15)),
+				KBlockSettings.copyProperties(Blocks.GLASS).shape(XKDeco.id("item_frame_cover")).configure($ -> $.lightLevel($$ -> 15)),
 				TAB_FURNITURE_CONTENTS);
 
 		addBasic("sign_entrance", "xkdeco:screen", false, BlockSettingPresets.thingy(null), TAB_FURNITURE_CONTENTS);
@@ -1211,7 +1211,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"dark_wall_base",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base"))
@@ -1219,7 +1219,7 @@ public final class XKDecoObjects {
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"dark_wall_base2",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2"))
@@ -1227,7 +1227,7 @@ public final class XKDecoObjects {
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"light_wall_base",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base"))
@@ -1235,7 +1235,7 @@ public final class XKDecoObjects {
 				TAB_FURNITURE_CONTENTS);
 		addBlock(
 				"light_wall_base2",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2"))
@@ -1286,7 +1286,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"egyptian_moulding",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
@@ -1294,14 +1294,14 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"egyptian_moulding2",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get()),
 				TAB_BASIC_CONTENTS);
 
-		addIsotropic("quartz_wall", XKBlockSettings.copyProperties(Blocks.QUARTZ_BLOCK), TAB_BASIC_CONTENTS);
+		addIsotropic("quartz_wall", KBlockSettings.copyProperties(Blocks.QUARTZ_BLOCK), TAB_BASIC_CONTENTS);
 		addIsotropic("greek_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null), TAB_BASIC_CONTENTS);
 		addIsotropic(
 				"greek_corinthian_column_base",
@@ -1323,7 +1323,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"greek_moulding",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
@@ -1331,7 +1331,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"greek_moulding2",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
@@ -1397,7 +1397,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"roman_moulding",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
@@ -1405,7 +1405,7 @@ public final class XKDecoObjects {
 				TAB_BASIC_CONTENTS);
 		addBlock(
 				"roman_moulding2",
-				() -> new BasicBlock(XKBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
 						.waterLoggable()
 						.component(MouldingComponent.getInstance())
 						.shape(XKDeco.id("wall_base2")) //TODO
@@ -1430,7 +1430,7 @@ public final class XKDecoObjects {
 	}
 
 	private static void addScreen(String id) {
-		var settings = XKBlockSettings.builder()
+		var settings = KBlockSettings.builder()
 				.waterLoggable()
 				.component(FrontAndTopComponent.getInstance())
 				.shape(XKDeco.id("screen"))

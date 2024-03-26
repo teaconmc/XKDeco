@@ -1,0 +1,8 @@
+{
+	"destroy_time": 1.5,
+	"explosion_resistance": 6,
+	"sound_type": "stone",
+	"map_color": "stone",
+	"instrument": "basedrum",
+	"requires_correct_tool": true
+}

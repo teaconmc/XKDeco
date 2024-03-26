@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.teacon.xkdeco.Hooks;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.HalfTransparentBlock;
@@ -19,12 +19,12 @@ public abstract class HalfTransparentBlockMixin {
 			BlockState pAdjacentBlockState,
 			Direction pSide,
 			CallbackInfoReturnable<Boolean> cir) {
-		XKBlockSettings settings = XKBlockSettings.of(this);
+		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.glassType != null) {
 			// generally, XKDeco blocks should not extend HalfTransparentBlock. avoids stack overflow here.
 			cir.setReturnValue(Hooks.skipGlassRendering(pState, pAdjacentBlockState, pSide));
 		}
-		settings = XKBlockSettings.of(pAdjacentBlockState.getBlock());
+		settings = KBlockSettings.of(pAdjacentBlockState.getBlock());
 		if (settings != null && settings.glassType != null && pAdjacentBlockState.skipRendering(pState, pSide.getOpposite())) {
 			cir.setReturnValue(true);
 		}

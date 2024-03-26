@@ -1,11 +1,14 @@
 package org.teacon.xkdeco.util;
 
+import java.util.Map;
+
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
-import org.teacon.xkdeco.block.setting.XKBlockComponent;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
+import org.teacon.xkdeco.block.loader.KMaterial;
+import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
+import org.teacon.xkdeco.block.setting.KBlockComponent;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
-import org.teacon.xkdeco.data.XKDecoEnUsLangProvider;
 import org.teacon.xkdeco.duck.XKBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
@@ -14,8 +17,13 @@ import org.teacon.xkdeco.item.XKDecoCreativeModTab;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +35,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryBuilder;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.datagen.GameObjectLookup;
 
 @Mod(XKDeco.ID)
@@ -47,7 +58,6 @@ public class CommonProxy {
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallItems);
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlockEntity);
 
-		modEventBus.addListener(XKDecoEnUsLangProvider::register);
 		modEventBus.addListener((GatherDataEvent event) -> {
 			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
 			new XKDDataGen().onInitializeDataGenerator(dataGenerator);
@@ -59,18 +69,29 @@ public class CommonProxy {
 			// set an empty settings to all blocks, to make them water-loggable correctly
 			// seems unnecessary anymore
 			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
-				XKBlockSettings settings = XKBlockSettings.of(block);
+				KBlockSettings settings = KBlockSettings.of(block);
 				if (settings == null) {
-					((XKBlockProperties) block.properties).xkdeco$setSettings(XKBlockSettings.EMPTY);
+					((XKBlockProperties) block.properties).xkdeco$setSettings(KBlockSettings.EMPTY);
 				} else {
 					BlockBehaviorRegistry behaviorRegistry = BlockBehaviorRegistry.getInstance();
-					for (XKBlockComponent component : settings.components.values()) {
+					for (KBlockComponent component : settings.components.values()) {
 						behaviorRegistry.setContext(block);
 						component.addBehaviors(behaviorRegistry);
 					}
 					behaviorRegistry.setContext(null);
 				}
 			});
+		});
+		modEventBus.addListener((NewRegistryEvent event) -> {
+			ResourceLocation registryKey = new ResourceLocation(Kiwi.ID, "block_component");
+			event.create(
+					new RegistryBuilder<>().setName(registryKey).disableOverrides().disableSaving().hasTags(),
+					$ -> {
+						//noinspection unchecked
+						LoaderExtraRegistries.BLOCK_COMPONENT = (Registry<KBlockComponent.Type<?>>) BuiltInRegistries.REGISTRY.get(
+								registryKey);
+						Kiwi.registerRegistry($, KBlockComponent.Type.class);
+					});
 		});
 
 		if (FMLEnvironment.dist.isClient()) {
@@ -95,6 +116,12 @@ public class CommonProxy {
 				event.setCancellationResult(result);
 			}
 		});
+	}
+
+	public static void initLoader() {
+		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+		Map<ResourceLocation, KMaterial> materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.CODEC);
+		XKDeco.LOGGER.info(materials.toString());
 	}
 
 	public static boolean isColorlessGlass(BlockState blockState) {

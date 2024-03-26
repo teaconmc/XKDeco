@@ -3,10 +3,9 @@ package org.teacon.xkdeco.data;
 import java.util.stream.IntStream;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.setting.ConsumableComponent;
+import org.teacon.xkdeco.block.loader.KBlockComponents;
+import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.block.setting.LayeredComponent;
-import org.teacon.xkdeco.block.setting.StackableComponent;
-import org.teacon.xkdeco.block.setting.XKBlockSettings;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
@@ -44,9 +43,9 @@ public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 				createDoorTable(block);
 				continue;
 			}
-			XKBlockSettings settings = XKBlockSettings.of(block);
+			KBlockSettings settings = KBlockSettings.of(block);
 			if (settings != null) {
-				if (settings.hasComponent(ConsumableComponent.TYPE) || settings.hasComponent(StackableComponent.TYPE)) {
+				if (settings.hasComponent(KBlockComponents.CONSUMABLE.get()) || settings.hasComponent(KBlockComponents.STACKABLE.get())) {
 					LayeredComponent layered = (LayeredComponent) settings.components.values()
 							.stream()
 							.filter($ -> $ instanceof LayeredComponent)
