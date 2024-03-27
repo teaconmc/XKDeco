@@ -1,8 +1,9 @@
 import json
 
-from script.BlockDefinitionProvider import BlockDefinitionProvider
-from script.MaterialProvider import MaterialProvider
-from script.Pack import Pack
+from TableDataProvider import TableDataProvider
+from BlockDefinitionProvider import BlockDefinitionProvider
+from MaterialProvider import MaterialProvider
+from Pack import Pack
 
 
 def main():
@@ -10,6 +11,7 @@ def main():
         config = json.load(f)
     pack = Pack(config)
     pack.addProvider(MaterialProvider(pack))
+    pack.addProvider(TableDataProvider(pack, 'assets/{}/kiwi/block_template', 'block_templates'))
     pack.addProvider(BlockDefinitionProvider(pack))
     pack.finish()
 

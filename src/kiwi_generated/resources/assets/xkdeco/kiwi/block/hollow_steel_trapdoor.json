@@ -1,1 +1,1 @@
-{"template": "trapdoor", "render_type": "cutout"}
+{"template": {"kiwi:type": "trapdoor", "block_set_type": "iron"}, "render_type": "cutout"}

@@ -1,5 +1,4 @@
-from script.DataProvider import DataProvider
-from script.ResourceLocation import ResourceLocation
+from DataProvider import DataProvider
 
 import os
 import json

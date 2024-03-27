@@ -3,10 +3,10 @@ import tempfile
 import shutil
 from pathlib import Path
 
-from script.CreativeTabProvider import CreativeTabProvider
-from script.DataProvider import DataProvider
-from script.ResourceLocation import ResourceLocation
-from script.TranslationProvider import TranslationProvider
+from CreativeTabProvider import CreativeTabProvider
+from DataProvider import DataProvider
+from ResourceLocation import ResourceLocation
+from TranslationProvider import TranslationProvider
 
 
 class Pack:
@@ -28,11 +28,11 @@ class Pack:
         self.providers.append(provider)
 
     def finish(self):
-        self.providers.append(self.creativeTabs)
+        # self.providers.append(self.creativeTabs)
         self.providers.append(self.translations)
         for provider in self.providers:
             provider.generate()
-            print('Generated', provider.count, 'files for', str(provider.__class__.__name__))
+            print('Generated', provider.count, 'files for', str(provider))
         self.providers.clear()
         dest = Path(self.config['dest'])
         if dest.exists():
@@ -43,7 +43,10 @@ class Pack:
         shutil.rmtree(self.tempDir)
 
     def defaultResourceLocation(self, path: str) -> ResourceLocation:
-        return ResourceLocation(self.config['namespace'], path)
+        if ':' in path:
+            return ResourceLocation(path)
+        else:
+            return ResourceLocation(self.config['namespace'], path)
 
     def toAbsPath(self, data_path: str, file: ResourceLocation, ext: str = '') -> str:
         return os.path.join(self.tempDir, data_path.format(file.namespace), file.path + ext)

@@ -199,7 +199,8 @@ public final class XKDecoObjects {
 		if (id.contains(SLAB_SUFFIX)) {
 			blockSupplier = () -> new SlabBlock(settings.get());
 		} else if (id.contains(STAIRS_SUFFIX)) {
-			blockSupplier = () -> new StairBlock(Blocks.AIR.defaultBlockState(), settings.get());
+//			blockSupplier = () -> new StairBlock(Blocks.AIR.defaultBlockState(), settings.get());
+			return;
 		} else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
 			blockSupplier = () -> new RotatedPillarBlock(settings.get());
 		} else if (id.contains(LINED_PREFIX) || id.contains(LUXURY_PREFIX) || id.contains(PAINTED_PREFIX) || id.contains(CHISELED_PREFIX) ||
@@ -214,13 +215,15 @@ public final class XKDecoObjects {
 					.shape(XKDeco.id("table"))
 					.get());
 		} else if (id.contains("_trapdoor")) {
-			blockSupplier = () -> new TrapDoorBlock(
-					settings.get(),
-					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+//			blockSupplier = () -> new TrapDoorBlock(
+//					settings.get(),
+//					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+			return;
 		} else if (id.endsWith("_door")) {
-			blockSupplier = () -> new DoorBlock(
-					settings.get(),
-					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+//			blockSupplier = () -> new DoorBlock(
+//					settings.get(),
+//					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+			return;
 		} else if (id.endsWith("_wall")) {
 			blockSupplier = () -> new WallBlock(settings.get());
 		} else if (settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
@@ -1551,18 +1554,18 @@ public final class XKDecoObjects {
 						.component(MouldingComponent.getInstance())
 						.get())
 		);
-		addBlock(
-				id + "_window",
-				() -> new TrapDoorBlock(
-						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
-						BlockSetType.OAK)
-		);
-		addBlock(
-				id + "_awning_window",
-				() -> new TrapDoorBlock(
-						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
-						BlockSetType.OAK)
-		);
+//		addBlock(
+//				id + "_window",
+//				() -> new TrapDoorBlock(
+//						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
+//						BlockSetType.OAK)
+//		);
+//		addBlock(
+//				id + "_awning_window",
+//				() -> new TrapDoorBlock(
+//						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
+//						BlockSetType.OAK)
+//		);
 		addBlock(
 				id + "_hanging_fascia",
 				() -> new HangingFasciaBlock(copyProperties(Blocks.OAK_PLANKS, mapColor).shape(XKDeco.id("hanging_fascia")))

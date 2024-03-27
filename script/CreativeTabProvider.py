@@ -1,4 +1,4 @@
-from script.TableDataProvider import TableDataProvider
+from TableDataProvider import TableDataProvider
 
 
 class CreativeTabProvider(TableDataProvider):

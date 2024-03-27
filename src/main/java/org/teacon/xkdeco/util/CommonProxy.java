@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
+import org.teacon.xkdeco.block.loader.KBlockTemplate;
 import org.teacon.xkdeco.block.loader.KCreativeTab;
 import org.teacon.xkdeco.block.loader.KMaterial;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
@@ -18,7 +19,7 @@ import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
-import org.teacon.xkdeco.duck.XKBlockProperties;
+import org.teacon.xkdeco.duck.KBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
@@ -42,14 +43,17 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.ModLoader;
@@ -57,10 +61,10 @@ import net.minecraftforge.fml.ModLoadingStage;
 import net.minecraftforge.fml.ModLoadingWarning;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -76,6 +80,8 @@ import snownee.kiwi.loader.Platform;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class CommonProxy {
+	public static final Path PACK_DIRECTORY = FMLPaths.GAMEDIR.get().resolve("kiwipacks");
+
 	public CommonProxy() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -101,7 +107,7 @@ public class CommonProxy {
 			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
 				KBlockSettings settings = KBlockSettings.of(block);
 				if (settings == null) {
-					((XKBlockProperties) block.properties).xkdeco$setSettings(KBlockSettings.EMPTY);
+					((KBlockProperties) block.properties).xkdeco$setSettings(KBlockSettings.EMPTY);
 				} else {
 					BlockBehaviorRegistry behaviorRegistry = BlockBehaviorRegistry.getInstance();
 					for (KBlockComponent component : settings.components.values()) {
@@ -115,17 +121,29 @@ public class CommonProxy {
 			initLoader();
 		});
 		modEventBus.addListener((NewRegistryEvent event) -> {
-			ResourceLocation registryKey = new ResourceLocation(Kiwi.ID, "block_component");
+			ResourceLocation blockComponentKey = new ResourceLocation(Kiwi.ID, "block_component");
 			event.create(
-					new RegistryBuilder<>().setName(registryKey).disableOverrides().disableSaving().hasTags(),
+					new RegistryBuilder<>().setName(blockComponentKey).disableOverrides().disableSaving().hasTags(),
 					$ -> {
 						//noinspection unchecked
 						LoaderExtraRegistries.BLOCK_COMPONENT = (Registry<KBlockComponent.Type<?>>) BuiltInRegistries.REGISTRY.get(
-								registryKey);
+								blockComponentKey);
 						Kiwi.registerRegistry($, KBlockComponent.Type.class);
+					});
+			ResourceLocation blockTemplateKey = new ResourceLocation(Kiwi.ID, "block_template");
+			event.create(
+					new RegistryBuilder<>().setName(blockTemplateKey).disableOverrides().disableSaving().hasTags(),
+					$ -> {
+						//noinspection unchecked
+						LoaderExtraRegistries.BLOCK_TEMPLATE = (Registry<KBlockTemplate.Type<?>>) BuiltInRegistries.REGISTRY.get(
+								blockTemplateKey);
+						Kiwi.registerRegistry($, KBlockTemplate.Type.class);
 					});
 		});
 		modEventBus.addListener(XKDecoObjects::addMimicWallsToTab);
+		modEventBus.addListener((AddPackFindersEvent event) -> {
+			event.addRepositorySource(new FolderRepositorySource(PACK_DIRECTORY, event.getPackType(), PackSource.DEFAULT));
+		});
 
 		if (Platform.isPhysicalClient()) {
 			ClientProxy.init();
@@ -152,11 +170,10 @@ public class CommonProxy {
 	}
 
 	public static void initLoader() {
-		Path packDirectory = FMLPaths.GAMEDIR.get().resolve("kiwipacks");
 		//noinspection ResultOfMethodCallIgnored
-		packDirectory.toFile().mkdirs();
+		PACK_DIRECTORY.toFile().mkdirs();
 		FolderRepositorySource folderRepositorySource = new FolderRepositorySource(
-				packDirectory,
+				PACK_DIRECTORY,
 				PackType.CLIENT_RESOURCES,
 				PackSource.DEFAULT);
 		PackRepository packRepository = new PackRepository(folderRepositorySource);
@@ -165,7 +182,26 @@ public class CommonProxy {
 		packRepository.setSelected(packRepository.getAvailableIds());
 		ResourceManager resourceManager = new MultiPackResourceManager(PackType.CLIENT_RESOURCES, packRepository.openAllSelected());
 		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
-		var blocks = JsonLoader.load(resourceManager, "kiwi/block", KBlockDefinition.codec(LoaderExtraCodecs.simpleByNameCodec(materials)));
+		var templates = JsonLoader.load(resourceManager, "kiwi/block_template", KBlockTemplate.DIRECT_CODEC);
+		templates.forEach((key, value) -> value.resolve(key));
+		var blocks = JsonLoader.load(
+				resourceManager,
+				"kiwi/block",
+				KBlockDefinition.codec(
+						templates,
+						LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material")
+				));
+		KBlockTemplate defaultTemplate = templates.get(new ResourceLocation("block"));
+		blocks.forEach((id, definition) -> {
+			if (defaultTemplate == definition.template().template()) {
+				return;
+			}
+			Block block = definition.createBlock();
+			if (block != null) {
+				ForgeRegistries.BLOCKS.register(id, block);
+				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
+			}
+		});
 		if (Platform.isPhysicalClient()) {
 			BlockRenderSettings.init(blocks);
 		}

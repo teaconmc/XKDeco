@@ -1,7 +1,7 @@
 import json
 
-from script.TableDataProvider import TableDataProvider
-from script.Pack import Pack
+from TableDataProvider import TableDataProvider
+from Pack import Pack
 
 
 class BlockDefinitionProvider(TableDataProvider):
@@ -13,7 +13,16 @@ class BlockDefinitionProvider(TableDataProvider):
             return
         data = {}
         if 'Template' in row and row['Template'] != 'block' and row['Template'] != '':
-            data['template'] = row['Template']
+            index = row['Template'].find('{')
+            if index > 0:
+                template = {
+                    'kiwi:type': row['Template'][:index]
+                }
+                for key, value in json.loads(row['Template'][index:]).items():
+                    template[key] = value
+                data['template'] = template
+            else:
+                data['template'] = row['Template']
         if 'RenderType' in row and row['RenderType'] != 'solid' and row['RenderType'] != '':
             data['render_type'] = row['RenderType']
         if 'Material' in row and row['Material'] != '':

@@ -7,7 +7,7 @@ import java.util.function.ToIntFunction;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
-import org.teacon.xkdeco.duck.XKBlockProperties;
+import org.teacon.xkdeco.duck.KBlockProperties;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -30,7 +30,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.VoxelUtil;
 
 public class KBlockSettings {
@@ -75,7 +74,7 @@ public class KBlockSettings {
 	}
 
 	public static KBlockSettings of(Object block) {
-		return ((XKBlockProperties) ((BlockBehaviour) block).properties).xkdeco$getSettings();
+		return ((KBlockProperties) ((BlockBehaviour) block).properties).xkdeco$getSettings();
 	}
 
 	public static VoxelShape getGlassFaceShape(BlockState blockState, Direction direction) {
@@ -198,7 +197,7 @@ public class KBlockSettings {
 
 		public BlockBehaviour.Properties get() {
 			KBlockSettings settings = new KBlockSettings(this);
-			((XKBlockProperties) properties).xkdeco$setSettings(settings);
+			((KBlockProperties) properties).xkdeco$setSettings(settings);
 			return properties;
 		}
 

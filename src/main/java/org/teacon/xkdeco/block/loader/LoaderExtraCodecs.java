@@ -5,10 +5,12 @@ import java.util.Map;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -21,10 +23,10 @@ public class LoaderExtraCodecs {
 	public static final Codec<NoteBlockInstrument> INSTRUMENT_CODEC = simpleByNameCodec(INSTRUMENTS);
 	public static final BiMap<ResourceLocation, MapColor> MAP_COLORS = HashBiMap.create();
 	public static final Codec<MapColor> MAP_COLOR_CODEC = simpleByNameCodec(MAP_COLORS);
-	public static final Codec<KiwiModule.RenderLayer.Layer> RENDER_TYPE = Codec.STRING.xmap(s -> {
-		return KiwiModule.RenderLayer.Layer.valueOf(s.toUpperCase(Locale.ENGLISH));
-	}, e -> {
+	public static final Codec<KiwiModule.RenderLayer.Layer> RENDER_TYPE = ExtraCodecs.stringResolverCodec(e -> {
 		return e.name().toLowerCase(Locale.ENGLISH);
+	}, s -> {
+		return KiwiModule.RenderLayer.Layer.valueOf(s.toUpperCase(Locale.ENGLISH));
 	});
 
 	static {
@@ -85,5 +87,9 @@ public class LoaderExtraCodecs {
 			}
 			return DataResult.success(key);
 		});
+	}
+
+	public static <T> Codec<T> withAlternative(Codec<T> codec, Codec<? extends T> codec2) {
+		return Codec.either(codec, codec2).xmap(either -> either.map(object -> object, object -> object), Either::left);
 	}
 }

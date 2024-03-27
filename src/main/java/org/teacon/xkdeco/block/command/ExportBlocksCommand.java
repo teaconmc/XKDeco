@@ -72,7 +72,7 @@ import snownee.kiwi.datagen.GameObjectLookup;
 public class ExportBlocksCommand {
 	public static final Supplier<Map<Class<? extends Block>, String>> TEMPLATE_MAPPING = Suppliers.memoize(() -> {
 		Map<Class<? extends Block>, String> map = Maps.newHashMap();
-		map.put(StairBlock.class, "stairs");
+		map.put(StairBlock.class, "stair");
 		map.put(SlabBlock.class, "slab");
 		map.put(WallBlock.class, "wall");
 		map.put(FenceBlock.class, "fence");

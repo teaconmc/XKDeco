@@ -1,9 +1,9 @@
 import csv
-from pathlib import Path
 import openpyxl
+from pathlib import Path
 
-from script import Utils
-from script.DataProvider import DataProvider
+import Utils
+from DataProvider import DataProvider
 
 
 class TableDataProvider(DataProvider):
@@ -44,4 +44,16 @@ class TableDataProvider(DataProvider):
                 raise Exception('Unsupported file format: ' + ext)
 
     def generateRow(self, row, tableConfig):
-        pass
+        if row['ID'] == '':
+            return
+        data = {}
+        for field in row:
+            if field != 'ID' and field != '' and row[field] != '':
+                data[field] = row[field]
+
+        self.writeJson(self.pack.defaultResourceLocation(row['ID']), data)
+
+    def __str__(self):
+        if self.__class__.__name__ == 'TableDataProvider':
+            return 'TableDataProvider: ' + self.table
+        return super().__str__()
