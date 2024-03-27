@@ -1,10 +1,14 @@
 package org.teacon.xkdeco.block;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.loader.BlockCodecs;
 
 import com.google.common.base.Suppliers;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -13,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -31,6 +36,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class SpecialSlabBlock extends SlabBlock {
+	public static final MapCodec<SpecialSlabBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			BlockCodecs.propertiesCodec(),
+			StringRepresentable.fromEnum(Type::values).fieldOf("type").forGetter(block -> block.type)
+	).apply(instance, SpecialSlabBlock::new));
 	private static final VoxelShape PATH_TOP_AABB = Block.box(0, 8, 0, 16, 15, 16);
 	private static final VoxelShape PATH_BOTTOM_AABB = Block.box(0, 0, 0, 16, 7, 16);
 	private static final VoxelShape PATH_DOUBLE_AABB = Block.box(0, 0, 0, 16, 15, 16);
@@ -117,8 +126,13 @@ public class SpecialSlabBlock extends SlabBlock {
 		return true;
 	}
 
-	public enum Type {
-		DIRT, PATH, NYLIUM
+	public enum Type implements StringRepresentable {
+		DIRT, PATH, NYLIUM;
+
+		@Override
+		public String getSerializedName() {
+			return name().toLowerCase(Locale.ENGLISH);
+		}
 	}
 
 }

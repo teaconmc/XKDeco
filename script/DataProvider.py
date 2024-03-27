@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from script.ResourceLocation import ResourceLocation
+from ResourceLocation import ResourceLocation
 
 
 class DataProvider:
@@ -20,3 +20,6 @@ class DataProvider:
 
     def generate(self):
         pass
+
+    def __str__(self):
+        return self.__class__.__name__

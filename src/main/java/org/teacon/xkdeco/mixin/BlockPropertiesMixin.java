@@ -4,12 +4,12 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
-import org.teacon.xkdeco.duck.XKBlockProperties;
+import org.teacon.xkdeco.duck.KBlockProperties;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @Mixin(BlockBehaviour.Properties.class)
-public class BlockPropertiesMixin implements XKBlockProperties {
+public class BlockPropertiesMixin implements KBlockProperties {
 	@Unique
 	private KBlockSettings settings;
 

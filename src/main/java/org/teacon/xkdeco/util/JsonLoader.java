@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 
 import net.minecraft.resources.FileToIdConverter;
@@ -25,8 +26,11 @@ public class JsonLoader {
 			ResourceLocation id = fileToIdConverter.fileToId(entry.getKey());
 			try (BufferedReader reader = entry.getValue().openAsReader()) {
 				JsonObject json = GSON.fromJson(reader, JsonObject.class);
-				T value = codec.parse(JsonOps.INSTANCE, json).result().orElseThrow();
-				results.put(id, value);
+				DataResult<T> result = codec.parse(JsonOps.INSTANCE, json);
+				if (result.error().isPresent()) {
+					throw new IllegalStateException("Failed to parse " + id + ": " + result.error().get());
+				}
+				results.put(id, result.result().orElseThrow());
 			} catch (Exception e) {
 				throw new IllegalStateException("Failed to load " + id, e);
 			}

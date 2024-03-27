@@ -1,5 +1,5 @@
-from script.TableDataProvider import TableDataProvider
-from script.Pack import Pack
+from TableDataProvider import TableDataProvider
+from Pack import Pack
 
 
 class MaterialProvider(TableDataProvider):

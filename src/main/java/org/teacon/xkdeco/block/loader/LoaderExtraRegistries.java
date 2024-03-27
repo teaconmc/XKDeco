@@ -6,4 +6,5 @@ import net.minecraft.core.Registry;
 
 public class LoaderExtraRegistries {
 	public static Registry<KBlockComponent.Type<?>> BLOCK_COMPONENT;
+	public static Registry<KBlockTemplate.Type<?>> BLOCK_TEMPLATE;
 }
