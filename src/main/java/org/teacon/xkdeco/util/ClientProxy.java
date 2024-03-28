@@ -2,6 +2,7 @@ package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
+import org.teacon.xkdeco.block.command.ExportCreativeTabsCommand;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
@@ -35,12 +36,12 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import snownee.kiwi.datagen.GameObjectLookup;
 
@@ -184,6 +185,9 @@ public final class ClientProxy {
 //		});
 
 		var forgeEventBus = MinecraftForge.EVENT_BUS;
-		forgeEventBus.addListener((RegisterClientCommandsEvent event) -> ExportBlocksCommand.register(event.getDispatcher()));
+		forgeEventBus.addListener((RegisterCommandsEvent event) -> {
+			ExportBlocksCommand.register(event.getDispatcher());
+			ExportCreativeTabsCommand.register(event.getDispatcher());
+		});
 	}
 }
