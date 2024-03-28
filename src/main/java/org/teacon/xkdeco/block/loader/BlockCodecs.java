@@ -18,11 +18,14 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class BlockCodecs {
 	private static final Map<ResourceLocation, MapCodec<Block>> CODECS = Maps.newHashMap();
@@ -33,6 +36,10 @@ public class BlockCodecs {
 	public static final Codec<BlockSetType> BLOCK_SET_TYPE = ExtraCodecs.stringResolverCodec(
 			BlockSetType::name,
 			s -> BlockSetType.values().filter(e -> e.name().equals(s)).findFirst().orElseThrow());
+
+	public static final Codec<WoodType> WOOD_TYPE = ExtraCodecs.stringResolverCodec(
+			WoodType::name,
+			s -> WoodType.values().filter(e -> e.name().equals(s)).findFirst().orElseThrow());
 
 	public static <B extends Block> RecordCodecBuilder<B, BlockBehaviour.Properties> propertiesCodec() {
 		return BLOCK_PROPERTIES.fieldOf(BLOCK_PROPERTIES_KEY).forGetter(block -> block.properties);
@@ -68,11 +75,23 @@ public class BlockCodecs {
 			BLOCK_SET_TYPE.fieldOf("block_set_type").forGetter(block -> block.type)
 	).apply(instance, TrapDoorBlock::new));
 
+	public static final MapCodec<FenceGateBlock> FENCE_GATE = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			propertiesCodec(),
+			WOOD_TYPE.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK)
+	).apply(instance, FenceGateBlock::new));
+
+	public static final MapCodec<SandBlock> SAND = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			Codec.INT.optionalFieldOf("falling_dust_color", 14406560).forGetter($ -> 14406560),
+			propertiesCodec()
+	).apply(instance, SandBlock::new));
+
 	static {
 		register(new ResourceLocation("block"), BLOCK);
 		register(new ResourceLocation("stair"), STAIR);
 		register(new ResourceLocation("door"), DOOR);
 		register(new ResourceLocation("trapdoor"), TRAPDOOR);
+		register(new ResourceLocation("fence_gate"), FENCE_GATE);
+		register(new ResourceLocation("colored_falling"), SAND);
 	}
 
 	public static void register(ResourceLocation key, MapCodec<? extends Block> codec) {

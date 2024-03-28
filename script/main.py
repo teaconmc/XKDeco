@@ -1,4 +1,6 @@
 import json
+import os
+from pathlib import Path
 
 from TableDataProvider import TableDataProvider
 from BlockDefinitionProvider import BlockDefinitionProvider
@@ -7,6 +9,14 @@ from Pack import Pack
 
 
 def main():
+    # check if loader_config.json exists
+    if not Path('loader_config.json').exists():
+        if Path('script/loader_config.json').exists():
+            os.chdir('script')
+        else:
+            print('loader_config.json not found')
+            return
+
     with open('loader_config.json', encoding='utf-8') as f:
         config = json.load(f)
     pack = Pack(config)

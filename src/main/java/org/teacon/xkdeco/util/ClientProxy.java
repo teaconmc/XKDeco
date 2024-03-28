@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.util;
 
+import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
@@ -23,9 +24,8 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.BlockItem;
@@ -33,8 +33,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
@@ -43,9 +41,8 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
+import snownee.kiwi.datagen.GameObjectLookup;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -58,21 +55,31 @@ public final class ClientProxy {
 			return blockColors.getColor(state, null, null, tintIndex);
 		};
 		var waterItemColor = (ItemColor) (stack, tintIndex) -> 0x3f76e4;
-		event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.GRASS_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
-		event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.GRASS_PREFIX)).toArray(Item[]::new));
+		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.PLANTABLE_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
-		event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.PLANTABLE_PREFIX)).toArray(Item[]::new));
+		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
-		event.register(blockItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.WILLOW_PREFIX)).toArray(Item[]::new));
+		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Item[]::new));
-		event.register(waterItemColor, XKDecoObjects.ITEMS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).toArray(Item[]::new));
+		event.register(waterItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Item[]::new));
+				.contains(XKDecoObjects.STONE_WATER_PREFIX)).toArray(Item[]::new));
 	}
 
 	public static void setBlockColors(RegisterColorHandlersEvent.Block event) {
@@ -94,21 +101,31 @@ public final class ClientProxy {
 			}
 			return 0x3f76e4;
 		};
-		event.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+		event.register(grassBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.GRASS_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-		event.register(grassBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.GRASS_PREFIX)).toArray(Block[]::new));
+		event.register(grassBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.PLANTABLE_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-		event.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.PLANTABLE_PREFIX)).toArray(Block[]::new));
+		event.register(leavesBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.WILLOW_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
-		event.register(leavesBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.WILLOW_PREFIX)).toArray(Block[]::new));
+		event.register(leavesBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).map(RegistryObject::get).toArray(Block[]::new));
-		event.register(waterBlockColor, XKDecoObjects.BLOCKS.getEntries().stream().filter(r -> r.getId()
+				.contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).toArray(Block[]::new));
+		event.register(waterBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
+				.key()
+				.location()
 				.getPath()
-				.contains(XKDecoObjects.STONE_WATER_PREFIX)).map(RegistryObject::get).toArray(Block[]::new));
+				.contains(XKDecoObjects.STONE_WATER_PREFIX)).toArray(Block[]::new));
 	}
 
 	public static void setItemRenderers(RegisterClientReloadListenersEvent event) {
@@ -149,22 +166,22 @@ public final class ClientProxy {
 				}
 			});
 		});
-		modEventBus.addListener((FMLClientSetupEvent event) -> {
-			event.enqueueWork(() -> {
-//				for (String s : List.of("")) {
-//					RenderType cutout = RenderType.cutout();
-//					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
+//		modEventBus.addListener((FMLClientSetupEvent event) -> {
+//			event.enqueueWork(() -> {
+////				for (String s : List.of("")) {
+////					RenderType cutout = RenderType.cutout();
+////					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
+////				}
+//
+//				//TODO temporary implementation. data-gen it in the future
+//				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
+//					Block block = registryObject.get();
+//					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
+//						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+//					}
 //				}
-
-				//TODO temporary implementation. data-gen it in the future
-				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
-					Block block = registryObject.get();
-					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
-						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-					}
-				}
-			});
-		});
+//			});
+//		});
 
 		var forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener((RegisterClientCommandsEvent event) -> ExportBlocksCommand.register(event.getDispatcher()));

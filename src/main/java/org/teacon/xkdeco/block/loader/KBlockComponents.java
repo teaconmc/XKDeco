@@ -1,5 +1,9 @@
 package org.teacon.xkdeco.block.loader;
 
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.teacon.xkdeco.block.setting.ConsumableComponent;
 import org.teacon.xkdeco.block.setting.CycleVariantsComponent;
 import org.teacon.xkdeco.block.setting.DirectionalComponent;
@@ -11,7 +15,10 @@ import org.teacon.xkdeco.block.setting.MouldingComponent;
 import org.teacon.xkdeco.block.setting.StackableComponent;
 import org.teacon.xkdeco.block.setting.WaterLoggableComponent;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 
 import snownee.kiwi.AbstractModule;
 import snownee.kiwi.KiwiGO;
@@ -37,8 +44,22 @@ public class KBlockComponents extends AbstractModule {
 	public static final KiwiGO<KBlockComponent.Type<StackableComponent>> STACKABLE = register(StackableComponent.CODEC);
 	@KiwiModule.Name("minecraft:cycle_variants")
 	public static final KiwiGO<KBlockComponent.Type<CycleVariantsComponent>> CYCLE_VARIANTS = register(CycleVariantsComponent.CODEC);
+	private static Map<KBlockComponent.Type<?>, KBlockComponent> SIMPLE_INSTANCES;
 
 	private static <T extends KBlockComponent> KiwiGO<KBlockComponent.Type<T>> register(Codec<T> codec) {
 		return go(() -> new KBlockComponent.Type<>(codec));
+	}
+
+	public static KBlockComponent getSimpleInstance(KBlockComponent.Type<?> type) {
+		if (SIMPLE_INSTANCES == null) {
+			ImmutableMap.Builder<KBlockComponent.Type<?>, KBlockComponent> builder = ImmutableMap.builder();
+			JsonObject json = new JsonObject();
+			for (KBlockComponent.Type<? extends KBlockComponent> type1 : LoaderExtraRegistries.BLOCK_COMPONENT) {
+				Optional<? extends KBlockComponent> component = type1.codec().parse(JsonOps.INSTANCE, json).result();
+				component.ifPresent(kBlockComponent -> builder.put(type1, kBlockComponent));
+			}
+			SIMPLE_INSTANCES = builder.build();
+		}
+		return Objects.requireNonNull(SIMPLE_INSTANCES.get(type), () -> "No simple instance for " + type);
 	}
 }

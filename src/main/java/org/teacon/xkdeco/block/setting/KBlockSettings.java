@@ -6,6 +6,8 @@ import java.util.function.ToIntFunction;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.XKDecoConfig;
+import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.duck.KBlockProperties;
 
@@ -59,6 +61,11 @@ public class KBlockSettings {
 		this.canSurviveHandler = builder.canSurviveHandler;
 		this.analogOutputSignal = builder.getAnalogOutputSignal();
 		this.components = Map.copyOf(builder.components);
+		if (XKDecoConfig.exportBlocksMore) {
+			if (builder.shapeId != null || builder.collisionShapeId != null || builder.interactionShapeId != null) {
+				ExportBlocksCommand.putMoreInfo(this, new MoreInfo(builder.shapeId, builder.collisionShapeId, builder.interactionShapeId));
+			}
+		}
 	}
 
 	public static KBlockSettings.Builder builder() {
@@ -336,5 +343,8 @@ public class KBlockSettings {
 			}
 			return null;
 		}
+	}
+
+	public record MoreInfo(ResourceLocation shape, ResourceLocation collisionShape, ResourceLocation interactionShape) {
 	}
 }

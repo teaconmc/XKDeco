@@ -2,11 +2,13 @@ package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
 
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
 public interface KBlockComponent {
+	Codec<KBlockComponent> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(() -> LoaderExtraRegistries.BLOCK_COMPONENT.byNameCodec()
+			.dispatch(KBlockComponent::type, KBlockComponent.Type::codec));
 
 	Type<?> type();
 
@@ -66,9 +70,9 @@ public interface KBlockComponent {
 	}
 
 	record Type<T extends KBlockComponent>(Codec<T> codec) {
-//		@Override
-//		public String toString() {
-//			return "XKBlockComponent.Type[" + this.name + "]";
-//		}
+		@Override
+		public String toString() {
+			return "XKBlockComponent.Type[" + LoaderExtraRegistries.BLOCK_COMPONENT.getKey(this) + "]";
+		}
 	}
 }

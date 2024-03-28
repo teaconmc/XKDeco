@@ -8,7 +8,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
+import org.teacon.xkdeco.block.loader.BlockCodecs;
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.block.loader.KBlockTemplate;
 import org.teacon.xkdeco.block.loader.KCreativeTab;
@@ -121,22 +123,26 @@ public class CommonProxy {
 			initLoader();
 		});
 		modEventBus.addListener((NewRegistryEvent event) -> {
-			ResourceLocation blockComponentKey = new ResourceLocation(Kiwi.ID, "block_component");
 			event.create(
-					new RegistryBuilder<>().setName(blockComponentKey).disableOverrides().disableSaving().hasTags(),
+					new RegistryBuilder<>().setName(LoaderExtraRegistries.BLOCK_COMPONENT_KEY.location())
+							.disableOverrides()
+							.disableSaving()
+							.hasTags(),
 					$ -> {
 						//noinspection unchecked
 						LoaderExtraRegistries.BLOCK_COMPONENT = (Registry<KBlockComponent.Type<?>>) BuiltInRegistries.REGISTRY.get(
-								blockComponentKey);
+								LoaderExtraRegistries.BLOCK_COMPONENT_KEY.location());
 						Kiwi.registerRegistry($, KBlockComponent.Type.class);
 					});
-			ResourceLocation blockTemplateKey = new ResourceLocation(Kiwi.ID, "block_template");
 			event.create(
-					new RegistryBuilder<>().setName(blockTemplateKey).disableOverrides().disableSaving().hasTags(),
+					new RegistryBuilder<>().setName(LoaderExtraRegistries.BLOCK_TEMPLATE_KEY.location())
+							.disableOverrides()
+							.disableSaving()
+							.hasTags(),
 					$ -> {
 						//noinspection unchecked
 						LoaderExtraRegistries.BLOCK_TEMPLATE = (Registry<KBlockTemplate.Type<?>>) BuiltInRegistries.REGISTRY.get(
-								blockTemplateKey);
+								LoaderExtraRegistries.BLOCK_TEMPLATE_KEY.location());
 						Kiwi.registerRegistry($, KBlockTemplate.Type.class);
 					});
 		});
@@ -167,6 +173,8 @@ public class CommonProxy {
 				event.setCancellationResult(result);
 			}
 		});
+
+		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
 	}
 
 	public static void initLoader() {

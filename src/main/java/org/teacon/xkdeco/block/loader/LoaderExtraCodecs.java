@@ -3,6 +3,8 @@ package org.teacon.xkdeco.block.loader;
 import java.util.Locale;
 import java.util.Map;
 
+import org.teacon.xkdeco.block.setting.GlassType;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.datafixers.util.Either;
@@ -23,6 +25,8 @@ public class LoaderExtraCodecs {
 	public static final Codec<NoteBlockInstrument> INSTRUMENT_CODEC = simpleByNameCodec(INSTRUMENTS);
 	public static final BiMap<ResourceLocation, MapColor> MAP_COLORS = HashBiMap.create();
 	public static final Codec<MapColor> MAP_COLOR_CODEC = simpleByNameCodec(MAP_COLORS);
+	public static final BiMap<ResourceLocation, GlassType> GLASS_TYPES = HashBiMap.create();
+	public static final Codec<GlassType> GLASS_TYPE_CODEC = simpleByNameCodec(GLASS_TYPES);
 	public static final Codec<KiwiModule.RenderLayer.Layer> RENDER_TYPE = ExtraCodecs.stringResolverCodec(e -> {
 		return e.name().toLowerCase(Locale.ENGLISH);
 	}, s -> {
