@@ -40,6 +40,12 @@ class BlockDefinitionProvider(TableDataProvider):
             components.extend(json.loads(row['ExtraComponents']))
         if len(components) > 0:
             data['components'] = components
+        if 'Shape' in row and row['Shape'] != '':
+            data['shape'] = row['Shape']
+        if 'CollisionShape' in row and row['CollisionShape'] != '':
+            data['collision_shape'] = row['CollisionShape']
+        if 'InteractionShape' in row and row['InteractionShape'] != '':
+            data['interaction_shape'] = row['InteractionShape']
         # item = {}
         # if 'ItemGroup' in row and row['ItemGroup'] != '':
         #     item['tab'] = row['ItemGroup']

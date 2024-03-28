@@ -28,7 +28,7 @@ class Pack:
         self.providers.append(provider)
 
     def finish(self):
-        # self.providers.append(self.creativeTabs)
+        self.providers.append(self.creativeTabs)
         self.providers.append(self.translations)
         for provider in self.providers:
             provider.generate()

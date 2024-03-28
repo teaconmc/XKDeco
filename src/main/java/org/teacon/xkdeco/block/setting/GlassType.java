@@ -1,5 +1,8 @@
 package org.teacon.xkdeco.block.setting;
 
+import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
+
+import net.minecraft.resources.ResourceLocation;
 import snownee.kiwi.KiwiModule;
 
 public record GlassType(String name, boolean skipRendering, float shadeBrightness, KiwiModule.RenderLayer.Layer renderType) {
@@ -9,4 +12,12 @@ public record GlassType(String name, boolean skipRendering, float shadeBrightnes
 	public static final GlassType QUARTZ = new GlassType("quartz", true, 1F, KiwiModule.RenderLayer.Layer.TRANSLUCENT);
 	public static final GlassType TOUGHENED = new GlassType("toughened", true, 1F, KiwiModule.RenderLayer.Layer.TRANSLUCENT);
 	public static final GlassType HOLLOW_STEEL = new GlassType("hollow_steel", false, 0.9F, KiwiModule.RenderLayer.Layer.CUTOUT);
+
+	public GlassType(String name, boolean skipRendering, float shadeBrightness, KiwiModule.RenderLayer.Layer renderType) {
+		this.name = name;
+		this.skipRendering = skipRendering;
+		this.shadeBrightness = shadeBrightness;
+		this.renderType = renderType;
+		LoaderExtraCodecs.GLASS_TYPES.put(new ResourceLocation(name), this);
+	}
 }

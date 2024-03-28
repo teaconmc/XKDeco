@@ -14,9 +14,9 @@ public interface BlockRenderSettings {
 	static void init(Map<ResourceLocation, KBlockDefinition> blocks) {
 		for (var entry : blocks.entrySet()) {
 			KBlockDefinition definition = entry.getValue();
-			var renderType = definition.renderType();
-			if (renderType == null && definition.settings().glassType != null) {
-				renderType = definition.settings().glassType.renderType();
+			var renderType = definition.renderType().orElse(null);
+			if (renderType == null) {
+				renderType = definition.glassType().map(GlassType::renderType).orElse(null);
 			}
 			if (renderType != null) {
 				Block block = BuiltInRegistries.BLOCK.get(entry.getKey());

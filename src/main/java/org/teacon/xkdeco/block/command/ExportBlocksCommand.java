@@ -7,10 +7,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.XKDecoConfig;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
@@ -30,6 +32,7 @@ import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.SnowySlabBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
+import org.teacon.xkdeco.block.loader.BlockCodecs;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
@@ -37,6 +40,7 @@ import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.serialization.Codec;
@@ -52,6 +56,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.CsvOutput;
 import net.minecraft.world.level.block.Block;
@@ -61,6 +66,7 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -82,6 +88,7 @@ public class ExportBlocksCommand {
 		map.put(IronBarsBlock.class, "iron_bars");
 		map.put(RotatedPillarBlock.class, "rotated_pillar");
 		map.put(LeavesBlock.class, "leaves");
+		map.put(SandBlock.class, "colored_falling");
 
 		map.put(FallenLeavesBlock.class, "xkdeco:fallen_leaves");
 		map.put(SpecialSlabBlock.class, "xkdeco:special_slab");
@@ -104,6 +111,8 @@ public class ExportBlocksCommand {
 		map.put(MimicWallBlock.class, "ignore");
 		return map;
 	});
+
+	private static final Map<KBlockSettings, KBlockSettings.MoreInfo> MORE_INFO = Maps.newHashMap();
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands
@@ -142,6 +151,12 @@ public class ExportBlocksCommand {
 			row.put("WaterLoggable", "");
 			row.put("BaseComponent", "");
 			row.put("ExtraComponents", "");
+			KBlockSettings.MoreInfo fallbackMoreInfo = new KBlockSettings.MoreInfo(null, null, null);
+			if (XKDecoConfig.exportBlocksMore) {
+				row.put("Shape", "");
+				row.put("CollisionShape", "");
+				row.put("InteractionShape", "");
+			}
 			Set<KBlockComponent.Type<?>> baseComponents = Set.of(
 					KBlockComponents.DIRECTIONAL.get(),
 					KBlockComponents.HORIZONTAL.get(),
@@ -160,6 +175,14 @@ public class ExportBlocksCommand {
 				String template = TEMPLATE_MAPPING.get().getOrDefault(block.getClass(), "block");
 				if ("ignore".equals(template)) {
 					continue;
+				}
+				if ("door".equals(template) || "trapdoor".equals(template) || "xkdeco:special_slab".equals(template)) {
+					Codec<Block> codec = BlockCodecs.get(new ResourceLocation(template)).codec();
+					JsonObject json = codec.encodeStart(JsonOps.INSTANCE, block).result().orElseThrow().getAsJsonObject();
+					json.remove(BlockCodecs.BLOCK_PROPERTIES_KEY);
+					if (json.size() > 0) {
+						template += json.toString();
+					}
 				}
 				row.put("Template", template);
 				row.put("ID", BuiltInRegistries.BLOCK.getKey(block).getPath());
@@ -224,6 +247,12 @@ public class ExportBlocksCommand {
 							.orElseThrow()
 							.toString());
 				}
+				if (XKDecoConfig.exportBlocksMore) {
+					KBlockSettings.MoreInfo moreInfo = MORE_INFO.getOrDefault(settings, fallbackMoreInfo);
+					row.put("Shape", Optional.ofNullable(moreInfo.shape()).map(Object::toString).orElse(""));
+					row.put("CollisionShape", Optional.ofNullable(moreInfo.collisionShape()).map(Object::toString).orElse(""));
+					row.put("InteractionShape", Optional.ofNullable(moreInfo.interactionShape()).map(Object::toString).orElse(""));
+				}
 				csvOutput.writeRow(row.values().toArray(Object[]::new));
 			}
 		} catch (Exception e) {
@@ -232,5 +261,9 @@ public class ExportBlocksCommand {
 		}
 		source.sendSuccess(() -> Component.literal("Blocks exported"), false);
 		return 0;
+	}
+
+	public static void putMoreInfo(KBlockSettings settings, KBlockSettings.MoreInfo moreInfo) {
+		MORE_INFO.put(settings, moreInfo);
 	}
 }

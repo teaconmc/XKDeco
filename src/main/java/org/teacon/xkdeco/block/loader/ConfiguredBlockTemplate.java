@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 
 public record ConfiguredBlockTemplate(KBlockTemplate template, JsonObject json) {
-	private static final JsonObject DEFAULT_JSON = new JsonObject();
+	public static final JsonObject DEFAULT_JSON = new JsonObject();
 
 	static {
 		DEFAULT_JSON.add(BlockCodecs.BLOCK_PROPERTIES_KEY, new JsonObject());

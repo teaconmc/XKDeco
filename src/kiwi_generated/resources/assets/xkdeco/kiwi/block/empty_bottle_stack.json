@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "horizontal", {"amount": 3, "type": "xkdeco:cycle_variants"}]}
+{"components": ["water_loggable", "horizontal", {"amount": 3, "type": "minecraft:cycle_variants"}], "shape": "xkdeco:bottle_stack"}

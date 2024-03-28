@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.init;
 
-import static net.minecraft.world.level.block.Block.box;
 import static org.teacon.xkdeco.block.setting.KBlockSettings.copyProperties;
 
 import java.util.List;
@@ -10,13 +9,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
-import org.teacon.xkdeco.block.FallenLeavesBlock;
-import org.teacon.xkdeco.block.HangingFasciaBlock;
-import org.teacon.xkdeco.block.HollowSteelHalfBeamBlock;
-import org.teacon.xkdeco.block.HorizontalShiftBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.RoofBlock;
@@ -27,8 +21,6 @@ import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
-import org.teacon.xkdeco.block.SnowySlabBlock;
-import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.impl.MetalLadderCanSurviveHandler;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
@@ -65,24 +57,11 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SandBlock;
-import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -91,7 +70,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
-import snownee.kiwi.KiwiModule;
 import snownee.kiwi.datagen.GameObjectLookup;
 
 @MethodsReturnNonnullByDefault
@@ -197,15 +175,18 @@ public final class XKDecoObjects {
 		}
 		Supplier<Block> blockSupplier;
 		if (id.contains(SLAB_SUFFIX)) {
-			blockSupplier = () -> new SlabBlock(settings.get());
+//			blockSupplier = () -> new SlabBlock(settings.get());
+			return;
 		} else if (id.contains(STAIRS_SUFFIX)) {
 //			blockSupplier = () -> new StairBlock(Blocks.AIR.defaultBlockState(), settings.get());
 			return;
 		} else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
-			blockSupplier = () -> new RotatedPillarBlock(settings.get());
+//			blockSupplier = () -> new RotatedPillarBlock(settings.get());
+			return;
 		} else if (id.contains(LINED_PREFIX) || id.contains(LUXURY_PREFIX) || id.contains(PAINTED_PREFIX) || id.contains(CHISELED_PREFIX) ||
 				id.contains(DOUBLE_SCREW_PREFIX)) {
-			blockSupplier = () -> new RotatedPillarBlock(settings.get());
+//			blockSupplier = () -> new RotatedPillarBlock(settings.get());
+			return;
 		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
 			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
 					.shape(XKDeco.id("big_table"))
@@ -225,7 +206,8 @@ public final class XKDecoObjects {
 //					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
 			return;
 		} else if (id.endsWith("_wall")) {
-			blockSupplier = () -> new WallBlock(settings.get());
+//			blockSupplier = () -> new WallBlock(settings.get());
+			return;
 		} else if (settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
 			blockSupplier = () -> new BasicBlock(settings.get());
 		} else {
@@ -274,27 +256,26 @@ public final class XKDecoObjects {
 		//TODO remove in the future:
 		ITEMS.register(id + "_ridge_end", () -> new BlockItem(roofRidgeEnd.get(), itemProperties));
 
-		var roofDeco = BLOCKS.register(id + "_deco", () -> new HorizontalShiftBlock(propFactory.get()));
-		ITEMS.register(id + "_deco", () -> new BlockItem(roofDeco.get(), itemProperties));
-		var roofDecoOblique = BLOCKS.register(id + "_deco_oblique", () -> new HorizontalShiftBlock(propFactory.get()));
-		ITEMS.register(id + "_deco_oblique", () -> new BlockItem(roofDecoOblique.get(), itemProperties));
+//		var roofDeco = BLOCKS.register(id + "_deco", () -> new HorizontalShiftBlock(propFactory.get()));
+//		ITEMS.register(id + "_deco", () -> new BlockItem(roofDeco.get(), itemProperties));
+//		var roofDecoOblique = BLOCKS.register(id + "_deco_oblique", () -> new HorizontalShiftBlock(propFactory.get()));
+//		ITEMS.register(id + "_deco_oblique", () -> new BlockItem(roofDecoOblique.get(), itemProperties));
 		var roofTip = BLOCKS.register(id + "_tip", () -> new RoofTipBlock(propFactory.get()));
 		ITEMS.register(id + "_tip", () -> new BlockItem(roofTip.get(), itemProperties));
 	}
 
 	private static void addPlant(String id, KBlockSettings.Builder settings) {
-		var itemProperties = new Item.Properties();
-		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
-			if (id.startsWith(FALLEN_LEAVES_PREFIX)) {
-				var block = BLOCKS.register(id, () -> new FallenLeavesBlock(settings.get()));
-				ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-				return;
-			}
-			var block = BLOCKS.register(id, () -> new LeavesBlock(settings.get()));
-			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-		} else {
-			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
-		}
+//		var itemProperties = new Item.Properties();
+//		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
+//			if (id.startsWith(FALLEN_LEAVES_PREFIX)) {
+//				var block = BLOCKS.register(id, () -> new FallenLeavesBlock(settings.get()));
+//				ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//			}
+//			var block = BLOCKS.register(id, () -> new LeavesBlock(settings.get()));
+//			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//		} else {
+//			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
+//		}
 	}
 
 	private static void addSpecial(String id, KBlockSettings.Builder settings) {
@@ -303,11 +284,11 @@ public final class XKDecoObjects {
 			var block = BLOCKS.register(id, () -> new BasicBlock(settings.get()));
 			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
 		} else if (id.contains(ITEM_DISPLAY_SUFFIX) || id.equals(ITEM_PROJECTOR_SPECIAL)) {
-			var block = BLOCKS.register(id, () -> new ItemDisplayBlock(settings.get()));
-			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//			var block = BLOCKS.register(id, () -> new ItemDisplayBlock(settings.get()));
+//			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
 		} else if (id.contains(BLOCK_DISPLAY_SUFFIX)) {
-			var block = BLOCKS.register(id, () -> new BlockDisplayBlock(settings.get()));
-			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//			var block = BLOCKS.register(id, () -> new BlockDisplayBlock(settings.get()));
+//			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
 		} else if (id.contains(WARDROBE_SUFFIX)) {
 			var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(KBlockComponents.WATER_LOGGABLE.get()).get()));
 			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
@@ -744,9 +725,9 @@ public final class XKDecoObjects {
 		addIsotropic("translucent_lamp_slab", BlockSettingPresets.lampBlock().noOcclusion());
 		addIsotropic("translucent_lamp_stairs", BlockSettingPresets.lampBlock().noOcclusion());
 
-		addBlock("steel_filings", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()));
-		addBlock("quartz_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()));
-		addBlock("toughened_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()));
+//		addBlock("steel_filings", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()));
+//		addBlock("quartz_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()));
+//		addBlock("toughened_sand", () -> new SandBlock(14406560, copyProperties(Blocks.SAND).get()));
 
 		addIsotropic("quartz_glass", BlockSettingPresets.hardenedGlass());
 		addIsotropic("quartz_glass_slab", BlockSettingPresets.hardenedGlass());
@@ -763,35 +744,35 @@ public final class XKDecoObjects {
 		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), false);
 		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), false);
 
-		addBlock("dirt_slab", () -> new SlabBlock(copyProperties(Blocks.DIRT).sustainsPlant().get()));
-		addBlock(
-				"dirt_path_slab",
-				() -> new SpecialSlabBlock(copyProperties(Blocks.DIRT_PATH).get(), SpecialSlabBlock.Type.PATH)
-		);
-		addBlock(
-				"grass_block_slab",
-				() -> new SnowySlabBlock(copyProperties(Blocks.GRASS_BLOCK).sustainsPlant()
-						
-						.get())
-		);
-		addBlock(
-				"mycelium_slab",
-				() -> new SnowySlabBlock(copyProperties(Blocks.MYCELIUM).sustainsPlant().get())
-		);
-		addBlock(
-				"podzol_slab",
-				() -> new SnowySlabBlock(copyProperties(Blocks.PODZOL).sustainsPlant().get())
-		);
-		addBlock("netherrack_slab", () -> new SlabBlock(copyProperties(Blocks.NETHERRACK).get()));
-		addBlock(
-				"crimson_nylium_slab",
-				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM)
-		);
-		addBlock(
-				"warped_nylium_slab",
-				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM)
-		);
-		addBlock("end_stone_slab", () -> new SlabBlock(copyProperties(Blocks.END_STONE).get()));
+//		addBlock("dirt_slab", () -> new SlabBlock(copyProperties(Blocks.DIRT).sustainsPlant().get()));
+//		addBlock(
+//				"dirt_path_slab",
+//				() -> new SpecialSlabBlock(copyProperties(Blocks.DIRT_PATH).get(), SpecialSlabBlock.Type.PATH)
+//		);
+//		addBlock(
+//				"grass_block_slab",
+//				() -> new SnowySlabBlock(copyProperties(Blocks.GRASS_BLOCK).sustainsPlant()
+//
+//						.get())
+//		);
+//		addBlock(
+//				"mycelium_slab",
+//				() -> new SnowySlabBlock(copyProperties(Blocks.MYCELIUM).sustainsPlant().get())
+//		);
+//		addBlock(
+//				"podzol_slab",
+//				() -> new SnowySlabBlock(copyProperties(Blocks.PODZOL).sustainsPlant().get())
+//		);
+//		addBlock("netherrack_slab", () -> new SlabBlock(copyProperties(Blocks.NETHERRACK).get()));
+//		addBlock(
+//				"crimson_nylium_slab",
+//				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM)
+//		);
+//		addBlock(
+//				"warped_nylium_slab",
+//				() -> new SpecialSlabBlock(copyProperties(Blocks.CRIMSON_NYLIUM).get(), SpecialSlabBlock.Type.NYLIUM)
+//		);
+//		addBlock("end_stone_slab", () -> new SlabBlock(copyProperties(Blocks.END_STONE).get()));
 
 		addIsotropic("dirt_cobblestone", copyProperties(Blocks.SANDSTONE));
 		addIsotropic(
@@ -1171,37 +1152,37 @@ public final class XKDecoObjects {
 				BlockSettingPresets.lightThingy(null)
 		);
 
-		addBlock("air_duct", () -> {
-			VoxelShape base = Shapes.join(
-					Shapes.block(),
-					Shapes.or(box(0, 2, 2, 16, 14, 14), box(2, 0, 2, 14, 16, 14), box(2, 2, 0, 14, 14, 16)),
-					BooleanOp.ONLY_FIRST);
-			VoxelShape side = box(2, 0, 2, 14, 2, 14);
-			return new AirDuctBlock(BlockSettingPresets.hollowSteel()
-					.shape(ShapeGenerator.sixWay(base, Shapes.empty(), side))
-					.interactionShape(ShapeGenerator.unit(Shapes.block()))
-					.waterLoggable()
-					.get());
-		});
-		addBlock("air_duct_oblique", () -> {
-			VoxelShape trueNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct"));
-			VoxelShape falseNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct2"));
-			return new HorizontalShiftBlock(BlockSettingPresets.hollowSteel()
-					.shape(ShapeGenerator.horizontalShifted(trueNorth, falseNorth))
-					.interactionShape(ShapeGenerator.unit(Shapes.block()))
-					.get());
-		});
-		addBlock("hollow_steel_beam", () -> new WallBlock(BlockSettingPresets.hollowSteel().get()));
-		addBlock(
-				"hollow_steel_half_beam",
-				() -> new HollowSteelHalfBeamBlock(BlockSettingPresets.hollowSteel()
-						.waterLoggable()
-						.shape(ShapeGenerator.faceAttached(
-								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_floor")),
-								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_ceiling")),
-								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_wall"))))
-						.get())
-		);
+//		addBlock("air_duct", () -> {
+//			VoxelShape base = Shapes.join(
+//					Shapes.block(),
+//					Shapes.or(box(0, 2, 2, 16, 14, 14), box(2, 0, 2, 14, 16, 14), box(2, 2, 0, 14, 14, 16)),
+//					BooleanOp.ONLY_FIRST);
+//			VoxelShape side = box(2, 0, 2, 14, 2, 14);
+//			return new AirDuctBlock(BlockSettingPresets.hollowSteel()
+//					.shape(ShapeGenerator.sixWay(base, Shapes.empty(), side))
+//					.interactionShape(ShapeGenerator.unit(Shapes.block()))
+//					.waterLoggable()
+//					.get());
+//		});
+//		addBlock("air_duct_oblique", () -> {
+//			VoxelShape trueNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct"));
+//			VoxelShape falseNorth = ShapeStorage.getInstance().get(XKDeco.id("air_duct2"));
+//			return new HorizontalShiftBlock(BlockSettingPresets.hollowSteel()
+//					.shape(ShapeGenerator.horizontalShifted(trueNorth, falseNorth))
+//					.interactionShape(ShapeGenerator.unit(Shapes.block()))
+//					.get());
+//		});
+//		addBlock("hollow_steel_beam", () -> new WallBlock(BlockSettingPresets.hollowSteel().get()));
+//		addBlock(
+//				"hollow_steel_half_beam",
+//				() -> new HollowSteelHalfBeamBlock(BlockSettingPresets.hollowSteel()
+//						.waterLoggable()
+//						.shape(ShapeGenerator.faceAttached(
+//								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_floor")),
+//								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_ceiling")),
+//								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_wall"))))
+//						.get())
+//		);
 		addBlock(
 				"dark_wall_base",
 				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
@@ -1404,12 +1385,11 @@ public final class XKDecoObjects {
 						.shape(XKDeco.id("wall_base2")) //TODO
 						.get())
 		);
-		addBlock(
-				"hollow_steel_bars",
-				() -> new IronBarsBlock(BlockSettingPresets.hollowSteel()
-						
-						.get())
-		);
+//		addBlock(
+//				"hollow_steel_bars",
+//				() -> new IronBarsBlock(BlockSettingPresets.hollowSteel()
+//						.get())
+//		);
 
 		addScreen("off");
 		addScreen("wave");
@@ -1488,31 +1468,31 @@ public final class XKDecoObjects {
 				BlockSettingPresets.thingy(mapColor, SoundType.WOOD)
 		);
 
-		addBlock(
-				id + "_fence",
-				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
-		);
+//		addBlock(
+//				id + "_fence",
+//				() -> new FenceBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
+//		);
 		addDirectional(
 				id + "_fence_head",
 				copyProperties(Blocks.OAK_FENCE, mapColor).shape(XKDeco.id("wooden_fence_head"))
 		);
-		addBlock(
-				id + "_fence_gate",
-				() -> new FenceGateBlock(copyProperties(Blocks.OAK_FENCE_GATE, mapColor).get(), WoodType.OAK)
-		);
+//		addBlock(
+//				id + "_fence_gate",
+//				() -> new FenceGateBlock(copyProperties(Blocks.OAK_FENCE_GATE, mapColor).get(), WoodType.OAK)
+//		);
 		addIsotropic(id + "_door", copyProperties(Blocks.OAK_DOOR, mapColor));
 		addIsotropic(
 				id + "_trapdoor",
 				copyProperties(Blocks.OAK_TRAPDOOR, mapColor)
 		);
-		addBlock(
-				id + "_column_wall",
-				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
-		);
-		addBlock(
-				"hollow_" + id + "_column_wall",
-				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
-		);
+//		addBlock(
+//				id + "_column_wall",
+//				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
+//		);
+//		addBlock(
+//				"hollow_" + id + "_column_wall",
+//				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
+//		);
 
 		addBlock(
 				id + "_meiren_kao",
@@ -1566,9 +1546,9 @@ public final class XKDecoObjects {
 //						copyProperties(Blocks.OAK_TRAPDOOR, mapColor).get(),
 //						BlockSetType.OAK)
 //		);
-		addBlock(
-				id + "_hanging_fascia",
-				() -> new HangingFasciaBlock(copyProperties(Blocks.OAK_PLANKS, mapColor).shape(XKDeco.id("hanging_fascia")))
-		);
+//		addBlock(
+//				id + "_hanging_fascia",
+//				() -> new HangingFasciaBlock(copyProperties(Blocks.OAK_PLANKS, mapColor).shape(XKDeco.id("hanging_fascia")))
+//		);
 	}
 }

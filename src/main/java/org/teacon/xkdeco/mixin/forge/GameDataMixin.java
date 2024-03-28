@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
@@ -20,8 +21,8 @@ public class GameDataMixin {
 		List<ResourceLocation> copy = List.copyOf(ordered);
 		ordered.clear();
 		List<ResourceLocation> prioritized = List.of(
-				new ResourceLocation("kiwi:block_component"),
-				new ResourceLocation("kiwi:block_template"));
+				LoaderExtraRegistries.BLOCK_COMPONENT_KEY.location(),
+				LoaderExtraRegistries.BLOCK_TEMPLATE_KEY.location());
 		ordered.addAll(prioritized);
 		ordered.addAll(copy.stream().filter($ -> !prioritized.contains($)).toList());
 	}
