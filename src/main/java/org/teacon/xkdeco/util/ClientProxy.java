@@ -3,16 +3,13 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.command.ExportCreativeTabsCommand;
-import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
-import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
-import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.MimicWallRenderer;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
-import org.teacon.xkdeco.entity.CushionEntity;
+import org.teacon.xkdeco.init.XKDecoEntityTypes;
 import org.teacon.xkdeco.init.XKDecoObjects;
 import org.teacon.xkdeco.resource.MimicWallResources;
 
@@ -134,11 +131,11 @@ public final class ClientProxy {
 	}
 
 	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(CushionEntity.TYPE.get(), NoopRenderer::new);
+		event.registerEntityRenderer(XKDecoEntityTypes.CUSHION.getOrCreate(), NoopRenderer::new);
 
-		event.registerBlockEntityRenderer(MimicWallBlockEntity.TYPE.get(), MimicWallRenderer::new);
-		event.registerBlockEntityRenderer(ItemDisplayBlockEntity.TYPE.get(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(BlockDisplayBlockEntity.TYPE.get(), BlockDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.MIMIC_WALL.getOrCreate(), MimicWallRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
 	}
 
 	public static void setAdditionalPackFinder(AddPackFindersEvent event) {

@@ -4,14 +4,12 @@
  */
 package org.teacon.xkdeco.blockentity;
 
-import static org.teacon.xkdeco.init.XKDecoObjects.BLOCK_DISPLAY_BLOCK_ENTITY;
-
 import java.util.Objects;
 import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -24,25 +22,19 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class BlockDisplayBlockEntity extends BlockEntity implements Clearable {
-	public static final RegistryObject<BlockEntityType<BlockDisplayBlockEntity>> TYPE =
-			RegistryObject.create(new ResourceLocation(XKDeco.ID, BLOCK_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
 	public static final String ITEMSTACK_NBT_KEY = "Display";
 	private static final String BLOCKSTATE_NBT_KEY = "State";
 	private static final String SELECTED_PROPERTY_NBT_KEY = "Selected";
@@ -56,7 +48,7 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
 	private Property<?> selectedProperty = null;
 
 	public BlockDisplayBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-		super(TYPE.get(), pWorldPosition, pBlockState);
+		super(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), pWorldPosition, pBlockState);
 	}
 
 	@Override

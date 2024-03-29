@@ -3,6 +3,7 @@ package org.teacon.xkdeco.entity;
 import java.util.Objects;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.init.XKDecoEntityTypes;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -11,14 +12,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,20 +27,17 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class CushionEntity extends Entity {
 	private static final EntityDataSerializer<Vec3> LOCATION_DATA_SERIALIZER;
-	public static final RegistryObject<EntityType<CushionEntity>> TYPE;
 	private static final EntityDataAccessor<Vec3> DATA_DIFF_LOCATION;
 	static final double MAX_DISTANCE = 3.0;
 
 	static {
 		LOCATION_DATA_SERIALIZER = new Vec3Serializer();
 		EntityDataSerializers.registerSerializer(LOCATION_DATA_SERIALIZER);
-		TYPE = RegistryObject.create(new ResourceLocation(XKDeco.ID, XKDecoObjects.CUSHION_ENTITY), ForgeRegistries.ENTITY_TYPES);
 		DATA_DIFF_LOCATION = SynchedEntityData.defineId(CushionEntity.class, LOCATION_DATA_SERIALIZER);
 	}
 
@@ -53,7 +47,7 @@ public final class CushionEntity extends Entity {
 	}
 
 	public CushionEntity(BlockPos pos, Player player) {
-		super(TYPE.get(), player.level());
+		super(XKDecoEntityTypes.CUSHION.getOrCreate(), player.level());
 		this.noPhysics = true;
 		this.setPos(pos.getX() + 0.5, pos.getY() + 0.375, pos.getZ() + 0.5);
 		this.setStandingDiffLocation(this.calculateStandingDiff(player));

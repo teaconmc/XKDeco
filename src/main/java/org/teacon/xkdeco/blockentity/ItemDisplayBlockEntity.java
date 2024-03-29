@@ -4,13 +4,12 @@
  */
 package org.teacon.xkdeco.blockentity;
 
-import static org.teacon.xkdeco.init.XKDecoObjects.ITEM_DISPLAY_BLOCK_ENTITY;
-
 import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -24,18 +23,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class ItemDisplayBlockEntity extends BlockEntity implements Clearable {
-	public static final RegistryObject<BlockEntityType<ItemDisplayBlockEntity>> TYPE =
-			RegistryObject.create(new ResourceLocation(XKDeco.ID, ITEM_DISPLAY_BLOCK_ENTITY), ForgeRegistries.BLOCK_ENTITY_TYPES);
 	public static final String ITEMSTACK_NBT_KEY = "Display";
 	private static final String SPIN_NBT_KEY = "Spin";
 
@@ -44,7 +39,7 @@ public final class ItemDisplayBlockEntity extends BlockEntity implements Clearab
 	private float spin = 0;
 
 	public ItemDisplayBlockEntity(BlockPos blockPos, BlockState blockState) {
-		super(TYPE.get(), blockPos, blockState);
+		super(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), blockPos, blockState);
 		this.isProjector = blockState.is(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(
 				XKDeco.ID,
 				"item_projector"))));
