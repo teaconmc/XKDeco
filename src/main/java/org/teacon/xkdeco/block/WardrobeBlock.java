@@ -3,6 +3,7 @@ package org.teacon.xkdeco.block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
+import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,7 +51,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	public static final VoxelShape SHAPE_EAST_OPEN = Block.box(0, 0, 0, 15, 16, 16);
 
 	public WardrobeBlock(Properties pProperties) {
-		super(pProperties.pushReaction(PushReaction.BLOCK), WardrobeBlockEntity.TYPE::get);
+		super(pProperties.pushReaction(PushReaction.BLOCK), XKDecoEntityTypes.WARDROBE::getOrCreate);
 	}
 
 	@SuppressWarnings("deprecation")

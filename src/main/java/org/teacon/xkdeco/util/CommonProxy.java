@@ -37,7 +37,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
@@ -89,14 +88,11 @@ public class CommonProxy {
 	public CommonProxy() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		XKDecoObjects.ENTITIES.register(modEventBus);
 		XKDecoObjects.BLOCKS.register(modEventBus);
 		XKDecoObjects.ITEMS.register(modEventBus);
-		XKDecoObjects.BLOCK_ENTITY.register(modEventBus);
 
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallItems);
-		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlockEntity);
 
 		modEventBus.addListener((GatherDataEvent event) -> {
 			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
