@@ -3,6 +3,8 @@ package org.teacon.xkdeco.util;
 import java.io.BufferedReader;
 import java.util.Map;
 
+import org.teacon.xkdeco.XKDeco;
+
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,9 +28,11 @@ public class JsonLoader {
 			ResourceLocation id = fileToIdConverter.fileToId(entry.getKey());
 			try (BufferedReader reader = entry.getValue().openAsReader()) {
 				JsonObject json = GSON.fromJson(reader, JsonObject.class);
+//				XKDeco.LOGGER.info(entry.getKey() + " " + json);
 				DataResult<T> result = codec.parse(JsonOps.INSTANCE, json);
 				if (result.error().isPresent()) {
-					throw new IllegalStateException("Failed to parse " + id + ": " + result.error().get());
+					XKDeco.LOGGER.error("Failed to parse " + id + ": " + result.error().get());
+					continue;
 				}
 				results.put(id, result.result().orElseThrow());
 			} catch (Exception e) {

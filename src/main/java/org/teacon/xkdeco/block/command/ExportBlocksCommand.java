@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.XKDecoConfig;
+import org.teacon.xkdeco.XKDecoClientConfig;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
@@ -71,6 +71,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.datagen.GameObjectLookup;
@@ -152,11 +153,13 @@ public class ExportBlocksCommand {
 			row.put("BaseComponent", "");
 			row.put("ExtraComponents", "");
 			KBlockSettings.MoreInfo fallbackMoreInfo = new KBlockSettings.MoreInfo(null, null, null);
-			if (XKDecoConfig.exportBlocksMore) {
+			if (XKDecoClientConfig.exportBlocksMore) {
 				row.put("Shape", "");
 				row.put("CollisionShape", "");
 				row.put("InteractionShape", "");
 			}
+			row.put("NoCollision", "");
+			row.put("NoOcclusion", "");
 			Set<KBlockComponent.Type<?>> baseComponents = Set.of(
 					KBlockComponents.DIRECTIONAL.get(),
 					KBlockComponents.HORIZONTAL.get(),
@@ -247,12 +250,15 @@ public class ExportBlocksCommand {
 							.orElseThrow()
 							.toString());
 				}
-				if (XKDecoConfig.exportBlocksMore) {
+				if (XKDecoClientConfig.exportBlocksMore) {
 					KBlockSettings.MoreInfo moreInfo = MORE_INFO.getOrDefault(settings, fallbackMoreInfo);
 					row.put("Shape", Optional.ofNullable(moreInfo.shape()).map(Object::toString).orElse(""));
 					row.put("CollisionShape", Optional.ofNullable(moreInfo.collisionShape()).map(Object::toString).orElse(""));
 					row.put("InteractionShape", Optional.ofNullable(moreInfo.interactionShape()).map(Object::toString).orElse(""));
 				}
+				BlockBehaviour.Properties properties = block.properties;
+				row.put("NoCollision", Boolean.toString(!properties.hasCollision));
+				row.put("NoOcclusion", Boolean.toString(!properties.canOcclude));
 				csvOutput.writeRow(row.values().toArray(Object[]::new));
 			}
 		} catch (Exception e) {

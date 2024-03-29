@@ -5,9 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -26,8 +28,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -52,7 +56,7 @@ public class ExportCreativeTabsCommand {
 		}
 		Direction direction = result.result().orElseThrow().getSecond();
 		ServerLevel level = source.getLevel();
-		List<BaseContainerBlockEntity> containers = findContainerSequence(level, pos, direction);
+		List<Pair<BlockPos, Container>> containers = findContainerSequence(level, pos, direction);
 		Map<String, Collection<String>> data = Maps.newLinkedHashMap();
 		try {
 			LinkedHashSet<String> items = collectItems(source, containers);
@@ -101,13 +105,29 @@ public class ExportCreativeTabsCommand {
 		return 1;
 	}
 
-	private static List<BaseContainerBlockEntity> findContainerSequence(ServerLevel level, BlockPos pos, Direction direction) {
+	private static List<Pair<BlockPos, Container>> findContainerSequence(ServerLevel level, BlockPos pos, Direction direction) {
 		BlockPos.MutableBlockPos mutablePos = pos.mutable();
-		List<BaseContainerBlockEntity> containers = Lists.newArrayList();
+		List<Pair<BlockPos, Container>> containers = Lists.newArrayList();
+		HashSet<Container> set = Sets.newHashSet();
 		while (true) {
 			mutablePos.move(direction);
-			if (level.getBlockEntity(mutablePos) instanceof BaseContainerBlockEntity container) {
-				containers.add(container);
+			if (level.getBlockEntity(mutablePos) instanceof BaseContainerBlockEntity blockEntity) {
+				Container container = blockEntity;
+				if (blockEntity.getBlockState().getBlock() instanceof ChestBlock chestBlock) {
+					if (ChestBlock.getConnectedDirection(blockEntity.getBlockState()) == direction.getOpposite()) {
+						continue;
+					}
+					container = ChestBlock.getContainer(
+							chestBlock,
+							blockEntity.getBlockState(),
+							Objects.requireNonNull(blockEntity.getLevel()),
+							mutablePos,
+							true);
+				}
+				if (!set.add(container)) {
+					continue;
+				}
+				containers.add(Pair.of(blockEntity.getBlockPos(), container));
 			} else {
 				break;
 			}
@@ -115,13 +135,14 @@ public class ExportCreativeTabsCommand {
 		return containers;
 	}
 
-	private static LinkedHashSet<String> collectItems(CommandSourceStack source, List<BaseContainerBlockEntity> containers) {
+	private static LinkedHashSet<String> collectItems(CommandSourceStack source, List<Pair<BlockPos, Container>> pairs) {
 		ServerLevel level = source.getLevel();
 		LinkedHashSet<String> items = Sets.newLinkedHashSet();
-		for (BaseContainerBlockEntity container : containers) {
-			level.setBlockAndUpdate(container.getBlockPos().below(), Blocks.YELLOW_WOOL.defaultBlockState());
+		for (Pair<BlockPos, Container> pair : pairs) {
+			level.setBlockAndUpdate(pair.getFirst().below(), Blocks.YELLOW_WOOL.defaultBlockState());
 		}
-		for (BaseContainerBlockEntity container : containers) {
+		for (Pair<BlockPos, Container> pair : pairs) {
+			Container container = pair.getSecond();
 			for (int i = 0; i < container.getContainerSize(); i++) {
 				ItemStack stack = container.getItem(i);
 				if (stack.isEmpty()) {
@@ -129,15 +150,15 @@ public class ExportCreativeTabsCommand {
 				}
 				String item = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 				if (!items.add(item)) {
-					for (BaseContainerBlockEntity container2 : containers) {
-						if (container2.hasAnyMatching($ -> ItemStack.isSameItemSameTags($, stack))) {
-							level.setBlockAndUpdate(container2.getBlockPos().below(), Blocks.RED_WOOL.defaultBlockState());
+					for (Pair<BlockPos, Container> pair1 : pairs) {
+						if (pair1.getSecond().hasAnyMatching($ -> ItemStack.isSameItemSameTags($, stack))) {
+							level.setBlockAndUpdate(pair1.getFirst().below(), Blocks.RED_WOOL.defaultBlockState());
 						}
 					}
 					throw new IllegalStateException("Duplicate item: %s (%s)".formatted(stack.getHoverName().getString(), item));
 				}
 			}
-			level.setBlockAndUpdate(container.getBlockPos().below(), Blocks.LIME_WOOL.defaultBlockState());
+			level.setBlockAndUpdate(pair.getFirst().below(), Blocks.LIME_WOOL.defaultBlockState());
 		}
 		return items;
 	}

@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "horizontal_axis"], "shape": "xkdeco:big_table"}
+{"components": ["water_loggable", "horizontal_axis"], "shape": "xkdeco:big_table", "no_occlusion": true}

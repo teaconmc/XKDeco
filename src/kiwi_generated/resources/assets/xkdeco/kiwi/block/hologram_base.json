@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "directional"], "shape": "xkdeco:hologram_base"}
+{"components": ["water_loggable", "directional"], "shape": "xkdeco:hologram_base", "no_occlusion": true}

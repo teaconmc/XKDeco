@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "horizontal"], "shape": "xkdeco:solar_system_model"}
+{"components": ["water_loggable", "horizontal"], "shape": "xkdeco:solar_system_model", "no_occlusion": true}

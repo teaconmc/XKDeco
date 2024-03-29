@@ -46,6 +46,10 @@ class BlockDefinitionProvider(TableDataProvider):
             data['collision_shape'] = row['CollisionShape']
         if 'InteractionShape' in row and row['InteractionShape'] != '':
             data['interaction_shape'] = row['InteractionShape']
+        if 'NoCollision' in row and row['NoCollision'].lower() == 'true':
+            data['no_collision'] = True
+        if 'NoOcclusion' in row and row['NoOcclusion'].lower() == 'true':
+            data['no_occlusion'] = True
         # item = {}
         # if 'ItemGroup' in row and row['ItemGroup'] != '':
         #     item['tab'] = row['ItemGroup']

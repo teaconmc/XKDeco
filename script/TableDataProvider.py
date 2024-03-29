@@ -15,7 +15,7 @@ class TableDataProvider(DataProvider):
         if self.table not in self.pack.config:
             return
         for inputFile in self.pack.config[self.table]:
-            ext = Path(inputFile).suffix
+            ext = Path(inputFile).suffix.lower()
             if ext == '.csv':
                 Utils.removeBOM(inputFile)
                 with open(inputFile, encoding='utf-8') as csvFile:

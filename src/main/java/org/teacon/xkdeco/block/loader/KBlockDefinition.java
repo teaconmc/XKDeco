@@ -15,6 +15,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import snownee.kiwi.KiwiModule;
 
@@ -23,11 +24,15 @@ public record KBlockDefinition(
 		List<Either<KBlockComponent, String>> components,
 		Optional<KMaterial> material,
 		Optional<GlassType> glassType,
+		int lightEmission,
 		Optional<KiwiModule.RenderLayer.Layer> renderType,
 		Optional<ResourceLocation> shape,
 		Optional<ResourceLocation> collisionShape,
 		Optional<ResourceLocation> interactionShape,
+		boolean noCollision,
+		boolean noOcclusion,
 		boolean sustainsPlant) {
+
 	public static Codec<KBlockDefinition> codec(
 			Map<ResourceLocation, KBlockTemplate> templates,
 			MapCodec<Optional<KMaterial>> materialCodec) {
@@ -35,8 +40,7 @@ public record KBlockDefinition(
 		Preconditions.checkNotNull(defaultTemplate);
 		ConfiguredBlockTemplate defaultConfiguredTemplate = new ConfiguredBlockTemplate(defaultTemplate);
 		return RecordCodecBuilder.create(instance -> instance.group(
-				ConfiguredBlockTemplate.codec(templates)
-						.optionalFieldOf("template", defaultConfiguredTemplate)
+				LoaderExtraCodecs.strictOptionalField(ConfiguredBlockTemplate.codec(templates), "template", defaultConfiguredTemplate)
 						.forGetter(KBlockDefinition::template),
 				Codec.either(KBlockComponent.DIRECT_CODEC, Codec.STRING)
 						.listOf()
@@ -44,10 +48,13 @@ public record KBlockDefinition(
 						.forGetter(KBlockDefinition::components),
 				materialCodec.forGetter(KBlockDefinition::material),
 				LoaderExtraCodecs.GLASS_TYPE_CODEC.optionalFieldOf("glass_type").forGetter(KBlockDefinition::glassType),
+				ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(KBlockDefinition::lightEmission),
 				LoaderExtraCodecs.RENDER_TYPE.optionalFieldOf("render_type").forGetter(KBlockDefinition::renderType),
 				ResourceLocation.CODEC.optionalFieldOf("shape").forGetter(KBlockDefinition::shape),
 				ResourceLocation.CODEC.optionalFieldOf("collision_shape").forGetter(KBlockDefinition::collisionShape),
 				ResourceLocation.CODEC.optionalFieldOf("interaction_shape").forGetter(KBlockDefinition::interactionShape),
+				Codec.BOOL.optionalFieldOf("no_collision", false).forGetter(KBlockDefinition::noCollision),
+				Codec.BOOL.optionalFieldOf("no_occlusion", false).forGetter(KBlockDefinition::noOcclusion),
 				Codec.BOOL.optionalFieldOf("sustains_plant", false).forGetter(KBlockDefinition::sustainsPlant)
 		).apply(instance, KBlockDefinition::new));
 	}
@@ -55,9 +62,18 @@ public record KBlockDefinition(
 	public Block createBlock() {
 		KBlockSettings.Builder builder = KBlockSettings.builder();
 		glassType.ifPresent(builder::glassType);
+		if (lightEmission > 0) {
+			builder.configure($ -> $.lightLevel($$ -> lightEmission));
+		}
 		shape.ifPresent(builder::shape);
 		collisionShape.ifPresent(builder::collisionShape);
 		interactionShape.ifPresent(builder::interactionShape);
+		if (noCollision) {
+			builder.noCollision();
+		}
+		if (noOcclusion) {
+			builder.noOcclusion();
+		}
 		if (sustainsPlant) {
 			builder.sustainsPlant();
 		}

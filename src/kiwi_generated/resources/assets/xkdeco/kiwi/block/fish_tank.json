@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "horizontal"], "shape": "xkdeco:fish_tank"}
+{"components": ["water_loggable", "horizontal"], "shape": "xkdeco:fish_tank", "no_occlusion": true}

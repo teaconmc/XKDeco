@@ -9,19 +9,21 @@ from Pack import Pack
 
 
 def main():
-    # check if loader_config.json exists
-    if not Path('loader_config.json').exists():
-        if Path('script/loader_config.json').exists():
+    configPath = 'loader_config.json'
+    if len(os.sys.argv) > 1:
+        configPath = os.sys.argv[1]
+    if not Path(configPath).exists():
+        if Path('script/' + configPath).exists():
             os.chdir('script')
         else:
-            print('loader_config.json not found')
+            print(configPath + ' not found')
             return
 
-    with open('loader_config.json', encoding='utf-8') as f:
+    with open(configPath, encoding='utf-8') as f:
         config = json.load(f)
     pack = Pack(config)
     pack.addProvider(MaterialProvider(pack))
-    pack.addProvider(TableDataProvider(pack, 'assets/{}/kiwi/block_template', 'block_templates'))
+    pack.addProvider(TableDataProvider(pack, 'assets/{}/kiwi/template/block', 'block_templates'))
     pack.addProvider(BlockDefinitionProvider(pack))
     pack.finish()
 

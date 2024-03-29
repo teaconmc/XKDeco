@@ -1,1 +1,1 @@
-{"components": ["water_loggable"], "shape": "xkdeco:table"}
+{"components": ["water_loggable"], "shape": "xkdeco:table", "no_occlusion": true}

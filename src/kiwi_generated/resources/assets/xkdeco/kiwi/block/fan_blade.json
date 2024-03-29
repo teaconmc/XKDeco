@@ -1,1 +1,1 @@
-{"render_type": "cutout", "components": ["water_loggable", "directional"], "shape": "xkdeco:fan"}
+{"render_type": "cutout", "components": ["water_loggable", "directional"], "shape": "xkdeco:fan", "no_occlusion": true}

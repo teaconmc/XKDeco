@@ -1,1 +1,1 @@
-{"components": ["directional"], "shape": "xkdeco:item_frame_cover"}
+{"components": ["directional"], "shape": "xkdeco:item_frame_cover", "no_occlusion": true}

@@ -2,6 +2,9 @@ package org.teacon.xkdeco.block.loader;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.teacon.xkdeco.block.setting.GlassType;
 
@@ -10,6 +13,10 @@ import com.google.common.collect.HashBiMap;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.MapLike;
+import com.mojang.serialization.RecordBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
@@ -95,5 +102,69 @@ public class LoaderExtraCodecs {
 
 	public static <T> Codec<T> withAlternative(Codec<T> codec, Codec<? extends T> codec2) {
 		return Codec.either(codec, codec2).xmap(either -> either.map(object -> object, object -> object), Either::left);
+	}
+
+	public static <A> MapCodec<Optional<A>> strictOptionalField(Codec<A> codec, String string) {
+		return new StrictOptionalFieldCodec<>(string, codec);
+	}
+
+	public static <A> MapCodec<A> strictOptionalField(Codec<A> codec, String string, A object) {
+		return strictOptionalField(codec, string).xmap(
+				optional -> optional.orElse(object),
+				object2 -> Objects.equals(object2, object) ? Optional.empty() : Optional.of(object2));
+	}
+
+	static final class StrictOptionalFieldCodec<A>
+			extends MapCodec<Optional<A>> {
+		private final String name;
+		private final Codec<A> elementCodec;
+
+		public StrictOptionalFieldCodec(String string, Codec<A> codec) {
+			this.name = string;
+			this.elementCodec = codec;
+		}
+
+		@Override
+		public <T> DataResult<Optional<A>> decode(DynamicOps<T> dynamicOps, MapLike<T> mapLike) {
+			T object = mapLike.get(this.name);
+			if (object == null) {
+				return DataResult.success(Optional.empty());
+			}
+			return this.elementCodec.parse(dynamicOps, object).map(Optional::of);
+		}
+
+		@Override
+		public <T> RecordBuilder<T> encode(Optional<A> optional, DynamicOps<T> dynamicOps, RecordBuilder<T> recordBuilder) {
+			if (optional.isPresent()) {
+				return recordBuilder.add(this.name, this.elementCodec.encodeStart(dynamicOps, optional.get()));
+			}
+			return recordBuilder;
+		}
+
+		@Override
+		public <T> Stream<T> keys(DynamicOps<T> dynamicOps) {
+			return Stream.of(dynamicOps.createString(this.name));
+		}
+
+		public boolean equals(Object object) {
+			if (this == object) {
+				return true;
+			}
+			if (object instanceof StrictOptionalFieldCodec) {
+				StrictOptionalFieldCodec strictOptionalFieldCodec = (StrictOptionalFieldCodec) object;
+				return Objects.equals(this.name, strictOptionalFieldCodec.name) && Objects.equals(
+						this.elementCodec,
+						strictOptionalFieldCodec.elementCodec);
+			}
+			return false;
+		}
+
+		public int hashCode() {
+			return Objects.hash(this.name, this.elementCodec);
+		}
+
+		public String toString() {
+			return "StrictOptionalFieldCodec[" + this.name + ": " + this.elementCodec + "]";
+		}
 	}
 }
