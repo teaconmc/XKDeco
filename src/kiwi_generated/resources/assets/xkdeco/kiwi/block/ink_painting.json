@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "horizontal"], "shape": "minecraft:carpet"}
+{"components": ["water_loggable", "horizontal"], "shape": "minecraft:carpet", "no_occlusion": true}

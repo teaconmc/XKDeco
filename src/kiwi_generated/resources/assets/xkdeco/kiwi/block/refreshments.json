@@ -1,1 +1,1 @@
-{"components": ["horizontal", {"min": 1, "max": 7, "type": "minecraft:consumable"}]}
+{"components": ["horizontal", {"min": 1, "max": 7, "type": "minecraft:consumable"}], "no_occlusion": true}

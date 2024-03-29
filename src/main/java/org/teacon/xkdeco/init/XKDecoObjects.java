@@ -137,84 +137,84 @@ public final class XKDecoObjects {
 			String northShapeId,
 			boolean isSupportNeeded,
 			KBlockSettings.Builder settings) {
-		var itemProperties = new Item.Properties();
-		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
-		RegistryObject<BasicBlock> block;
-		if (northShape == Shapes.block()) {
-			block = BLOCKS.register(id, () -> new BasicBlock(settings.horizontal().get()));
-		} else {
-			block = BLOCKS.register(
-					id,
-					() -> new BasicBlock(settings
-							.horizontal()
-							.shape(new ResourceLocation(northShapeId))
-							.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
-							.get()));
-		}
-		ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//		var itemProperties = new Item.Properties();
+//		VoxelShape northShape = ShapeStorage.getInstance().get(northShapeId);
+//		RegistryObject<BasicBlock> block;
+//		if (northShape == Shapes.block()) {
+//			block = BLOCKS.register(id, () -> new BasicBlock(settings.horizontal().get()));
+//		} else {
+//			block = BLOCKS.register(
+//					id,
+//					() -> new BasicBlock(settings
+//							.horizontal()
+//							.shape(new ResourceLocation(northShapeId))
+//							.canSurviveHandler(isSupportNeeded ? CanSurviveHandler.checkFloor() : null)
+//							.get()));
+//		}
+//		ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
 	}
 
 	private static void addDirectional(String id, KBlockSettings.Builder settings) {
-		var itemProperties = new Item.Properties();
-		var block = BLOCKS.register(
-				id,
-				() -> new BasicBlock(settings.directional().get()));
-		ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
+//		var itemProperties = new Item.Properties();
+//		var block = BLOCKS.register(
+//				id,
+//				() -> new BasicBlock(settings.directional().get()));
+//		ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
 	}
 
 	private static void addIsotropic(String id, KBlockSettings.Builder settings) {
-		var itemProperties = new Item.Properties();
-		if (id.startsWith("quartz_glass")) {
-			settings.glassType(GlassType.QUARTZ);
-		} else if (id.startsWith("translucent_")) {
-			settings.glassType(GlassType.TRANSLUCENT);
-		} else if (id.startsWith("toughened_glass")) {
-			settings.glassType(GlassType.TOUGHENED);
-		} else if (id.contains("glass")) {
-			settings.glassType(GlassType.CLEAR);
-		}
-		Supplier<Block> blockSupplier;
-		if (id.contains(SLAB_SUFFIX)) {
-//			blockSupplier = () -> new SlabBlock(settings.get());
-			return;
-		} else if (id.contains(STAIRS_SUFFIX)) {
-//			blockSupplier = () -> new StairBlock(Blocks.AIR.defaultBlockState(), settings.get());
-			return;
-		} else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
-//			blockSupplier = () -> new RotatedPillarBlock(settings.get());
-			return;
-		} else if (id.contains(LINED_PREFIX) || id.contains(LUXURY_PREFIX) || id.contains(PAINTED_PREFIX) || id.contains(CHISELED_PREFIX) ||
-				id.contains(DOUBLE_SCREW_PREFIX)) {
-//			blockSupplier = () -> new RotatedPillarBlock(settings.get());
-			return;
-		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
-			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
-					.shape(XKDeco.id("big_table"))
-					.get());
-		} else if (id.contains(TABLE_SUFFIX)) {
-			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
-					.shape(XKDeco.id("table"))
-					.get());
-		} else if (id.contains("_trapdoor")) {
-//			blockSupplier = () -> new TrapDoorBlock(
-//					settings.get(),
-//					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
-			return;
-		} else if (id.endsWith("_door")) {
-//			blockSupplier = () -> new DoorBlock(
-//					settings.get(),
-//					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
-			return;
-		} else if (id.endsWith("_wall")) {
-//			blockSupplier = () -> new WallBlock(settings.get());
-			return;
-		} else if (settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
-			blockSupplier = () -> new BasicBlock(settings.get());
-		} else {
-			blockSupplier = () -> new Block(settings.get());
-		}
-		var blockHolder = BLOCKS.register(id, blockSupplier);
-		ITEMS.register(id, () -> new BlockItem(blockHolder.get(), itemProperties));
+//		var itemProperties = new Item.Properties();
+//		if (id.startsWith("quartz_glass")) {
+//			settings.glassType(GlassType.QUARTZ);
+//		} else if (id.startsWith("translucent_")) {
+//			settings.glassType(GlassType.TRANSLUCENT);
+//		} else if (id.startsWith("toughened_glass")) {
+//			settings.glassType(GlassType.TOUGHENED);
+//		} else if (id.contains("glass")) {
+//			settings.glassType(GlassType.CLEAR);
+//		}
+//		Supplier<Block> blockSupplier;
+//		if (id.contains(SLAB_SUFFIX)) {
+////			blockSupplier = () -> new SlabBlock(settings.get());
+//			return;
+//		} else if (id.contains(STAIRS_SUFFIX)) {
+////			blockSupplier = () -> new StairBlock(Blocks.AIR.defaultBlockState(), settings.get());
+//			return;
+//		} else if (id.contains(LOG_SUFFIX) || id.contains(WOOD_SUFFIX) || id.contains(PILLAR_SUFFIX)) {
+////			blockSupplier = () -> new RotatedPillarBlock(settings.get());
+//			return;
+//		} else if (id.contains(LINED_PREFIX) || id.contains(LUXURY_PREFIX) || id.contains(PAINTED_PREFIX) || id.contains(CHISELED_PREFIX) ||
+//				id.contains(DOUBLE_SCREW_PREFIX)) {
+////			blockSupplier = () -> new RotatedPillarBlock(settings.get());
+//			return;
+//		} else if (id.contains(BIG_TABLE_SUFFIX) || id.contains(TALL_TABLE_SUFFIX)) {
+//			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
+//					.shape(XKDeco.id("big_table"))
+//					.get());
+//		} else if (id.contains(TABLE_SUFFIX)) {
+//			blockSupplier = () -> new BasicBlock(BlockSettingPresets.thingy(null)
+//					.shape(XKDeco.id("table"))
+//					.get());
+//		} else if (id.contains("_trapdoor")) {
+////			blockSupplier = () -> new TrapDoorBlock(
+////					settings.get(),
+////					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+//			return;
+//		} else if (id.endsWith("_door")) {
+////			blockSupplier = () -> new DoorBlock(
+////					settings.get(),
+////					id.contains("factory") || id.contains("steel") ? BlockSetType.IRON : BlockSetType.OAK);
+//			return;
+//		} else if (id.endsWith("_wall")) {
+////			blockSupplier = () -> new WallBlock(settings.get());
+//			return;
+//		} else if (settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
+//			blockSupplier = () -> new BasicBlock(settings.get());
+//		} else {
+//			blockSupplier = () -> new Block(settings.get());
+//		}
+//		var blockHolder = BLOCKS.register(id, blockSupplier);
+//		ITEMS.register(id, () -> new BlockItem(blockHolder.get(), itemProperties));
 	}
 
 	private static void addRoof(String id, Supplier<BlockBehaviour.Properties> propFactory, boolean asian) {
@@ -657,21 +657,21 @@ public final class XKDecoObjects {
 		addIsotropic("chiseled_steel_block", BlockSettingPresets.steel());
 		addIsotropic("hollow_steel_block", BlockSettingPresets.hollowSteel().waterLoggable());
 		addIsotropic("hollow_steel_trapdoor", BlockSettingPresets.hollowSteel());
-		addBlock(
-				"steel_safety_ladder",
-				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
-						.horizontal()
-						.waterLoggable()
-						.shape(XKDeco.id("safety_ladder")).get())
-		);
-		addBlock(
-				"steel_ladder",
-				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
-						.horizontal()
-						.waterLoggable()
-						.shape(XKDeco.id("ladder"))
-						.canSurviveHandler(new MetalLadderCanSurviveHandler()).get())
-		);
+//		addBlock(
+//				"steel_safety_ladder",
+//				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
+//						.horizontal()
+//						.waterLoggable()
+//						.shape(XKDeco.id("safety_ladder")).get())
+//		);
+//		addBlock(
+//				"steel_ladder",
+//				() -> new BasicBlock(BlockSettingPresets.hollowSteel()
+//						.horizontal()
+//						.waterLoggable()
+//						.shape(XKDeco.id("ladder"))
+//						.canSurviveHandler(new MetalLadderCanSurviveHandler()).get())
+//		);
 		addIsotropic("framed_steel_block", BlockSettingPresets.steel());
 
 		addIsotropic("factory_block", BlockSettingPresets.steel());
@@ -851,48 +851,48 @@ public final class XKDecoObjects {
 
 		addBasic("teapot", "xkdeco:teapot", true, BlockSettingPresets.thingy(null));
 		StackableComponent component = StackableComponent.create(4);
-		addBlock(
-				"cup",
-				() -> new BasicBlock(BlockSettingPresets.thingy(null)
-						.horizontal()
-						.component(component)
-						.canSurviveHandler(CanSurviveHandler.checkFloor())
-						.shape(ShapeGenerator.layered(component, XKDeco.id("cup")))
-						.get())
-		);
+//		addBlock(
+//				"cup",
+//				() -> new BasicBlock(BlockSettingPresets.thingy(null)
+//						.horizontal()
+//						.component(component)
+//						.canSurviveHandler(CanSurviveHandler.checkFloor())
+//						.shape(ShapeGenerator.layered(component, XKDeco.id("cup")))
+//						.get())
+//		);
 		addBasic("tea_ware", "xkdeco:tea_ware", true, BlockSettingPresets.thingy(null));
 
 		FoodProperties refreshmentsFood = new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build();
-		addBlock(
-				"refreshments",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
-		);
-		addBlock(
-				"refreshments2",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
-		);
-		addBlock(
-				"refreshments3",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
-		);
-		addBlock(
-				"refreshments4",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
-		);
-		addBlock(
-				"refreshments5",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
-		);
-		addBlock(
-				"refreshments6",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
-		);
+//		addBlock(
+//				"refreshments",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
+//		);
+//		addBlock(
+//				"refreshments2",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
+//		);
+//		addBlock(
+//				"refreshments3",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
+//		);
+//		addBlock(
+//				"refreshments4",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
+//		);
+//		addBlock(
+//				"refreshments5",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
+//		);
+//		addBlock(
+//				"refreshments6",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, refreshmentsFood, null).horizontal().get())
+//		);
 
 		FoodProperties fruitPlatterFood = new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build();
-		addBlock(
-				"fruit_platter",
-				() -> new BasicBlock(BlockSettingPresets.food(1, 7, fruitPlatterFood, null).horizontal().get())
-		);
+//		addBlock(
+//				"fruit_platter",
+//				() -> new BasicBlock(BlockSettingPresets.food(1, 7, fruitPlatterFood, null).horizontal().get())
+//		);
 
 		addBasic("calligraphy", "carpet", true, BlockSettingPresets.thingy(null));
 		addBasic("ink_painting", "carpet", true, BlockSettingPresets.thingy(null));
@@ -1040,14 +1040,14 @@ public final class XKDecoObjects {
 				BlockSettingPresets.lightThingy(null).shape(XKDeco.id("factory_lamp"))
 		);
 
-		addBlock(
-				"factory_light_bar",
-				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
-						.noCollission()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("factory_light_bar"))
-						.get())
-		);
+//		addBlock(
+//				"factory_light_bar",
+//				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
+//						.noCollision()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("factory_light_bar"))
+//						.get())
+//		);
 
 		addIsotropic(
 				"factory_ceiling_lamp",
@@ -1082,21 +1082,21 @@ public final class XKDecoObjects {
 				BlockSettingPresets.thingy(null).shape(XKDeco.id("fan"))
 		);
 
-		addBlock(
-				"mechanical_console",
-				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
+//		addBlock(
+//				"mechanical_console",
+//				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
 		addBasic("mechanical_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null));
 		addBasic("mechanical_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null));
 
-		addBlock(
-				"tech_console",
-				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
+//		addBlock(
+//				"tech_console",
+//				() -> new BasicBlock(BlockSettingPresets.lightThingy(null)
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
 		addBasic("tech_screen", "xkdeco:wide_screen", false, BlockSettingPresets.thingy(null));
 		addBasic("tech_chair", "xkdeco:chair", false, BlockSettingPresets.thingy(null));
 
@@ -1183,38 +1183,38 @@ public final class XKDecoObjects {
 //								ShapeStorage.getInstance().get(XKDeco.id("hollow_steel_half_beam_wall"))))
 //						.get())
 //		);
-		addBlock(
-				"dark_wall_base",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base"))
-						.get())
-		);
-		addBlock(
-				"dark_wall_base2",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2"))
-						.get())
-		);
-		addBlock(
-				"light_wall_base",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base"))
-						.get())
-		);
-		addBlock(
-				"light_wall_base2",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2"))
-						.get())
-		);
+//		addBlock(
+//				"dark_wall_base",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base"))
+//						.get())
+//		);
+//		addBlock(
+//				"dark_wall_base2",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2"))
+//						.get())
+//		);
+//		addBlock(
+//				"light_wall_base",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base"))
+//						.get())
+//		);
+//		addBlock(
+//				"light_wall_base2",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2"))
+//						.get())
+//		);
 		addDirectional("dark_stone_handrail_head", BlockSettingPresets.thingy(null));
 		addDirectional("light_stone_handrail_head", BlockSettingPresets.thingy(null));
 
@@ -1258,22 +1258,22 @@ public final class XKDecoObjects {
 				"egyptian_stripe_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null)
 		);
-		addBlock(
-				"egyptian_moulding",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2")) //TODO
-						.get())
-		);
-		addBlock(
-				"egyptian_moulding2",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2")) //TODO
-						.get())
-		);
+//		addBlock(
+//				"egyptian_moulding",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2")) //TODO
+//						.get())
+//		);
+//		addBlock(
+//				"egyptian_moulding2",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2")) //TODO
+//						.get())
+//		);
 
 		addIsotropic("quartz_wall", KBlockSettings.copyProperties(Blocks.QUARTZ_BLOCK));
 		addIsotropic("greek_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null));
@@ -1295,22 +1295,22 @@ public final class XKDecoObjects {
 				"greek_ionic_column_head_corner",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null).horizontal()
 		);
-		addBlock(
-				"greek_moulding",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2")) //TODO
-						.get())
-		);
-		addBlock(
-				"greek_moulding2",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2")) //TODO
-						.get())
-		);
+//		addBlock(
+//				"greek_moulding",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2")) //TODO
+//						.get())
+//		);
+//		addBlock(
+//				"greek_moulding2",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2")) //TODO
+//						.get())
+//		);
 
 		addIsotropic("maya_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null));
 		addIsotropic("maya_stonebrick_column", BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null));
@@ -1369,22 +1369,22 @@ public final class XKDecoObjects {
 				"roman_toscan_column_head",
 				BlockSettingPresets.stoneColumn(Blocks.STONE_BRICKS, null)
 		);
-		addBlock(
-				"roman_moulding",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2")) //TODO
-						.get())
-		);
-		addBlock(
-				"roman_moulding2",
-				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
-						.waterLoggable()
-						.component(MouldingComponent.getInstance())
-						.shape(XKDeco.id("wall_base2")) //TODO
-						.get())
-		);
+//		addBlock(
+//				"roman_moulding",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2")) //TODO
+//						.get())
+//		);
+//		addBlock(
+//				"roman_moulding2",
+//				() -> new BasicBlock(KBlockSettings.copyProperties(Blocks.STONE_BRICKS)
+//						.waterLoggable()
+//						.component(MouldingComponent.getInstance())
+//						.shape(XKDeco.id("wall_base2")) //TODO
+//						.get())
+//		);
 //		addBlock(
 //				"hollow_steel_bars",
 //				() -> new IronBarsBlock(BlockSettingPresets.hollowSteel()
@@ -1403,16 +1403,16 @@ public final class XKDecoObjects {
 	}
 
 	private static void addScreen(String id) {
-		var settings = KBlockSettings.builder()
-				.waterLoggable()
-				.component(FrontAndTopComponent.getInstance())
-				.shape(XKDeco.id("screen"))
-				.configure($ -> {
-					if (!"off".equals(id)) {
-						$.lightLevel($$ -> 9);
-					}
-				});
-		addBlock("screen_" + id, () -> new BasicBlock(settings.get()));
+//		var settings = KBlockSettings.builder()
+//				.waterLoggable()
+//				.component(FrontAndTopComponent.getInstance())
+//				.shape(XKDeco.id("screen"))
+//				.configure($ -> {
+//					if (!"off".equals(id)) {
+//						$.lightLevel($$ -> 9);
+//					}
+//				});
+//		addBlock("screen_" + id, () -> new BasicBlock(settings.get()));
 	}
 
 	private static void addBlock(String id, Supplier<Block> blockSupplier) {
@@ -1433,10 +1433,10 @@ public final class XKDecoObjects {
 		addIsotropic(id + "_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD));
 		addIsotropic(id + "_big_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD));
 		addIsotropic(id + "_tall_table", BlockSettingPresets.thingy(mapColor, SoundType.WOOD));
-		addBlock(id + "_desk", () -> new BasicBlock(BlockSettingPresets.thingy(mapColor, SoundType.WOOD)
-				.horizontalAxis()
-				.shape(XKDeco.id("big_table"))
-				.get()));
+//		addBlock(id + "_desk", () -> new BasicBlock(BlockSettingPresets.thingy(mapColor, SoundType.WOOD)
+//				.horizontalAxis()
+//				.shape(XKDeco.id("big_table"))
+//				.get()));
 		addBasic(
 				id + "_stool",
 				"xkdeco:long_stool",
@@ -1494,46 +1494,46 @@ public final class XKDecoObjects {
 //				() -> new WallBlock(copyProperties(Blocks.OAK_FENCE, mapColor).get())
 //		);
 
-		addBlock(
-				id + "_meiren_kao",
-				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
-						.shape(XKDeco.id("meiren_kao"))
-						.noOcclusion()
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
-		addBlock(
-				id + "_meiren_kao_with_column",
-				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
-						.shape(XKDeco.id("meiren_kao_with_column"))
-						.noOcclusion()
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
-		addBlock(
-				id + "_dougong",
-				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
-						.waterLoggable()
-						.noOcclusion()
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
-		addBlock(
-				id + "_dougong_connection",
-				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
-						.waterLoggable()
-						.noOcclusion()
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
-		addBlock(
-				id + "_dougong_hollow_connection",
-				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
-						.waterLoggable()
-						.noOcclusion()
-						.component(MouldingComponent.getInstance())
-						.get())
-		);
+//		addBlock(
+//				id + "_meiren_kao",
+//				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
+//						.shape(XKDeco.id("meiren_kao"))
+//						.noOcclusion()
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
+//		addBlock(
+//				id + "_meiren_kao_with_column",
+//				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS).waterLoggable()
+//						.shape(XKDeco.id("meiren_kao_with_column"))
+//						.noOcclusion()
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
+//		addBlock(
+//				id + "_dougong",
+//				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+//						.waterLoggable()
+//						.noOcclusion()
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
+//		addBlock(
+//				id + "_dougong_connection",
+//				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+//						.waterLoggable()
+//						.noOcclusion()
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
+//		addBlock(
+//				id + "_dougong_hollow_connection",
+//				() -> new BasicBlock(copyProperties(Blocks.OAK_PLANKS)
+//						.waterLoggable()
+//						.noOcclusion()
+//						.component(MouldingComponent.getInstance())
+//						.get())
+//		);
 //		addBlock(
 //				id + "_window",
 //				() -> new TrapDoorBlock(

@@ -25,6 +25,6 @@ run_server
 run_client
 jsondiff
 __pycache__
-/script/xkdeco.xlsx
+/script/*.xlsx
 /script/xkdeco-blocks.csv
 /script/exported_creative_tabs.json

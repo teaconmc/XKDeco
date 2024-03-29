@@ -1,1 +1,1 @@
-{"light_emission": 15, "components": ["water_loggable"], "shape": "xkdeco:lantern"}
+{"light_emission": 15, "components": ["water_loggable"], "shape": "xkdeco:lantern", "no_occlusion": true}

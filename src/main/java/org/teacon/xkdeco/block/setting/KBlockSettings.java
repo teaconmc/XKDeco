@@ -6,7 +6,7 @@ import java.util.function.ToIntFunction;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.XKDecoConfig;
+import org.teacon.xkdeco.XKDecoClientConfig;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.duck.KBlockProperties;
@@ -32,6 +32,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.VoxelUtil;
 
 public class KBlockSettings {
@@ -61,7 +62,7 @@ public class KBlockSettings {
 		this.canSurviveHandler = builder.canSurviveHandler;
 		this.analogOutputSignal = builder.getAnalogOutputSignal();
 		this.components = Map.copyOf(builder.components);
-		if (XKDecoConfig.exportBlocksMore) {
+		if (Platform.isPhysicalClient() && XKDecoClientConfig.exportBlocksMore) {
 			if (builder.shapeId != null || builder.collisionShapeId != null || builder.interactionShapeId != null) {
 				ExportBlocksCommand.putMoreInfo(this, new MoreInfo(builder.shapeId, builder.collisionShapeId, builder.interactionShapeId));
 			}
@@ -218,7 +219,7 @@ public class KBlockSettings {
 			return this;
 		}
 
-		public Builder noCollission() {
+		public Builder noCollision() {
 			properties.noCollission();
 			return this;
 		}

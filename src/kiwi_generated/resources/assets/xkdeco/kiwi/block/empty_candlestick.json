@@ -1,1 +1,1 @@
-{"components": ["water_loggable", "directional"], "shape": "xkdeco:empty_candlestick"}
+{"components": ["water_loggable", "directional"], "shape": "xkdeco:empty_candlestick", "no_occlusion": true}

@@ -1,1 +1,1 @@
-{"render_type": "translucent", "light_emission": 15}
+{"render_type": "translucent", "light_emission": 15, "no_occlusion": true}

@@ -1,1 +1,1 @@
-{"light_emission": 15, "components": ["water_loggable"], "shape": "xkdeco:big_candlestick"}
+{"light_emission": 15, "components": ["water_loggable"], "shape": "xkdeco:big_candlestick", "no_occlusion": true}

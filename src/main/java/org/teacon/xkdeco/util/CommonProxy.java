@@ -3,6 +3,7 @@ package org.teacon.xkdeco.util;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -25,6 +26,8 @@ import org.teacon.xkdeco.duck.KBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
+import com.google.common.collect.Lists;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -37,7 +40,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.server.packs.repository.FolderRepositorySource;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
@@ -148,7 +150,11 @@ public class CommonProxy {
 		});
 		modEventBus.addListener(XKDecoObjects::addMimicWallsToTab);
 		modEventBus.addListener((AddPackFindersEvent event) -> {
-			event.addRepositorySource(new FolderRepositorySource(PACK_DIRECTORY, event.getPackType(), PackSource.DEFAULT));
+			event.addRepositorySource(new RequiredFolderRepositorySource(
+					PACK_DIRECTORY,
+					event.getPackType(),
+					PackSource.BUILT_IN
+			));
 		});
 
 		if (Platform.isPhysicalClient()) {
@@ -180,17 +186,17 @@ public class CommonProxy {
 	public static void initLoader() {
 		//noinspection ResultOfMethodCallIgnored
 		PACK_DIRECTORY.toFile().mkdirs();
-		FolderRepositorySource folderRepositorySource = new FolderRepositorySource(
-				PACK_DIRECTORY,
-				PackType.CLIENT_RESOURCES,
-				PackSource.DEFAULT);
+		var folderRepositorySource = new RequiredFolderRepositorySource(PACK_DIRECTORY, PackType.CLIENT_RESOURCES, PackSource.BUILT_IN);
 		PackRepository packRepository = new PackRepository(folderRepositorySource);
 		ResourcePackLoader.loadResourcePacks(packRepository, CommonProxy::buildPackFinder);
 		packRepository.reload();
-		packRepository.setSelected(packRepository.getAvailableIds());
+		List<String> selected = Lists.newArrayList(packRepository.getAvailableIds());
+		selected.remove("mod_resources");
+		selected.add(0, "mod_resources");
+		packRepository.setSelected(selected);
 		ResourceManager resourceManager = new MultiPackResourceManager(PackType.CLIENT_RESOURCES, packRepository.openAllSelected());
 		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
-		var templates = JsonLoader.load(resourceManager, "kiwi/block_template", KBlockTemplate.DIRECT_CODEC);
+		var templates = JsonLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.DIRECT_CODEC);
 		templates.forEach((key, value) -> value.resolve(key));
 		var blocks = JsonLoader.load(
 				resourceManager,
@@ -199,11 +205,14 @@ public class CommonProxy {
 						templates,
 						LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material")
 				));
-		KBlockTemplate defaultTemplate = templates.get(new ResourceLocation("block"));
+//		KBlockTemplate defaultTemplate = templates.get(new ResourceLocation("block"));
 		blocks.forEach((id, definition) -> {
-			if (defaultTemplate == definition.template().template()) {
-				return;
-			}
+//			if (defaultTemplate == definition.template().template()) {
+//				return;
+//			}
+//			if (definition.template() == KBlockDefinition.DEFAULT_TEMPLATE.getValue()) {
+//				return;
+//			}
 			Block block = definition.createBlock();
 			if (block != null) {
 				ForgeRegistries.BLOCKS.register(id, block);
