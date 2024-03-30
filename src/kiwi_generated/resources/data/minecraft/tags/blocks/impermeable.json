@@ -1,18 +1,18 @@
 {
   "values": [
-    "xkdeco:glass_tiles",
+    "xkdeco:glass_door",
     "xkdeco:glass_tile_slab",
     "xkdeco:glass_tile_stairs",
+    "xkdeco:glass_tiles",
     "xkdeco:glass_trapdoor",
-    "xkdeco:glass_door",
-    "xkdeco:translucent_lamp_block",
-    "xkdeco:translucent_lamp_slab",
-    "xkdeco:translucent_lamp_stairs",
     "xkdeco:quartz_glass",
     "xkdeco:quartz_glass_slab",
     "xkdeco:quartz_glass_stairs",
     "xkdeco:toughened_glass",
     "xkdeco:toughened_glass_slab",
-    "xkdeco:toughened_glass_stairs"
+    "xkdeco:toughened_glass_stairs",
+    "xkdeco:translucent_lamp_block",
+    "xkdeco:translucent_lamp_slab",
+    "xkdeco:translucent_lamp_stairs"
   ]
 }

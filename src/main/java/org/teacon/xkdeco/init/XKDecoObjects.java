@@ -214,28 +214,13 @@ public final class XKDecoObjects {
 //		}
 //	}
 
-	private static void addSpecial(String id, KBlockSettings.Builder settings) {
-		var itemProperties = new Item.Properties();
-//		if (id.equals(REFRESHMENT_SPECIAL)) {
-//			var block = BLOCKS.register(id, () -> new BasicBlock(settings.get()));
-//			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-//		} else if (id.contains(ITEM_DISPLAY_SUFFIX) || id.equals(ITEM_PROJECTOR_SPECIAL)) {
-//			var block = BLOCKS.register(id, () -> new ItemDisplayBlock(settings.get()));
-//			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-//		} else if (id.contains(BLOCK_DISPLAY_SUFFIX)) {
-//			var block = BLOCKS.register(id, () -> new BlockDisplayBlock(settings.get()));
-//			ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-//		} else if (id.contains(WARDROBE_SUFFIX)) {
+	private static void addWardrobe(String id, KBlockSettings.Builder settings) {
 		var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(KBlockComponents.WATER_LOGGABLE.get()).get()));
-		ITEMS.register(id, () -> new BlockItem(block.get(), itemProperties));
-//		} else {
-//			throw new IllegalArgumentException("Illegal id (" + id + ") for special blocks");
-//		}
+		ITEMS.register(id, () -> new BlockItem(block.get(), new Item.Properties()));
 	}
 
 	private static void addItem(String id) {
-		var itemProperties = new Item.Properties();
-		ITEMS.register(id, () -> new Item(itemProperties));
+		ITEMS.register(id, () -> new Item(new Item.Properties()));
 	}
 
 	public static void addMimicWallBlocks(RegisterEvent event) {
@@ -314,12 +299,12 @@ public final class XKDecoObjects {
 		addRoof("blue_roof", () -> BlockSettingPresets.blueTiles().noOcclusion().get(), false);
 		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), false);
 		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), false);
-		addSpecial("varnished_wardrobe", BlockSettingPresets.thingy(null));
-		addSpecial("ebony_wardrobe", BlockSettingPresets.thingy(null));
-		addSpecial("mahogany_wardrobe", BlockSettingPresets.thingy(null));
-		addSpecial("iron_wardrobe", BlockSettingPresets.thingy(null));
-		addSpecial("glass_wardrobe", BlockSettingPresets.thingy(null));
-		addSpecial("full_glass_wardrobe", BlockSettingPresets.thingy(null));
+		addWardrobe("varnished_wardrobe", BlockSettingPresets.thingy(null));
+		addWardrobe("ebony_wardrobe", BlockSettingPresets.thingy(null));
+		addWardrobe("mahogany_wardrobe", BlockSettingPresets.thingy(null));
+		addWardrobe("iron_wardrobe", BlockSettingPresets.thingy(null));
+		addWardrobe("glass_wardrobe", BlockSettingPresets.thingy(null));
+		addWardrobe("full_glass_wardrobe", BlockSettingPresets.thingy(null));
 		addItem("hologram_planet");
 		addItem("hologram_dna");
 		addItem("hologram_pictures");

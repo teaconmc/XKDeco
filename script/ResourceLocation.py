@@ -22,3 +22,6 @@ class ResourceLocation:
 
     def __str__(self):
         return self.namespace + ':' + self.path
+
+    def __repr__(self):
+        return 'L\'' + str(self) + '\''

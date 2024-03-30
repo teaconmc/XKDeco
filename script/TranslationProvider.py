@@ -7,7 +7,7 @@ from pathlib import Path
 
 class TranslationProvider(DataProvider):
     def __init__(self, pack):
-        super().__init__(pack, 'assets/{}/lang')
+        super().__init__(pack, 'translations', 'assets/{}/lang')
         self.data = {}
         self.prettyPrint = True
 

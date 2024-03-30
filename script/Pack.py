@@ -1,19 +1,17 @@
 import os
-import tempfile
 import shutil
-from zipfile import ZipFile
+import tempfile
 from pathlib import Path
+from zipfile import ZipFile
 
-from CreativeTabProvider import CreativeTabProvider
 from DataProvider import DataProvider
 from ResourceLocation import ResourceLocation
-from TranslationProvider import TranslationProvider
 
 
 class Pack:
     def __init__(self, config):
         self.config = config
-        self.providers = []
+        self.providers = {}
         self.tempDir = tempfile.mkdtemp()
         if 'json_pretty_print' not in self.config:
             self.config['json_pretty_print'] = False
@@ -28,17 +26,13 @@ class Pack:
             path = Path(include)
             if not path.is_dir():
                 raise ValueError('Include path is not a directory: ' + path.absolute().as_posix())
-        self.creativeTabs = CreativeTabProvider(self)
-        self.translations = TranslationProvider(self)
         print('Temp directory:', self.tempDir)
 
     def addProvider(self, provider: DataProvider):
-        self.providers.append(provider)
+        self.providers[provider.identifier] = provider
 
     def finish(self):
-        self.providers.append(self.creativeTabs)
-        self.providers.append(self.translations)
-        for provider in self.providers:
+        for provider in self.providers.values():
             provider.generate()
             print('Generated', provider.count, 'files for', str(provider))
         self.providers.clear()

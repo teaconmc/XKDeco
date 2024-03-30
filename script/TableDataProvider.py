@@ -1,15 +1,17 @@
 import csv
-import openpyxl
 from pathlib import Path
+
+import openpyxl
 
 import Utils
 from DataProvider import DataProvider
 
 
 class TableDataProvider(DataProvider):
-    def __init__(self, pack, dataPath: str, table: str):
-        super().__init__(pack, dataPath)
+    def __init__(self, pack, dataPath: str, table: str, ignoredFields: set = None):
+        super().__init__(pack, table, dataPath)
         self.table = table
+        self.ignoredFields = ignoredFields if ignoredFields is not None else set()
 
     def generate(self):
         if self.table not in self.pack.config:
@@ -27,16 +29,18 @@ class TableDataProvider(DataProvider):
                     for row in csvReader:
                         self.generateRow(row, tableConfig)
             elif ext == '.xlsx':
-                workbook = openpyxl.load_workbook(inputFile, read_only=True)
+                # it will return us fewer columns if we use read_only=True, took me one hour to figure out
+                workbook = openpyxl.load_workbook(inputFile, read_only=False)
                 sheet = workbook[self.table]
                 tableConfig = {}
-                for cell in sheet[1]:
+                fields = sheet[1]
+                for cell in fields:
                     field = cell.value
                     if field != 'Name:en_us' and field.startswith('Name:'):
                         tableConfig['SecondaryName'] = field[5:]
                 for row in sheet.iter_rows(min_row=2, values_only=True):
                     rowDict = {}
-                    for i, field in enumerate(sheet[1]):
+                    for i, field in enumerate(fields):
                         value = row[i]
                         rowDict[field.value] = str(value) if value is not None else ''
                     self.generateRow(rowDict, tableConfig)
@@ -48,7 +52,7 @@ class TableDataProvider(DataProvider):
             return
         data = {}
         for field in row:
-            if field != 'ID' and field != '' and row[field] != '':
+            if field != 'ID' and field not in self.ignoredFields and field != '' and row[field] != '':
                 data[field] = row[field]
 
         self.writeJson(self.pack.defaultResourceLocation(row['ID']), data)

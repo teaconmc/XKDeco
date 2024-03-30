@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
+import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoClientConfig;
 import org.teacon.xkdeco.block.AirDuctBlock;
@@ -40,7 +42,7 @@ import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.serialization.Codec;
@@ -75,6 +77,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.datagen.GameObjectLookup;
+import snownee.kiwi.shadowed.org.yaml.snakeyaml.DumperOptions;
+import snownee.kiwi.shadowed.org.yaml.snakeyaml.Yaml;
 
 public class ExportBlocksCommand {
 	public static final Supplier<Map<Class<? extends Block>, String>> TEMPLATE_MAPPING = Suppliers.memoize(() -> {
@@ -114,11 +118,19 @@ public class ExportBlocksCommand {
 	});
 
 	private static final Map<KBlockSettings, KBlockSettings.MoreInfo> MORE_INFO = Maps.newHashMap();
+	private static final Supplier<Yaml> YAML = Suppliers.memoize(() -> {
+		DumperOptions dumperOptions = new DumperOptions();
+		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+		return new Yaml(dumperOptions);
+	});
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands
 				.literal("exportBlocks")
 				.requires(source -> source.hasPermission(2))
+				.executes(ctx -> exportBlocks(
+						ctx.getSource(),
+						BuiltInRegistries.ITEM.getKey(ctx.getSource().getPlayerOrException().getMainHandItem().getItem()).getNamespace()))
 				.then(Commands.argument("modId", StringArgumentType.string())
 						.executes(ctx -> exportBlocks(ctx.getSource(), StringArgumentType.getString(ctx, "modId"))))
 		);
@@ -181,11 +193,10 @@ public class ExportBlocksCommand {
 				}
 				if ("door".equals(template) || "trapdoor".equals(template) || "xkdeco:special_slab".equals(template)) {
 					Codec<Block> codec = BlockCodecs.get(new ResourceLocation(template)).codec();
-					JsonObject json = codec.encodeStart(JsonOps.INSTANCE, block).result().orElseThrow().getAsJsonObject();
-					json.remove(BlockCodecs.BLOCK_PROPERTIES_KEY);
-					if (json.size() > 0) {
-						template += json.toString();
-					}
+					template += toYaml(codec, block, json -> {
+						json.getAsJsonObject().remove(BlockCodecs.BLOCK_PROPERTIES_KEY);
+						return json;
+					});
 				}
 				row.put("Template", template);
 				row.put("ID", BuiltInRegistries.BLOCK.getKey(block).getPath());
@@ -245,10 +256,7 @@ public class ExportBlocksCommand {
 				if (components.isEmpty()) {
 					row.put("ExtraComponents", "");
 				} else {
-					row.put("ExtraComponents", componentsCodec.encodeStart(JsonOps.INSTANCE, components)
-							.result()
-							.orElseThrow()
-							.toString());
+					row.put("ExtraComponents", toYaml(componentsCodec, components, null));
 				}
 				if (XKDecoClientConfig.exportBlocksMore) {
 					KBlockSettings.MoreInfo moreInfo = MORE_INFO.getOrDefault(settings, fallbackMoreInfo);
@@ -271,5 +279,17 @@ public class ExportBlocksCommand {
 
 	public static void putMoreInfo(KBlockSettings settings, KBlockSettings.MoreInfo moreInfo) {
 		MORE_INFO.put(settings, moreInfo);
+	}
+
+	public static <T> String toYaml(Codec<T> codec, T value, @Nullable UnaryOperator<JsonElement> decorator) {
+		JsonElement json = codec.encodeStart(JsonOps.INSTANCE, value).result().orElseThrow();
+		if (decorator != null) {
+			json = decorator.apply(json);
+		}
+		if (json.isJsonObject() && json.getAsJsonObject().size() == 0) {
+			return "";
+		}
+		Yaml yaml = YAML.get();
+		return yaml.dump(yaml.load(json.toString())).trim();
 	}
 }
