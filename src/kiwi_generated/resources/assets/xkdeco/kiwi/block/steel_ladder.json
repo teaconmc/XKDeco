@@ -1,1 +1,1 @@
-{"render_type": "cutout", "components": ["water_loggable", "horizontal"], "shape": "xkdeco:ladder", "no_occlusion": true}
+{"render_type": "cutout", "components": ["water_loggable", "horizontal"], "shape": "xkdeco:ladder", "no_occlusion": true, "glass_type": "hollow_steel"}

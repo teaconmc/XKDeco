@@ -37,6 +37,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
@@ -74,8 +75,8 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.resource.DelegatingPackResources;
 import net.minecraftforge.resource.PathPackResources;
 import net.minecraftforge.resource.ResourcePackLoader;
+import snownee.kiwi.AbstractModule;
 import snownee.kiwi.Kiwi;
-import snownee.kiwi.KiwiTabBuilder;
 import snownee.kiwi.datagen.GameObjectLookup;
 import snownee.kiwi.loader.Platform;
 
@@ -221,9 +222,10 @@ public class CommonProxy {
 		var tabs = JsonLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
 		tabs.entrySet().stream().sorted(Comparator.comparingInt($ -> $.getValue()
 				.order())).forEach(entry -> {
+			ResourceLocation key = entry.getKey();
 			KCreativeTab value = entry.getValue();
-			CreativeModeTab tab = new KiwiTabBuilder(entry.getKey())
-					.icon(() -> BuiltInRegistries.ITEM.getOptional(value.icon()).orElse(Items.BARRIER).getDefaultInstance())
+			CreativeModeTab tab = AbstractModule.itemCategory(key.getNamespace(), key.getPath(), () -> BuiltInRegistries.ITEM.getOptional(
+							value.icon()).orElse(Items.BARRIER).getDefaultInstance())
 					.displayItems((params, output) -> {
 						output.acceptAll(value.contents()
 								.stream()
@@ -233,7 +235,7 @@ public class CommonProxy {
 								.toList());
 					})
 					.build();
-			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, entry.getKey(), tab);
+			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
 		});
 	}
 

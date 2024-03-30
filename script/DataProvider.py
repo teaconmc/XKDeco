@@ -5,8 +5,9 @@ from ResourceLocation import ResourceLocation
 
 
 class DataProvider:
-    def __init__(self, pack, dataPath: str):
+    def __init__(self, pack, identifier: str, dataPath: str):
         self.pack = pack
+        self.identifier = identifier
         self.dataPath = dataPath
         self.prettyPrint = pack.config['json_pretty_print']
         self.count = 0

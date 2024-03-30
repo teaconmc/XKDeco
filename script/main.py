@@ -2,14 +2,18 @@ import json
 import os
 from pathlib import Path
 
+from BlockTemplateProvider import BlockTemplateProvider
+from CreativeTabProvider import CreativeTabProvider
 from TableDataProvider import TableDataProvider
 from BlockDefinitionProvider import BlockDefinitionProvider
 from MaterialProvider import MaterialProvider
 from Pack import Pack
+from TagsProvider import TagsProvider
+from TranslationProvider import TranslationProvider
 
 
 def main():
-    configPath = 'loader_config.json'
+    configPath = 'config.json'
     if len(os.sys.argv) > 1:
         configPath = os.sys.argv[1]
     if not Path(configPath).exists():
@@ -23,8 +27,11 @@ def main():
         config = json.load(f)
     pack = Pack(config)
     pack.addProvider(MaterialProvider(pack))
-    pack.addProvider(TableDataProvider(pack, 'assets/{}/kiwi/template/block', 'block_templates'))
+    pack.addProvider(BlockTemplateProvider(pack))
     pack.addProvider(BlockDefinitionProvider(pack))
+    pack.addProvider(CreativeTabProvider(pack))
+    pack.addProvider(TranslationProvider(pack))
+    pack.addProvider(TagsProvider(pack, 'block', 'blocks'))
     pack.finish()
 
 
