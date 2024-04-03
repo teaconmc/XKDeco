@@ -25,20 +25,22 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public interface BlockRenderSettings {
-	static void init(Map<ResourceLocation, KBlockDefinition> blocks) {
+	static void init(Map<ResourceLocation, KBlockDefinition> blocks, boolean canSetRenderLayer) {
 		Map<Block, BlockColor> blockColors = Maps.newHashMap();
 		Map<Item, ItemColor> itemColors = Maps.newHashMap();
 		List<Pair<Block, BlockColor>> blocksToAdd = Lists.newArrayList();
 		List<Pair<Item, ItemColor>> itemsToAdd = Lists.newArrayList();
 		for (var entry : blocks.entrySet()) {
 			BlockDefinitionProperties properties = entry.getValue().properties();
-			var renderType = properties.renderType().orElse(null);
-			if (renderType == null) {
-				renderType = properties.glassType().map(GlassType::renderType).orElse(null);
-			}
-			if (renderType != null) {
-				Block block = BuiltInRegistries.BLOCK.get(entry.getKey());
-				ItemBlockRenderTypes.setRenderLayer(block, (RenderType) renderType.value);
+			if (canSetRenderLayer) {
+				var renderType = properties.renderType().orElse(null);
+				if (renderType == null) {
+					renderType = properties.glassType().map(GlassType::renderType).orElse(null);
+				}
+				if (renderType != null) {
+					Block block = BuiltInRegistries.BLOCK.get(entry.getKey());
+					ItemBlockRenderTypes.setRenderLayer(block, (RenderType) renderType.value);
+				}
 			}
 			if (properties.colorProvider().isPresent()) {
 				Block block = BuiltInRegistries.BLOCK.get(entry.getKey());

@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-21T06:45:52.5386373	XeKr's Decorations/Block Loot Tables
+// 1.20.1	2024-04-04T02:55:07.4201533	XeKr's Decorations/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_tables/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_tables/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_tables/blocks/aztec_chiseled_stonebricks.json
@@ -97,7 +97,6 @@ c7665bc4387ab26e0c1dee14b6e5956f733100e6 data/xkdeco/loot_tables/blocks/cyan_til
 86bd3f47215b5ee72deb06742224fc50762f1574 data/xkdeco/loot_tables/blocks/dark_fish_bowl.json
 95b3925a0f4bda2e4a36c4b9e4db64b539460054 data/xkdeco/loot_tables/blocks/dark_stone_handrail_head.json
 b7748476a5c89ffce5c60e97d4c706134be179a7 data/xkdeco/loot_tables/blocks/dark_wall_base.json
-41fdbd39a952bdb41b7257280e815f430884d078 data/xkdeco/loot_tables/blocks/dark_wall_base2.json
 7158771b7ed45af6f7dfb7f02ca7a1f62c4165c4 data/xkdeco/loot_tables/blocks/deepslate_lamp.json
 681eb738aa5a6ff930cdda7998b8587ca2797e53 data/xkdeco/loot_tables/blocks/deepslate_pavement.json
 b59c55672fd311f45680cd3a6554f1323835cbac data/xkdeco/loot_tables/blocks/deepslate_pillar.json
@@ -268,7 +267,6 @@ a025be6feef46cf41789ffbb7996efa3b65fa1dc data/xkdeco/loot_tables/blocks/inscript
 7ce87af27f80523bc401fab961f4e8624d9d43c2 data/xkdeco/loot_tables/blocks/item_projector.json
 d40417f2cbd45321f2fd99a94e279056ea99e81f data/xkdeco/loot_tables/blocks/light_stone_handrail_head.json
 5d873a300deef8d371b65c9f097414e5d2d872ea data/xkdeco/loot_tables/blocks/light_wall_base.json
-7078e2226ca91711947d3efa73f772f0fefffb2d data/xkdeco/loot_tables/blocks/light_wall_base2.json
 4541ed53827ba2e5bd1003d8ffef8f01ea0925d1 data/xkdeco/loot_tables/blocks/lined_mud_wall_block.json
 66614e02625b8fe9f6af13e0f89606be0f6877d0 data/xkdeco/loot_tables/blocks/lined_mud_wall_stairs.json
 928e4ba23c41bd001716d67343b7007f1d1cf9eb data/xkdeco/loot_tables/blocks/luxury_gilded_blackstone.json
