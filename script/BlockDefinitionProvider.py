@@ -57,7 +57,7 @@ class BlockDefinitionProvider(TableDataProvider):
         if 'LightEmission' in row and row['LightEmission'] != '0' and row['LightEmission'] != 'custom' and row['LightEmission'] != '':
             data['light_emission'] = int(row['LightEmission'])
         if 'SustainsPlant' in row and row['SustainsPlant'].lower() == 'true':
-            data['sustains_plant'] = True
+            self.pack.providers['block_tags'].addEntry(ResourceLocation('kiwi:sustains_plant'), blockId)
         components = []
         if 'WaterLoggable' in row and row['WaterLoggable'].lower() == 'true':
             components.append('water_loggable')

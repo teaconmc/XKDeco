@@ -68,9 +68,6 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		if (properties.noOcclusion()) {
 			builder.noOcclusion();
 		}
-		if (properties.sustainsPlant()) {
-			builder.sustainsPlant();
-		}
 		for (Either<KBlockComponent, String> component : properties.components()) {
 			if (component.left().isPresent()) {
 				builder.component(component.left().get());

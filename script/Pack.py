@@ -59,6 +59,7 @@ class Pack:
         print('Finished building pack:', dest.resolve().as_uri())
 
     def defaultResourceLocation(self, path: str) -> ResourceLocation:
+        path = path.strip()
         if ':' in path:
             return ResourceLocation(path)
         else:
