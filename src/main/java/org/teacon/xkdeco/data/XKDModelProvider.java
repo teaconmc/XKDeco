@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.BasicBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
@@ -925,10 +924,7 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createGadget(Block block) {
 		var id = BuiltInRegistries.BLOCK.getKey(block);
 		KBlockSettings settings = KBlockSettings.of(block);
-		if (settings == null) {
-			return;
-		}
-		if (!(block instanceof BasicBlock)) {
+		if (settings == null || settings.components.isEmpty()) {
 			return;
 		}
 		LayeredComponent layered = (LayeredComponent) settings.components.values()

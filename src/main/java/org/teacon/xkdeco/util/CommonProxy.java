@@ -54,6 +54,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.loading.ClientModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -206,14 +207,14 @@ public class CommonProxy {
 //			if (definition.template() == KBlockDefinition.DEFAULT_TEMPLATE.getValue()) {
 //				return;
 //			}
-			Block block = definition.createBlock();
+			Block block = definition.createBlock(id);
 			if (block != null) {
 				ForgeRegistries.BLOCKS.register(id, block);
 				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
 			}
 		});
 		if (Platform.isPhysicalClient()) {
-			BlockRenderSettings.init(blocks);
+			BlockRenderSettings.init(blocks, ClientModLoader.isLoading());
 		}
 		var tabs = JsonLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
 		tabs.entrySet().stream().sorted(Comparator.comparingInt($ -> $.getValue()

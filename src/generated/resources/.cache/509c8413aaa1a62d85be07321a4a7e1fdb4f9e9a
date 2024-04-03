@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-21T09:05:57.9078659	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-04-04T03:14:49.2254602	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 5c191abc3df7b15935939382688003499f45c782 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -114,7 +114,6 @@ c2f87a9c1129d9881d20fedbb7a610d6655ec0c7 assets/xkdeco/blockstates/cyan_roof_sma
 701effe5e26f2e5d2be3a3d3f45cac8b3a3b027e assets/xkdeco/blockstates/dark_fish_bowl.json
 c07f0019f435bdfef8c33e0a4f3af55c5f8b3d0c assets/xkdeco/blockstates/dark_stone_handrail_head.json
 50f3a65fb98624130a528f88669195a558114e50 assets/xkdeco/blockstates/dark_wall_base.json
-7ae94cb8ee9bfa8cfd2d0b7f61d96f9d148585ed assets/xkdeco/blockstates/dark_wall_base2.json
 4829c3b496b9ecb7a80ffb27d3d5c9c4c728868d assets/xkdeco/blockstates/deepslate_lamp.json
 d6133025722d98f86a66cb3eb07267fd57480888 assets/xkdeco/blockstates/deepslate_pavement.json
 64e093a19333c994632e634d8f23bdbe7dc74022 assets/xkdeco/blockstates/deepslate_pavement_slab.json
@@ -296,7 +295,6 @@ dcd1da100ea9e915523ecec3087da4400a4f3687 assets/xkdeco/blockstates/inscription_b
 72f48f47e6f0f871fa4d515acbd2b63538d78394 assets/xkdeco/blockstates/item_projector.json
 d5216833da2dfb70fd751d42b48d22411d8f9505 assets/xkdeco/blockstates/light_stone_handrail_head.json
 d6a000826b72d4b13506bc4babd8b65664e0cf00 assets/xkdeco/blockstates/light_wall_base.json
-3afb89160cca5ea94ef025f22df4198c6aa67fd3 assets/xkdeco/blockstates/light_wall_base2.json
 2ed62f7f4156cf539d6137121e2cc5a721fe8c97 assets/xkdeco/blockstates/lined_mud_wall_block.json
 bc5bd6aaec54bcf938a7b6b6a9c5ffd1af16a462 assets/xkdeco/blockstates/lined_mud_wall_slab.json
 a9b065a20bfc1a08d4be19224319572894c36508 assets/xkdeco/blockstates/lined_mud_wall_stairs.json
@@ -1740,7 +1738,6 @@ ec8089f387a641f9338f69a3d0cf4967f177d5e3 assets/xkdeco/models/item/cyan_tile_sla
 14c5af78fef8a68b39f8e1e9369dfe56eae5be90 assets/xkdeco/models/item/dark_fish_bowl.json
 1f98f8a096261106a60c178958ea1289e4bd9297 assets/xkdeco/models/item/dark_stone_handrail_head.json
 b8ebcd69ccc850c28e268bec1ea90597f87c1a65 assets/xkdeco/models/item/dark_wall_base.json
-b8ebcd69ccc850c28e268bec1ea90597f87c1a65 assets/xkdeco/models/item/dark_wall_base2.json
 102869f09456a6364db9ccd8981fef75f2cb91ff assets/xkdeco/models/item/deepslate_lamp.json
 0781562229cb6510800a73e6520ffc6be7dbb341 assets/xkdeco/models/item/deepslate_pavement.json
 98feadf0b48a515a0c44bf1eaeeb5beaaabe0d2a assets/xkdeco/models/item/deepslate_pavement_slab.json
@@ -1921,7 +1918,6 @@ b543a095e4a00319ee8c9fa45b3b4cf3908d72c9 assets/xkdeco/models/item/ink_painting.
 e45606b67719234d1a14cf1d5955c8b86aa91583 assets/xkdeco/models/item/item_frame_cover.json
 3830c8403ff3ee8e655bd7b8f188dc8af4e3036f assets/xkdeco/models/item/light_stone_handrail_head.json
 8fb3ac5ffc600aa637046d5f4b16b81ab804845c assets/xkdeco/models/item/light_wall_base.json
-8fb3ac5ffc600aa637046d5f4b16b81ab804845c assets/xkdeco/models/item/light_wall_base2.json
 e716fc183c23b87bee96e86f75c62c2986092693 assets/xkdeco/models/item/lined_mud_wall_block.json
 d4f2ca223f5497928364e8adf069633dda4ab94b assets/xkdeco/models/item/lined_mud_wall_slab.json
 e4d04860bacc49417e02db44ca7aec92811f9ecc assets/xkdeco/models/item/lined_mud_wall_stairs.json

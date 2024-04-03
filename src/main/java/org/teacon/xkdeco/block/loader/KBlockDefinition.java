@@ -39,7 +39,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		).apply(instance, KBlockDefinition::new));
 	}
 
-	public Block createBlock() {
+	public Block createBlock(ResourceLocation id) {
 		KBlockSettings.Builder builder = KBlockSettings.builder();
 		properties.glassType().ifPresent(builder::glassType);
 		if (properties.lightEmission() > 0) {

@@ -70,6 +70,8 @@ public class LoaderExtraCodecs {
 		MAP_COLORS.put(new ResourceLocation("clay"), MapColor.CLAY);
 		MAP_COLORS.put(new ResourceLocation("dirt"), MapColor.DIRT);
 		MAP_COLORS.put(new ResourceLocation("stone"), MapColor.STONE);
+
+		Objects.requireNonNull(GlassType.CLEAR);
 	}
 
 	public static <T> Codec<T> simpleByNameCodec(Map<ResourceLocation, T> map) {

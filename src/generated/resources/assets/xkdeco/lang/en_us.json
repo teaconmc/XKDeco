@@ -1,4 +1,6 @@
 {
   "block.xkdeco.mimic_wall": "Mimic %s",
-  "pack.xkdeco.mimic_walls": "XKDeco: Mimic Walls"
+  "pack.xkdeco.mimic_walls": "XKDeco: Mimic Walls",
+  "xkdeco.config.exportBlocksMore": "Export Blocks More",
+  "xkdeco.config.exportBlocksMore.desc": ""
 }
