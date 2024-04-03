@@ -202,11 +202,7 @@ public class CommonProxy {
 						templates,
 						LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material")
 				));
-//		KBlockTemplate defaultTemplate = templates.get(new ResourceLocation("block"));
 		blocks.forEach((id, definition) -> {
-//			if (defaultTemplate == definition.template().template()) {
-//				return;
-//			}
 //			if (definition.template() == KBlockDefinition.DEFAULT_TEMPLATE.getValue()) {
 //				return;
 //			}

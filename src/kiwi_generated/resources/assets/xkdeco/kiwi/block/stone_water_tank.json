@@ -1,1 +1,1 @@
-{"components": ["water_loggable"], "shape": "xkdeco:water_tank", "no_occlusion": true}
+{"components": ["water_loggable"], "shape": "xkdeco:water_tank", "no_occlusion": true, "color_provider": "water"}

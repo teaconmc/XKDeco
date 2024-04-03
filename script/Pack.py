@@ -56,6 +56,7 @@ class Pack:
             for f in os.listdir(self.tempDir):
                 shutil.move(os.path.join(self.tempDir, f), dest)
         shutil.rmtree(self.tempDir)
+        print('Finished building pack:', dest.resolve().as_uri())
 
     def defaultResourceLocation(self, path: str) -> ResourceLocation:
         if ':' in path:

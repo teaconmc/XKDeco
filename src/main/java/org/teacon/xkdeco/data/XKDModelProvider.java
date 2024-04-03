@@ -415,19 +415,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createMoulding("roman_moulding2", "furniture/roman_moulding", false, true);
 		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
 		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
-		createMoulding(
-				"dark_wall_base2",
-				"furniture/dark_wall_base",
-				true,
-				true,
-				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
 		createMoulding("light_wall_base", "furniture/light_wall_base", true, true);
-		createMoulding(
-				"light_wall_base2",
-				"furniture/light_wall_base",
-				true,
-				true,
-				Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180));
 		createMoulding("mechanical_console", "furniture/mechanical_console", false, true);
 		createMoulding("tech_console", "furniture/tech_console", false, true);
 		createIronBarsLike("hollow_steel_bars", "hollow_steel_block", "steel_column_wall");

@@ -19,6 +19,8 @@
 		"property_inject.StateDefinitionBuilderMixin"
 	],
 	"client": [
+		"forge.BlockColorsAccess",
+		"forge.ItemColorsAccess"
 	],
 	"injectors": {
 		"defaultRequire": 1

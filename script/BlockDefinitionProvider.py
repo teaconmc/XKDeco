@@ -81,6 +81,8 @@ class BlockDefinitionProvider(TableDataProvider):
             data['glass_type'] = row['GlassType']
             if row['GlassType'] != 'hollow_steel':
                 self.pack.providers['block_tags'].addEntry(ResourceLocation('impermeable'), blockId)
+        if 'ColorProvider' in row and row['ColorProvider'] != '':
+            data['color_provider'] = row['ColorProvider']
         # item = {}
         # if 'ItemGroup' in row and row['ItemGroup'] != '':
         #     item['tab'] = row['ItemGroup']

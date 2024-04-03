@@ -13,7 +13,13 @@ class MaterialProvider(TableDataProvider):
     def generateRow(self, row, csvConfig):
         if row['ID'] == '':
             return
+        blockId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
+        if blockId in self.tagTransformers:
+            transformers = self.tagTransformers[blockId]
+        else:
+            transformers = {}
+
         if 'DestroyTime' in row and row['DestroyTime'] != '':
             data['destroy_time'] = float(row['DestroyTime'])
         if 'ExplosionResistance' in row and row['ExplosionResistance'] != '':
@@ -26,6 +32,19 @@ class MaterialProvider(TableDataProvider):
             data['instrument'] = row['Instrument']
         if 'RequiresCorrectTool' in row and row['RequiresCorrectTool'].lower() == 'true':
             data['requires_correct_tool'] = True
+        if 'ToolType' in row and row['ToolType'] != '':
+            if '' in transformers:
+                tags = transformers['']
+            else:
+                transformers[''] = tags = []
+            for tool in row['ToolType'].split(','):
+                tags.append(ResourceLocation('mineable/' + tool))
+        if 'ToolLevel' in row and row['ToolLevel'] != '':
+            if '' in transformers:
+                tags = transformers['']
+            else:
+                transformers[''] = tags = []
+            tags.append(ResourceLocation('needs_' + row['ToolLevel'] + '_tool'))
         if 'IgnitedByLava' in row and row['IgnitedByLava'].lower() == 'true':
             data['ignited_by_lava'] = True
         if 'IgniteOdds' in row and row['IgniteOdds'] != '':
@@ -33,16 +52,17 @@ class MaterialProvider(TableDataProvider):
         if 'BurnOdds' in row and row['BurnOdds'] != '':
             data['burn_odds'] = int(row['BurnOdds'])
         if 'TagTransformers' in row and row['TagTransformers'] != '':
-            transformers = yaml.safe_load('{' + row['TagTransformers'] + '}')
+            parsed = yaml.safe_load('{' + row['TagTransformers'] + '}')
             # Map<TagKey, List<TagKey>>
-            m = {}
-            for key, value in transformers.items():
+            for key, value in parsed.items():
                 if type(value) is list:
-                    m[key] = [ResourceLocation(v) for v in value]
+                    transformers[key] = [ResourceLocation(v) for v in value]
                 elif type(value) is str:
-                    m[key] = [ResourceLocation(value)]
+                    transformers[key] = [ResourceLocation(value)]
                 else:
                     raise Exception('Invalid tag transformer value: ' + value)
-            self.tagTransformers[self.pack.defaultResourceLocation(row['ID'])] = m
 
-        self.writeJson(self.pack.defaultResourceLocation(row['ID']), data)
+        if len(transformers) > 0:
+            self.tagTransformers[blockId] = transformers
+
+        self.writeJson(blockId, data)
