@@ -27,7 +27,10 @@ class TableDataProvider(DataProvider):
                         if field != 'Name:en_us' and field.startswith('Name:'):
                             tableConfig['SecondaryName'] = field[5:]
                     for row in csvReader:
-                        self.generateRow(row, tableConfig)
+                        rowDict = {}
+                        for key, value in row.items(): #TODO dry-run
+                            rowDict[key] = value.strip()
+                        self.generateRow(rowDict, tableConfig)
             elif ext == '.xlsx':
                 # it will return us fewer columns if we use read_only=True, took me one hour to figure out
                 workbook = openpyxl.load_workbook(inputFile, read_only=False)
@@ -42,7 +45,7 @@ class TableDataProvider(DataProvider):
                     rowDict = {}
                     for i, field in enumerate(fields):
                         value = row[i]
-                        rowDict[field.value] = str(value) if value is not None else ''
+                        rowDict[field.value] = str(value).strip() if value is not None else ''
                     self.generateRow(rowDict, tableConfig)
             else:
                 raise Exception('Unsupported file format: ' + ext)

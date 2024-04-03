@@ -1,1 +1,1 @@
-{"template": {"kiwi:type": "trapdoor", "block_set_type": "iron"}, "render_type": "cutout", "glass_type": "hollow_steel"}
+{"template": {"kiwi:type": "trapdoor", "block_set_type": "iron"}, "render_type": "cutout", "material": "xkdeco:hollow_steel", "glass_type": "hollow_steel"}

@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.util;
 
-import org.teacon.xkdeco.XKDeco;
+import java.util.List;
+
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.command.ExportCreativeTabsCommand;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
@@ -10,26 +11,21 @@ import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.MimicWallRenderer;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
-import org.teacon.xkdeco.init.XKDecoObjects;
 import org.teacon.xkdeco.resource.MimicWallResources;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.datafixers.util.Pair;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.FoliageColor;
-import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
@@ -40,91 +36,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import snownee.kiwi.datagen.GameObjectLookup;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class ClientProxy {
-
-	public static void setItemColors(RegisterColorHandlersEvent.Item event) {
-		var blockColors = event.getBlockColors();
-		var blockItemColor = (ItemColor) (stack, tintIndex) -> {
-			var state = ((BlockItem) stack.getItem()).getBlock().defaultBlockState();
-			return blockColors.getColor(state, null, null, tintIndex);
-		};
-		var waterItemColor = (ItemColor) (stack, tintIndex) -> 0x3f76e4;
-		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.GRASS_PREFIX)).toArray(Item[]::new));
-		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.PLANTABLE_PREFIX)).toArray(Item[]::new));
-		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.WILLOW_PREFIX)).toArray(Item[]::new));
-		event.register(blockItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).toArray(Item[]::new));
-		event.register(waterItemColor, GameObjectLookup.all(Registries.ITEM, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.STONE_WATER_PREFIX)).toArray(Item[]::new));
-	}
-
-	public static void setBlockColors(RegisterColorHandlersEvent.Block event) {
-		var grassBlockColor = (BlockColor) (state, world, pos, tintIndex) -> {
-			if (pos != null && world != null) {
-				return BiomeColors.getAverageGrassColor(world, pos);
-			}
-			return GrassColor.get(0.5, 1.0);
-		};
-		var leavesBlockColor = (BlockColor) (state, world, pos, tintIndex) -> {
-			if (pos != null && world != null) {
-				return BiomeColors.getAverageFoliageColor(world, pos);
-			}
-			return FoliageColor.getDefaultColor();
-		};
-		var waterBlockColor = (BlockColor) (state, world, pos, tintIndex) -> {
-			if (pos != null && world != null) {
-				return BiomeColors.getAverageWaterColor(world, pos);
-			}
-			return 0x3f76e4;
-		};
-		event.register(grassBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.GRASS_PREFIX)).toArray(Block[]::new));
-		event.register(grassBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.PLANTABLE_PREFIX)).toArray(Block[]::new));
-		event.register(leavesBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.WILLOW_PREFIX)).toArray(Block[]::new));
-		event.register(leavesBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.LEAVES_DARK_SUFFIX)).toArray(Block[]::new));
-		event.register(waterBlockColor, GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).filter($ -> $.builtInRegistryHolder()
-				.key()
-				.location()
-				.getPath()
-				.contains(XKDecoObjects.STONE_WATER_PREFIX)).toArray(Block[]::new));
-	}
 
 	public static void setItemRenderers(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(XKDecoWithoutLevelRenderer.INSTANCE);
@@ -144,8 +59,6 @@ public final class ClientProxy {
 
 	public static void init() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		modEventBus.addListener(ClientProxy::setItemColors);
-		modEventBus.addListener(ClientProxy::setBlockColors);
 		modEventBus.addListener(ClientProxy::setItemRenderers);
 		modEventBus.addListener(ClientProxy::setEntityRenderers);
 		modEventBus.addListener(ClientProxy::setAdditionalPackFinder);
@@ -186,5 +99,23 @@ public final class ClientProxy {
 			ExportBlocksCommand.register(event.getDispatcher());
 			ExportCreativeTabsCommand.register(event.getDispatcher());
 		});
+	}
+
+	public static void registerColors(List<Pair<Block, BlockColor>> blocksToAdd, List<Pair<Item, ItemColor>> itemsToAdd) {
+		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		if (!blocksToAdd.isEmpty()) {
+			modEventBus.addListener((RegisterColorHandlersEvent.Block event) -> {
+				for (var pair : blocksToAdd) {
+					event.register(pair.getSecond(), pair.getFirst());
+				}
+			});
+		}
+		if (!itemsToAdd.isEmpty()) {
+			modEventBus.addListener((RegisterColorHandlersEvent.Item event) -> {
+				for (var pair : itemsToAdd) {
+					event.register(pair.getSecond(), pair.getFirst());
+				}
+			});
+		}
 	}
 }

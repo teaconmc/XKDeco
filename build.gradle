@@ -195,7 +195,7 @@ dependencies {
 
     implementation(annotationProcessor(fg.deobf("maven.modrinth:kiwi:${project.kiwi_version}-forge")))
     jarJar("maven.modrinth:kiwi:${project.kiwi_version}-forge") {
-        jarJar.ranged(it, "[11.5.5,12)")
+        jarJar.ranged(it, "[11.6,12)")
     }
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     implementation fg.deobf("maven.modrinth:jade:11.8.0")
