@@ -240,7 +240,6 @@ public class ExportBlocksCommand {
 				} else {
 					row.put("GlassType", settings.glassType.name());
 				}
-				row.put("SustainsPlant", Boolean.toString(settings.sustainsPlant));
 				row.put("WaterLoggable", Boolean.toString(settings.hasComponent(KBlockComponents.WATER_LOGGABLE.get())));
 				KBlockComponent.Type<?> baseComponent = settings.components.keySet()
 						.stream()

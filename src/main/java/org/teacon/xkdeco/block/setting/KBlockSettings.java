@@ -38,7 +38,6 @@ import snownee.kiwi.util.VoxelUtil;
 public class KBlockSettings {
 	public static final KBlockSettings EMPTY = new KBlockSettings(builder());
 	public final boolean customPlacement;
-	public final boolean sustainsPlant;
 	public final GlassType glassType;
 	@Nullable
 	public final ShapeGenerator shape;
@@ -54,7 +53,6 @@ public class KBlockSettings {
 
 	private KBlockSettings(Builder builder) {
 		this.customPlacement = builder.customPlacement;
-		this.sustainsPlant = builder.sustainsPlant;
 		this.glassType = builder.glassType;
 		this.shape = builder.shape != null ? builder.shape : builder.getShape(builder.shapeId);
 		this.collisionShape = builder.collisionShape != null ? builder.collisionShape : builder.getShape(builder.collisionShapeId);

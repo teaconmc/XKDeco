@@ -21,6 +21,7 @@ public class RecipeProviderMixin {
 			BlockFamily.Variant variant,
 			Block block,
 			CallbackInfo ci) {
+		//noinspection ConstantValue
 		if (variant == BlockFamily.Variant.CHISELED && pFamily.get(BlockFamily.Variant.SLAB) == null) {
 			ci.cancel();
 		}

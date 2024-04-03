@@ -26,8 +26,7 @@ public record BlockDefinitionProperties(
 		Optional<ResourceLocation> interactionShape,
 		int lightEmission,
 		boolean noCollision,
-		boolean noOcclusion,
-		boolean sustainsPlant) {
+		boolean noOcclusion) {
 	public static MapCodec<BlockDefinitionProperties> mapCodec(MapCodec<Optional<KMaterial>> materialCodec) {
 		return RecordCodecBuilder.mapCodec(instance -> instance.group(
 				Codec.either(KBlockComponent.DIRECT_CODEC, Codec.STRING)
@@ -43,8 +42,7 @@ public record BlockDefinitionProperties(
 				ResourceLocation.CODEC.optionalFieldOf("interaction_shape").forGetter(BlockDefinitionProperties::interactionShape),
 				Codec.INT.optionalFieldOf("light_emission", 0).forGetter(BlockDefinitionProperties::lightEmission),
 				Codec.BOOL.optionalFieldOf("no_collision", false).forGetter(BlockDefinitionProperties::noCollision),
-				Codec.BOOL.optionalFieldOf("no_occlusion", false).forGetter(BlockDefinitionProperties::noOcclusion),
-				Codec.BOOL.optionalFieldOf("sustains_plant", false).forGetter(BlockDefinitionProperties::sustainsPlant)
+				Codec.BOOL.optionalFieldOf("no_occlusion", false).forGetter(BlockDefinitionProperties::noOcclusion)
 		).apply(instance, BlockDefinitionProperties::new));
 	}
 
@@ -69,7 +67,6 @@ public record BlockDefinitionProperties(
 		int lightEmission = this.lightEmission > 0 ? this.lightEmission : templateProps.lightEmission;
 		boolean noCollision = this.noCollision || templateProps.noCollision;
 		boolean noOcclusion = this.noOcclusion || templateProps.noOcclusion;
-		boolean sustainsPlant = this.sustainsPlant || templateProps.sustainsPlant;
 		return new BlockDefinitionProperties(
 				components,
 				material,
@@ -81,8 +78,7 @@ public record BlockDefinitionProperties(
 				interactionShape,
 				lightEmission,
 				noCollision,
-				noOcclusion,
-				sustainsPlant);
+				noOcclusion);
 	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
