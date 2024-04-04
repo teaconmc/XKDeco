@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.setting;
+package org.teacon.xkdeco.block.behavior;
 
 import java.util.List;
 import java.util.Map;

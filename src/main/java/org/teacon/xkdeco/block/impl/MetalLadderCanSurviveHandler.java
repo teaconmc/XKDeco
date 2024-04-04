@@ -2,7 +2,7 @@ package org.teacon.xkdeco.block.impl;
 
 import java.util.List;
 
-import org.teacon.xkdeco.block.setting.CanSurviveHandler;
+import org.teacon.xkdeco.block.behavior.CanSurviveHandler;
 import org.teacon.xkdeco.util.CommonProxy;
 
 import net.minecraft.core.BlockPos;
