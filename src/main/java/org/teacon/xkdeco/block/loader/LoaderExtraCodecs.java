@@ -11,6 +11,7 @@ import org.teacon.xkdeco.block.setting.GlassType;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
@@ -18,60 +19,235 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.MapLike;
 import com.mojang.serialization.RecordBuilder;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import snownee.kiwi.KiwiModule;
 
 public class LoaderExtraCodecs {
 	public static final BiMap<ResourceLocation, SoundType> SOUND_TYPES = HashBiMap.create();
 	public static final Codec<SoundType> SOUND_TYPE_CODEC = simpleByNameCodec(SOUND_TYPES);
-	public static final BiMap<ResourceLocation, NoteBlockInstrument> INSTRUMENTS = HashBiMap.create();
+	public static final BiMap<String, NoteBlockInstrument> INSTRUMENTS = HashBiMap.create();
 	public static final Codec<NoteBlockInstrument> INSTRUMENT_CODEC = simpleByNameCodec(INSTRUMENTS);
-	public static final BiMap<ResourceLocation, MapColor> MAP_COLORS = HashBiMap.create();
+	public static final BiMap<String, MapColor> MAP_COLORS = HashBiMap.create();
 	public static final Codec<MapColor> MAP_COLOR_CODEC = simpleByNameCodec(MAP_COLORS);
 	public static final BiMap<ResourceLocation, GlassType> GLASS_TYPES = HashBiMap.create();
 	public static final Codec<GlassType> GLASS_TYPE_CODEC = simpleByNameCodec(GLASS_TYPES);
+	public static final BiMap<String, PushReaction> PUSH_REACTIONS = HashBiMap.create();
+	public static final Codec<PushReaction> PUSH_REACTION_CODEC = simpleByNameCodec(PUSH_REACTIONS);
 	public static final Codec<KiwiModule.RenderLayer.Layer> RENDER_TYPE = ExtraCodecs.stringResolverCodec(e -> {
 		return e.name().toLowerCase(Locale.ENGLISH);
 	}, s -> {
 		return KiwiModule.RenderLayer.Layer.valueOf(s.toUpperCase(Locale.ENGLISH));
 	});
+	public static final BiMap<String, BlockBehaviour.OffsetType> OFFSET_TYPES = HashBiMap.create();
+	public static final Codec<BlockBehaviour.OffsetType> OFFSET_TYPE_CODEC = simpleByNameCodec(OFFSET_TYPES);
+	public static final Codec<BlockBehaviour.StatePredicate> STATE_PREDICATE = Codec.BOOL.flatComapMap(bl -> {
+		return bl ? Blocks::always : Blocks::never;
+	}, p -> {
+		return DataResult.error(() -> "Unsupported operation");
+	});
 
 	static {
+		// https://regex101.com/:
+		// ^.+ ([a-zA-Z].+?) ([A-Z_]+) = new [a-zA-Z].+;
+		// ->
+		// SOUND_TYPES.put(new ResourceLocation("\L$2\E"), $1.$2);
 		SOUND_TYPES.put(new ResourceLocation("empty"), SoundType.EMPTY);
-		SOUND_TYPES.put(new ResourceLocation("copper"), SoundType.COPPER);
-		SOUND_TYPES.put(new ResourceLocation("crop"), SoundType.CROP);
-		SOUND_TYPES.put(new ResourceLocation("glass"), SoundType.GLASS);
+		SOUND_TYPES.put(new ResourceLocation("wood"), SoundType.WOOD);
 		SOUND_TYPES.put(new ResourceLocation("gravel"), SoundType.GRAVEL);
-		SOUND_TYPES.put(new ResourceLocation("ladder"), SoundType.LADDER);
+		SOUND_TYPES.put(new ResourceLocation("grass"), SoundType.GRASS);
+		SOUND_TYPES.put(new ResourceLocation("lily_pad"), SoundType.LILY_PAD);
+		SOUND_TYPES.put(new ResourceLocation("stone"), SoundType.STONE);
 		SOUND_TYPES.put(new ResourceLocation("metal"), SoundType.METAL);
+		SOUND_TYPES.put(new ResourceLocation("glass"), SoundType.GLASS);
+		SOUND_TYPES.put(new ResourceLocation("wool"), SoundType.WOOL);
 		SOUND_TYPES.put(new ResourceLocation("sand"), SoundType.SAND);
 		SOUND_TYPES.put(new ResourceLocation("snow"), SoundType.SNOW);
-		SOUND_TYPES.put(new ResourceLocation("stone"), SoundType.STONE);
-		SOUND_TYPES.put(new ResourceLocation("wood"), SoundType.WOOD);
+		SOUND_TYPES.put(new ResourceLocation("powder_snow"), SoundType.POWDER_SNOW);
+		SOUND_TYPES.put(new ResourceLocation("ladder"), SoundType.LADDER);
+		SOUND_TYPES.put(new ResourceLocation("anvil"), SoundType.ANVIL);
+		SOUND_TYPES.put(new ResourceLocation("slime_block"), SoundType.SLIME_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("honey_block"), SoundType.HONEY_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("wet_grass"), SoundType.WET_GRASS);
+		SOUND_TYPES.put(new ResourceLocation("coral_block"), SoundType.CORAL_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("bamboo"), SoundType.BAMBOO);
+		SOUND_TYPES.put(new ResourceLocation("bamboo_sapling"), SoundType.BAMBOO_SAPLING);
+		SOUND_TYPES.put(new ResourceLocation("scaffolding"), SoundType.SCAFFOLDING);
+		SOUND_TYPES.put(new ResourceLocation("sweet_berry_bush"), SoundType.SWEET_BERRY_BUSH);
+		SOUND_TYPES.put(new ResourceLocation("crop"), SoundType.CROP);
+		SOUND_TYPES.put(new ResourceLocation("hard_crop"), SoundType.HARD_CROP);
+		SOUND_TYPES.put(new ResourceLocation("vine"), SoundType.VINE);
+		SOUND_TYPES.put(new ResourceLocation("nether_wart"), SoundType.NETHER_WART);
+		SOUND_TYPES.put(new ResourceLocation("lantern"), SoundType.LANTERN);
+		SOUND_TYPES.put(new ResourceLocation("stem"), SoundType.STEM);
+		SOUND_TYPES.put(new ResourceLocation("nylium"), SoundType.NYLIUM);
+		SOUND_TYPES.put(new ResourceLocation("fungus"), SoundType.FUNGUS);
+		SOUND_TYPES.put(new ResourceLocation("roots"), SoundType.ROOTS);
+		SOUND_TYPES.put(new ResourceLocation("shroomlight"), SoundType.SHROOMLIGHT);
+		SOUND_TYPES.put(new ResourceLocation("weeping_vines"), SoundType.WEEPING_VINES);
+		SOUND_TYPES.put(new ResourceLocation("twisting_vines"), SoundType.TWISTING_VINES);
+		SOUND_TYPES.put(new ResourceLocation("soul_sand"), SoundType.SOUL_SAND);
+		SOUND_TYPES.put(new ResourceLocation("soul_soil"), SoundType.SOUL_SOIL);
+		SOUND_TYPES.put(new ResourceLocation("basalt"), SoundType.BASALT);
+		SOUND_TYPES.put(new ResourceLocation("wart_block"), SoundType.WART_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("netherrack"), SoundType.NETHERRACK);
+		SOUND_TYPES.put(new ResourceLocation("nether_bricks"), SoundType.NETHER_BRICKS);
+		SOUND_TYPES.put(new ResourceLocation("nether_sprouts"), SoundType.NETHER_SPROUTS);
+		SOUND_TYPES.put(new ResourceLocation("nether_ore"), SoundType.NETHER_ORE);
+		SOUND_TYPES.put(new ResourceLocation("bone_block"), SoundType.BONE_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("netherite_block"), SoundType.NETHERITE_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("ancient_debris"), SoundType.ANCIENT_DEBRIS);
+		SOUND_TYPES.put(new ResourceLocation("lodestone"), SoundType.LODESTONE);
+		SOUND_TYPES.put(new ResourceLocation("chain"), SoundType.CHAIN);
+		SOUND_TYPES.put(new ResourceLocation("nether_gold_ore"), SoundType.NETHER_GOLD_ORE);
+		SOUND_TYPES.put(new ResourceLocation("gilded_blackstone"), SoundType.GILDED_BLACKSTONE);
+		SOUND_TYPES.put(new ResourceLocation("candle"), SoundType.CANDLE);
+		SOUND_TYPES.put(new ResourceLocation("amethyst"), SoundType.AMETHYST);
+		SOUND_TYPES.put(new ResourceLocation("amethyst_cluster"), SoundType.AMETHYST_CLUSTER);
+		SOUND_TYPES.put(new ResourceLocation("small_amethyst_bud"), SoundType.SMALL_AMETHYST_BUD);
+		SOUND_TYPES.put(new ResourceLocation("medium_amethyst_bud"), SoundType.MEDIUM_AMETHYST_BUD);
+		SOUND_TYPES.put(new ResourceLocation("large_amethyst_bud"), SoundType.LARGE_AMETHYST_BUD);
+		SOUND_TYPES.put(new ResourceLocation("tuff"), SoundType.TUFF);
+		SOUND_TYPES.put(new ResourceLocation("calcite"), SoundType.CALCITE);
+		SOUND_TYPES.put(new ResourceLocation("dripstone_block"), SoundType.DRIPSTONE_BLOCK);
+		SOUND_TYPES.put(new ResourceLocation("pointed_dripstone"), SoundType.POINTED_DRIPSTONE);
+		SOUND_TYPES.put(new ResourceLocation("copper"), SoundType.COPPER);
+		SOUND_TYPES.put(new ResourceLocation("cave_vines"), SoundType.CAVE_VINES);
+		SOUND_TYPES.put(new ResourceLocation("spore_blossom"), SoundType.SPORE_BLOSSOM);
+		SOUND_TYPES.put(new ResourceLocation("azalea"), SoundType.AZALEA);
+		SOUND_TYPES.put(new ResourceLocation("flowering_azalea"), SoundType.FLOWERING_AZALEA);
+		SOUND_TYPES.put(new ResourceLocation("moss_carpet"), SoundType.MOSS_CARPET);
+		SOUND_TYPES.put(new ResourceLocation("pink_petals"), SoundType.PINK_PETALS);
+		SOUND_TYPES.put(new ResourceLocation("moss"), SoundType.MOSS);
+		SOUND_TYPES.put(new ResourceLocation("big_dripleaf"), SoundType.BIG_DRIPLEAF);
+		SOUND_TYPES.put(new ResourceLocation("small_dripleaf"), SoundType.SMALL_DRIPLEAF);
+		SOUND_TYPES.put(new ResourceLocation("rooted_dirt"), SoundType.ROOTED_DIRT);
+		SOUND_TYPES.put(new ResourceLocation("hanging_roots"), SoundType.HANGING_ROOTS);
+		SOUND_TYPES.put(new ResourceLocation("azalea_leaves"), SoundType.AZALEA_LEAVES);
+		SOUND_TYPES.put(new ResourceLocation("sculk_sensor"), SoundType.SCULK_SENSOR);
+		SOUND_TYPES.put(new ResourceLocation("sculk_catalyst"), SoundType.SCULK_CATALYST);
+		SOUND_TYPES.put(new ResourceLocation("sculk"), SoundType.SCULK);
+		SOUND_TYPES.put(new ResourceLocation("sculk_vein"), SoundType.SCULK_VEIN);
+		SOUND_TYPES.put(new ResourceLocation("sculk_shrieker"), SoundType.SCULK_SHRIEKER);
+		SOUND_TYPES.put(new ResourceLocation("glow_lichen"), SoundType.GLOW_LICHEN);
+		SOUND_TYPES.put(new ResourceLocation("deepslate"), SoundType.DEEPSLATE);
+		SOUND_TYPES.put(new ResourceLocation("deepslate_bricks"), SoundType.DEEPSLATE_BRICKS);
+		SOUND_TYPES.put(new ResourceLocation("deepslate_tiles"), SoundType.DEEPSLATE_TILES);
+		SOUND_TYPES.put(new ResourceLocation("polished_deepslate"), SoundType.POLISHED_DEEPSLATE);
+		SOUND_TYPES.put(new ResourceLocation("froglight"), SoundType.FROGLIGHT);
+		SOUND_TYPES.put(new ResourceLocation("frogspawn"), SoundType.FROGSPAWN);
+		SOUND_TYPES.put(new ResourceLocation("mangrove_roots"), SoundType.MANGROVE_ROOTS);
+		SOUND_TYPES.put(new ResourceLocation("muddy_mangrove_roots"), SoundType.MUDDY_MANGROVE_ROOTS);
+		SOUND_TYPES.put(new ResourceLocation("mud"), SoundType.MUD);
+		SOUND_TYPES.put(new ResourceLocation("mud_bricks"), SoundType.MUD_BRICKS);
+		SOUND_TYPES.put(new ResourceLocation("packed_mud"), SoundType.PACKED_MUD);
+		SOUND_TYPES.put(new ResourceLocation("hanging_sign"), SoundType.HANGING_SIGN);
+		SOUND_TYPES.put(new ResourceLocation("nether_wood_hanging_sign"), SoundType.NETHER_WOOD_HANGING_SIGN);
+		SOUND_TYPES.put(new ResourceLocation("bamboo_wood_hanging_sign"), SoundType.BAMBOO_WOOD_HANGING_SIGN);
+		SOUND_TYPES.put(new ResourceLocation("bamboo_wood"), SoundType.BAMBOO_WOOD);
+		SOUND_TYPES.put(new ResourceLocation("nether_wood"), SoundType.NETHER_WOOD);
+		SOUND_TYPES.put(new ResourceLocation("cherry_wood"), SoundType.CHERRY_WOOD);
+		SOUND_TYPES.put(new ResourceLocation("cherry_sapling"), SoundType.CHERRY_SAPLING);
+		SOUND_TYPES.put(new ResourceLocation("cherry_leaves"), SoundType.CHERRY_LEAVES);
+		SOUND_TYPES.put(new ResourceLocation("cherry_wood_hanging_sign"), SoundType.CHERRY_WOOD_HANGING_SIGN);
+		SOUND_TYPES.put(new ResourceLocation("chiseled_bookshelf"), SoundType.CHISELED_BOOKSHELF);
+		SOUND_TYPES.put(new ResourceLocation("suspicious_sand"), SoundType.SUSPICIOUS_SAND);
+		SOUND_TYPES.put(new ResourceLocation("suspicious_gravel"), SoundType.SUSPICIOUS_GRAVEL);
+		SOUND_TYPES.put(new ResourceLocation("decorated_pot"), SoundType.DECORATED_POT);
+		SOUND_TYPES.put(new ResourceLocation("decorated_pot_cracked"), SoundType.DECORATED_POT_CRACKED);
 
-		INSTRUMENTS.put(new ResourceLocation(NoteBlockInstrument.HARP.getSerializedName()), NoteBlockInstrument.HARP);
-		INSTRUMENTS.put(new ResourceLocation(NoteBlockInstrument.BASS.getSerializedName()), NoteBlockInstrument.BASS);
-		INSTRUMENTS.put(new ResourceLocation(NoteBlockInstrument.BASEDRUM.getSerializedName()), NoteBlockInstrument.BASEDRUM);
-		INSTRUMENTS.put(new ResourceLocation(NoteBlockInstrument.HAT.getSerializedName()), NoteBlockInstrument.HAT);
+		// ^.+ ([a-zA-Z].+?) ([A-Z_]+) = new [a-zA-Z].+;
+		// ->
+		// MAP_COLORS.put("\L$2\E", $1.$2);
+		MAP_COLORS.put("none", MapColor.NONE);
+		MAP_COLORS.put("grass", MapColor.GRASS);
+		MAP_COLORS.put("sand", MapColor.SAND);
+		MAP_COLORS.put("wool", MapColor.WOOL);
+		MAP_COLORS.put("fire", MapColor.FIRE);
+		MAP_COLORS.put("ice", MapColor.ICE);
+		MAP_COLORS.put("metal", MapColor.METAL);
+		MAP_COLORS.put("plant", MapColor.PLANT);
+		MAP_COLORS.put("snow", MapColor.SNOW);
+		MAP_COLORS.put("clay", MapColor.CLAY);
+		MAP_COLORS.put("dirt", MapColor.DIRT);
+		MAP_COLORS.put("stone", MapColor.STONE);
+		MAP_COLORS.put("water", MapColor.WATER);
+		MAP_COLORS.put("wood", MapColor.WOOD);
+		MAP_COLORS.put("quartz", MapColor.QUARTZ);
+		MAP_COLORS.put("color_orange", MapColor.COLOR_ORANGE);
+		MAP_COLORS.put("color_magenta", MapColor.COLOR_MAGENTA);
+		MAP_COLORS.put("color_light_blue", MapColor.COLOR_LIGHT_BLUE);
+		MAP_COLORS.put("color_yellow", MapColor.COLOR_YELLOW);
+		MAP_COLORS.put("color_light_green", MapColor.COLOR_LIGHT_GREEN);
+		MAP_COLORS.put("color_pink", MapColor.COLOR_PINK);
+		MAP_COLORS.put("color_gray", MapColor.COLOR_GRAY);
+		MAP_COLORS.put("color_light_gray", MapColor.COLOR_LIGHT_GRAY);
+		MAP_COLORS.put("color_cyan", MapColor.COLOR_CYAN);
+		MAP_COLORS.put("color_purple", MapColor.COLOR_PURPLE);
+		MAP_COLORS.put("color_blue", MapColor.COLOR_BLUE);
+		MAP_COLORS.put("color_brown", MapColor.COLOR_BROWN);
+		MAP_COLORS.put("color_green", MapColor.COLOR_GREEN);
+		MAP_COLORS.put("color_red", MapColor.COLOR_RED);
+		MAP_COLORS.put("color_black", MapColor.COLOR_BLACK);
+		MAP_COLORS.put("gold", MapColor.GOLD);
+		MAP_COLORS.put("diamond", MapColor.DIAMOND);
+		MAP_COLORS.put("lapis", MapColor.LAPIS);
+		MAP_COLORS.put("emerald", MapColor.EMERALD);
+		MAP_COLORS.put("podzol", MapColor.PODZOL);
+		MAP_COLORS.put("nether", MapColor.NETHER);
+		MAP_COLORS.put("terracotta_white", MapColor.TERRACOTTA_WHITE);
+		MAP_COLORS.put("terracotta_orange", MapColor.TERRACOTTA_ORANGE);
+		MAP_COLORS.put("terracotta_magenta", MapColor.TERRACOTTA_MAGENTA);
+		MAP_COLORS.put("terracotta_light_blue", MapColor.TERRACOTTA_LIGHT_BLUE);
+		MAP_COLORS.put("terracotta_yellow", MapColor.TERRACOTTA_YELLOW);
+		MAP_COLORS.put("terracotta_light_green", MapColor.TERRACOTTA_LIGHT_GREEN);
+		MAP_COLORS.put("terracotta_pink", MapColor.TERRACOTTA_PINK);
+		MAP_COLORS.put("terracotta_gray", MapColor.TERRACOTTA_GRAY);
+		MAP_COLORS.put("terracotta_light_gray", MapColor.TERRACOTTA_LIGHT_GRAY);
+		MAP_COLORS.put("terracotta_cyan", MapColor.TERRACOTTA_CYAN);
+		MAP_COLORS.put("terracotta_purple", MapColor.TERRACOTTA_PURPLE);
+		MAP_COLORS.put("terracotta_blue", MapColor.TERRACOTTA_BLUE);
+		MAP_COLORS.put("terracotta_brown", MapColor.TERRACOTTA_BROWN);
+		MAP_COLORS.put("terracotta_green", MapColor.TERRACOTTA_GREEN);
+		MAP_COLORS.put("terracotta_red", MapColor.TERRACOTTA_RED);
+		MAP_COLORS.put("terracotta_black", MapColor.TERRACOTTA_BLACK);
+		MAP_COLORS.put("crimson_nylium", MapColor.CRIMSON_NYLIUM);
+		MAP_COLORS.put("crimson_stem", MapColor.CRIMSON_STEM);
+		MAP_COLORS.put("crimson_hyphae", MapColor.CRIMSON_HYPHAE);
+		MAP_COLORS.put("warped_nylium", MapColor.WARPED_NYLIUM);
+		MAP_COLORS.put("warped_stem", MapColor.WARPED_STEM);
+		MAP_COLORS.put("warped_hyphae", MapColor.WARPED_HYPHAE);
+		MAP_COLORS.put("warped_wart_block", MapColor.WARPED_WART_BLOCK);
+		MAP_COLORS.put("deepslate", MapColor.DEEPSLATE);
+		MAP_COLORS.put("raw_iron", MapColor.RAW_IRON);
+		MAP_COLORS.put("glow_lichen", MapColor.GLOW_LICHEN);
 
-		MAP_COLORS.put(new ResourceLocation("none"), MapColor.NONE);
-		MAP_COLORS.put(new ResourceLocation("metal"), MapColor.METAL);
-		MAP_COLORS.put(new ResourceLocation("grass"), MapColor.GRASS);
-		MAP_COLORS.put(new ResourceLocation("sand"), MapColor.SAND);
-		MAP_COLORS.put(new ResourceLocation("wool"), MapColor.WOOL);
-		MAP_COLORS.put(new ResourceLocation("ice"), MapColor.ICE);
-		MAP_COLORS.put(new ResourceLocation("plant"), MapColor.PLANT);
-		MAP_COLORS.put(new ResourceLocation("quartz"), MapColor.QUARTZ);
-		MAP_COLORS.put(new ResourceLocation("snow"), MapColor.SNOW);
-		MAP_COLORS.put(new ResourceLocation("clay"), MapColor.CLAY);
-		MAP_COLORS.put(new ResourceLocation("dirt"), MapColor.DIRT);
-		MAP_COLORS.put(new ResourceLocation("stone"), MapColor.STONE);
+		PUSH_REACTIONS.put("normal", PushReaction.NORMAL);
+		PUSH_REACTIONS.put("destroy", PushReaction.DESTROY);
+		PUSH_REACTIONS.put("block", PushReaction.BLOCK);
+		PUSH_REACTIONS.put("ignore", PushReaction.IGNORE);
+		PUSH_REACTIONS.put("push_only", PushReaction.PUSH_ONLY);
+
+		for (NoteBlockInstrument instrument : NoteBlockInstrument.values()) {
+			if (instrument.isTunable()) {
+				INSTRUMENTS.put(instrument.getSerializedName(), instrument);
+			}
+		}
 
 		Objects.requireNonNull(GlassType.CLEAR);
+
+		OFFSET_TYPES.put("xyz", BlockBehaviour.OffsetType.XYZ);
+		OFFSET_TYPES.put("xz", BlockBehaviour.OffsetType.XZ);
 	}
 
 	public static <T> Codec<T> simpleByNameCodec(Map<ResourceLocation, T> map) {
@@ -86,20 +262,62 @@ public class LoaderExtraCodecs {
 		});
 	}
 
-	public static <T> Codec<T> simpleByNameCodec(BiMap<ResourceLocation, T> map) {
-		return ResourceLocation.CODEC.flatXmap(key -> {
-			T value = map.get(key);
+	public static <T> Codec<T> simpleByNameCodec(BiMap<String, T> map) {
+		return simpleByNameCodec(map, Codec.STRING);
+	}
+
+	public static <K, V> Codec<V> simpleByNameCodec(BiMap<K, V> map, Codec<K> keyCodec) {
+		return keyCodec.flatXmap(key -> {
+			V value = map.get(key);
 			if (value == null) {
 				return DataResult.error(() -> "Unknown key: " + key);
 			}
 			return DataResult.success(value);
 		}, value -> {
-			ResourceLocation key = map.inverse().get(value);
+			K key = map.inverse().get(value);
 			if (key == null) {
 				return DataResult.error(() -> "Unknown value: " + value);
 			}
 			return DataResult.success(key);
 		});
+	}
+
+	public static <T> Codec<BlockBehaviour.StateArgumentPredicate<T>> stateArgumentPredicate() {
+		return new Codec<>() {
+			@Override
+			public <R> DataResult<R> encode(BlockBehaviour.StateArgumentPredicate<T> input, DynamicOps<R> ops, R prefix) {
+				return DataResult.error(() -> "Unsupported operation");
+			}
+
+			@Override
+			public <R> DataResult<Pair<BlockBehaviour.StateArgumentPredicate<T>, R>> decode(DynamicOps<R> ops, R input) {
+				Optional<Boolean> booleanValue = ops.getBooleanValue(input).result();
+				if (booleanValue.isPresent()) {
+					BlockBehaviour.StateArgumentPredicate<T> predicate = booleanValue.get() ?
+							LoaderExtraCodecs::always :
+							LoaderExtraCodecs::never;
+					return DataResult.success(Pair.of(predicate, ops.empty()));
+				}
+				Optional<String> stringValue = ops.getStringValue(input).result();
+				if (stringValue.isPresent()) {
+					String s = stringValue.get();
+					if ("ocelot_or_parrot".equals(s)) {
+						return DataResult.success(Pair.of((state, world, pos, entity) -> {
+							return entity == EntityType.OCELOT || entity == EntityType.PARROT;
+						}, ops.empty()));
+					}
+				}
+				return DataResult.error(() -> "Failed to decode state argument predicate: " + input);
+			}
+		};
+	}
+
+	public static <T> boolean always(BlockState blockState, BlockGetter blockGetter, BlockPos pos, T t) {
+		return true;
+	}
+
+	public static <T> boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos pos, T t) {
+		return false;
 	}
 
 	public static <T> Codec<T> withAlternative(Codec<T> codec, Codec<? extends T> codec2) {

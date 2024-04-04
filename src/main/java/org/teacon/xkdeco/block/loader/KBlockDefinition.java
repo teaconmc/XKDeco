@@ -41,9 +41,33 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 	public Block createBlock(ResourceLocation id) {
 		KBlockSettings.Builder builder = KBlockSettings.builder();
 		properties.glassType().ifPresent(builder::glassType);
-		if (properties.lightEmission() > 0) {
-			builder.configure($ -> $.lightLevel($$ -> properties.lightEmission()));
-		}
+		BlockDefinitionProperties.PartialVanillaProperties vanilla = properties.vanillaProperties();
+		builder.configure($ -> {
+			vanilla.lightEmission().ifPresent(i -> $.lightLevel($$ -> i));
+			vanilla.pushReaction().ifPresent($::pushReaction);
+			vanilla.emissiveRendering().ifPresent($::emissiveRendering);
+			vanilla.hasPostProcess().ifPresent($::hasPostProcess);
+			vanilla.isRedstoneConductor().ifPresent($::isRedstoneConductor);
+			vanilla.isSuffocating().ifPresent($::isSuffocating);
+			vanilla.isViewBlocking().ifPresent($::isViewBlocking);
+			vanilla.isValidSpawn().ifPresent($::isValidSpawn);
+			vanilla.offsetType().ifPresent($::offsetType);
+			if (vanilla.noCollision().orElse(false)) {
+				$.noCollission();
+			}
+			if (vanilla.noOcclusion().orElse(false)) {
+				$.noOcclusion();
+			}
+			if (vanilla.isRandomlyTicking().orElse(false)) {
+				$.randomTicks();
+			}
+			if (vanilla.dynamicShape().orElse(false)) {
+				$.dynamicShape();
+			}
+			if (vanilla.replaceable().orElse(false)) {
+				$.replaceable();
+			}
+		});
 		properties.material().ifPresent(mat -> {
 			builder.configure($ -> {
 				$.strength(mat.destroyTime(), mat.explosionResistance());
@@ -61,12 +85,6 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		properties.shape().ifPresent(builder::shape);
 		properties.collisionShape().ifPresent(builder::collisionShape);
 		properties.interactionShape().ifPresent(builder::interactionShape);
-		if (properties.noCollision()) {
-			builder.noCollision();
-		}
-		if (properties.noOcclusion()) {
-			builder.noOcclusion();
-		}
 		for (Either<KBlockComponent, String> component : properties.components()) {
 			if (component.left().isPresent()) {
 				builder.component(component.left().get());
