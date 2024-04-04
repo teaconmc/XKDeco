@@ -7,6 +7,7 @@ import java.util.function.ToIntFunction;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoClientConfig;
+import org.teacon.xkdeco.block.behavior.CanSurviveHandler;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.duck.KBlockProperties;

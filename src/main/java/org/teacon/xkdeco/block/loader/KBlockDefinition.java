@@ -85,6 +85,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		properties.shape().ifPresent(builder::shape);
 		properties.collisionShape().ifPresent(builder::collisionShape);
 		properties.interactionShape().ifPresent(builder::interactionShape);
+		properties.canSurviveHandler().ifPresent(builder::canSurviveHandler);
 		for (Either<KBlockComponent, String> component : properties.components()) {
 			if (component.left().isPresent()) {
 				builder.component(component.left().get());

@@ -3,6 +3,8 @@ package org.teacon.xkdeco.block.loader;
 import java.util.List;
 import java.util.Optional;
 
+import org.teacon.xkdeco.block.behavior.CanSurviveHandler;
+import org.teacon.xkdeco.block.behavior.CanSurviveHandlerCodec;
 import org.teacon.xkdeco.block.setting.GlassType;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 
@@ -27,6 +29,7 @@ public record BlockDefinitionProperties(
 		Optional<ResourceLocation> shape,
 		Optional<ResourceLocation> collisionShape,
 		Optional<ResourceLocation> interactionShape,
+		Optional<CanSurviveHandler> canSurviveHandler,
 		PartialVanillaProperties vanillaProperties) {
 	public static MapCodec<BlockDefinitionProperties> mapCodec(MapCodec<Optional<KMaterial>> materialCodec) {
 		return RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -41,6 +44,7 @@ public record BlockDefinitionProperties(
 				ResourceLocation.CODEC.optionalFieldOf("shape").forGetter(BlockDefinitionProperties::shape),
 				ResourceLocation.CODEC.optionalFieldOf("collision_shape").forGetter(BlockDefinitionProperties::collisionShape),
 				ResourceLocation.CODEC.optionalFieldOf("interaction_shape").forGetter(BlockDefinitionProperties::interactionShape),
+				new CanSurviveHandlerCodec().optionalFieldOf("can_survive_handler").forGetter(BlockDefinitionProperties::canSurviveHandler),
 				PartialVanillaProperties.MAP_CODEC.forGetter(BlockDefinitionProperties::vanillaProperties)
 		).apply(instance, BlockDefinitionProperties::new));
 	}
@@ -60,22 +64,16 @@ public record BlockDefinitionProperties(
 			components.addAll(this.components);
 			components.addAll(templateProps.components);
 		}
-		Optional<KMaterial> material = or(this.material, templateProps.material);
-		Optional<GlassType> glassType = or(this.glassType, templateProps.glassType);
-		Optional<KiwiModule.RenderLayer.Layer> renderType = or(this.renderType, templateProps.renderType);
-		Optional<ResourceLocation> colorProvider = or(this.colorProvider, templateProps.colorProvider);
-		Optional<ResourceLocation> shape = or(this.shape, templateProps.shape);
-		Optional<ResourceLocation> collisionShape = or(this.collisionShape, templateProps.collisionShape);
-		Optional<ResourceLocation> interactionShape = or(this.interactionShape, templateProps.interactionShape);
 		return new BlockDefinitionProperties(
 				components,
-				material,
-				glassType,
-				renderType,
-				colorProvider,
-				shape,
-				collisionShape,
-				interactionShape,
+				or(this.material, templateProps.material),
+				or(this.glassType, templateProps.glassType),
+				or(this.renderType, templateProps.renderType),
+				or(this.colorProvider, templateProps.colorProvider),
+				or(this.shape, templateProps.shape),
+				or(this.collisionShape, templateProps.collisionShape),
+				or(this.interactionShape, templateProps.interactionShape),
+				or(this.canSurviveHandler, templateProps.canSurviveHandler),
 				vanillaProperties.merge(templateProps.vanillaProperties));
 	}
 
