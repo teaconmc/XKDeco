@@ -46,6 +46,10 @@ public record BlockDefinitionProperties(
 		).apply(instance, BlockDefinitionProperties::new));
 	}
 
+	public static MapCodec<Optional<BlockDefinitionProperties>> mapCodecField(MapCodec<Optional<KMaterial>> materialCodec) {
+		return mapCodec(materialCodec).codec().optionalFieldOf(BlockCodecs.BLOCK_PROPERTIES_KEY);
+	}
+
 	public BlockDefinitionProperties merge(BlockDefinitionProperties templateProps) {
 		List<Either<KBlockComponent, String>> components;
 		if (this.components.isEmpty()) {

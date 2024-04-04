@@ -1,1 +1,1 @@
-{"template": "leaves", "render_type": "cutout_mipped", "color_provider": "oak_leaves"}
+{"template": "leaves", "no_collision": true, "no_occlusion": true, "color_provider": "oak_leaves"}

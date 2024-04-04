@@ -15,14 +15,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public record BuiltinBlockTemplate(Optional<ResourceLocation> key, MutableObject<MapCodec<Block>> codec) implements KBlockTemplate {
-	public static final Codec<BuiltinBlockTemplate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ResourceLocation.CODEC.optionalFieldOf("codec").forGetter(BuiltinBlockTemplate::key)
-	).apply(instance, BuiltinBlockTemplate::new));
+public record BuiltinBlockTemplate(
+		Optional<BlockDefinitionProperties> properties,
+		Optional<ResourceLocation> key,
+		MutableObject<MapCodec<Block>> codec) implements KBlockTemplate {
+	public static Codec<BuiltinBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
+		return RecordCodecBuilder.create(instance -> instance.group(
+				BlockDefinitionProperties.mapCodecField(materialCodec).forGetter(BuiltinBlockTemplate::properties),
+				ResourceLocation.CODEC.optionalFieldOf("codec").forGetter(BuiltinBlockTemplate::key)
+		).apply(instance, BuiltinBlockTemplate::new));
+	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public BuiltinBlockTemplate(Optional<ResourceLocation> key) {
-		this(key, new MutableObject<>());
+	public BuiltinBlockTemplate(Optional<BlockDefinitionProperties> properties, Optional<ResourceLocation> key) {
+		this(properties, key, new MutableObject<>());
 	}
 
 	@Override

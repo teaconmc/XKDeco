@@ -1,1 +1,1 @@
-{"type": "simple", "class": "net.minecraft.world.level.block.LeavesBlock"}
+{"type": "simple", "class": "net.minecraft.world.level.block.LeavesBlock", "properties": {"render_type": "cutout_mipped"}}

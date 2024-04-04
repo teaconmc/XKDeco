@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.teacon.xkdeco.XKDeco;
@@ -27,6 +28,7 @@ import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import com.google.common.collect.Lists;
+import com.mojang.serialization.MapCodec;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -194,15 +196,13 @@ public class CommonProxy {
 		packRepository.setSelected(selected);
 		ResourceManager resourceManager = new MultiPackResourceManager(PackType.CLIENT_RESOURCES, packRepository.openAllSelected());
 		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
-		var templates = JsonLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.DIRECT_CODEC);
+		MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material");
+		var templates = JsonLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
 		templates.forEach((key, value) -> value.resolve(key));
 		var blocks = JsonLoader.load(
 				resourceManager,
 				"kiwi/block",
-				KBlockDefinition.codec(
-						templates,
-						LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material")
-				));
+				KBlockDefinition.codec(templates, materialCodec));
 		blocks.forEach((id, definition) -> {
 //			if (definition.template() == KBlockDefinition.DEFAULT_TEMPLATE.getValue()) {
 //				return;
