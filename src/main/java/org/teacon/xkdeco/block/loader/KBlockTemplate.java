@@ -1,18 +1,23 @@
 package org.teacon.xkdeco.block.loader;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public interface KBlockTemplate {
-	Codec<KBlockTemplate> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(() -> LoaderExtraRegistries.BLOCK_TEMPLATE.byNameCodec().dispatch(
-			"type",
-			KBlockTemplate::type,
-			KBlockTemplate.Type::codec));
+	static Codec<KBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
+		return LoaderExtraRegistries.BLOCK_TEMPLATE.byNameCodec().dispatch(
+				"type",
+				KBlockTemplate::type,
+				type -> type.codec().apply(materialCodec));
+	}
 
 	Type<?> type();
 
@@ -20,5 +25,7 @@ public interface KBlockTemplate {
 
 	Block createBlock(BlockBehaviour.Properties properties, JsonObject input);
 
-	record Type<T extends KBlockTemplate>(Codec<T> codec) {}
+	Optional<BlockDefinitionProperties> properties();
+
+	record Type<T extends KBlockTemplate>(Function<MapCodec<Optional<KMaterial>>, Codec<T>> codec) {}
 }

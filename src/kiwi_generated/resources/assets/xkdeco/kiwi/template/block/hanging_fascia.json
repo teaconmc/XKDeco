@@ -1,1 +1,1 @@
-{"type": "simple", "class": "org.teacon.xkdeco.block.HangingFasciaBlock"}
+{"type": "simple", "class": "org.teacon.xkdeco.block.HangingFasciaBlock", "properties": {"no_occlusion": true}}

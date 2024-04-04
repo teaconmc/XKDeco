@@ -19,7 +19,7 @@ import snownee.kiwi.util.VanillaActions;
 public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinitionProperties properties) {
 	public KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinitionProperties properties) {
 		this.template = template;
-		this.properties = template.properties().map(properties::merge).orElse(properties);
+		this.properties = template.template().properties().map(properties::merge).orElse(properties);
 	}
 
 	public static Codec<KBlockDefinition> codec(
@@ -27,11 +27,10 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 			MapCodec<Optional<KMaterial>> materialCodec) {
 		KBlockTemplate defaultTemplate = templates.get(new ResourceLocation("block"));
 		Preconditions.checkNotNull(defaultTemplate);
-		Codec<BlockDefinitionProperties> propertiesCodec = BlockDefinitionProperties.mapCodec(materialCodec).codec();
 		ConfiguredBlockTemplate defaultConfiguredTemplate = new ConfiguredBlockTemplate(defaultTemplate);
 		return RecordCodecBuilder.create(instance -> instance.group(
 				LoaderExtraCodecs.strictOptionalField(
-								ConfiguredBlockTemplate.codec(templates, propertiesCodec),
+								ConfiguredBlockTemplate.codec(templates),
 								"template",
 								defaultConfiguredTemplate)
 						.forGetter(KBlockDefinition::template),
