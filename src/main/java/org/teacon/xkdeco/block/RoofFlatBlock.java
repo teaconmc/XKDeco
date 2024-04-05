@@ -2,22 +2,11 @@ package org.teacon.xkdeco.block;
 
 import static org.teacon.xkdeco.util.RoofUtil.RoofHalf;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import org.teacon.xkdeco.util.IntTriple;
-import org.teacon.xkdeco.util.RoofUtil;
-
-import com.google.common.base.Preconditions;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,42 +61,42 @@ public final class RoofFlatBlock extends Block implements XKDecoBlockRoof {
 		pBuilder.add(HALF, AXIS, WATERLOGGED);
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
-				pContext.getClickedPos(), pContext.getNearestLookingDirections());
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public BlockState updateShape(
-			BlockState pState, Direction pFacing, BlockState pFacingState,
-			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-		return RoofUtil.updateShape(pState, pFacingState, pFacing);
-	}
-
-	@Override
-	public Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides) {
-		var horizontalSides = Arrays.stream(lookingSides).filter(Direction.Plane.HORIZONTAL).toArray(Direction[]::new);
-		var baseState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(AXIS, horizontalSides[0].getAxis());
-		var variantSide = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(AXIS, horizontalSides[1].getAxis());
-		return () -> Stream.of(baseState, variantSide)
-				.flatMap(s -> Stream.of(RoofHalf.TIP, RoofHalf.BASE).map(v -> s.setValue(HALF, v))).iterator();
-	}
-
-	@Override
-	public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
-		return Optional.empty();
-	}
-
-	@Override
-	public IntTriple getSideHeight(BlockState state, Direction horizontalSide) {
-		Preconditions.checkState(Direction.Plane.HORIZONTAL.test(horizontalSide));
-		var basicHeights = state.getValue(HALF) == RoofHalf.TIP ? new int[]{0, 8} : new int[]{0, 16}; // lower, higher
-		var middleHeight = horizontalSide.getAxis() == state.getValue(AXIS) ? basicHeights[1] : basicHeights[0];
-		// noinspection SuspiciousNameCombination
-		return IntTriple.of(middleHeight, middleHeight, middleHeight);
-	}
+//	@Override
+//	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+//		return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
+//				pContext.getClickedPos(), pContext.getNearestLookingDirections());
+//	}
+//
+//	@Override
+//	@SuppressWarnings("deprecation")
+//	public BlockState updateShape(
+//			BlockState pState, Direction pFacing, BlockState pFacingState,
+//			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+//		return RoofUtil.updateShape(pState, pFacingState, pFacing);
+//	}
+//
+//	@Override
+//	public Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides) {
+//		var horizontalSides = Arrays.stream(lookingSides).filter(Direction.Plane.HORIZONTAL).toArray(Direction[]::new);
+//		var baseState = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(AXIS, horizontalSides[0].getAxis());
+//		var variantSide = this.defaultBlockState().setValue(WATERLOGGED, waterlogged).setValue(AXIS, horizontalSides[1].getAxis());
+//		return () -> Stream.of(baseState, variantSide)
+//				.flatMap(s -> Stream.of(RoofHalf.TIP, RoofHalf.BASE).map(v -> s.setValue(HALF, v))).iterator();
+//	}
+//
+//	@Override
+//	public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
+//		return Optional.empty();
+//	}
+//
+//	@Override
+//	public IntTriple getSideHeight(BlockState state, Direction horizontalSide) {
+//		Preconditions.checkState(Direction.Plane.HORIZONTAL.test(horizontalSide));
+//		var basicHeights = state.getValue(HALF) == RoofHalf.TIP ? new int[]{0, 8} : new int[]{0, 16}; // lower, higher
+//		var middleHeight = horizontalSide.getAxis() == state.getValue(AXIS) ? basicHeights[1] : basicHeights[0];
+//		// noinspection SuspiciousNameCombination
+//		return IntTriple.of(middleHeight, middleHeight, middleHeight);
+//	}
 
 	@Override
 	public BlockState rotate(BlockState pState, Rotation pRotation) {

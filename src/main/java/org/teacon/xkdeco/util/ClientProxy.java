@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.command.ExportCreativeTabsCommand;
+import org.teacon.xkdeco.block.command.ReloadSlotsCommand;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
@@ -98,6 +99,7 @@ public final class ClientProxy {
 		forgeEventBus.addListener((RegisterCommandsEvent event) -> {
 			ExportBlocksCommand.register(event.getDispatcher());
 			ExportCreativeTabsCommand.register(event.getDispatcher());
+			ReloadSlotsCommand.register(event.getDispatcher());
 		});
 	}
 

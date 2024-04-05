@@ -3,7 +3,6 @@ package org.teacon.xkdeco.block.setting;
 import java.util.List;
 import java.util.Map;
 
-import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.loader.BlockDefinitionProperties;
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.util.ClientProxy;
@@ -23,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import snownee.kiwi.Kiwi;
 
 public interface BlockRenderSettings {
 	static void init(Map<ResourceLocation, KBlockDefinition> blocks, boolean canSetRenderLayer) {
@@ -46,7 +46,7 @@ public interface BlockRenderSettings {
 				Block block = BuiltInRegistries.BLOCK.get(entry.getKey());
 				Block providerBlock = BuiltInRegistries.BLOCK.get(properties.colorProvider().get());
 				if (providerBlock == Blocks.AIR) {
-					XKDeco.LOGGER.warn("Cannot find color provider block %s for block %s".formatted(
+					Kiwi.LOGGER.warn("Cannot find color provider block %s for block %s".formatted(
 							properties.colorProvider().get(),
 							entry.getKey()));
 				} else {

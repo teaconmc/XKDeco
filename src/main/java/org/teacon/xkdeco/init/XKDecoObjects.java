@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
-import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
@@ -52,15 +51,8 @@ public final class XKDecoObjects {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, XKDeco.ID);
 
 	public static final String WALL_BLOCK_ENTITY = "mimic_wall";
-
-	public static final String GRASS_PREFIX = "grass_";
-	public static final String WILLOW_PREFIX = "willow_";
-	public static final String PLANTABLE_PREFIX = "plantable_";
-	public static final String STONE_WATER_PREFIX = "stone_water_";
-
 	public static final String STOOL_SUFFIX = "_stool";
 	public static final String CHAIR_SUFFIX = "_chair";
-	public static final String LEAVES_DARK_SUFFIX = "_leaves_dark";
 
 	private static final ResourceKey<CreativeModeTab> STRUCTURE_TAB_KEY = ResourceKey.create(
 			Registries.CREATIVE_MODE_TAB,
@@ -155,8 +147,8 @@ public final class XKDecoObjects {
 //	}
 	private static void addRoof(String id, Supplier<BlockBehaviour.Properties> propFactory, boolean asian) {
 		var itemProperties = new Item.Properties();
-		var roof = BLOCKS.register(id, () -> new RoofBlock(propFactory.get()));
-		ITEMS.register(id, () -> new BlockItem(roof.get(), itemProperties));
+//		var roof = BLOCKS.register(id, () -> new RoofBlock(propFactory.get()));
+//		ITEMS.register(id, () -> new BlockItem(roof.get(), itemProperties));
 		var roofRidge = BLOCKS.register(id + "_ridge", () -> new RoofRidgeBlock(propFactory.get(), asian));
 		ITEMS.register(id + "_ridge", () -> new BlockItem(roofRidge.get(), itemProperties));
 		var roofSmallEnd = BLOCKS.register(id + "_small_end", () -> new RoofEndBlock(propFactory.get(), true));

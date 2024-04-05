@@ -19,6 +19,7 @@
 		"property_inject.StateDefinitionBuilderMixin"
 	],
 	"client": [
+		"client.DebugRendererMixin",
 		"forge.BlockColorsAccess",
 		"forge.ItemColorsAccess"
 	],

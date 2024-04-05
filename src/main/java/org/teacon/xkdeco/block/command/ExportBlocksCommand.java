@@ -13,7 +13,6 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoClientConfig;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
@@ -75,6 +74,7 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.datagen.GameObjectLookup;
 import snownee.kiwi.shadowed.org.yaml.snakeyaml.DumperOptions;
@@ -269,7 +269,7 @@ public class ExportBlocksCommand {
 				csvOutput.writeRow(row.values().toArray(Object[]::new));
 			}
 		} catch (Exception e) {
-			XKDeco.LOGGER.error("Failed to export blocks", e);
+			Kiwi.LOGGER.error("Failed to export blocks", e);
 			source.sendFailure(Component.literal("Failed to export blocks: " + e.getMessage()));
 		}
 		source.sendSuccess(() -> Component.literal("Blocks exported"), false);
