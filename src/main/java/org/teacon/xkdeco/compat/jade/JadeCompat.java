@@ -1,7 +1,10 @@
 package org.teacon.xkdeco.compat.jade;
 
+import java.util.List;
+import java.util.SortedSet;
+
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.XKDecoBlockRoof;
+import org.teacon.xkdeco.block.place.PlaceSlot;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,15 +33,14 @@ public class JadeCompat implements IWailaPlugin {
 
 		@Override
 		public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-			if (!(accessor.getBlock() instanceof XKDecoBlockRoof roof)) {
+			var side = accessor.getSide();
+			List<SortedSet<String>> slots = PlaceSlot.find(accessor.getBlockState(), side).map(PlaceSlot::tags).toList();
+			if (slots.isEmpty()) {
 				return;
 			}
-			var direction = accessor.getPlayer().getDirection().getOpposite();
-			var sideHeight = roof.getSideHeight(accessor.getBlockState(), direction);
-			tooltip.add(Component.literal("Side Height: %d %d %d".formatted(
-					sideHeight.getLeft(),
-					sideHeight.getMiddle(),
-					sideHeight.getRight())));
+			for (SortedSet<String> slot : slots) {
+				tooltip.add(Component.literal(String.join(", ", slot)));
+			}
 		}
 
 		@Override

@@ -19,7 +19,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.MapLike;
 import com.mojang.serialization.RecordBuilder;
 
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
@@ -56,6 +58,14 @@ public class LoaderExtraCodecs {
 	}, p -> {
 		return DataResult.error(() -> "Unsupported operation");
 	});
+	public static final Codec<Direction> DIRECTION = ExtraCodecs.stringResolverCodec($ -> {
+		return $.name().toLowerCase(Locale.ENGLISH);
+	}, $ -> {
+		return Direction.valueOf($.toUpperCase(Locale.ENGLISH));
+	});
+	public static final Codec<MinMaxBounds.Ints> INT_BOUNDS = ExtraCodecs.JSON.xmap(
+			MinMaxBounds.Ints::fromJson,
+			MinMaxBounds::serializeToJson);
 
 	static {
 		// https://regex101.com/:

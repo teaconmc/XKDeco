@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.util;
+package org.teacon.xkdeco.util.resource;
 
 import java.io.IOException;
 import java.nio.file.Path;

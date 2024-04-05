@@ -1,8 +1,0 @@
-{
-	"destroy_time": 0.3,
-	"explosion_resistance": 0.3,
-	"sound_type": "glass",
-	"map_color": "none",
-	"instrument": "hat",
-	"requires_correct_tool": false
-}

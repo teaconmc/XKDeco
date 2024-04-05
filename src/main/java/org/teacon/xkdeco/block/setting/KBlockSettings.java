@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoClientConfig;
 import org.teacon.xkdeco.block.behavior.CanSurviveHandler;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
@@ -33,6 +32,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.VoxelUtil;
 
@@ -313,7 +313,7 @@ public class KBlockSettings {
 //			Preconditions.checkNotNull(shape, "Shape %s is not registered", shapeId);
 			if (shape == null) {
 				shape = Shapes.block();
-				XKDeco.LOGGER.warn("Shape {} is not registered", shapeId);
+				Kiwi.LOGGER.warn("Shape {} is not registered", shapeId);
 			}
 			if (hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
 				return ShapeGenerator.horizontal(shape);

@@ -19,6 +19,7 @@ import org.teacon.xkdeco.block.loader.KCreativeTab;
 import org.teacon.xkdeco.block.loader.KMaterial;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
+import org.teacon.xkdeco.block.place.PlaceSlotProvider;
 import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
@@ -26,6 +27,8 @@ import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.duck.KBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
+import org.teacon.xkdeco.util.resource.OneTimeLoader;
+import org.teacon.xkdeco.util.resource.RequiredFolderRepositorySource;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
@@ -184,39 +187,23 @@ public class CommonProxy {
 	}
 
 	public static void initLoader() {
-		//noinspection ResultOfMethodCallIgnored
-		PACK_DIRECTORY.toFile().mkdirs();
-		var folderRepositorySource = new RequiredFolderRepositorySource(PACK_DIRECTORY, PackType.CLIENT_RESOURCES, PackSource.BUILT_IN);
-		PackRepository packRepository = new PackRepository(folderRepositorySource);
-		ResourcePackLoader.loadResourcePacks(packRepository, CommonProxy::buildPackFinder);
-		packRepository.reload();
-		List<String> selected = Lists.newArrayList(packRepository.getAvailableIds());
-		selected.remove("mod_resources");
-		selected.add(0, "mod_resources");
-		packRepository.setSelected(selected);
-		ResourceManager resourceManager = new MultiPackResourceManager(PackType.CLIENT_RESOURCES, packRepository.openAllSelected());
-		var materials = JsonLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
-		MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material");
-		var templates = JsonLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
-		templates.forEach((key, value) -> value.resolve(key));
-		var blocks = JsonLoader.load(
-				resourceManager,
-				"kiwi/block",
-				KBlockDefinition.codec(templates, materialCodec));
-		blocks.forEach((id, definition) -> {
+		ResourceManager resourceManager = collectKiwiPacks();
+		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager);
+		fundamentals.blocks().forEach((id, definition) -> {
 //			if (definition.template() == KBlockDefinition.DEFAULT_TEMPLATE.getValue()) {
 //				return;
 //			}
 			Block block = definition.createBlock(id);
 			if (block != null) {
+				fundamentals.slotProviders().attachSlots(block, definition);
 				ForgeRegistries.BLOCKS.register(id, block);
 				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
 			}
 		});
 		if (Platform.isPhysicalClient()) {
-			BlockRenderSettings.init(blocks, ClientModLoader.isLoading());
+			BlockRenderSettings.init(fundamentals.blocks(), ClientModLoader.isLoading());
 		}
-		var tabs = JsonLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
+		var tabs = OneTimeLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
 		tabs.entrySet().stream().sorted(Comparator.comparingInt($ -> $.getValue()
 				.order())).forEach(entry -> {
 			ResourceLocation key = entry.getKey();
@@ -234,6 +221,40 @@ public class CommonProxy {
 					.build();
 			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
 		});
+	}
+
+	public record BlockFundamentals(
+			Map<ResourceLocation, KMaterial> materials,
+			Map<ResourceLocation, KBlockTemplate> templates,
+			PlaceSlotProvider.ParsedResult slotProviders,
+			Map<ResourceLocation, KBlockDefinition> blocks,
+			MapCodec<Optional<KMaterial>> materialCodec) {
+		public static BlockFundamentals reload(ResourceManager resourceManager) {
+			var materials = OneTimeLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
+			MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material");
+			var templates = OneTimeLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
+			templates.forEach((key, value) -> value.resolve(key));
+			var slotProviders = PlaceSlotProvider.reload(resourceManager, templates);
+			var blocks = OneTimeLoader.load(
+					resourceManager,
+					"kiwi/block",
+					KBlockDefinition.codec(templates, materialCodec));
+			return new BlockFundamentals(materials, templates, slotProviders, blocks, materialCodec);
+		}
+	}
+
+	public static ResourceManager collectKiwiPacks() {
+		//noinspection ResultOfMethodCallIgnored
+		PACK_DIRECTORY.toFile().mkdirs();
+		var folderRepositorySource = new RequiredFolderRepositorySource(PACK_DIRECTORY, PackType.CLIENT_RESOURCES, PackSource.BUILT_IN);
+		PackRepository packRepository = new PackRepository(folderRepositorySource);
+		ResourcePackLoader.loadResourcePacks(packRepository, CommonProxy::buildPackFinder);
+		packRepository.reload();
+		List<String> selected = Lists.newArrayList(packRepository.getAvailableIds());
+		selected.remove("mod_resources");
+		selected.add(0, "mod_resources");
+		packRepository.setSelected(selected);
+		return new MultiPackResourceManager(PackType.CLIENT_RESOURCES, packRepository.openAllSelected());
 	}
 
 	private static RepositorySource buildPackFinder(Map<IModFile, ? extends PathPackResources> modResourcePacks) {

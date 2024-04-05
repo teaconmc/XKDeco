@@ -1,21 +1,13 @@
 package org.teacon.xkdeco.block;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.teacon.xkdeco.util.IntTriple;
 import org.teacon.xkdeco.util.RoofUtil;
 import org.teacon.xkdeco.util.RoofUtil.RoofHalf;
-
-import com.google.common.base.Preconditions;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,23 +51,23 @@ public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock imp
 		return super.getShape(pState, pLevel, pPos, pContext); //TODO
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
-				pContext.getClickedPos(), pContext.getNearestLookingDirections());
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public BlockState updateShape(
-			BlockState pState,
-			Direction pFacing,
-			BlockState pFacingState,
-			LevelAccessor pLevel,
-			BlockPos pCurrentPos,
-			BlockPos pFacingPos) {
-		return RoofUtil.updateShape(pState, pFacingState, pFacing);
-	}
+//	@Override
+//	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+//		return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
+//				pContext.getClickedPos(), pContext.getNearestLookingDirections());
+//	}
+//
+//	@Override
+//	@SuppressWarnings("deprecation")
+//	public BlockState updateShape(
+//			BlockState pState,
+//			Direction pFacing,
+//			BlockState pFacingState,
+//			LevelAccessor pLevel,
+//			BlockPos pCurrentPos,
+//			BlockPos pFacingPos) {
+//		return RoofUtil.updateShape(pState, pFacingState, pFacing);
+//	}
 
 	@Override
 	@SuppressWarnings("deprecation")
@@ -88,20 +80,20 @@ public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock imp
 		pBuilder.add(VARIANT, HALF, FACING, WATERLOGGED);
 	}
 
-	@Override
-	public Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides) {
-		return List.of(defaultBlockState()); //TODO
-	}
-
-	@Override
-	public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
-		return Optional.empty(); //TODO
-	}
-
-	@Override
-	public IntTriple getSideHeight(BlockState state, Direction horizontalSide) {
-		// noinspection DuplicatedCode
-		Preconditions.checkState(Direction.Plane.HORIZONTAL.test(horizontalSide));
-		return IntTriple.of(0, 0, 0); //TODO
-	}
+//	@Override
+//	public Iterable<BlockState> getPlacementChoices(boolean waterlogged, boolean updateSide, Direction... lookingSides) {
+//		return List.of(defaultBlockState()); //TODO
+//	}
+//
+//	@Override
+//	public Optional<BlockState> getUpdateShapeChoice(BlockState state, Direction fromSide) {
+//		return Optional.empty(); //TODO
+//	}
+//
+//	@Override
+//	public IntTriple getSideHeight(BlockState state, Direction horizontalSide) {
+//		// noinspection DuplicatedCode
+//		Preconditions.checkState(Direction.Plane.HORIZONTAL.test(horizontalSide));
+//		return IntTriple.of(0, 0, 0); //TODO
+//	}
 }
