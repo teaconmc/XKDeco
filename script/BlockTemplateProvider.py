@@ -29,4 +29,4 @@ class BlockTemplateProvider(TableDataProvider):
             tags = [ResourceLocation(tag) for tag in row['Tags'].split(',')]
             self.tags[templateId] = tags
 
-        self.writeJson(templateId, data)
+        self.writeFile(templateId, data)

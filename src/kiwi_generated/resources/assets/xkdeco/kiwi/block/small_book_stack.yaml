@@ -1,0 +1,5 @@
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:small_book_stack
+no_occlusion: true

@@ -1,0 +1,4 @@
+template: slab
+render_type: translucent
+light_emission: 15
+glass_type: translucent

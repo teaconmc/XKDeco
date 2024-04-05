@@ -1,0 +1,5 @@
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:porcelain_small
+no_occlusion: true

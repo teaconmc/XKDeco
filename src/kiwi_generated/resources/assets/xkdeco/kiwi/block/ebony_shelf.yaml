@@ -1,0 +1,6 @@
+material: xkdeco:ebony
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:shelf
+no_occlusion: true

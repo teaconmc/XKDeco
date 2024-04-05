@@ -1,0 +1,4 @@
+components:
+- water_loggable
+- directional
+no_occlusion: true

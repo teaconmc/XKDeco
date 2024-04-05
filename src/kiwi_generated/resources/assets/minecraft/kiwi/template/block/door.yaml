@@ -1,0 +1,4 @@
+type: builtin
+properties:
+  render_type: cutout
+  no_occlusion: true

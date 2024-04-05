@@ -1,0 +1,4 @@
+render_type: translucent
+light_emission: 15
+no_occlusion: true
+glass_type: translucent

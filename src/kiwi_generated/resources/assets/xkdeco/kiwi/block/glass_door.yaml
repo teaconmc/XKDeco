@@ -1,0 +1,5 @@
+template:
+  kiwi:type: door
+  block_set_type: oak
+render_type: cutout
+glass_type: clear

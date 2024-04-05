@@ -1,0 +1,5 @@
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:screen
+no_occlusion: true

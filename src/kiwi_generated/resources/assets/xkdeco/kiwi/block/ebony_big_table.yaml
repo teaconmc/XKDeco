@@ -1,0 +1,5 @@
+material: xkdeco:ebony
+components:
+- water_loggable
+shape: xkdeco:big_table
+no_occlusion: true

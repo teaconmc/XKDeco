@@ -1,0 +1,5 @@
+light_emission: 15
+components:
+- water_loggable
+shape: xkdeco:candlestick
+no_occlusion: true

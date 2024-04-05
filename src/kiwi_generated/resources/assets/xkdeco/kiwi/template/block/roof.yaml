@@ -1,0 +1,4 @@
+type: simple
+class: org.teacon.xkdeco.block.RoofBlock
+properties:
+  no_occlusion: true

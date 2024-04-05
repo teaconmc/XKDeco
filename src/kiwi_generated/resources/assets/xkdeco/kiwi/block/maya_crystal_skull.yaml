@@ -1,0 +1,4 @@
+render_type: translucent
+components:
+- horizontal
+shape: xkdeco:maya_crystal_skull

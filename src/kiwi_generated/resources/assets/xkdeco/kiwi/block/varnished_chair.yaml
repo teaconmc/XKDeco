@@ -1,0 +1,5 @@
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:chair
+no_occlusion: true

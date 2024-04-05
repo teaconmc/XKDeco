@@ -1,0 +1,6 @@
+render_type: cutout
+material: xkdeco:hollow_steel
+components:
+- water_loggable
+no_occlusion: true
+glass_type: hollow_steel

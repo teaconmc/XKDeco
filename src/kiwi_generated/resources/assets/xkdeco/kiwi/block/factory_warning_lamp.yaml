@@ -1,0 +1,6 @@
+light_emission: 15
+components:
+- water_loggable
+- directional
+shape: xkdeco:factory_lamp
+no_occlusion: true

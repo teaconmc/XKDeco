@@ -8,6 +8,7 @@ class TagsProvider(TableDataProvider):
         alias = alias if alias is not None else registry
         super().__init__(pack, 'data/{}/tags/' + alias, registry + '_tags')
         self.prettyPrint = True
+        self.exportFormat = 'json'
         self.data = {}
 
     def addEntry(self, tagKey: ResourceLocation, value: ResourceLocation):
@@ -24,7 +25,7 @@ class TagsProvider(TableDataProvider):
     def generate(self):
         super().generate()
         for key, value in self.data.items():
-            self.writeJson(key, {
+            self.writeFile(key, {
                 'values': sorted(list(value))
             })
 
