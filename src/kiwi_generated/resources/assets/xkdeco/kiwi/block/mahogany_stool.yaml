@@ -1,0 +1,5 @@
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:long_stool
+no_occlusion: true

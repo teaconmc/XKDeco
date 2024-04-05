@@ -58,7 +58,7 @@ class TableDataProvider(DataProvider):
             if field != 'ID' and field not in self.ignoredFields and field != '' and row[field] != '':
                 data[field] = row[field]
 
-        self.writeJson(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
 
     def __str__(self):
         if self.__class__.__name__ == 'TableDataProvider':

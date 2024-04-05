@@ -17,6 +17,10 @@ class Pack:
             self.config['json_pretty_print'] = False
         if 'translation_file_name' not in self.config:
             self.config['translation_file_name'] = '{}.json'
+        if 'export_format' not in self.config:
+            self.config['export_format'] = 'yaml'
+        else:
+            self.config['export_format'] = self.config['export_format'].lower()
         if 'translation_dest' in self.config:
             self.config['translation_dest'] = self.config['translation_dest'].replace('%TEMP%', self.tempDir)
         self.includes = []

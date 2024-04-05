@@ -4,6 +4,7 @@
 	"translation_file_name": "{}.json",
 	"translation_dest": "%TEMP%/assets/xkdeco_extra/lang",
 	"json_pretty_print": false,
+	"export_format": "yaml",
 	"materials": [
 		"xkdeco.xlsx"
 	],

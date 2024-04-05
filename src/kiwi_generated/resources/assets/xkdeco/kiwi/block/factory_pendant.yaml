@@ -1,0 +1,5 @@
+light_emission: 15
+components:
+- water_loggable
+shape: xkdeco:factory_pendant
+no_occlusion: true

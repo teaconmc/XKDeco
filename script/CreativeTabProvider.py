@@ -24,7 +24,7 @@ class CreativeTabProvider(TableDataProvider):
             if fieldName in row and row[fieldName] != '':
                 self.pack.providers['translations'].putTranslation(csvConfig['SecondaryName'], translationKey, row[fieldName])
 
-        self.writeJson(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
 
     def addContent(self, tabId, content):
         if tabId not in self.contents:

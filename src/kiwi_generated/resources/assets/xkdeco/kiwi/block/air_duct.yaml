@@ -1,0 +1,5 @@
+template: xkdeco:air_duct
+render_type: cutout
+components:
+- water_loggable
+glass_type: hollow_steel

@@ -1,0 +1,4 @@
+components:
+- water_loggable
+- moulding
+no_occlusion: true

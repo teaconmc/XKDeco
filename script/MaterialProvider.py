@@ -65,4 +65,4 @@ class MaterialProvider(TableDataProvider):
         if len(transformers) > 0:
             self.tagTransformers[blockId] = transformers
 
-        self.writeJson(blockId, data)
+        self.writeFile(blockId, data)

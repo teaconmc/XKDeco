@@ -89,4 +89,4 @@ class BlockDefinitionProvider(TableDataProvider):
         for tag in tags:
             self.pack.providers['block_tags'].addEntry(tag, blockId)
 
-        self.writeJson(blockId, data)
+        self.writeFile(blockId, data)

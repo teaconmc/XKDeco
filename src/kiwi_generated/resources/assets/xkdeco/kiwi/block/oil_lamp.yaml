@@ -1,0 +1,7 @@
+render_type: cutout
+light_emission: 15
+components:
+- water_loggable
+- directional
+shape: xkdeco:oil_lamp
+no_occlusion: true

@@ -1,0 +1,4 @@
+components:
+- water_loggable
+shape: xkdeco:fish_tank
+no_occlusion: true

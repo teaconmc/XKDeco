@@ -1,0 +1,7 @@
+light_emission: 15
+components:
+- water_loggable
+- moulding
+shape: xkdeco:factory_light_bar
+no_collision: true
+no_occlusion: true
