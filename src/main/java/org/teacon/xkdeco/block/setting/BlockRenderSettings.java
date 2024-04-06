@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.KiwiModule;
 
 public interface BlockRenderSettings {
 	static void init(Map<ResourceLocation, KBlockDefinition> blocks, boolean canSetRenderLayer) {
@@ -33,7 +34,7 @@ public interface BlockRenderSettings {
 		for (var entry : blocks.entrySet()) {
 			BlockDefinitionProperties properties = entry.getValue().properties();
 			if (canSetRenderLayer) {
-				var renderType = properties.renderType().orElse(null);
+				KiwiModule.RenderLayer.Layer renderType = properties.renderType().orElse(null);
 				if (renderType == null) {
 					renderType = properties.glassType().map(GlassType::renderType).orElse(null);
 				}

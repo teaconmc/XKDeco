@@ -23,19 +23,26 @@ public class ReloadSlotsCommand {
 
 	private static int reloadSlots(CommandSourceStack source) {
 		CommonProxy.BlockFundamentals fundamentals = CommonProxy.BlockFundamentals.reload(CommonProxy.collectKiwiPacks());
-		AtomicInteger counter = new AtomicInteger();
+		AtomicInteger slotsCounter = new AtomicInteger();
+		AtomicInteger choicesCounter = new AtomicInteger();
 		BuiltInRegistries.BLOCK.holders().forEach(holder -> {
 			KBlockDefinition definition = fundamentals.blocks().get(holder.key().location());
 			if (definition == null) {
 				return;
 			}
 			if (fundamentals.slotProviders().attachSlots(holder.value(), definition)) {
-				counter.incrementAndGet();
+				slotsCounter.incrementAndGet();
+			}
+			if (fundamentals.placeChoices().attachChoices(holder.value(), definition)) {
+				choicesCounter.incrementAndGet();
 			}
 		});
 		source.sendSuccess(() -> Component.literal("Slots in %d blocks have been reloaded, using %d providers".formatted(
-				counter.get(),
-				fundamentals.slotProviders().providers().size())), false);
+				slotsCounter.get(),
+				fundamentals.slotProviders().providers().size())), true);
+		source.sendSuccess(() -> Component.literal("Place choices in %d blocks have been reloaded, using %d choices".formatted(
+				choicesCounter.get(),
+				fundamentals.placeChoices().choices().size())), true);
 		return 1;
 	}
 

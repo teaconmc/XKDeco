@@ -4,8 +4,10 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedMap;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Interner;
 import com.google.common.collect.Interners;
@@ -63,9 +65,18 @@ public record PlaceSlot(Direction side, SortedMap<String, String> tags) {
 			if (v.isEmpty()) {
 				list.add(k);
 			} else {
-				list.add(k + "=" + v);
+				list.add(k + ":" + v);
 			}
 		});
 		return list;
+	}
+
+	public boolean hasTag(ParsedProtoTag resolvedTag) {
+		Preconditions.checkArgument(resolvedTag.isResolved(), "Tag must be resolved");
+		if (resolvedTag.prefix().equals("*")) {
+			return tags.containsKey(resolvedTag.toString());
+		} else {
+			return Objects.equals(tags.get(resolvedTag.key()), resolvedTag.value());
+		}
 	}
 }

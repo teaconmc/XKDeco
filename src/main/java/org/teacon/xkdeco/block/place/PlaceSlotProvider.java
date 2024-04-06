@@ -2,7 +2,6 @@ package org.teacon.xkdeco.block.place;
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,7 +38,7 @@ import snownee.kiwi.Kiwi;
 import snownee.kiwi.loader.Platform;
 
 public record PlaceSlotProvider(
-		TargetType targetType,
+		PlaceTargetType targetType,
 		ResourceLocation targetId,
 		Optional<String> transformWith,
 		List<String> tag,
@@ -61,7 +60,7 @@ public record PlaceSlotProvider(
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public static PlaceSlotProvider create(String target, Optional<String> transformWith, List<String> tag, List<Slot> slots) {
-		TargetType targetType = target.startsWith("@") ? TargetType.TEMPLATE : TargetType.BLOCK;
+		PlaceTargetType targetType = target.startsWith("@") ? PlaceTargetType.TEMPLATE : PlaceTargetType.BLOCK;
 		ResourceLocation targetId = new ResourceLocation(target.substring(targetType.prefix.length()));
 		return new PlaceSlotProvider(targetType, targetId, transformWith, tag, slots);
 	}
@@ -78,19 +77,8 @@ public record PlaceSlotProvider(
 				templates);
 	}
 
-	private String targetToString() {
+	public String targetToString() {
 		return this.targetType.prefix + this.targetId;
-	}
-
-	public enum TargetType {
-		TEMPLATE("@"),
-		BLOCK("");
-
-		public final String prefix;
-
-		TargetType(String prefix) {
-			this.prefix = prefix;
-		}
 	}
 
 	public record Slot(
@@ -203,34 +191,26 @@ public record PlaceSlotProvider(
 	private ImmutableSortedMap<String, String> generateTags(Slot slot, Side side, BlockState rotatedState, Rotation rotation) {
 		Map<String, String> map = Maps.newHashMap();
 		MutableObject<String> primaryKey = new MutableObject<>();
-		Streams.concat(tag.stream(), slot.tag.stream(), side.tag.stream()).forEach(tag -> {
-			int i = tag.indexOf(':');
-			String key = i == -1 ? tag : tag.substring(0, i);
-			String value = i == -1 ? "" : tag.substring(i + 1);
-			if (key.startsWith("*")) {
+		Streams.concat(tag.stream(), slot.tag.stream(), side.tag.stream()).forEach(s -> {
+			ParsedProtoTag tag = ParsedProtoTag.of(s).resolve(rotatedState, rotation);
+			if (tag.prefix().equals("*")) {
 				if (primaryKey.getValue() == null) {
-					primaryKey.setValue(key);
-				} else if (!Objects.equals(primaryKey.getValue(), key)) {
+					primaryKey.setValue(tag.key());
+				} else if (!Objects.equals(primaryKey.getValue(), tag.key())) {
 					throw new IllegalArgumentException("Only one primary tag is allowed");
 				}
-			} else if (key.startsWith("@")) {
-				key = key.substring(1);
-				if (value.isEmpty()) {
-					value = StatePropertiesPredicate.getValueString(rotatedState, key);
-				} else {
-					Direction direction = Direction.valueOf(value.toUpperCase(Locale.ENGLISH));
-					value = rotation.rotate(direction).getSerializedName();
-				}
 			}
-			map.put(key, value);
+			map.put(tag.key(), tag.value());
 		});
 		if (primaryKey.getValue() == null) {
 			throw new IllegalArgumentException("Primary tag is required");
 		}
 		String primaryValue = map.get(primaryKey.getValue());
-		if (primaryValue != null) {
-			map.remove(primaryKey.getValue());
-			map.put("%s:%s".formatted(primaryKey.getValue(), primaryValue), "");
+		map.remove(primaryKey.getValue());
+		if (primaryValue == null) {
+			map.put("*%s".formatted(primaryKey.getValue()), "");
+		} else {
+			map.put("*%s:%s".formatted(primaryKey.getValue(), primaryValue), "");
 		}
 		return ImmutableSortedMap.copyOf(map, PlaceSlot.TAG_COMPARATOR);
 	}

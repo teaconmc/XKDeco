@@ -1,5 +1,14 @@
 from: '*roof:front'
 to: '*roof:back'
+interest: 150
 test_tag:
-  - key: facing
-    operator: is_opposite
+  - facing
+on_link:
+  from:
+    set_properties:
+      variant: slow
+      half: upper
+  to:
+    set_properties:
+      variant: slow
+      half: lower

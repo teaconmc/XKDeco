@@ -58,3 +58,25 @@ link = {
     ]
 }
 print(yaml.dump(link, indent=2, sort_keys=False))
+
+choices = {
+    'target': '@xkdeco:roof',
+    'limit': [
+        {
+            'type': 'has_tag',
+            'tag': '@facing'
+        }
+    ],
+    'interests': [
+        {
+            'when': {
+                'variant': [
+                    'slow',
+                    'steep'
+                ]
+            },
+            'bonus': 10
+        }
+    ]
+}
+print(yaml.dump(choices, indent=2, sort_keys=False))

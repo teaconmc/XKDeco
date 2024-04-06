@@ -233,7 +233,7 @@ public class ExportBlocksCommand {
 				}
 				KBlockSettings settings = KBlockSettings.of(block);
 				if (settings == null) {
-					settings = KBlockSettings.EMPTY;
+					settings = KBlockSettings.empty();
 				}
 				if (settings.glassType == null) {
 					row.put("GlassType", "");

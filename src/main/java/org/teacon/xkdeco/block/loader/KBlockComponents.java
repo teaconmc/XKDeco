@@ -27,9 +27,9 @@ import snownee.kiwi.KiwiModule;
 @KiwiModule("block_components")
 public class KBlockComponents extends AbstractModule {
 	@KiwiModule.Name("minecraft:directional")
-	public static final KiwiGO<KBlockComponent.Type<DirectionalComponent>> DIRECTIONAL = register(Codec.unit(DirectionalComponent.getInstance()));
+	public static final KiwiGO<KBlockComponent.Type<DirectionalComponent>> DIRECTIONAL = register(DirectionalComponent.CODEC);
 	@KiwiModule.Name("minecraft:horizontal")
-	public static final KiwiGO<KBlockComponent.Type<HorizontalComponent>> HORIZONTAL = register(Codec.unit(HorizontalComponent.getInstance()));
+	public static final KiwiGO<KBlockComponent.Type<HorizontalComponent>> HORIZONTAL = register(HorizontalComponent.CODEC);
 	@KiwiModule.Name("minecraft:horizontal_axis")
 	public static final KiwiGO<KBlockComponent.Type<HorizontalAxisComponent>> HORIZONTAL_AXIS = register(Codec.unit(HorizontalAxisComponent.getInstance()));
 	@KiwiModule.Name("minecraft:front_and_top")

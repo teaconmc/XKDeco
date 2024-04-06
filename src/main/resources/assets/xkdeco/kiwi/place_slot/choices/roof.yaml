@@ -1,0 +1,16 @@
+target: '@xkdeco:roof'
+limit:
+  - type: has_tags
+    tags:
+      - '*roof:side'
+      - '@facing'
+interests:
+  - when:
+      variant:
+        - slow
+        - steep
+    bonus: 30
+  - when:
+      shape:
+        - straight
+    bonus: 10
