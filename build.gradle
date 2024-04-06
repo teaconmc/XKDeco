@@ -184,11 +184,11 @@ dependencies {
         jarJar.ranged(it, "[0.3.2,)")
     }
 
-    // compile against the JEI API but do not include it at runtime
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-    //// at runtime, use the full JEI jar for Forge
-    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+//    // compile against the JEI API but do not include it at runtime
+//    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+//    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+//    //// at runtime, use the full JEI jar for Forge
+//    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")

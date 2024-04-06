@@ -5,7 +5,8 @@
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
 		"BlockBehaviourMixin",
-		"BlockItemMixin",
+		"BlockItemGetPlacementStateMixin",
+		"BlockItemPlaceBlockMixin",
 		"BlockMixin",
 		"BlockPropertiesMixin",
 		"BlockStateMixin",

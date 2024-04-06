@@ -41,3 +41,18 @@ slots:
       down:
         tag:
         - '*roof:bottom'
+  - when:
+      - shape: inner
+        facing: north
+        variant:
+          - normal
+          - slow
+        half: lower
+    sides:
+      north:
+        tag:
+          - '*roof:back'
+      east:
+        tag:
+          - '*roof:back'
+          - '@facing:east'

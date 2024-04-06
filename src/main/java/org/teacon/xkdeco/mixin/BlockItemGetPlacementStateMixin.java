@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin({BlockItem.class, StandingAndWallBlockItem.class})
-public class BlockItemMixin {
+public class BlockItemGetPlacementStateMixin {
 	@WrapOperation(
 			method = "getPlacementState",
 			at = @At(
