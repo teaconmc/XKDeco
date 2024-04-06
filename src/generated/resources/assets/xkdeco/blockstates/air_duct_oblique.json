@@ -1,33 +1,33 @@
 {
   "variants": {
-    "facing=east,half=base": {
-      "model": "xkdeco:block/air_duct_oblique_top",
-      "y": 90
-    },
-    "facing=east,half=tip": {
+    "facing=east,half=lower": {
       "model": "xkdeco:block/air_duct_oblique",
       "y": 90
     },
-    "facing=north,half=base": {
-      "model": "xkdeco:block/air_duct_oblique_top"
+    "facing=east,half=upper": {
+      "model": "xkdeco:block/air_duct_oblique_top",
+      "y": 90
     },
-    "facing=north,half=tip": {
+    "facing=north,half=lower": {
       "model": "xkdeco:block/air_duct_oblique"
     },
-    "facing=south,half=base": {
-      "model": "xkdeco:block/air_duct_oblique_top",
-      "y": 180
+    "facing=north,half=upper": {
+      "model": "xkdeco:block/air_duct_oblique_top"
     },
-    "facing=south,half=tip": {
+    "facing=south,half=lower": {
       "model": "xkdeco:block/air_duct_oblique",
       "y": 180
     },
-    "facing=west,half=base": {
+    "facing=south,half=upper": {
       "model": "xkdeco:block/air_duct_oblique_top",
+      "y": 180
+    },
+    "facing=west,half=lower": {
+      "model": "xkdeco:block/air_duct_oblique",
       "y": 270
     },
-    "facing=west,half=tip": {
-      "model": "xkdeco:block/air_duct_oblique",
+    "facing=west,half=upper": {
+      "model": "xkdeco:block/air_duct_oblique_top",
       "y": 270
     }
   }

@@ -1,0 +1,5 @@
+from: '*roof:front'
+to: '*roof:back'
+test_tag:
+  - key: facing
+    operator: is_opposite

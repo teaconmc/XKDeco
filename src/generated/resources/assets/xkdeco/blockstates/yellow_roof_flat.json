@@ -1,18 +1,18 @@
 {
   "variants": {
-    "axis=x,half=base": {
-      "model": "xkdeco:block/yellow_roof_flat_top",
-      "y": 90
-    },
-    "axis=x,half=tip": {
+    "axis=x,half=lower": {
       "model": "xkdeco:block/yellow_roof_flat",
       "y": 90
     },
-    "axis=z,half=base": {
-      "model": "xkdeco:block/yellow_roof_flat_top"
+    "axis=x,half=upper": {
+      "model": "xkdeco:block/yellow_roof_flat_top",
+      "y": 90
     },
-    "axis=z,half=tip": {
+    "axis=z,half=lower": {
       "model": "xkdeco:block/yellow_roof_flat"
+    },
+    "axis=z,half=upper": {
+      "model": "xkdeco:block/yellow_roof_flat_top"
     }
   }
 }

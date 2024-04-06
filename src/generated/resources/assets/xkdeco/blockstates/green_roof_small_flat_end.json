@@ -1,33 +1,33 @@
 {
   "variants": {
-    "facing=east,half=base": {
-      "model": "xkdeco:block/green_roof_small_flat_end_top"
-    },
-    "facing=east,half=tip": {
+    "facing=east,half=lower": {
       "model": "xkdeco:block/green_roof_small_flat_end"
     },
-    "facing=north,half=base": {
-      "model": "xkdeco:block/green_roof_small_flat_end_top",
-      "y": 270
+    "facing=east,half=upper": {
+      "model": "xkdeco:block/green_roof_small_flat_end_top"
     },
-    "facing=north,half=tip": {
+    "facing=north,half=lower": {
       "model": "xkdeco:block/green_roof_small_flat_end",
       "y": 270
     },
-    "facing=south,half=base": {
+    "facing=north,half=upper": {
       "model": "xkdeco:block/green_roof_small_flat_end_top",
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=tip": {
+    "facing=south,half=lower": {
       "model": "xkdeco:block/green_roof_small_flat_end",
       "y": 90
     },
-    "facing=west,half=base": {
+    "facing=south,half=upper": {
       "model": "xkdeco:block/green_roof_small_flat_end_top",
+      "y": 90
+    },
+    "facing=west,half=lower": {
+      "model": "xkdeco:block/green_roof_small_flat_end",
       "y": 180
     },
-    "facing=west,half=tip": {
-      "model": "xkdeco:block/green_roof_small_flat_end",
+    "facing=west,half=upper": {
+      "model": "xkdeco:block/green_roof_small_flat_end_top",
       "y": 180
     }
   }

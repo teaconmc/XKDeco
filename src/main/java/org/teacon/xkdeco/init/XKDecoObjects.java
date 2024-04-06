@@ -260,7 +260,7 @@ public final class XKDecoObjects {
 
 	public static void addMimicWallTags(TagsUpdatedEvent event) {
 		var registry = event.getRegistryAccess().registry(ForgeRegistries.BLOCKS.getRegistryKey()).orElseThrow(RuntimeException::new);
-		registry.bindTags(registry.getTagNames().collect(Collectors.toMap(Function.identity(), tagKey -> {
+		registry.bindTags(registry.getTagNames().collect(Collectors.toUnmodifiableMap(Function.identity(), tagKey -> {
 			var tags = Lists.newArrayList(registry.getTagOrEmpty(tagKey));
 			if (BlockTags.WALLS.equals(tagKey)) {
 				for (var block : ForgeRegistries.BLOCKS.getValues()) {

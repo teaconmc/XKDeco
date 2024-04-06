@@ -1,153 +1,153 @@
 {
   "variants": {
-    "facing=east,half=base,shape=inner": {
-      "model": "xkdeco:block/cyan_roof_eave_inner_top"
-    },
-    "facing=east,half=base,shape=left_end": {
-      "model": "xkdeco:block/cyan_roof_eave_left_end_top"
-    },
-    "facing=east,half=base,shape=outer": {
-      "model": "xkdeco:block/cyan_roof_eave_outer_top"
-    },
-    "facing=east,half=base,shape=right_end": {
-      "model": "xkdeco:block/cyan_roof_eave_right_end_top"
-    },
-    "facing=east,half=base,shape=straight": {
-      "model": "xkdeco:block/cyan_roof_eave_top"
-    },
-    "facing=east,half=tip,shape=inner": {
+    "facing=east,half=lower,shape=inner": {
       "model": "xkdeco:block/cyan_roof_eave_inner"
     },
-    "facing=east,half=tip,shape=left_end": {
+    "facing=east,half=lower,shape=left_end": {
       "model": "xkdeco:block/cyan_roof_eave_left_end"
     },
-    "facing=east,half=tip,shape=outer": {
+    "facing=east,half=lower,shape=outer": {
       "model": "xkdeco:block/cyan_roof_eave_outer"
     },
-    "facing=east,half=tip,shape=right_end": {
+    "facing=east,half=lower,shape=right_end": {
       "model": "xkdeco:block/cyan_roof_eave_right_end"
     },
-    "facing=east,half=tip,shape=straight": {
+    "facing=east,half=lower,shape=straight": {
       "model": "xkdeco:block/cyan_roof_eave"
     },
-    "facing=north,half=base,shape=inner": {
-      "model": "xkdeco:block/cyan_roof_eave_inner_top",
-      "y": 270
+    "facing=east,half=upper,shape=inner": {
+      "model": "xkdeco:block/cyan_roof_eave_inner_top"
     },
-    "facing=north,half=base,shape=left_end": {
-      "model": "xkdeco:block/cyan_roof_eave_left_end_top",
-      "y": 270
+    "facing=east,half=upper,shape=left_end": {
+      "model": "xkdeco:block/cyan_roof_eave_left_end_top"
     },
-    "facing=north,half=base,shape=outer": {
-      "model": "xkdeco:block/cyan_roof_eave_outer_top",
-      "y": 270
+    "facing=east,half=upper,shape=outer": {
+      "model": "xkdeco:block/cyan_roof_eave_outer_top"
     },
-    "facing=north,half=base,shape=right_end": {
-      "model": "xkdeco:block/cyan_roof_eave_right_end_top",
-      "y": 270
+    "facing=east,half=upper,shape=right_end": {
+      "model": "xkdeco:block/cyan_roof_eave_right_end_top"
     },
-    "facing=north,half=base,shape=straight": {
-      "model": "xkdeco:block/cyan_roof_eave_top",
-      "y": 270
+    "facing=east,half=upper,shape=straight": {
+      "model": "xkdeco:block/cyan_roof_eave_top"
     },
-    "facing=north,half=tip,shape=inner": {
+    "facing=north,half=lower,shape=inner": {
       "model": "xkdeco:block/cyan_roof_eave_inner",
       "y": 270
     },
-    "facing=north,half=tip,shape=left_end": {
+    "facing=north,half=lower,shape=left_end": {
       "model": "xkdeco:block/cyan_roof_eave_left_end",
       "y": 270
     },
-    "facing=north,half=tip,shape=outer": {
+    "facing=north,half=lower,shape=outer": {
       "model": "xkdeco:block/cyan_roof_eave_outer",
       "y": 270
     },
-    "facing=north,half=tip,shape=right_end": {
+    "facing=north,half=lower,shape=right_end": {
       "model": "xkdeco:block/cyan_roof_eave_right_end",
       "y": 270
     },
-    "facing=north,half=tip,shape=straight": {
+    "facing=north,half=lower,shape=straight": {
       "model": "xkdeco:block/cyan_roof_eave",
       "y": 270
     },
-    "facing=south,half=base,shape=inner": {
+    "facing=north,half=upper,shape=inner": {
       "model": "xkdeco:block/cyan_roof_eave_inner_top",
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=base,shape=left_end": {
+    "facing=north,half=upper,shape=left_end": {
       "model": "xkdeco:block/cyan_roof_eave_left_end_top",
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=base,shape=outer": {
+    "facing=north,half=upper,shape=outer": {
       "model": "xkdeco:block/cyan_roof_eave_outer_top",
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=base,shape=right_end": {
+    "facing=north,half=upper,shape=right_end": {
       "model": "xkdeco:block/cyan_roof_eave_right_end_top",
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=base,shape=straight": {
+    "facing=north,half=upper,shape=straight": {
       "model": "xkdeco:block/cyan_roof_eave_top",
-      "y": 90
+      "y": 270
     },
-    "facing=south,half=tip,shape=inner": {
+    "facing=south,half=lower,shape=inner": {
       "model": "xkdeco:block/cyan_roof_eave_inner",
       "y": 90
     },
-    "facing=south,half=tip,shape=left_end": {
+    "facing=south,half=lower,shape=left_end": {
       "model": "xkdeco:block/cyan_roof_eave_left_end",
       "y": 90
     },
-    "facing=south,half=tip,shape=outer": {
+    "facing=south,half=lower,shape=outer": {
       "model": "xkdeco:block/cyan_roof_eave_outer",
       "y": 90
     },
-    "facing=south,half=tip,shape=right_end": {
+    "facing=south,half=lower,shape=right_end": {
       "model": "xkdeco:block/cyan_roof_eave_right_end",
       "y": 90
     },
-    "facing=south,half=tip,shape=straight": {
+    "facing=south,half=lower,shape=straight": {
       "model": "xkdeco:block/cyan_roof_eave",
       "y": 90
     },
-    "facing=west,half=base,shape=inner": {
+    "facing=south,half=upper,shape=inner": {
       "model": "xkdeco:block/cyan_roof_eave_inner_top",
-      "y": 180
+      "y": 90
     },
-    "facing=west,half=base,shape=left_end": {
+    "facing=south,half=upper,shape=left_end": {
       "model": "xkdeco:block/cyan_roof_eave_left_end_top",
-      "y": 180
+      "y": 90
     },
-    "facing=west,half=base,shape=outer": {
+    "facing=south,half=upper,shape=outer": {
       "model": "xkdeco:block/cyan_roof_eave_outer_top",
-      "y": 180
+      "y": 90
     },
-    "facing=west,half=base,shape=right_end": {
+    "facing=south,half=upper,shape=right_end": {
       "model": "xkdeco:block/cyan_roof_eave_right_end_top",
-      "y": 180
+      "y": 90
     },
-    "facing=west,half=base,shape=straight": {
+    "facing=south,half=upper,shape=straight": {
       "model": "xkdeco:block/cyan_roof_eave_top",
-      "y": 180
+      "y": 90
     },
-    "facing=west,half=tip,shape=inner": {
+    "facing=west,half=lower,shape=inner": {
       "model": "xkdeco:block/cyan_roof_eave_inner",
       "y": 180
     },
-    "facing=west,half=tip,shape=left_end": {
+    "facing=west,half=lower,shape=left_end": {
       "model": "xkdeco:block/cyan_roof_eave_left_end",
       "y": 180
     },
-    "facing=west,half=tip,shape=outer": {
+    "facing=west,half=lower,shape=outer": {
       "model": "xkdeco:block/cyan_roof_eave_outer",
       "y": 180
     },
-    "facing=west,half=tip,shape=right_end": {
+    "facing=west,half=lower,shape=right_end": {
       "model": "xkdeco:block/cyan_roof_eave_right_end",
       "y": 180
     },
-    "facing=west,half=tip,shape=straight": {
+    "facing=west,half=lower,shape=straight": {
       "model": "xkdeco:block/cyan_roof_eave",
+      "y": 180
+    },
+    "facing=west,half=upper,shape=inner": {
+      "model": "xkdeco:block/cyan_roof_eave_inner_top",
+      "y": 180
+    },
+    "facing=west,half=upper,shape=left_end": {
+      "model": "xkdeco:block/cyan_roof_eave_left_end_top",
+      "y": 180
+    },
+    "facing=west,half=upper,shape=outer": {
+      "model": "xkdeco:block/cyan_roof_eave_outer_top",
+      "y": 180
+    },
+    "facing=west,half=upper,shape=right_end": {
+      "model": "xkdeco:block/cyan_roof_eave_right_end_top",
+      "y": 180
+    },
+    "facing=west,half=upper,shape=straight": {
+      "model": "xkdeco:block/cyan_roof_eave_top",
       "y": 180
     }
   }

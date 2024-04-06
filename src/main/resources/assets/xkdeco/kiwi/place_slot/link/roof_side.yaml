@@ -1,0 +1,6 @@
+from: '*roof:side'
+to: '*roof:side'
+test_tag:
+  - facing
+  - variant
+  - half

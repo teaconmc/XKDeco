@@ -34,7 +34,7 @@ public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock imp
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(VARIANT, RoofUtil.RoofVariant.NORMAL)
-				.setValue(HALF, RoofHalf.TIP)
+				.setValue(HALF, RoofHalf.LOWER)
 				.setValue(FACING, Direction.NORTH)
 				.setValue(WATERLOGGED, false));
 	}

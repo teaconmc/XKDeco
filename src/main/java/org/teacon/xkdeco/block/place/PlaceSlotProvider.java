@@ -2,20 +2,26 @@ package org.teacon.xkdeco.block.place;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.block.loader.KBlockTemplate;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
+import org.teacon.xkdeco.util.CommonProxy;
+import org.teacon.xkdeco.util.codec.CompactListCodec;
 import org.teacon.xkdeco.util.resource.OneTimeLoader;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Streams;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -25,11 +31,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.loader.Platform;
 
-public record PlaceSlotProvider(TargetType targetType, ResourceLocation targetId, List<Slot> slots) {
+public record PlaceSlotProvider(
+		TargetType targetType,
+		ResourceLocation targetId,
+		Optional<String> transformWith,
+		List<String> tag,
+		List<Slot> slots) {
 	public static final Predicate<String> TAG_PATTERN = Pattern.compile("^[*@]?(?:[a-z_/]+:)?[a-z_/]+$").asPredicate();
 	public static final Codec<String> TAG_CODEC = ExtraCodecs.validate(Codec.STRING, s -> {
 		if (TAG_PATTERN.test(s)) {
@@ -40,23 +54,27 @@ public record PlaceSlotProvider(TargetType targetType, ResourceLocation targetId
 	});
 	public static final Codec<PlaceSlotProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			ExtraCodecs.NON_EMPTY_STRING.fieldOf("target").forGetter(PlaceSlotProvider::targetToString),
+			Codec.STRING.optionalFieldOf("transform_with").forGetter(PlaceSlotProvider::transformWith),
+			TAG_CODEC.listOf().optionalFieldOf("tag", List.of()).forGetter(PlaceSlotProvider::tag),
 			Slot.CODEC.listOf().fieldOf("slots").forGetter(PlaceSlotProvider::slots)
 	).apply(instance, PlaceSlotProvider::create));
-	private static final List<Direction> DIRECTIONS = Direction.stream().toList();
 
-	public static PlaceSlotProvider create(String target, List<Slot> slots) {
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+	public static PlaceSlotProvider create(String target, Optional<String> transformWith, List<String> tag, List<Slot> slots) {
 		TargetType targetType = target.startsWith("@") ? TargetType.TEMPLATE : TargetType.BLOCK;
 		ResourceLocation targetId = new ResourceLocation(target.substring(targetType.prefix.length()));
-		return new PlaceSlotProvider(targetType, targetId, slots);
+		return new PlaceSlotProvider(targetType, targetId, transformWith, tag, slots);
 	}
 
 	public static ParsedResult reload(ResourceManager resourceManager, Map<ResourceLocation, KBlockTemplate> templates) {
 		PlaceSlot.clear();
 		return ParsedResult.of(
-				OneTimeLoader.load(
-						resourceManager,
-						"kiwi/place_slot/provider",
-						PlaceSlotProvider.CODEC),
+				Platform.isDataGen() ?
+						Map.of() :
+						OneTimeLoader.load(
+								resourceManager,
+								"kiwi/place_slot/provider",
+								PlaceSlotProvider.CODEC),
 				templates);
 	}
 
@@ -75,11 +93,15 @@ public record PlaceSlotProvider(TargetType targetType, ResourceLocation targetId
 		}
 	}
 
-	public record Slot(StatePropertiesPredicate when, Optional<String> transformWith, List<String> tag, EnumMap<Direction, Side> sides) {
+	public record Slot(
+			List<StatePropertiesPredicate> when,
+			Optional<String> transformWith,
+			List<String> tag,
+			EnumMap<Direction, Side> sides) {
 		public static final Codec<Slot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				StatePropertiesPredicate.CODEC.fieldOf("when").forGetter(Slot::when),
+				new CompactListCodec<>(StatePropertiesPredicate.CODEC, false).fieldOf("when").forGetter(Slot::when),
 				Codec.STRING.optionalFieldOf("transform_with").forGetter(Slot::transformWith),
-				TAG_CODEC.listOf().fieldOf("tag").forGetter(Slot::tag),
+				TAG_CODEC.listOf().optionalFieldOf("tag", List.of()).forGetter(Slot::tag),
 				Codec.unboundedMap(LoaderExtraCodecs.DIRECTION, Side.CODEC)
 						.xmap(EnumMap::new, $ -> $)
 						.fieldOf("sides")
@@ -110,46 +132,106 @@ public record PlaceSlotProvider(TargetType targetType, ResourceLocation targetId
 		}
 
 		public boolean attachSlots(Block block, KBlockDefinition definition) {
-			List<PlaceSlotProvider> list = byTemplate.get(definition.template().template());
-			for (PlaceSlotProvider provider : list) {
-				provider.attachSlots(block);
+			boolean success = false;
+			for (PlaceSlotProvider provider : byTemplate.get(definition.template().template())) {
+				try {
+					provider.attachSlots(block);
+					success = true;
+				} catch (Exception e) {
+					Kiwi.LOGGER.error("Failed to attach slots for block %s with provider %s".formatted(block, provider), e);
+				}
 			}
-			return !list.isEmpty();
+			return success;
 		}
 	}
 
 	private void attachSlots(Block block) {
 		for (Slot slot : this.slots) {
 			for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-				if (!slot.when.test(blockState)) {
+				if (slot.when.stream().noneMatch(predicate -> predicate.test(blockState))) {
 					continue;
 				}
-				List<String> parsedTags = parseTags(slot.tag.stream(), blockState).toList();
-				for (Direction direction : DIRECTIONS) {
+				for (Direction direction : CommonProxy.DIRECTIONS) {
 					Side side = slot.sides.get(direction);
 					if (side == null) {
 						continue;
 					}
-					PlaceSlot placeSlot = PlaceSlot.create(
-							direction,
-							Iterables.concat(parsedTags, parseTags(side.tag.stream(), blockState).toList()));
+					PlaceSlot placeSlot = PlaceSlot.create(direction, generateTags(slot, side, blockState, Rotation.NONE));
 					PlaceSlot.register(blockState, placeSlot);
+				}
+				String transformWith = (slot.transformWith.isPresent() ? slot.transformWith : this.transformWith).orElse("none");
+				if (!"none".equals(transformWith)) {
+					Property<?> property = StatePropertiesPredicate.getProperty(blockState, transformWith);
+					if (!(property instanceof DirectionProperty directionProperty)) {
+						throw new IllegalArgumentException("Invalid transform_with property: " + transformWith);
+					}
+					attachSlotWithTransformation(slot, blockState, directionProperty);
 				}
 			}
 		}
 	}
 
-	public static Stream<String> parseTags(Stream<String> tags, BlockState blockState) {
-		return tags.map(tag -> {
-			if (tag.startsWith("@")) {
-				String key = tag.substring(1);
-				Property<?> property = StatePropertiesPredicate.getProperty(blockState, key);
-				String value = blockState.getValue(property).toString();
-				return key + ":" + value;
-			} else {
-				return tag;
+	private void attachSlotWithTransformation(Slot slot, BlockState blockState, DirectionProperty property) {
+		Direction baseDirection = blockState.getValue(property);
+		BlockState rotatedState = blockState;
+		while ((rotatedState = rotatedState.cycle(property)) != blockState) {
+			Direction newDirection = rotatedState.getValue(property);
+			if (Direction.Plane.VERTICAL.test(newDirection)) {
+				continue;
 			}
-		});
+			Rotation rotation = null;
+			for (Rotation value : Rotation.values()) {
+				if (value.rotate(baseDirection) == newDirection) {
+					rotation = value;
+					break;
+				}
+			}
+			if (rotation == null) {
+				throw new IllegalStateException("Invalid direction: " + newDirection);
+			}
+			for (Direction direction : CommonProxy.DIRECTIONS) {
+				Side side = slot.sides.get(direction);
+				if (side == null) {
+					continue;
+				}
+				PlaceSlot placeSlot = PlaceSlot.create(rotation.rotate(direction), generateTags(slot, side, rotatedState, rotation));
+				PlaceSlot.register(rotatedState, placeSlot);
+			}
+		}
 	}
 
+	private ImmutableSortedMap<String, String> generateTags(Slot slot, Side side, BlockState rotatedState, Rotation rotation) {
+		Map<String, String> map = Maps.newHashMap();
+		MutableObject<String> primaryKey = new MutableObject<>();
+		Streams.concat(tag.stream(), slot.tag.stream(), side.tag.stream()).forEach(tag -> {
+			int i = tag.indexOf(':');
+			String key = i == -1 ? tag : tag.substring(0, i);
+			String value = i == -1 ? "" : tag.substring(i + 1);
+			if (key.startsWith("*")) {
+				if (primaryKey.getValue() == null) {
+					primaryKey.setValue(key);
+				} else if (!Objects.equals(primaryKey.getValue(), key)) {
+					throw new IllegalArgumentException("Only one primary tag is allowed");
+				}
+			} else if (key.startsWith("@")) {
+				key = key.substring(1);
+				if (value.isEmpty()) {
+					value = StatePropertiesPredicate.getValueString(rotatedState, key);
+				} else {
+					Direction direction = Direction.valueOf(value.toUpperCase(Locale.ENGLISH));
+					value = rotation.rotate(direction).getSerializedName();
+				}
+			}
+			map.put(key, value);
+		});
+		if (primaryKey.getValue() == null) {
+			throw new IllegalArgumentException("Primary tag is required");
+		}
+		String primaryValue = map.get(primaryKey.getValue());
+		if (primaryValue != null) {
+			map.remove(primaryKey.getValue());
+			map.put("%s:%s".formatted(primaryKey.getValue(), primaryValue), "");
+		}
+		return ImmutableSortedMap.copyOf(map, PlaceSlot.TAG_COMPARATOR);
+	}
 }

@@ -102,24 +102,24 @@ public class RoofUtil {
 			case OUTER -> facing.get2DDataValue() * 4 + facing.getClockWise().get2DDataValue();
 		};
 		return switch (half) {
-			case TIP -> RoofBlock.ROOF_SHAPES.get(variant.ordinal() * 16 + indexLeftRight);
-			case BASE -> RoofBlock.ROOF_BASE_SHAPES.get(variant.ordinal() * 16 + indexLeftRight);
+			case LOWER -> RoofBlock.ROOF_SHAPES.get(variant.ordinal() * 16 + indexLeftRight);
+			case UPPER -> RoofBlock.ROOF_BASE_SHAPES.get(variant.ordinal() * 16 + indexLeftRight);
 		};
 	}
 
 	@MethodsReturnNonnullByDefault
 	@ParametersAreNonnullByDefault
 	public enum RoofHalf implements StringRepresentable {
-		BASE, TIP;
+		UPPER, LOWER;
 
 		@Override
 		public String getSerializedName() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 
 		@Override
 		public String toString() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 	}
 
@@ -130,12 +130,12 @@ public class RoofUtil {
 
 		@Override
 		public String getSerializedName() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 
 		@Override
 		public String toString() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 	}
 
@@ -146,12 +146,12 @@ public class RoofUtil {
 
 		@Override
 		public String getSerializedName() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 
 		@Override
 		public String toString() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 	}
 
@@ -162,12 +162,12 @@ public class RoofUtil {
 
 		@Override
 		public String getSerializedName() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 
 		@Override
 		public String toString() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 	}
 
@@ -178,12 +178,12 @@ public class RoofUtil {
 
 		@Override
 		public String getSerializedName() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 
 		@Override
 		public String toString() {
-			return this.name().toLowerCase(Locale.ROOT);
+			return this.name().toLowerCase(Locale.ENGLISH);
 		}
 	}
 }

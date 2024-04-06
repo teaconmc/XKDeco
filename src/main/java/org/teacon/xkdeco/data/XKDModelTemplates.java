@@ -123,7 +123,7 @@ public class XKDModelTemplates {
 					if (shape != RoofUtil.RoofShape.STRAIGHT) {
 						suffix += "_" + shape;
 					}
-					if (half == RoofUtil.RoofHalf.BASE) {
+					if (half == RoofUtil.RoofHalf.UPPER) {
 						suffix += "_top";
 					}
 					if (shape != RoofUtil.RoofShape.STRAIGHT) {
@@ -140,7 +140,7 @@ public class XKDModelTemplates {
 				if (shape != RoofUtil.RoofEaveShape.STRAIGHT) {
 					suffix += "_" + shape;
 				}
-				if (half == RoofUtil.RoofHalf.BASE) {
+				if (half == RoofUtil.RoofHalf.UPPER) {
 					suffix += "_top";
 				}
 				create("template_roof_small_eave" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
@@ -154,7 +154,7 @@ public class XKDModelTemplates {
 					if (variant != RoofUtil.RoofVariant.NORMAL) {
 						suffix += "_" + variant;
 					}
-					if (half == RoofUtil.RoofHalf.BASE) {
+					if (half == RoofUtil.RoofHalf.UPPER) {
 						suffix += "_top";
 					}
 					suffix += "_" + shape;
@@ -173,7 +173,7 @@ public class XKDModelTemplates {
 				if (variant != RoofUtil.RoofVariant.NORMAL) {
 					suffix += "_" + variant;
 				}
-				if (half == RoofUtil.RoofHalf.BASE) {
+				if (half == RoofUtil.RoofHalf.UPPER) {
 					suffix += "_top";
 				}
 				create("template_roof_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_INNER);

@@ -25,7 +25,7 @@ public class HorizontalShiftBlock extends HorizontalDirectionalBlock implements 
 	public HorizontalShiftBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
-				.setValue(HALF, RoofUtil.RoofHalf.TIP)
+				.setValue(HALF, RoofUtil.RoofHalf.LOWER)
 				.setValue(FACING, Direction.NORTH)
 				.setValue(WATERLOGGED, false));
 	}
@@ -46,7 +46,7 @@ public class HorizontalShiftBlock extends HorizontalDirectionalBlock implements 
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		var fluidState = pContext.getLevel().getFluidState(pContext.getClickedPos());
 		return this.defaultBlockState()
-				.setValue(HALF, RoofUtil.RoofHalf.TIP)
+				.setValue(HALF, RoofUtil.RoofHalf.LOWER)
 				.setValue(FACING, pContext.getHorizontalDirection().getOpposite())
 				.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 	}

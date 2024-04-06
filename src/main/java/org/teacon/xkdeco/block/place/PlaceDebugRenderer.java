@@ -43,7 +43,7 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 			Level level = entity.level();
 			this.slots = BlockPos.betweenClosedStream(entity.getBoundingBox().inflate(4)).map(BlockPos::immutable).flatMap(pos -> {
 				BlockState blockState = level.getBlockState(pos);
-				return Direction.stream().flatMap(side -> PlaceSlot.find(blockState, side).map(slot -> {
+				return Direction.stream().flatMap(side -> PlaceSlot.find(blockState, side).stream().map(slot -> {
 					return new SlotRenderInstance(slot, pos, side);
 				}));
 			}).toList();
@@ -70,7 +70,7 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 	}
 
 	private record SlotRenderInstance(PlaceSlot slot, BlockPos pos, Direction side, VoxelShape shape) {
-		private static final VoxelShape SHAPE_DOWN = Block.box(6, -1, 6, 10, 1, 10);
+		private static final VoxelShape SHAPE_DOWN = Block.box(6, -0.5, 6, 10, 0.5, 10);
 		private static final VoxelShape[] SHAPES = Direction.stream()
 				.map(side -> VoxelUtil.rotate(SHAPE_DOWN, side))
 				.toArray(VoxelShape[]::new);

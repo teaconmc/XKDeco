@@ -31,7 +31,7 @@ public final class RoofFlatBlock extends Block implements XKDecoBlockRoof {
 	public RoofFlatBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
-				.setValue(HALF, RoofHalf.TIP).setValue(AXIS, Direction.Axis.X)
+				.setValue(HALF, RoofHalf.LOWER).setValue(AXIS, Direction.Axis.X)
 				.setValue(WATERLOGGED, false));
 	}
 
@@ -45,8 +45,8 @@ public final class RoofFlatBlock extends Block implements XKDecoBlockRoof {
 	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
 		return switch (pState.getValue(HALF)) {
-			case BASE -> ROOF_FLAT_BASE;
-			case TIP -> ROOF_FLAT_TIP;
+			case UPPER -> ROOF_FLAT_BASE;
+			case LOWER -> ROOF_FLAT_TIP;
 		};
 	}
 

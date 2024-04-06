@@ -19,7 +19,9 @@ import org.teacon.xkdeco.block.loader.KCreativeTab;
 import org.teacon.xkdeco.block.loader.KMaterial;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
+import org.teacon.xkdeco.block.place.PlaceDebugFeature;
 import org.teacon.xkdeco.block.place.PlaceSlotProvider;
+import org.teacon.xkdeco.block.place.SlotLink;
 import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
@@ -38,6 +40,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -65,6 +68,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingStage;
@@ -91,6 +95,7 @@ import snownee.kiwi.loader.Platform;
 @ParametersAreNonnullByDefault
 public class CommonProxy {
 	public static final Path PACK_DIRECTORY = FMLPaths.GAMEDIR.get().resolve("kiwipacks");
+	public static final List<Direction> DIRECTIONS = Direction.stream().toList();
 
 	public CommonProxy() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -170,6 +175,11 @@ public class CommonProxy {
 
 		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
 		forgeEventBus.addListener(CushionEntity::onBreakBlock);
+		forgeEventBus.addListener((BlockEvent.BreakEvent event) -> {
+			if (PlaceDebugFeature.isEnabled(event.getPlayer())) {
+				PlaceDebugFeature.removeDebugBlocks(event.getPlayer().level(), event.getPos());
+			}
+		});
 
 		forgeEventBus.addListener((PlayerInteractEvent.RightClickBlock event) -> {
 			InteractionResult result = BlockBehaviorRegistry.getInstance().onUseBlock(
@@ -227,6 +237,7 @@ public class CommonProxy {
 			Map<ResourceLocation, KMaterial> materials,
 			Map<ResourceLocation, KBlockTemplate> templates,
 			PlaceSlotProvider.ParsedResult slotProviders,
+			Map<ResourceLocation, SlotLink> slotLinks,
 			Map<ResourceLocation, KBlockDefinition> blocks,
 			MapCodec<Optional<KMaterial>> materialCodec) {
 		public static BlockFundamentals reload(ResourceManager resourceManager) {
@@ -235,11 +246,14 @@ public class CommonProxy {
 			var templates = OneTimeLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
 			templates.forEach((key, value) -> value.resolve(key));
 			var slotProviders = PlaceSlotProvider.reload(resourceManager, templates);
+			var slotLinks = OneTimeLoader.load(resourceManager, "kiwi/place_slot/link", SlotLink.CODEC);
+			SlotLink.clear();
+			slotLinks.values().forEach(SlotLink::register);
 			var blocks = OneTimeLoader.load(
 					resourceManager,
 					"kiwi/block",
 					KBlockDefinition.codec(templates, materialCodec));
-			return new BlockFundamentals(materials, templates, slotProviders, blocks, materialCodec);
+			return new BlockFundamentals(materials, templates, slotProviders, slotLinks, blocks, materialCodec);
 		}
 	}
 
