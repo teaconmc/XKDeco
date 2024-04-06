@@ -90,7 +90,7 @@ public interface ShapeGenerator {
 
 	static ShapeGenerator horizontalShifted(VoxelShape trueNorth, VoxelShape falseNorth) {
 		return shifted(
-				state -> state.getValue(XKDStateProperties.ROOF_HALF) == RoofUtil.RoofHalf.BASE,
+				state -> state.getValue(XKDStateProperties.ROOF_HALF) == RoofUtil.RoofHalf.UPPER,
 				horizontal(trueNorth),
 				horizontal(falseNorth));
 	}

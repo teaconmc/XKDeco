@@ -197,7 +197,7 @@ public final class RoofBlock extends HorizontalDirectionalBlock implements XKDec
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofShape.STRAIGHT)
-				.setValue(HALF, RoofHalf.TIP).setValue(FACING, Direction.NORTH)
+				.setValue(HALF, RoofHalf.LOWER).setValue(FACING, Direction.NORTH)
 				.setValue(WATERLOGGED, false));
 	}
 

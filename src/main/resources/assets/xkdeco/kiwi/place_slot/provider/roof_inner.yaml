@@ -1,0 +1,56 @@
+target: '@xkdeco:roof'
+tag:
+  - '@shape'
+  - '@variant'
+  - '@half'
+  - '@facing'
+transform_with: facing
+slots:
+  - when:
+      shape: inner
+      facing: north
+    sides:
+      south:
+        tag:
+          - '*roof:side'
+          - '@facing:east'
+      west:
+        tag:
+          - '*roof:side'
+  - when:
+      - shape: inner
+        facing: north
+        variant: slow
+        half: upper
+    sides:
+      south:
+        tag:
+          - '*roof:back'
+      east:
+        tag:
+          - '*roof:back'
+          - '@facing:east'
+  - when:
+      - shape: inner
+        facing: north
+        variant: normal
+      - shape: inner
+        facing: north
+        variant: steep
+        half: lower
+    sides:
+      up:
+        tag:
+          - '*roof:top'
+  - when:
+      - shape: inner
+        facing: north
+        variant: normal
+      - shape: inner
+        facing: north
+        variant: steep
+        half: upper
+    sides:
+      down:
+        tag:
+        - '*roof:bottom'

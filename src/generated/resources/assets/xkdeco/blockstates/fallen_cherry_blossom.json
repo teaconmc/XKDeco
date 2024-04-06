@@ -1,10 +1,10 @@
 {
   "variants": {
-    "half=base": {
-      "model": "xkdeco:block/fallen_cherry_blossom_slab"
-    },
-    "half=tip": {
+    "half=lower": {
       "model": "xkdeco:block/fallen_cherry_blossom"
+    },
+    "half=upper": {
+      "model": "xkdeco:block/fallen_cherry_blossom_slab"
     }
   }
 }

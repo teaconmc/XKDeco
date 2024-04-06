@@ -20,7 +20,7 @@ public final class FallenLeavesBlock extends Block {
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(this.stateDefinition.any().setValue(HALF, RoofUtil.RoofHalf.TIP));
+		registerDefaultState(this.stateDefinition.any().setValue(HALF, RoofUtil.RoofHalf.LOWER));
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public final class FallenLeavesBlock extends Block {
 			BlockPos pPos,
 			BlockPos pNeighborPos) {
 		if (pDirection == Direction.DOWN) {
-			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? RoofUtil.RoofHalf.BASE : RoofUtil.RoofHalf.TIP);
+			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? RoofUtil.RoofHalf.UPPER : RoofUtil.RoofHalf.LOWER);
 		}
 		return pState;
 	}
@@ -45,7 +45,7 @@ public final class FallenLeavesBlock extends Block {
 	@Override
 	public @NotNull BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState blockState = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
-		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? RoofUtil.RoofHalf.BASE : RoofUtil.RoofHalf.TIP);
+		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? RoofUtil.RoofHalf.UPPER : RoofUtil.RoofHalf.LOWER);
 	}
 
 	private static boolean isBottomSlab(BlockState state) {

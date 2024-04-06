@@ -33,7 +33,9 @@ public class ReloadSlotsCommand {
 				counter.incrementAndGet();
 			}
 		});
-		source.sendSuccess(() -> Component.literal("Slots in %d blocks have been reloaded".formatted(counter.get())), false);
+		source.sendSuccess(() -> Component.literal("Slots in %d blocks have been reloaded, using %d providers".formatted(
+				counter.get(),
+				fundamentals.slotProviders().providers().size())), false);
 		return 1;
 	}
 

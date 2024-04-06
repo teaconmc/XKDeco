@@ -1,7 +1,6 @@
 package org.teacon.xkdeco.compat.jade;
 
 import java.util.List;
-import java.util.SortedSet;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.place.PlaceSlot;
@@ -34,11 +33,11 @@ public class JadeCompat implements IWailaPlugin {
 		@Override
 		public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
 			var side = accessor.getSide();
-			List<SortedSet<String>> slots = PlaceSlot.find(accessor.getBlockState(), side).map(PlaceSlot::tags).toList();
+			List<List<String>> slots = PlaceSlot.find(accessor.getBlockState(), side).stream().map(PlaceSlot::tagList).toList();
 			if (slots.isEmpty()) {
 				return;
 			}
-			for (SortedSet<String> slot : slots) {
+			for (List<String> slot : slots) {
 				tooltip.add(Component.literal(String.join(", ", slot)));
 			}
 		}

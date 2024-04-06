@@ -34,7 +34,7 @@ public final class RoofEaveBlock extends HorizontalDirectionalBlock implements X
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
 				.setValue(SHAPE, RoofEaveShape.STRAIGHT)
-				.setValue(HALF, RoofHalf.TIP)
+				.setValue(HALF, RoofHalf.LOWER)
 				.setValue(FACING, Direction.NORTH)
 				.setValue(WATERLOGGED, false));
 	}
@@ -49,8 +49,8 @@ public final class RoofEaveBlock extends HorizontalDirectionalBlock implements X
 	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
 		return switch (pState.getValue(HALF)) {
-			case BASE -> ROOF_EAVE_BASE;
-			case TIP -> ROOF_EAVE_TIP;
+			case UPPER -> ROOF_EAVE_BASE;
+			case LOWER -> ROOF_EAVE_TIP;
 		};
 	}
 
