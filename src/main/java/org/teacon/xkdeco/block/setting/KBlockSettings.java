@@ -9,6 +9,7 @@ import org.teacon.xkdeco.XKDecoClientConfig;
 import org.teacon.xkdeco.block.behavior.CanSurviveHandler;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
+import org.teacon.xkdeco.block.place.PlaceChoices;
 import org.teacon.xkdeco.duck.KBlockProperties;
 
 import com.google.common.base.Preconditions;
@@ -37,7 +38,6 @@ import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.VoxelUtil;
 
 public class KBlockSettings {
-	public static final KBlockSettings EMPTY = new KBlockSettings(builder());
 	public final boolean customPlacement;
 	public final GlassType glassType;
 	@Nullable
@@ -51,6 +51,7 @@ public class KBlockSettings {
 	@Nullable
 	public final ToIntFunction<BlockState> analogOutputSignal;
 	public final Map<KBlockComponent.Type<?>, KBlockComponent> components;
+	public PlaceChoices placeChoices;
 
 	private KBlockSettings(Builder builder) {
 		this.customPlacement = builder.customPlacement;
@@ -66,6 +67,10 @@ public class KBlockSettings {
 				ExportBlocksCommand.putMoreInfo(this, new MoreInfo(builder.shapeId, builder.collisionShapeId, builder.interactionShapeId));
 			}
 		}
+	}
+
+	public static KBlockSettings empty() {
+		return new KBlockSettings(builder());
 	}
 
 	public static KBlockSettings.Builder builder() {
@@ -177,7 +182,6 @@ public class KBlockSettings {
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean customPlacement;
-		private boolean sustainsPlant;
 		@Nullable
 		private GlassType glassType;
 		@Nullable
@@ -225,11 +229,6 @@ public class KBlockSettings {
 
 		public Builder customPlacement() {
 			this.customPlacement = true;
-			return this;
-		}
-
-		public Builder sustainsPlant() {
-			this.sustainsPlant = true;
 			return this;
 		}
 
@@ -284,11 +283,11 @@ public class KBlockSettings {
 		}
 
 		public Builder horizontal() {
-			return component(HorizontalComponent.getInstance());
+			return component(HorizontalComponent.getInstance(false));
 		}
 
 		public Builder directional() {
-			return component(DirectionalComponent.getInstance());
+			return component(DirectionalComponent.getInstance(false));
 		}
 
 		public Builder horizontalAxis() {

@@ -1,5 +1,6 @@
 from: '*roof:side'
 to: '*roof:side'
+interest: 100
 test_tag:
   - facing
   - variant

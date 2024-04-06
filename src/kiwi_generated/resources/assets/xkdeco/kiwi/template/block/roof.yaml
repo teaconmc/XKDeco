@@ -1,4 +1,8 @@
 type: simple
 class: org.teacon.xkdeco.block.RoofBlock
 properties:
+  components:
+  - water_loggable
+  - type: horizontal
+    oppose: true
   no_occlusion: true

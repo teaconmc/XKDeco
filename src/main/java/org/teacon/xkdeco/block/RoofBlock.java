@@ -11,14 +11,11 @@ import org.teacon.xkdeco.util.RoofUtil;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -27,11 +24,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofBlock extends HorizontalDirectionalBlock implements XKDecoBlockRoof {
+public final class RoofBlock extends BasicBlock implements XKDecoBlockRoof {
 	public static final EnumProperty<RoofVariant> VARIANT = XKDStateProperties.ROOF_VARIANT;
 	public static final EnumProperty<RoofShape> SHAPE = EnumProperty.create("shape", RoofShape.class);
 	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public static final VoxelShape ROOF_E = Shapes.or(Block.box(0, 8, 0, 8, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
 	public static final VoxelShape ROOF_INNER_EN = Shapes.or(
@@ -196,9 +192,9 @@ public final class RoofBlock extends HorizontalDirectionalBlock implements XKDec
 	public RoofBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState()
-				.setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofShape.STRAIGHT)
-				.setValue(HALF, RoofHalf.LOWER).setValue(FACING, Direction.NORTH)
-				.setValue(WATERLOGGED, false));
+				.setValue(VARIANT, RoofVariant.NORMAL)
+				.setValue(SHAPE, RoofShape.STRAIGHT)
+				.setValue(HALF, RoofHalf.LOWER));
 	}
 
 	@Override
@@ -210,7 +206,7 @@ public final class RoofBlock extends HorizontalDirectionalBlock implements XKDec
 	@Override
 	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		var facing = pState.getValue(FACING);
+		var facing = pState.getValue(HorizontalDirectionalBlock.FACING);
 		var roofHalf = pState.getValue(HALF);
 		var roofVariant = pState.getValue(VARIANT);
 		return RoofUtil.getShape(pState.getValue(SHAPE), facing, roofHalf, roofVariant);
@@ -238,7 +234,7 @@ public final class RoofBlock extends HorizontalDirectionalBlock implements XKDec
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
+		pBuilder.add(VARIANT, SHAPE, HALF);
 	}
 
 //	@Override

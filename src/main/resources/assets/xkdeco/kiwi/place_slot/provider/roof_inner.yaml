@@ -20,19 +20,6 @@ slots:
   - when:
       - shape: inner
         facing: north
-        variant: slow
-        half: upper
-    sides:
-      south:
-        tag:
-          - '*roof:back'
-      east:
-        tag:
-          - '*roof:back'
-          - '@facing:east'
-  - when:
-      - shape: inner
-        facing: north
         variant: normal
       - shape: inner
         facing: north

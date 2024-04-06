@@ -3,6 +3,9 @@ package org.teacon.xkdeco.block.setting;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -13,12 +16,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public record DirectionalComponent() implements KBlockComponent {
+public record DirectionalComponent(boolean oppose) implements KBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	private static final DirectionalComponent INSTANCE = new DirectionalComponent();
+	private static final DirectionalComponent NORMAL = new DirectionalComponent(false);
+	private static final DirectionalComponent OPPOSE = new DirectionalComponent(true);
+	public static final Codec<DirectionalComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.BOOL.optionalFieldOf("oppose", false).forGetter(DirectionalComponent::oppose)
+	).apply(instance, DirectionalComponent::new));
 
-	public static DirectionalComponent getInstance() {
-		return INSTANCE;
+	public static DirectionalComponent getInstance(boolean oppose) {
+		return oppose ? OPPOSE : NORMAL;
 	}
 
 	@Override
@@ -42,7 +49,7 @@ public record DirectionalComponent() implements KBlockComponent {
 			return state;
 		}
 		for (Direction direction : context.getNearestLookingDirections()) {
-			BlockState blockstate = state.setValue(FACING, direction.getOpposite());
+			BlockState blockstate = state.setValue(FACING, oppose ? direction : direction.getOpposite());
 			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
 				return blockstate;
 			}

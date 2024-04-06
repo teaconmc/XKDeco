@@ -24,7 +24,7 @@ public record SlotLink(String from, String to, int interest, List<TagTest> testT
 	public static final Codec<SlotLink> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			PRIMARY_TAG_CODEC.fieldOf("from").forGetter(SlotLink::from),
 			PRIMARY_TAG_CODEC.fieldOf("to").forGetter(SlotLink::to),
-			Codec.INT.optionalFieldOf("interest", 1).forGetter(SlotLink::interest),
+			Codec.INT.optionalFieldOf("interest", 100).forGetter(SlotLink::interest),
 			TagTest.CODEC.listOf().optionalFieldOf("test_tag", List.of()).forGetter(SlotLink::testTag)
 	).apply(instance, SlotLink::new));
 

@@ -2,7 +2,7 @@ package org.teacon.xkdeco.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.teacon.xkdeco.TempHooks;
+import org.teacon.xkdeco.block.place.PlacementSystem;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -30,7 +30,7 @@ public class BlockItemMixin {
 		if (settings != null) {
 			state = settings.getStateForPlacement(state, pContext);
 		}
-		state = TempHooks.debugPlaceSlotSystem(state, pContext);
+		state = PlacementSystem.onPlace(state, pContext);
 		return state;
 	}
 }

@@ -19,14 +19,14 @@ import org.teacon.xkdeco.block.loader.KCreativeTab;
 import org.teacon.xkdeco.block.loader.KMaterial;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
-import org.teacon.xkdeco.block.place.PlaceDebugFeature;
+import org.teacon.xkdeco.block.place.PlaceChoices;
 import org.teacon.xkdeco.block.place.PlaceSlotProvider;
+import org.teacon.xkdeco.block.place.PlacementSystem;
 import org.teacon.xkdeco.block.place.SlotLink;
 import org.teacon.xkdeco.block.setting.BlockRenderSettings;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.data.XKDDataGen;
-import org.teacon.xkdeco.duck.KBlockProperties;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 import org.teacon.xkdeco.util.resource.OneTimeLoader;
@@ -118,9 +118,7 @@ public class CommonProxy {
 			// seems unnecessary anymore
 			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
 				KBlockSettings settings = KBlockSettings.of(block);
-				if (settings == null) {
-					((KBlockProperties) block.properties).xkdeco$setSettings(KBlockSettings.EMPTY);
-				} else {
+				if (settings != null) {
 					BlockBehaviorRegistry behaviorRegistry = BlockBehaviorRegistry.getInstance();
 					for (KBlockComponent component : settings.components.values()) {
 						behaviorRegistry.setContext(block);
@@ -176,8 +174,8 @@ public class CommonProxy {
 		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
 		forgeEventBus.addListener(CushionEntity::onBreakBlock);
 		forgeEventBus.addListener((BlockEvent.BreakEvent event) -> {
-			if (PlaceDebugFeature.isEnabled(event.getPlayer())) {
-				PlaceDebugFeature.removeDebugBlocks(event.getPlayer().level(), event.getPos());
+			if (PlacementSystem.isDebugEnabled(event.getPlayer())) {
+				PlacementSystem.removeDebugBlocks(event.getPlayer().level(), event.getPos());
 			}
 		});
 
@@ -206,6 +204,7 @@ public class CommonProxy {
 			Block block = definition.createBlock(id);
 			if (block != null) {
 				fundamentals.slotProviders().attachSlots(block, definition);
+				fundamentals.placeChoices().attachChoices(block, definition);
 				ForgeRegistries.BLOCKS.register(id, block);
 				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
 			}
@@ -238,6 +237,7 @@ public class CommonProxy {
 			Map<ResourceLocation, KBlockTemplate> templates,
 			PlaceSlotProvider.ParsedResult slotProviders,
 			Map<ResourceLocation, SlotLink> slotLinks,
+			PlaceChoices.ParsedResult placeChoices,
 			Map<ResourceLocation, KBlockDefinition> blocks,
 			MapCodec<Optional<KMaterial>> materialCodec) {
 		public static BlockFundamentals reload(ResourceManager resourceManager) {
@@ -249,11 +249,15 @@ public class CommonProxy {
 			var slotLinks = OneTimeLoader.load(resourceManager, "kiwi/place_slot/link", SlotLink.CODEC);
 			SlotLink.clear();
 			slotLinks.values().forEach(SlotLink::register);
+			var placeChoices = PlaceChoices.ParsedResult.of(OneTimeLoader.load(
+					resourceManager,
+					"kiwi/place_slot/choices",
+					PlaceChoices.CODEC), templates);
 			var blocks = OneTimeLoader.load(
 					resourceManager,
 					"kiwi/block",
 					KBlockDefinition.codec(templates, materialCodec));
-			return new BlockFundamentals(materials, templates, slotProviders, slotLinks, blocks, materialCodec);
+			return new BlockFundamentals(materials, templates, slotProviders, slotLinks, placeChoices, blocks, materialCodec);
 		}
 	}
 
