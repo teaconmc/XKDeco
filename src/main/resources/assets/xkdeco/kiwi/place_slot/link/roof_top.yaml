@@ -3,3 +3,12 @@ to: '*roof:bottom'
 interest: 150
 test_tag:
   - facing
+on_link:
+  from:
+    set_properties:
+      variant: steep
+      half: upper
+  to:
+    set_properties:
+      variant: steep
+      half: lower

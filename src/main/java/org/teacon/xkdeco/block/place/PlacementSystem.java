@@ -1,20 +1,26 @@
 package org.teacon.xkdeco.block.place;
 
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.util.CommonProxy;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -26,6 +32,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import snownee.kiwi.Kiwi;
 
 public class PlacementSystem {
+	private static final Cache<BlockPlaceContext, PlaceMatchResult> RESULT_CONTEXT = CacheBuilder.newBuilder().weakKeys().expireAfterWrite(
+			100,
+			TimeUnit.MILLISECONDS).build();
+
 	public static boolean isDebugEnabled(Player player) {
 		return player != null && player.isCreative() && player.getOffhandItem().is(Items.CHAINMAIL_HELMET);
 	}
@@ -62,7 +72,7 @@ public class PlacementSystem {
 			return blockState;
 		}
 		boolean debug = isDebugEnabled(context.getPlayer());
-		List<PlaceMatchResult> matchedBlocks = Lists.newArrayList();
+		List<PlaceMatchResult> results = Lists.newArrayList();
 		boolean waterLoggable = blockState.hasProperty(BlockStateProperties.WATERLOGGED);
 		boolean hasWater = waterLoggable && blockState.getValue(BlockStateProperties.WATERLOGGED);
 		PlaceChoices choices = null;
@@ -74,35 +84,54 @@ public class PlacementSystem {
 			if (waterLoggable && hasWater != possibleState.getValue(BlockStateProperties.WATERLOGGED)) {
 				continue;
 			}
-			int interest = getPlacementInterestAt(possibleState, neighborSlots);
-			if (interest > 0) {
-				int bonusInterest = 0;
-				if (choices != null) {
-					bonusInterest = choices.test(blockState, possibleState);
-					if (bonusInterest == Integer.MIN_VALUE) {
-						continue;
-					}
+			int bonusInterest = 0;
+			if (choices != null) {
+				bonusInterest = choices.test(blockState, possibleState);
+				if (bonusInterest == Integer.MIN_VALUE) {
+					continue;
 				}
-				matchedBlocks.add(new PlaceMatchResult(possibleState, interest + bonusInterest));
+			}
+			PlaceMatchResult result = getPlaceMatchResultAt(possibleState, neighborSlots, bonusInterest);
+			if (result != null) {
+				results.add(result);
 			}
 		}
-		matchedBlocks.sort(null);
+		results.sort(null);
 		if (debug && !level.isClientSide) {
 			mutable.setWithOffset(pos, Direction.UP);
-			if (matchedBlocks.isEmpty()) {
+			if (results.isEmpty()) {
 				Kiwi.LOGGER.info("No match");
 				level.setBlockAndUpdate(mutable.move(Direction.UP), Blocks.BEDROCK.defaultBlockState());
 			} else {
-				Kiwi.LOGGER.info("Interest: %d".formatted(matchedBlocks.get(0).interest()));
-				matchedBlocks.stream().skip(1).forEach($ -> level.setBlockAndUpdate(mutable.move(Direction.UP), $.blockState()));
+				Kiwi.LOGGER.info("Interest: %d".formatted(results.get(0).interest()));
+				results.stream().skip(1).forEach($ -> level.setBlockAndUpdate(mutable.move(Direction.UP), $.blockState()));
 			}
 		}
-		return matchedBlocks.isEmpty() ? blockState : matchedBlocks.get(0).blockState();
+		if (results.isEmpty()) {
+			return blockState;
+		}
+		PlaceMatchResult result = results.get(0);
+		blockState = result.blockState();
+		for (int i = 0; i < result.links().size(); i++) {
+			SlotLink link = result.links().get(i);
+			boolean isUpright = result.uprightStatus().get(i);
+			SlotLink.ResultAction action = isUpright ? link.onLinkFrom() : link.onLinkTo();
+			blockState = action.apply(blockState);
+		}
+		RESULT_CONTEXT.put(context, result);
+		return blockState;
 	}
 
 	//TODO cache based on BlockStates and Direction, see Block.OCCLUSION_CACHE
-	public static int getPlacementInterestAt(BlockState blockState, Map<Direction, Collection<PlaceSlot>> neighborSlots) {
+	@Nullable
+	public static PlaceMatchResult getPlaceMatchResultAt(
+			BlockState blockState,
+			Map<Direction, Collection<PlaceSlot>> neighborSlots,
+			int bonusInterest) {
 		int interest = 0;
+		List<SlotLink> links = null;
+		List<Vec3i> offsets = null;
+		BitSet uprightStatus = null;
 		for (Direction side : CommonProxy.DIRECTIONS) {
 			Collection<PlaceSlot> theirSlots = neighborSlots.get(side);
 			if (theirSlots == null) {
@@ -113,17 +142,52 @@ public class PlacementSystem {
 				continue;
 			}
 			int maxInterest = 0;
+			SlotLink matchedLink = null;
+			Vec3i offset = null;
+			boolean isUpright = false;
 			for (PlaceSlot ourSlot : ourSlots) {
 				for (PlaceSlot theirSlot : theirSlots) {
-					int thisInterest = SlotLink.getInterest(ourSlot, theirSlot);
-					if (thisInterest != 0) {
-						maxInterest = Math.max(maxInterest, thisInterest);
-						break;
+					SlotLink link = SlotLink.find(ourSlot, theirSlot);
+					if (link != null && link.interest() > maxInterest && link.matches(ourSlot, theirSlot)) {
+						maxInterest = link.interest();
+						matchedLink = link;
+						offset = ourSlot.side().getNormal();
+						isUpright = SlotLink.isUprightLink(ourSlot, theirSlot);
 					}
 				}
 			}
 			interest += maxInterest;
+			if (matchedLink != null) {
+				if (links == null) {
+					links = Lists.newArrayListWithExpectedSize(neighborSlots.size());
+					offsets = Lists.newArrayListWithExpectedSize(neighborSlots.size());
+					uprightStatus = new BitSet(neighborSlots.size());
+				}
+				links.add(matchedLink);
+				offsets.add(offset);
+				uprightStatus.set(links.size() - 1, isUpright);
+			}
 		}
-		return interest;
+		if (interest <= 0) {
+			return null;
+		}
+		return new PlaceMatchResult(blockState, interest + bonusInterest, links, offsets, uprightStatus);
+	}
+
+	public static void onBlockPlaced(BlockPlaceContext context) {
+		PlaceMatchResult result = RESULT_CONTEXT.getIfPresent(context);
+		if (result != null) {
+			RESULT_CONTEXT.invalidate(context);
+			BlockPos.MutableBlockPos mutable = context.getClickedPos().mutable();
+			for (int i = 0; i < result.links().size(); i++) {
+				SlotLink link = result.links().get(i);
+				boolean isUpright = result.uprightStatus().get(i);
+				SlotLink.ResultAction action = isUpright ? link.onLinkTo() : link.onLinkFrom();
+				BlockPos theirPos = mutable.setWithOffset(context.getClickedPos(), result.offsets().get(i));
+				BlockState theirState = context.getLevel().getBlockState(theirPos);
+				theirState = action.apply(theirState);
+				context.getLevel().setBlock(theirPos, theirState, 11);
+			}
+		}
 	}
 }

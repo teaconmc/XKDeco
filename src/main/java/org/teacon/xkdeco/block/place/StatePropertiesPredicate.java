@@ -46,6 +46,15 @@ public record StatePropertiesPredicate(List<PropertyMatcher> properties) impleme
 		return property.getName(blockState.getValue(property));
 	}
 
+	public static <T extends Comparable<T>> BlockState setValueByString(BlockState blockState, String key, String value) {
+		//noinspection unchecked
+		Property<T> property = (Property<T>) blockState.getBlock().getStateDefinition().getProperty(key);
+		if (property == null) {
+			throw new IllegalStateException("Property %s not found".formatted(key));
+		}
+		return blockState.setValue(property, property.getValue(value).orElseThrow());
+	}
+
 	@Override
 	public boolean test(BlockState blockState) {
 		for (PropertyMatcher matcher : this.properties) {
