@@ -67,9 +67,6 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 					1.0F,
 					true);
 		}
-//		for (VoxelShape voxelshape : this.shapes) {
-//			LevelRenderer.renderVoxelShape(pPoseStack, vertexconsumer, voxelshape, -pCamX, -pCamY, -pCamZ, 1.0F, 1.0F, 1.0F, 1.0F, true);
-//		}
 	}
 
 	private record SlotRenderInstance(PlaceSlot slot, BlockPos pos, Direction side, VoxelShape shape, int color) {

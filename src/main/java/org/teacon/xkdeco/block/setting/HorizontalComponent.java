@@ -1,7 +1,10 @@
 package org.teacon.xkdeco.block.setting;
 
+import java.util.List;
+
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 
+import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -47,8 +50,15 @@ public record HorizontalComponent(boolean oppose) implements KBlockComponent {
 		if (settings.customPlacement) {
 			return state;
 		}
-		for (Direction direction : context.getNearestLookingDirections()) {
+		Direction firstDirection = context.getHorizontalDirection();
+		Iterable<Direction> directions = Iterables.concat(List.of(firstDirection), List.of(context.getNearestLookingDirections()));
+		int index = 0;
+		for (Direction direction : directions) {
+			index += 1;
 			if (direction.getAxis().isVertical()) {
+				continue;
+			}
+			if (index > 1 && direction == firstDirection) {
 				continue;
 			}
 			BlockState blockstate = state.setValue(FACING, oppose ? direction : direction.getOpposite());

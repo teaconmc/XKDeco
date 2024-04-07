@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.util;
+package org.teacon.xkdeco.util.codec;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;

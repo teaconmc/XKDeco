@@ -2,11 +2,11 @@ package org.teacon.xkdeco.block.setting;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
+import org.teacon.xkdeco.util.KBlockUtils;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public record StackableComponent(IntegerProperty property) implements KBlockComponent, LayeredComponent {
-	private static final Int2ObjectOpenHashMap<IntegerProperty> PROPERTY_INTERN = new Int2ObjectOpenHashMap<>();
 	public static final Codec<StackableComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			ExtraCodecs.intRange(0, 1).optionalFieldOf("min", 1).forGetter(StackableComponent::minValue),
 			ExtraCodecs.POSITIVE_INT.fieldOf("max").forGetter(StackableComponent::maxValue)
@@ -26,8 +25,7 @@ public record StackableComponent(IntegerProperty property) implements KBlockComp
 	}
 
 	public static StackableComponent create(int min, int max) {
-		IntegerProperty property = PROPERTY_INTERN.computeIfAbsent(min << 16 | max, key -> IntegerProperty.create("c", min, max));
-		return new StackableComponent(property);
+		return new StackableComponent(KBlockUtils.internProperty(IntegerProperty.create("c", min, max)));
 	}
 
 	@Override

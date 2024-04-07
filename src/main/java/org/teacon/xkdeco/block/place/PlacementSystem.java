@@ -104,7 +104,10 @@ public class PlacementSystem {
 				level.setBlockAndUpdate(mutable.move(Direction.UP), Blocks.BEDROCK.defaultBlockState());
 			} else {
 				Kiwi.LOGGER.info("Interest: %d".formatted(results.get(0).interest()));
-				results.stream().skip(1).forEach($ -> level.setBlockAndUpdate(mutable.move(Direction.UP), $.blockState()));
+				results.stream().skip(1).forEach($ -> {
+					level.setBlockAndUpdate(mutable.move(Direction.UP), $.blockState());
+					Kiwi.LOGGER.info("Alt Interest: %d : %s".formatted($.interest(), $.blockState()));
+				});
 			}
 		}
 		if (results.isEmpty()) {

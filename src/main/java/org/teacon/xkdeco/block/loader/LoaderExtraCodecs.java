@@ -380,8 +380,7 @@ public class LoaderExtraCodecs {
 			if (this == object) {
 				return true;
 			}
-			if (object instanceof StrictOptionalFieldCodec) {
-				StrictOptionalFieldCodec strictOptionalFieldCodec = (StrictOptionalFieldCodec) object;
+			if (object instanceof StrictOptionalFieldCodec<?> strictOptionalFieldCodec) {
 				return Objects.equals(this.name, strictOptionalFieldCodec.name) && Objects.equals(
 						this.elementCodec,
 						strictOptionalFieldCodec.elementCodec);

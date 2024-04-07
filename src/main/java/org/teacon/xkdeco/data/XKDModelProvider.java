@@ -1326,15 +1326,15 @@ public class XKDModelProvider extends FabricModelProvider {
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.properties(RoofBlock.VARIANT, RoofBlock.SHAPE, RoofBlock.HALF).generate((variant, shape, half) -> {
 					String path = "template_roof";
-					if (variant != RoofUtil.RoofVariant.NORMAL) {
+					if (!"normal".equals(variant)) {
 						path += "_" + variant;
 					}
-					if (shape != RoofUtil.RoofShape.STRAIGHT) {
+					if (!"straight".equals(shape)) {
 						path += "_" + shape;
 					}
-					if (half == RoofUtil.RoofHalf.UPPER && variant != RoofUtil.RoofVariant.STEEP) {
+					if ("upper".equals(half) && !"steep".equals(variant)) {
 						path += "_top";
-					} else if (half == RoofUtil.RoofHalf.LOWER && variant == RoofUtil.RoofVariant.STEEP) {
+					} else if ("lower".equals(half) && "steep".equals(variant)) {
 						path += "_top";
 					}
 					ResourceLocation model = XKDModelTemplates.MAP.get(path).create(

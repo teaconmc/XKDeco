@@ -12,6 +12,7 @@ import org.teacon.xkdeco.block.setting.HorizontalAxisComponent;
 import org.teacon.xkdeco.block.setting.HorizontalComponent;
 import org.teacon.xkdeco.block.setting.KBlockComponent;
 import org.teacon.xkdeco.block.setting.MouldingComponent;
+import org.teacon.xkdeco.block.setting.SimplePropertiesComponent;
 import org.teacon.xkdeco.block.setting.StackableComponent;
 import org.teacon.xkdeco.block.setting.WaterLoggableComponent;
 
@@ -44,6 +45,8 @@ public class KBlockComponents extends AbstractModule {
 	public static final KiwiGO<KBlockComponent.Type<StackableComponent>> STACKABLE = register(StackableComponent.CODEC);
 	@KiwiModule.Name("minecraft:cycle_variants")
 	public static final KiwiGO<KBlockComponent.Type<CycleVariantsComponent>> CYCLE_VARIANTS = register(CycleVariantsComponent.CODEC);
+	@KiwiModule.Name("minecraft:simple")
+	public static final KiwiGO<KBlockComponent.Type<SimplePropertiesComponent>> SIMPLE_PROPERTIES = register(SimplePropertiesComponent.CODEC);
 	private static Map<KBlockComponent.Type<?>, KBlockComponent> SIMPLE_INSTANCES;
 
 	private static <T extends KBlockComponent> KiwiGO<KBlockComponent.Type<T>> register(Codec<T> codec) {
