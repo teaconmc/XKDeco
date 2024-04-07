@@ -42,12 +42,12 @@ public class OneTimeLoader {
 				}
 //				XKDeco.LOGGER.info(entry.getKey() + " " + json);
 				if (result.error().isPresent()) {
-					Kiwi.LOGGER.error("Failed to parse " + id + ": " + result.error().get());
+					Kiwi.LOGGER.error("Failed to parse " + entry.getKey() + ": " + result.error().get());
 					continue;
 				}
 				results.put(id, result.result().orElseThrow());
 			} catch (Exception e) {
-				throw new IllegalStateException("Failed to load " + id, e);
+				Kiwi.LOGGER.error("Failed to load " + entry.getKey(), e);
 			}
 		}
 		return results;

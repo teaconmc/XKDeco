@@ -33,7 +33,16 @@ public record StatePropertiesPredicate(List<PropertyMatcher> properties) impleme
 	@Override
 	public boolean test(BlockState blockState) {
 		for (PropertyMatcher matcher : this.properties) {
-			if (!matcher.matches(blockState)) {
+			if (!matcher.test(blockState)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean smartTest(BlockState baseState, BlockState targetState) {
+		for (PropertyMatcher matcher : this.properties) {
+			if (!matcher.smartTest(baseState, targetState)) {
 				return false;
 			}
 		}
@@ -42,7 +51,7 @@ public record StatePropertiesPredicate(List<PropertyMatcher> properties) impleme
 
 	public record PropertyMatcher(String key, Either<Set<String>, MinMaxBounds.Ints> value) {
 
-		public boolean matches(BlockState blockState) {
+		public boolean test(BlockState blockState) {
 			Property<?> property = KBlockUtils.getProperty(blockState, key);
 			Optional<Set<String>> strValues = value.left();
 			boolean isInteger = property.getValueClass() == Integer.class;
@@ -54,6 +63,33 @@ public record StatePropertiesPredicate(List<PropertyMatcher> properties) impleme
 				return value.right().orElseThrow().matches((Integer) blockState.getValue(property));
 			} else {
 				return strValues.get().contains(KBlockUtils.getValueString(blockState, key));
+			}
+		}
+
+		public boolean smartTest(BlockState baseState, BlockState targetState) {
+			Property<?> property = KBlockUtils.getProperty(targetState, key);
+			Optional<Set<String>> strValues = value.left();
+			boolean isInteger = property.getValueClass() == Integer.class;
+			if (strValues.isEmpty() && !isInteger) {
+				throw new IllegalStateException("Property value type mismatch");
+			}
+			if (strValues.isEmpty()) {
+				return value.right().orElseThrow().matches((Integer) targetState.getValue(property));
+			} else {
+				String targetValue = KBlockUtils.getValueString(targetState, key);
+				for (String s : strValues.get()) {
+					if (s.startsWith("@")) {
+						String baseValue = KBlockUtils.getValueString(baseState, s.substring(1));
+						if (baseValue.equals(targetValue)) {
+							return true;
+						}
+					} else {
+						if (s.equals(targetValue)) {
+							return true;
+						}
+					}
+				}
+				return false;
 			}
 		}
 	}

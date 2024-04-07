@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
-import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
 import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
@@ -151,8 +150,8 @@ public final class XKDecoObjects {
 //		ITEMS.register(id, () -> new BlockItem(roof.get(), itemProperties));
 		var roofRidge = BLOCKS.register(id + "_ridge", () -> new RoofRidgeBlock(propFactory.get(), asian));
 		ITEMS.register(id + "_ridge", () -> new BlockItem(roofRidge.get(), itemProperties));
-		var roofSmallEnd = BLOCKS.register(id + "_small_end", () -> new RoofEndBlock(propFactory.get(), true));
-		ITEMS.register(id + "_small_end", () -> new BlockItem(roofSmallEnd.get(), itemProperties));
+//		var roofSmallEnd = BLOCKS.register(id + "_small_end", () -> new RoofEndBlock(propFactory.get(), true));
+//		ITEMS.register(id + "_small_end", () -> new BlockItem(roofSmallEnd.get(), itemProperties));
 		var smallRidgeEnd = BLOCKS.register(id + "_small_ridge_end", () -> {
 			if (asian) {
 				return new RoofRidgeEndAsianBlock(propFactory.get(), true);
@@ -177,8 +176,8 @@ public final class XKDecoObjects {
 
 		var roofEave = BLOCKS.register(id + "_eave", () -> new RoofEaveBlock(propFactory.get(), false));
 		ITEMS.register(id + "_eave", () -> new BlockItem(roofEave.get(), itemProperties));
-		var roofEnd = BLOCKS.register(id + "_end", () -> new RoofEndBlock(propFactory.get(), false));
-		ITEMS.register(id + "_end", () -> new BlockItem(roofEnd.get(), itemProperties));
+//		var roofEnd = BLOCKS.register(id + "_end", () -> new RoofEndBlock(propFactory.get(), false));
+//		ITEMS.register(id + "_end", () -> new BlockItem(roofEnd.get(), itemProperties));
 		var roofRidgeEnd = BLOCKS.register(id + "_ridge_end", () -> new RoofRidgeEndAsianBlock(propFactory.get(), false));
 
 		//TODO remove in the future:

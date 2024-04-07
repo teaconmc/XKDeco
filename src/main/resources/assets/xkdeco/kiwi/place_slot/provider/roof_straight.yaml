@@ -20,6 +20,7 @@ slots:
       - shape: straight
         facing: north
         variant: normal
+        half: lower
       - shape: straight
         facing: north
         variant: slow
@@ -42,10 +43,9 @@ slots:
   - when:
       - shape: straight
         facing: north
-        variant: normal
-      - shape: straight
-        facing: north
-        variant: steep
+        variant:
+          - normal
+          - steep
         half: lower
     sides:
       up:
@@ -55,6 +55,7 @@ slots:
       - shape: straight
         facing: north
         variant: normal
+        half: lower
       - shape: straight
         facing: north
         variant: steep
@@ -62,4 +63,4 @@ slots:
     sides:
       down:
         tag:
-        - '*roof:bottom'
+          - '*roof:bottom'

@@ -1,0 +1,24 @@
+target:
+  - '@xkdeco:roof_end'
+  - '@xkdeco:roof_small_end'
+tag:
+  - '@shape'
+  - '@variant'
+  - '@half'
+  - '@facing'
+transform_with: facing
+slots:
+  - when:
+      shape: left
+      facing: north
+    sides:
+      east:
+        tag:
+          - '*roof:side'
+  - when:
+      shape: right
+      facing: north
+    sides:
+      west:
+        tag:
+          - '*roof:side'

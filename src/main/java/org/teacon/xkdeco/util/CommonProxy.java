@@ -246,10 +246,14 @@ public class CommonProxy {
 			var templates = OneTimeLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
 			templates.forEach((key, value) -> value.resolve(key));
 			var slotProviders = PlaceSlotProvider.reload(resourceManager, templates);
-			var slotLinks = OneTimeLoader.load(resourceManager, "kiwi/place_slot/link", SlotLink.CODEC);
+			boolean isDataGen = Platform.isDataGen();
+			Map<ResourceLocation, SlotLink> slotLinks = isDataGen ? Map.of() : OneTimeLoader.load(
+					resourceManager,
+					"kiwi/place_slot/link",
+					SlotLink.CODEC);
 			SlotLink.clear();
 			slotLinks.values().forEach(SlotLink::register);
-			var placeChoices = PlaceChoices.ParsedResult.of(OneTimeLoader.load(
+			var placeChoices = PlaceChoices.ParsedResult.of(isDataGen ? Map.of() : OneTimeLoader.load(
 					resourceManager,
 					"kiwi/place_slot/choices",
 					PlaceChoices.CODEC), templates);

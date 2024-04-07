@@ -1150,12 +1150,12 @@ public class XKDModelProvider extends FabricModelProvider {
 				.with(PropertyDispatch.properties(RoofEndBlock.VARIANT, RoofEndBlock.SHAPE, RoofEndBlock.HALF)
 						.generate((variant, shape, half) -> {
 							String path = narrow ? "template_roof_small_end" : "template_roof_end";
-							if (variant != RoofUtil.RoofVariant.NORMAL) {
+							if (!"normal".equals(variant)) {
 								path += "_" + variant;
 							}
-							if (half == RoofUtil.RoofHalf.UPPER && variant != RoofUtil.RoofVariant.STEEP) {
+							if ("upper".equals(half) && !"steep".equals(variant)) {
 								path += "_top";
-							} else if (half == RoofUtil.RoofHalf.LOWER && variant == RoofUtil.RoofVariant.STEEP) {
+							} else if ("lower".equals(half) && "steep".equals(variant)) {
 								path += "_top";
 							}
 							path += "_" + shape;
