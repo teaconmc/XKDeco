@@ -63,7 +63,7 @@ public record PlaceChoices(
 			PlaceChoices choices = byTemplate.get(definition.template().template());
 			KBlockSettings settings = KBlockSettings.of(block);
 			if (settings == null && choices != null) {
-				((KBlockProperties) block.properties).xkdeco$setSettings(settings = KBlockSettings.empty());
+				((KBlockProperties) block.properties).kiwi$setSettings(settings = KBlockSettings.empty());
 			}
 			if (settings != null) {
 				settings.placeChoices = choices;
