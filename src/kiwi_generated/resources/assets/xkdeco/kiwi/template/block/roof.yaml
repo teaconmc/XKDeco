@@ -5,4 +5,21 @@ properties:
   - water_loggable
   - type: horizontal
     oppose: true
+  - type: simple
+    shape_for_light_occlusion: true
+    properties:
+    - name: variant
+      values:
+      - normal
+      - slow
+      - steep
+    - name: half
+      values:
+      - lower
+      - upper
+    - name: shape
+      values:
+      - straight
+      - inner
+      - outer
   no_occlusion: true

@@ -3,6 +3,7 @@ to: '*roof:bottom'
 interest: 150
 test_tag:
   - facing
+  - shape
 on_link:
   from:
     set_properties:

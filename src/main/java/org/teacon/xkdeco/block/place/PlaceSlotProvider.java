@@ -13,6 +13,7 @@ import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.block.loader.KBlockTemplate;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.util.CommonProxy;
+import org.teacon.xkdeco.util.KBlockUtils;
 import org.teacon.xkdeco.util.codec.CompactListCodec;
 import org.teacon.xkdeco.util.resource.OneTimeLoader;
 
@@ -149,7 +150,7 @@ public record PlaceSlotProvider(
 				}
 				String transformWith = (slot.transformWith.isPresent() ? slot.transformWith : this.transformWith).orElse("none");
 				if (!"none".equals(transformWith)) {
-					Property<?> property = StatePropertiesPredicate.getProperty(blockState, transformWith);
+					Property<?> property = KBlockUtils.getProperty(blockState, transformWith);
 					if (!(property instanceof DirectionProperty directionProperty)) {
 						throw new IllegalArgumentException("Invalid transform_with property: " + transformWith);
 					}

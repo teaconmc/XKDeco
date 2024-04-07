@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.util.Map;
 import java.util.SortedMap;
 
-import org.teacon.xkdeco.util.JavaOps;
+import org.teacon.xkdeco.util.codec.JavaOps;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
+import org.teacon.xkdeco.util.KBlockUtils;
 
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
@@ -82,7 +83,7 @@ public record SlotLink(
 
 		public BlockState apply(BlockState blockState) {
 			for (Map.Entry<String, String> entry : setProperties.entrySet()) {
-				blockState = StatePropertiesPredicate.setValueByString(blockState, entry.getKey(), entry.getValue());
+				blockState = KBlockUtils.setValueByString(blockState, entry.getKey(), entry.getValue());
 			}
 			return blockState;
 		}

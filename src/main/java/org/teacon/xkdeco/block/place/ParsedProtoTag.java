@@ -2,6 +2,8 @@ package org.teacon.xkdeco.block.place;
 
 import java.util.Locale;
 
+import org.teacon.xkdeco.util.KBlockUtils;
+
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Direction;
@@ -40,7 +42,7 @@ public record ParsedProtoTag(String prefix, String key, String value) {
 		} else {
 			String newValue;
 			if (value.isEmpty()) {
-				newValue = StatePropertiesPredicate.getValueString(blockState, key);
+				newValue = KBlockUtils.getValueString(blockState, key);
 			} else {
 				Direction direction = Direction.valueOf(value.toUpperCase(Locale.ENGLISH));
 				newValue = rotation.rotate(direction).getSerializedName();

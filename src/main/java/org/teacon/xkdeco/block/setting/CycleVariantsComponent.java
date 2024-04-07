@@ -2,11 +2,11 @@ package org.teacon.xkdeco.block.setting;
 
 import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
+import org.teacon.xkdeco.util.KBlockUtils;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public record CycleVariantsComponent(IntegerProperty property, boolean rightClickToCycle) implements KBlockComponent, LayeredComponent {
-	private static final Int2ObjectOpenHashMap<IntegerProperty> PROPERTY_INTERN = new Int2ObjectOpenHashMap<>();
 	public static final Codec<CycleVariantsComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			ExtraCodecs.POSITIVE_INT.fieldOf("amount").forGetter(CycleVariantsComponent::maxValue),
 			Codec.BOOL.optionalFieldOf("right_click_to_cycle", true).forGetter(CycleVariantsComponent::rightClickToCycle)
@@ -26,8 +25,7 @@ public record CycleVariantsComponent(IntegerProperty property, boolean rightClic
 	}
 
 	public static CycleVariantsComponent create(int amount, boolean rightClickToCycle) {
-		IntegerProperty property = PROPERTY_INTERN.computeIfAbsent(amount, key -> IntegerProperty.create("variant", 1, amount));
-		return new CycleVariantsComponent(property, rightClickToCycle);
+		return new CycleVariantsComponent(KBlockUtils.internProperty(IntegerProperty.create("variant", 1, amount)), rightClickToCycle);
 	}
 
 	@Override
