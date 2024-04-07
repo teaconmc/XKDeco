@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
+import org.teacon.xkdeco.duck.KPlayer;
+import org.teacon.xkdeco.network.SSyncPlaceCountPacket;
 import org.teacon.xkdeco.util.CommonProxy;
 
 import com.google.common.cache.Cache;
@@ -22,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -105,7 +108,7 @@ public class PlacementSystem {
 		}
 		results.sort(null);
 		int resultIndex = 0;
-		if (results.size() > 1 && context.getPlayer() != null) {
+		if (results.size() > 1 && context.getPlayer() instanceof KPlayer player) {
 			int maxInterest = results.get(0).interest();
 			for (int i = 1; i < results.size(); i++) {
 				if (results.get(i).interest() < maxInterest) {
@@ -114,7 +117,7 @@ public class PlacementSystem {
 				resultIndex = i;
 			}
 			if (resultIndex > 0) {
-				//TODO randomize
+				resultIndex = player.kiwi$getPlaceCount() % (resultIndex + 1);
 			}
 		}
 		PlaceMatchResult result = results.get(resultIndex);
@@ -194,17 +197,25 @@ public class PlacementSystem {
 
 	public static void onBlockPlaced(BlockPlaceContext context) {
 		PlaceMatchResult result = RESULT_CONTEXT.getIfPresent(context);
-		if (result != null) {
-			RESULT_CONTEXT.invalidate(context);
-			BlockPos.MutableBlockPos mutable = context.getClickedPos().mutable();
-			for (int i = 0; i < result.links().size(); i++) {
-				SlotLink link = result.links().get(i);
-				boolean isUpright = result.uprightStatus().get(i);
-				SlotLink.ResultAction action = isUpright ? link.onLinkTo() : link.onLinkFrom();
-				BlockPos theirPos = mutable.setWithOffset(context.getClickedPos(), result.offsets().get(i));
-				BlockState theirState = context.getLevel().getBlockState(theirPos);
-				theirState = action.apply(theirState);
-				context.getLevel().setBlock(theirPos, theirState, 11);
+		if (result == null) {
+			return;
+		}
+		RESULT_CONTEXT.invalidate(context);
+		BlockPos.MutableBlockPos mutable = context.getClickedPos().mutable();
+		for (int i = 0; i < result.links().size(); i++) {
+			SlotLink link = result.links().get(i);
+			boolean isUpright = result.uprightStatus().get(i);
+			SlotLink.ResultAction action = isUpright ? link.onLinkTo() : link.onLinkFrom();
+			BlockPos theirPos = mutable.setWithOffset(context.getClickedPos(), result.offsets().get(i));
+			BlockState theirState = context.getLevel().getBlockState(theirPos);
+			theirState = action.apply(theirState);
+			context.getLevel().setBlock(theirPos, theirState, 11);
+		}
+		Player player = context.getPlayer();
+		if (player != null) {
+			((KPlayer) player).kiwi$incrementPlaceCount();
+			if (player instanceof ServerPlayer serverPlayer) {
+				SSyncPlaceCountPacket.sync(serverPlayer);
 			}
 		}
 	}

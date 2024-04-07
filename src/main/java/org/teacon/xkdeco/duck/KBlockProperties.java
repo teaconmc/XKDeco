@@ -7,8 +7,8 @@ import org.teacon.xkdeco.block.setting.KBlockSettings;
 public interface KBlockProperties {
 	@Nullable
 	@ApiStatus.NonExtendable
-	KBlockSettings xkdeco$getSettings();
+	KBlockSettings kiwi$getSettings();
 
 	@ApiStatus.NonExtendable
-	void xkdeco$setSettings(KBlockSettings settings);
+	void kiwi$setSettings(KBlockSettings settings);
 }

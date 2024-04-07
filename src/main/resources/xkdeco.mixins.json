@@ -12,6 +12,7 @@
 		"BlockStateMixin",
 		"BushBlockMixin",
 		"HalfTransparentBlockMixin",
+		"PlayerMixin",
 		"data.BlockFamilyProviderMixin",
 		"data.RecipeProviderMixin",
 		"forge.BlockMixin",

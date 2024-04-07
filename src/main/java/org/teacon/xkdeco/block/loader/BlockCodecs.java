@@ -52,7 +52,7 @@ public class BlockCodecs {
 	public static final MapCodec<Block> BLOCK = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			propertiesCodec()
 	).apply(instance, properties -> {
-		KBlockSettings settings = ((KBlockProperties) properties).xkdeco$getSettings();
+		KBlockSettings settings = ((KBlockProperties) properties).kiwi$getSettings();
 		if (settings != null && settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
 			return new BasicBlock(properties);
 		} else {

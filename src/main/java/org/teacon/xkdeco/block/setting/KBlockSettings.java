@@ -86,7 +86,7 @@ public class KBlockSettings {
 	}
 
 	public static KBlockSettings of(Object block) {
-		return ((KBlockProperties) ((BlockBehaviour) block).properties).xkdeco$getSettings();
+		return ((KBlockProperties) ((BlockBehaviour) block).properties).kiwi$getSettings();
 	}
 
 	public static VoxelShape getGlassFaceShape(BlockState blockState, Direction direction) {
@@ -208,7 +208,7 @@ public class KBlockSettings {
 
 		public BlockBehaviour.Properties get() {
 			KBlockSettings settings = new KBlockSettings(this);
-			((KBlockProperties) properties).xkdeco$setSettings(settings);
+			((KBlockProperties) properties).kiwi$setSettings(settings);
 			return properties;
 		}
 

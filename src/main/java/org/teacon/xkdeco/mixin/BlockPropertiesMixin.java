@@ -14,12 +14,12 @@ public class BlockPropertiesMixin implements KBlockProperties {
 	private KBlockSettings settings;
 
 	@Override
-	public @Nullable KBlockSettings xkdeco$getSettings() {
+	public @Nullable KBlockSettings kiwi$getSettings() {
 		return settings;
 	}
 
 	@Override
-	public void xkdeco$setSettings(KBlockSettings settings) {
+	public void kiwi$setSettings(KBlockSettings settings) {
 		this.settings = settings;
 	}
 }
