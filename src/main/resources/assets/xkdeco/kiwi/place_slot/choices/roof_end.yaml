@@ -1,0 +1,11 @@
+target:
+  - '@xkdeco:roof_end'
+  - '@xkdeco:roof_small_end'
+interests:
+  - when:
+      facing: '@facing'
+    bonus: 10
+  - when:
+      variant: normal
+      half: upper
+    bonus: -50

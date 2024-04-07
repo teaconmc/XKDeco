@@ -1,0 +1,15 @@
+from: '*roof_end:top'
+to: '*roof_end:bottom'
+interest: 150
+test_tag:
+  - facing
+  - shape
+on_link:
+  from:
+    set_properties:
+      variant: steep
+      half: upper
+  to:
+    set_properties:
+      variant: steep
+      half: lower

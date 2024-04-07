@@ -28,7 +28,7 @@ import snownee.kiwi.KiwiModule;
 public interface BlockRenderSettings {
 	static void init(Map<ResourceLocation, KBlockDefinition> blocks, boolean canSetRenderLayer) {
 		Map<Block, BlockColor> blockColors = Maps.newHashMap();
-		Map<Item, ItemColor> itemColors = Maps.newHashMap();
+		Map<Block, ItemColor> itemColors = Maps.newHashMap();
 		List<Pair<Block, BlockColor>> blocksToAdd = Lists.newArrayList();
 		List<Pair<Item, ItemColor>> itemsToAdd = Lists.newArrayList();
 		for (var entry : blocks.entrySet()) {
@@ -55,8 +55,16 @@ public interface BlockRenderSettings {
 				}
 				Item item = block.asItem();
 				Item providerItem = providerBlock.asItem();
-				if (item != Items.AIR && providerItem != Items.AIR) {
-					itemsToAdd.add(Pair.of(item, itemColors.computeIfAbsent(providerItem, ColorProviderUtil::delegate)));
+				if (item != Items.AIR) {
+					if (providerItem != Items.AIR) {
+						itemsToAdd.add(Pair.of(
+								item,
+								itemColors.computeIfAbsent(providerBlock, $ -> ColorProviderUtil.delegate($.asItem()))));
+					} else if (providerBlock == Blocks.WATER) {
+						itemsToAdd.add(Pair.of(item, (stack, i) -> 0x3f76e4));
+					} else {
+						itemsToAdd.add(Pair.of(item, itemColors.computeIfAbsent(providerBlock, ColorProviderUtil::delegateItemFallback)));
+					}
 				}
 			}
 		}

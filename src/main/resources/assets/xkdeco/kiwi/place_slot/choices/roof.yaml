@@ -11,6 +11,9 @@ interests:
         - steep
     bonus: 30
   - when:
-      shape:
-        - straight
+      shape: straight
     bonus: 10
+  - when:
+      variant: normal
+      half: upper
+    bonus: -50

@@ -26,7 +26,7 @@ public class DebugRendererMixin {
 			double pCamZ,
 			CallbackInfo ci) {
 		LocalPlayer player = Minecraft.getInstance().player;
-		if (player != null && player.isCreative() && player.getItemBySlot(EquipmentSlot.HEAD).is(Items.CHAINMAIL_HELMET)) {
+		if (player != null && (player.isCreative() || player.isSpectator()) && player.getItemBySlot(EquipmentSlot.HEAD).is(Items.CHAINMAIL_HELMET)) {
 			PlaceDebugRenderer.getInstance().render(pPoseStack, pBufferSource, pCamX, pCamY, pCamZ);
 		}
 	}

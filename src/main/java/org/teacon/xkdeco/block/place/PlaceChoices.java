@@ -17,29 +17,21 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.Kiwi;
 
 public record PlaceChoices(
-		PlaceTargetType targetType,
-		ResourceLocation targetId,
+		List<PlaceTarget> target,
 		List<Limit> limit,
 		List<InterestProvider> interests) {
 
 	public static final Codec<PlaceChoices> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ExtraCodecs.NON_EMPTY_STRING.fieldOf("target").forGetter(PlaceChoices::targetToString),
+			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
 			new CompactListCodec<>(Limit.CODEC).optionalFieldOf("limit", List.of()).forGetter(PlaceChoices::limit),
 			new CompactListCodec<>(InterestProvider.CODEC).optionalFieldOf("interests", List.of()).forGetter(PlaceChoices::interests)
-	).apply(instance, PlaceChoices::create));
-
-	public static PlaceChoices create(String target, List<Limit> limit, List<InterestProvider> interests) {
-		PlaceTargetType targetType = target.startsWith("@") ? PlaceTargetType.TEMPLATE : PlaceTargetType.BLOCK;
-		ResourceLocation targetId = new ResourceLocation(target.substring(targetType.prefix.length()));
-		return new PlaceChoices(targetType, targetId, limit, interests);
-	}
+	).apply(instance, PlaceChoices::new));
 
 	public record ParsedResult(
 			Map<ResourceLocation, PlaceChoices> choices,
@@ -49,14 +41,19 @@ public record PlaceChoices(
 				Map<ResourceLocation, KBlockTemplate> templates) {
 			Map<KBlockTemplate, PlaceChoices> byTemplate = Maps.newHashMap();
 			for (PlaceChoices provider : choices.values()) {
-				KBlockTemplate template = templates.get(provider.targetId);
-				if (template == null) {
-					Kiwi.LOGGER.error("Template {} not found for place choices {}", provider.targetId, provider);
-					continue;
-				}
-				PlaceChoices oldChoices = byTemplate.put(template, provider);
-				if (oldChoices != null) {
-					Kiwi.LOGGER.error("Duplicate place choices for template {}: {} and {}", template, oldChoices, provider);
+				for (PlaceTarget target : provider.target) {
+					if (target.type() != PlaceTarget.Type.TEMPLATE) {
+						continue;
+					}
+					KBlockTemplate template = templates.get(target.id());
+					if (template == null) {
+						Kiwi.LOGGER.error("Template {} not found for place choices {}", target.id(), provider);
+						continue;
+					}
+					PlaceChoices oldChoices = byTemplate.put(template, provider);
+					if (oldChoices != null) {
+						Kiwi.LOGGER.error("Duplicate place choices for template {}: {} and {}", template, oldChoices, provider);
+					}
 				}
 			}
 			return new ParsedResult(choices, byTemplate);
@@ -75,10 +72,6 @@ public record PlaceChoices(
 		}
 	}
 
-	public String targetToString() {
-		return this.targetType.prefix + this.targetId;
-	}
-
 	public int test(BlockState baseState, BlockState targetState) {
 		for (Limit limit : this.limit) {
 			if (!limit.test(baseState, targetState)) {
@@ -87,7 +80,7 @@ public record PlaceChoices(
 		}
 		int interest = 0;
 		for (InterestProvider provider : this.interests) {
-			if (provider.when().test(targetState)) {
+			if (provider.when().smartTest(baseState, targetState)) {
 				interest += provider.bonus;
 			}
 		}

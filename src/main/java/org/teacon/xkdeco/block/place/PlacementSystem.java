@@ -96,24 +96,39 @@ public class PlacementSystem {
 				results.add(result);
 			}
 		}
-		results.sort(null);
-		if (debug && !level.isClientSide) {
-			mutable.setWithOffset(pos, Direction.UP);
-			if (results.isEmpty()) {
+		if (results.isEmpty()) {
+			if (debug && !level.isClientSide) {
 				Kiwi.LOGGER.info("No match");
 				level.setBlockAndUpdate(mutable.move(Direction.UP), Blocks.BEDROCK.defaultBlockState());
-			} else {
-				Kiwi.LOGGER.info("Interest: %d".formatted(results.get(0).interest()));
-				results.stream().skip(1).forEach($ -> {
-					level.setBlockAndUpdate(mutable.move(Direction.UP), $.blockState());
-					Kiwi.LOGGER.info("Alt Interest: %d : %s".formatted($.interest(), $.blockState()));
-				});
 			}
-		}
-		if (results.isEmpty()) {
 			return blockState;
 		}
-		PlaceMatchResult result = results.get(0);
+		results.sort(null);
+		int resultIndex = 0;
+		if (results.size() > 1 && context.getPlayer() != null) {
+			int maxInterest = results.get(0).interest();
+			for (int i = 1; i < results.size(); i++) {
+				if (results.get(i).interest() < maxInterest) {
+					break;
+				}
+				resultIndex = i;
+			}
+			if (resultIndex > 0) {
+				//TODO randomize
+			}
+		}
+		PlaceMatchResult result = results.get(resultIndex);
+		if (debug && !level.isClientSide) {
+			mutable.setWithOffset(pos, Direction.UP);
+			Kiwi.LOGGER.info("Interest: %d".formatted(result.interest()));
+			results.forEach($ -> {
+				if ($ == result) {
+					return;
+				}
+				level.setBlockAndUpdate(mutable.move(Direction.UP), $.blockState());
+				Kiwi.LOGGER.info("Alt Interest: %d : %s".formatted($.interest(), $.blockState()));
+			});
+		}
 		blockState = result.blockState();
 		for (int i = 0; i < result.links().size(); i++) {
 			SlotLink link = result.links().get(i);

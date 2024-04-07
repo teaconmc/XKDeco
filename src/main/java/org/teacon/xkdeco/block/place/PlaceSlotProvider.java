@@ -39,8 +39,7 @@ import snownee.kiwi.Kiwi;
 import snownee.kiwi.loader.Platform;
 
 public record PlaceSlotProvider(
-		PlaceTargetType targetType,
-		ResourceLocation targetId,
+		List<PlaceTarget> target,
 		Optional<String> transformWith,
 		List<String> tag,
 		List<Slot> slots) {
@@ -53,18 +52,11 @@ public record PlaceSlotProvider(
 		}
 	});
 	public static final Codec<PlaceSlotProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ExtraCodecs.NON_EMPTY_STRING.fieldOf("target").forGetter(PlaceSlotProvider::targetToString),
+			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceSlotProvider::target),
 			Codec.STRING.optionalFieldOf("transform_with").forGetter(PlaceSlotProvider::transformWith),
 			TAG_CODEC.listOf().optionalFieldOf("tag", List.of()).forGetter(PlaceSlotProvider::tag),
 			Slot.CODEC.listOf().fieldOf("slots").forGetter(PlaceSlotProvider::slots)
-	).apply(instance, PlaceSlotProvider::create));
-
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public static PlaceSlotProvider create(String target, Optional<String> transformWith, List<String> tag, List<Slot> slots) {
-		PlaceTargetType targetType = target.startsWith("@") ? PlaceTargetType.TEMPLATE : PlaceTargetType.BLOCK;
-		ResourceLocation targetId = new ResourceLocation(target.substring(targetType.prefix.length()));
-		return new PlaceSlotProvider(targetType, targetId, transformWith, tag, slots);
-	}
+	).apply(instance, PlaceSlotProvider::new));
 
 	public static ParsedResult reload(ResourceManager resourceManager, Map<ResourceLocation, KBlockTemplate> templates) {
 		PlaceSlot.clear();
@@ -76,10 +68,6 @@ public record PlaceSlotProvider(
 								"kiwi/place_slot/provider",
 								PlaceSlotProvider.CODEC),
 				templates);
-	}
-
-	public String targetToString() {
-		return this.targetType.prefix + this.targetId;
 	}
 
 	public record Slot(
@@ -110,12 +98,17 @@ public record PlaceSlotProvider(
 		public static ParsedResult of(Map<ResourceLocation, PlaceSlotProvider> providers, Map<ResourceLocation, KBlockTemplate> templates) {
 			ListMultimap<KBlockTemplate, PlaceSlotProvider> byTemplate = ArrayListMultimap.create();
 			for (PlaceSlotProvider provider : providers.values()) {
-				KBlockTemplate template = templates.get(provider.targetId);
-				if (template == null) {
-					Kiwi.LOGGER.error("Template {} not found for slot provider {}", provider.targetId, provider);
-					continue;
+				for (PlaceTarget target : provider.target) {
+					if (target.type() != PlaceTarget.Type.TEMPLATE) {
+						continue;
+					}
+					KBlockTemplate template = templates.get(target.id());
+					if (template == null) {
+						Kiwi.LOGGER.error("Template {} not found for slot provider {}", target.id(), provider);
+						continue;
+					}
+					byTemplate.put(template, provider);
 				}
-				byTemplate.put(template, provider);
 			}
 			return new ParsedResult(providers, byTemplate);
 		}

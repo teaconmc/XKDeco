@@ -32,6 +32,18 @@ public class ColorProviderUtil {
 		});
 	}
 
+	public static ItemColor delegateItemFallback(Block block) {
+		return new ItemDelegate(() -> {
+			BlockColorsAccess blockColors = (BlockColorsAccess) Minecraft.getInstance().getBlockColors();
+			BlockColor blockColor = blockColors.getBlockColors().get(ForgeRegistries.BLOCKS.getDelegateOrThrow(block));
+			if (blockColor == null) {
+				return null;
+			} else {
+				return (stack, i) -> blockColor.getColor(block.defaultBlockState(), null, null, i);
+			}
+		});
+	}
+
 	public static class Dummy implements ItemColor, BlockColor {
 		public static final Dummy INSTANCE = new Dummy();
 

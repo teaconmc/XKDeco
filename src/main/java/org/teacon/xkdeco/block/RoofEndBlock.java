@@ -1,22 +1,18 @@
 package org.teacon.xkdeco.block;
 
+import java.util.Locale;
+
 import org.teacon.xkdeco.util.RoofUtil;
 import org.teacon.xkdeco.util.RoofUtil.RoofEndShape;
-import org.teacon.xkdeco.util.RoofUtil.RoofHalf;
 import org.teacon.xkdeco.util.RoofUtil.RoofShape;
-import org.teacon.xkdeco.util.RoofUtil.RoofVariant;
+import org.teacon.xkdeco.util.StringProperty;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -25,56 +21,27 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class RoofEndBlock extends HorizontalDirectionalBlock implements XKDecoBlockRoof {
-	public static final EnumProperty<RoofVariant> VARIANT = XKDStateProperties.ROOF_VARIANT;
-	public static final EnumProperty<RoofEndShape> SHAPE = EnumProperty.create("shape", RoofEndShape.class);
-	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final StringProperty VARIANT = StringProperty.convert(XKDStateProperties.ROOF_VARIANT);
+	public static final StringProperty SHAPE = StringProperty.convert(EnumProperty.create("shape", RoofEndShape.class));
+	public static final StringProperty HALF = StringProperty.convert(XKDStateProperties.ROOF_HALF);
 
-	public RoofEndBlock(Properties properties, boolean narrow) {
+	public RoofEndBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.defaultBlockState()
-				.setValue(VARIANT, RoofVariant.NORMAL).setValue(SHAPE, RoofEndShape.LEFT)
-				.setValue(HALF, RoofHalf.LOWER).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean useShapeForLightOcclusion(BlockState pState) {
-		return true;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		var facing = pState.getValue(FACING);
-		var roofHalf = pState.getValue(HALF);
-		var roofVariant = pState.getValue(VARIANT);
+		var facing = pState.getValue(HorizontalDirectionalBlock.FACING);
+		var roofHalf = RoofUtil.RoofHalf.valueOf(pState.getValue(HALF).toUpperCase(Locale.ENGLISH));
+		var roofVariant = RoofUtil.RoofVariant.valueOf(pState.getValue(VARIANT).toUpperCase(Locale.ENGLISH));
 		return RoofUtil.getShape(RoofShape.STRAIGHT, facing, roofHalf, roofVariant);
 	}
-
-//	@Override
-//	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-//		return RoofUtil.getStateForPlacement(this, pContext.getLevel(),
-//				pContext.getClickedPos(), pContext.getNearestLookingDirections());
-//	}
-//
-//	@Override
-//	@SuppressWarnings("deprecation")
-//	public BlockState updateShape(
-//			BlockState pState, Direction pFacing, BlockState pFacingState,
-//			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-//		return RoofUtil.updateShape(pState, pFacingState, pFacing);
-//	}
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
 		return false;
-	}
-
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(VARIANT, SHAPE, HALF, FACING, WATERLOGGED);
 	}
 
 //	@Override
