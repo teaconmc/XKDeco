@@ -19,7 +19,7 @@ public abstract class StateDefinitionBuilderMixin<O, S extends StateHolder<O, S>
 	public abstract StateDefinition.Builder<O, S> add(Property<?>... pProperties);
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void xkdeco$init(O pOwner, CallbackInfo ci) {
+	private void kiwi$init(O pOwner, CallbackInfo ci) {
 		if (!(pOwner instanceof Block block)) {
 			return;
 		}

@@ -3,6 +3,8 @@ package org.teacon.xkdeco.block.command;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
+import org.teacon.xkdeco.block.place.PlaceChoices;
+import org.teacon.xkdeco.block.place.PlaceSlot;
 import org.teacon.xkdeco.util.CommonProxy;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -23,22 +25,22 @@ public class ReloadSlotsCommand {
 
 	private static int reloadSlots(CommandSourceStack source) {
 		CommonProxy.BlockFundamentals fundamentals = CommonProxy.BlockFundamentals.reload(CommonProxy.collectKiwiPacks());
-		AtomicInteger slotsCounter = new AtomicInteger();
 		AtomicInteger choicesCounter = new AtomicInteger();
 		BuiltInRegistries.BLOCK.holders().forEach(holder -> {
+			PlaceChoices.setTo(holder.value(), null);
 			KBlockDefinition definition = fundamentals.blocks().get(holder.key().location());
 			if (definition == null) {
 				return;
 			}
-			if (fundamentals.slotProviders().attachSlots(holder.value(), definition)) {
-				slotsCounter.incrementAndGet();
-			}
-			if (fundamentals.placeChoices().attachChoices(holder.value(), definition)) {
+			fundamentals.slotProviders().attachSlotsA(holder.value(), definition);
+			if (fundamentals.placeChoices().attachChoicesA(holder.value(), definition)) {
 				choicesCounter.incrementAndGet();
 			}
 		});
+		fundamentals.slotProviders().attachSlotsB();
+		choicesCounter.addAndGet(fundamentals.placeChoices().attachChoicesB());
 		source.sendSuccess(() -> Component.literal("Slots in %d blocks have been reloaded, using %d providers".formatted(
-				slotsCounter.get(),
+				PlaceSlot.blockSize(),
 				fundamentals.slotProviders().providers().size())), true);
 		source.sendSuccess(() -> Component.literal("Place choices in %d blocks have been reloaded, using %d choices".formatted(
 				choicesCounter.get(),

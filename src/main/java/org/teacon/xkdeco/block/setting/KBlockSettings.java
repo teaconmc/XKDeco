@@ -10,6 +10,8 @@ import org.teacon.xkdeco.block.behavior.CanSurviveHandler;
 import org.teacon.xkdeco.block.command.ExportBlocksCommand;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.place.PlaceChoices;
+import org.teacon.xkdeco.block.shape.ShapeGenerator;
+import org.teacon.xkdeco.block.shape.ShapeStorage;
 import org.teacon.xkdeco.duck.KBlockProperties;
 
 import com.google.common.base.Preconditions;
@@ -308,13 +310,16 @@ public class KBlockSettings {
 			if (shapeId == null) {
 				return null;
 			}
-			VoxelShape shape = ShapeStorage.getInstance().get(shapeId);
+			ShapeGenerator shapeGenerator = ShapeStorage.getInstance().get(shapeId);
 //			Preconditions.checkNotNull(shape, "Shape %s is not registered", shapeId);
-			if (shape == null) {
-				shape = Shapes.block();
+			if (shapeGenerator == null) {
 				Kiwi.LOGGER.warn("Shape {} is not registered", shapeId);
+				return ShapeStorage.getInstance().get("block");
 			}
-			if (hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
+			VoxelShape shape = shapeGenerator instanceof ShapeGenerator.Unit unit ? unit.shape() : null;
+			if (shape == null) {
+				return shapeGenerator;
+			} else if (hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
 				return ShapeGenerator.horizontal(shape);
 			} else if (hasComponent(KBlockComponents.DIRECTIONAL.getOrCreate())) {
 				return ShapeGenerator.directional(shape, state -> state.getValue(BlockStateProperties.FACING));
@@ -328,7 +333,7 @@ public class KBlockSettings {
 						ShapeGenerator.unit(shape),
 						ShapeGenerator.unit(VoxelUtil.rotateHorizontal(shape, Direction.EAST)));
 			}
-			return ShapeGenerator.unit(shape);
+			return shapeGenerator;
 		}
 
 		public @Nullable ToIntFunction<BlockState> getAnalogOutputSignal() {

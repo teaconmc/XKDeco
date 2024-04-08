@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.setting;
+package org.teacon.xkdeco.block.shape;
 
 import static net.minecraft.world.level.block.Block.box;
 
@@ -79,7 +79,8 @@ public class ShapeStorage {
 		put("vent_fan", box(0, 0, 2, 16, 16, 14));
 		put("tech_table", Shapes.or(box(2, 0, 2, 14, 10, 14), box(0, 10, 0, 16, 16, 16)));
 		put("hologram_base", box(1, 0, 1, 15, 2, 15));
-		put("air_duct", Shapes.join(
+
+		VoxelShape air_duct_oblique = Shapes.join(
 				Shapes.or(
 						box(0, 0, 12, 16, 16, 16),
 						box(0, -2, 10, 16, 16, 12),
@@ -96,8 +97,8 @@ public class ShapeStorage {
 						box(2, -6, 4, 14, 14, 6),
 						box(2, -8, 2, 14, 12, 4),
 						box(2, -10, 0, 14, 10, 2)),
-				BooleanOp.ONLY_FIRST));
-		put("air_duct2", Shapes.join(
+				BooleanOp.ONLY_FIRST);
+		VoxelShape air_duct_oblique2 = Shapes.join(
 				Shapes.or(
 						box(0, 0, 12, 16, 16, 16),
 						box(0, 0, 10, 16, 18, 12),
@@ -114,7 +115,14 @@ public class ShapeStorage {
 						box(2, 2, 4, 14, 22, 6),
 						box(2, 4, 2, 14, 24, 4),
 						box(2, 6, 0, 14, 26, 2)),
-				BooleanOp.ONLY_FIRST));
+				BooleanOp.ONLY_FIRST);
+		getInstance().register(XKDeco.id("air_duct_oblique"), ShapeGenerator.horizontalShifted(air_duct_oblique, air_duct_oblique2));
+		VoxelShape airDuctBase = Shapes.join(
+				Shapes.block(),
+				Shapes.or(box(0, 2, 2, 16, 14, 14), box(2, 0, 2, 14, 16, 14), box(2, 2, 0, 14, 14, 16)),
+				BooleanOp.ONLY_FIRST);
+		VoxelShape airDuctSide = box(2, 0, 2, 14, 2, 14);
+		getInstance().register(XKDeco.id("air_duct"), ShapeGenerator.sixWay(airDuctBase, Shapes.empty(), airDuctSide));
 		put("maya_crystal_skull", Shapes.or(box(2, 0, 2, 14, 2, 14), box(4, 2, 4, 12, 10, 12)));
 		put("dessert", box(1, 0, 1, 15, 2, 15));
 		put("ladder", box(0, 0, 13, 16, 16, 16));
@@ -135,8 +143,9 @@ public class ShapeStorage {
 				box(0, 0, 0, 16, 8, 16),
 				box(8, 8, 0, 16, 16, 16)));
 		put("wooden_column", box(4, 0, 4, 12, 16, 12));
-		//noinspection DataFlowIssue
-		put("meiren_kao_with_column", Shapes.or(getInstance().get(XKDeco.id("meiren_kao")), getInstance().get(XKDeco.id("wooden_column"))));
+		put(
+				"meiren_kao_with_column",
+				Shapes.or(getInstance().getSimple(XKDeco.id("meiren_kao")), getInstance().getSimple(XKDeco.id("wooden_column"))));
 		put("fallen_leaves", box(0, 0, 0, 16, 1, 16));
 		put("stone_column", box(2, 0, 2, 14, 16, 14));
 		put("wooden_fence_head", box(6, 0, 6, 10, 8, 10));
@@ -147,7 +156,7 @@ public class ShapeStorage {
 		put("cup_4", box(2, 0, 2, 14, 7, 14));
 	}
 
-	private final Map<ResourceLocation, VoxelShape> shapes = Maps.newHashMap();
+	private final Map<ResourceLocation, ShapeGenerator> shapes = Maps.newHashMap();
 
 	public ShapeStorage() {
 		register(new ResourceLocation("empty"), Shapes.empty());
@@ -155,17 +164,29 @@ public class ShapeStorage {
 	}
 
 	@Nullable
-	public VoxelShape get(ResourceLocation id) {
+	public ShapeGenerator get(ResourceLocation id) {
 		return this.shapes.get(id);
 	}
 
 	@Nullable
-	public VoxelShape get(String id) {
+	public ShapeGenerator get(String id) {
 		return get(new ResourceLocation(id));
 	}
 
-	private void register(ResourceLocation id, VoxelShape shape) {
+	private VoxelShape getSimple(ResourceLocation id) {
+		ShapeGenerator shape = get(id);
+		Preconditions.checkNotNull(shape, "Shape not found: %s", id);
+		Preconditions.checkState(shape instanceof ShapeGenerator.Unit, "Shape is not simple: %s", id);
+		return ((ShapeGenerator.Unit) shape).shape();
+	}
+
+	public void register(ResourceLocation id, VoxelShape shape) {
 		Preconditions.checkNotNull(shape, "Shape cannot be null");
-		Preconditions.checkState(shapes.put(id, shape) == null, "Duplicate shape id: %s", id);
+		register(id, ShapeGenerator.unit(shape));
+	}
+
+	public void register(ResourceLocation id, ShapeGenerator shapeGenerator) {
+		Preconditions.checkNotNull(shapeGenerator, "Shape cannot be null");
+		Preconditions.checkState(shapes.put(id, shapeGenerator) == null, "Duplicate shape id: %s", id);
 	}
 }

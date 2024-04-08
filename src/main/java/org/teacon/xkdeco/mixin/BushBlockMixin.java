@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(BushBlock.class)
 public abstract class BushBlockMixin {
 	@Inject(method = "mayPlaceOn", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
+	private void kiwi$mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
 		if (pState.isFaceSturdy(pLevel, pPos, Direction.UP, SupportType.CENTER) && pState.is(CustomFeatureTags.SUSTAIN_PLANT)) {
 			cir.setReturnValue(true);
 		}

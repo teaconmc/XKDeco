@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.block;
 
 import org.teacon.xkdeco.block.setting.CheckedWaterloggedBlock;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 
+@NotNullByDefault
 public class HollowSteelHalfBeamBlock extends FaceAttachedHorizontalDirectionalBlock implements CheckedWaterloggedBlock {
 	public HollowSteelHalfBeamBlock(Properties pProperties) {
 		super(pProperties);

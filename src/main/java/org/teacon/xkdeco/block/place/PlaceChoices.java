@@ -3,7 +3,9 @@ package org.teacon.xkdeco.block.place;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.block.loader.KBlockTemplate;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
@@ -16,8 +18,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.Kiwi;
@@ -35,40 +39,67 @@ public record PlaceChoices(
 
 	public record ParsedResult(
 			Map<ResourceLocation, PlaceChoices> choices,
-			Map<KBlockTemplate, PlaceChoices> byTemplate) {
+			Map<KBlockTemplate, PlaceChoices> byTemplate,
+			Map<ResourceLocation, PlaceChoices> byBlock) {
 		public static ParsedResult of(
 				Map<ResourceLocation, PlaceChoices> choices,
 				Map<ResourceLocation, KBlockTemplate> templates) {
 			Map<KBlockTemplate, PlaceChoices> byTemplate = Maps.newHashMap();
+			Map<ResourceLocation, PlaceChoices> byBlock = Maps.newHashMap();
 			for (PlaceChoices provider : choices.values()) {
 				for (PlaceTarget target : provider.target) {
-					if (target.type() != PlaceTarget.Type.TEMPLATE) {
-						continue;
-					}
-					KBlockTemplate template = templates.get(target.id());
-					if (template == null) {
-						Kiwi.LOGGER.error("Template {} not found for place choices {}", target.id(), provider);
-						continue;
-					}
-					PlaceChoices oldChoices = byTemplate.put(template, provider);
-					if (oldChoices != null) {
-						Kiwi.LOGGER.error("Duplicate place choices for template {}: {} and {}", template, oldChoices, provider);
+					switch (target.type()) {
+						case TEMPLATE -> {
+							KBlockTemplate template = templates.get(target.id());
+							if (template == null) {
+								Kiwi.LOGGER.error("Template {} not found for place choices {}", target.id(), provider);
+								continue;
+							}
+							PlaceChoices oldChoices = byTemplate.put(template, provider);
+							if (oldChoices != null) {
+								Kiwi.LOGGER.error("Duplicate place choices for template {}: {} and {}", template, oldChoices, provider);
+							}
+						}
+						case BLOCK -> {
+							PlaceChoices oldChoices = byBlock.put(target.id(), provider);
+							if (oldChoices != null) {
+								Kiwi.LOGGER.error("Duplicate place choices for block {}: {} and {}", target.id(), oldChoices, provider);
+							}
+						}
 					}
 				}
 			}
-			return new ParsedResult(choices, byTemplate);
+			return new ParsedResult(choices, byTemplate, byBlock);
 		}
 
-		public boolean attachChoices(Block block, KBlockDefinition definition) {
+		public boolean attachChoicesA(Block block, KBlockDefinition definition) {
 			PlaceChoices choices = byTemplate.get(definition.template().template());
-			KBlockSettings settings = KBlockSettings.of(block);
-			if (settings == null && choices != null) {
-				((KBlockProperties) block.properties).kiwi$setSettings(settings = KBlockSettings.empty());
-			}
-			if (settings != null) {
-				settings.placeChoices = choices;
-			}
+			setTo(block, choices);
 			return choices != null;
+		}
+
+		public int attachChoicesB() {
+			AtomicInteger counter = new AtomicInteger();
+			byBlock.forEach((blockId, choices) -> {
+				Block block = BuiltInRegistries.BLOCK.get(blockId);
+				if (block == Blocks.AIR) {
+					Kiwi.LOGGER.error("Block %s not found for place choices %s".formatted(blockId, choices));
+					return;
+				}
+				setTo(block, choices);
+				counter.incrementAndGet();
+			});
+			return counter.get();
+		}
+	}
+
+	public static void setTo(Block block, @Nullable PlaceChoices choices) {
+		KBlockSettings settings = KBlockSettings.of(block);
+		if (settings == null && choices != null) {
+			((KBlockProperties) block.properties).kiwi$setSettings(settings = KBlockSettings.empty());
+		}
+		if (settings != null) {
+			settings.placeChoices = choices;
 		}
 	}
 

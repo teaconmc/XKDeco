@@ -1,4 +1,4 @@
-package org.teacon.xkdeco.block.setting;
+package org.teacon.xkdeco.block.shape;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.teacon.xkdeco.block.XKDStateProperties;
+import org.teacon.xkdeco.block.setting.LayeredComponent;
 import org.teacon.xkdeco.util.MathUtil;
 import org.teacon.xkdeco.util.RoofUtil;
 
@@ -30,7 +31,14 @@ public interface ShapeGenerator {
 	VoxelShape getShape(BlockState blockState, CollisionContext context);
 
 	static ShapeGenerator unit(VoxelShape shape) {
-		return (blockState, context) -> shape;
+		return new Unit(shape);
+	}
+
+	record Unit(VoxelShape shape) implements ShapeGenerator {
+		@Override
+		public VoxelShape getShape(BlockState blockState, CollisionContext context) {
+			return shape;
+		}
 	}
 
 	static ShapeGenerator horizontal(VoxelShape north) {
@@ -151,11 +159,11 @@ public interface ShapeGenerator {
 		IntegerProperty property = component.getLayerProperty();
 		int min = property.min;
 		int max = property.max;
-		VoxelShape[] shapes = new VoxelShape[max - min + 1];
+		ShapeGenerator[] shapes = new ShapeGenerator[max - min + 1];
 		for (int i = min; i <= max; i++) {
 			shapes[i - min] = ShapeStorage.getInstance().get(shapeId.withSuffix("_" + i));
 		}
-		return (blockState, context) -> shapes[blockState.getValue(property) - property.min];
+		return (blockState, context) -> shapes[blockState.getValue(property) - property.min].getShape(blockState, context);
 	}
 
 	final class Moulding implements ShapeGenerator {

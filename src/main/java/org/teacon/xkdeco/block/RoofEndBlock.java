@@ -12,6 +12,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -20,7 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofEndBlock extends HorizontalDirectionalBlock implements XKDecoBlockRoof {
+public final class RoofEndBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 	public static final StringProperty VARIANT = StringProperty.convert(XKDStateProperties.ROOF_VARIANT);
 	public static final StringProperty SHAPE = StringProperty.convert(EnumProperty.create("shape", RoofEndShape.class));
 	public static final StringProperty HALF = StringProperty.convert(XKDStateProperties.ROOF_HALF);

@@ -27,10 +27,12 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -94,36 +96,54 @@ public record PlaceSlotProvider(
 
 	public record ParsedResult(
 			Map<ResourceLocation, PlaceSlotProvider> providers,
-			ListMultimap<KBlockTemplate, PlaceSlotProvider> byTemplate) {
+			ListMultimap<KBlockTemplate, PlaceSlotProvider> byTemplate,
+			ListMultimap<ResourceLocation, PlaceSlotProvider> byBlock) {
 		public static ParsedResult of(Map<ResourceLocation, PlaceSlotProvider> providers, Map<ResourceLocation, KBlockTemplate> templates) {
 			ListMultimap<KBlockTemplate, PlaceSlotProvider> byTemplate = ArrayListMultimap.create();
+			ListMultimap<ResourceLocation, PlaceSlotProvider> byBlock = ArrayListMultimap.create();
 			for (PlaceSlotProvider provider : providers.values()) {
 				for (PlaceTarget target : provider.target) {
-					if (target.type() != PlaceTarget.Type.TEMPLATE) {
-						continue;
+					switch (target.type()) {
+						case TEMPLATE -> {
+							KBlockTemplate template = templates.get(target.id());
+							if (template == null) {
+								Kiwi.LOGGER.error("Template {} not found for slot provider {}", target.id(), provider);
+								continue;
+							}
+							byTemplate.put(template, provider);
+						}
+						case BLOCK -> byBlock.put(target.id(), provider);
 					}
-					KBlockTemplate template = templates.get(target.id());
-					if (template == null) {
-						Kiwi.LOGGER.error("Template {} not found for slot provider {}", target.id(), provider);
-						continue;
-					}
-					byTemplate.put(template, provider);
 				}
 			}
-			return new ParsedResult(providers, byTemplate);
+			return new ParsedResult(providers, byTemplate, byBlock);
 		}
 
-		public boolean attachSlots(Block block, KBlockDefinition definition) {
-			boolean success = false;
+		public void attachSlotsA(Block block, KBlockDefinition definition) {
 			for (PlaceSlotProvider provider : byTemplate.get(definition.template().template())) {
 				try {
 					provider.attachSlots(block);
-					success = true;
 				} catch (Exception e) {
 					Kiwi.LOGGER.error("Failed to attach slots for block %s with provider %s".formatted(block, provider), e);
 				}
 			}
-			return success;
+		}
+
+		public void attachSlotsB() {
+			byBlock.asMap().forEach((blockId, providers) -> {
+				Block block = BuiltInRegistries.BLOCK.get(blockId);
+				if (block == Blocks.AIR) {
+					Kiwi.LOGGER.error("Block %s not found for slot providers %s".formatted(blockId, providers));
+					return;
+				}
+				for (PlaceSlotProvider provider : providers) {
+					try {
+						provider.attachSlots(block);
+					} catch (Exception e) {
+						Kiwi.LOGGER.error("Failed to attach slots for block %s with provider %s".formatted(block, provider), e);
+					}
+				}
+			});
 		}
 	}
 

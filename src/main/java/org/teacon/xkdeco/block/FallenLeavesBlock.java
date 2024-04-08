@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.block;
 
 import org.jetbrains.annotations.NotNull;
+import org.teacon.xkdeco.util.NotNullByDefault;
 import org.teacon.xkdeco.util.RoofUtil;
 
 import net.minecraft.core.BlockPos;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
 
+@NotNullByDefault
 public final class FallenLeavesBlock extends Block {
 	public static final EnumProperty<RoofUtil.RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
 

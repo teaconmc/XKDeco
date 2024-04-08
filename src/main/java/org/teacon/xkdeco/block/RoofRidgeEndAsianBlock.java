@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -21,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock implements XKDecoBlockRoof {
+public final class RoofRidgeEndAsianBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 	public static final EnumProperty<RoofUtil.RoofVariant> VARIANT = EnumProperty.create(
 			"variant",
 			RoofUtil.RoofVariant.class,

@@ -10,7 +10,6 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
-import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
@@ -159,11 +158,11 @@ public final class XKDecoObjects {
 				return new RoofRidgeEndAsianBlock(propFactory.get(), true);
 			}
 		});
-		var smallFlatEnd = BLOCKS.register(id + "_small_flat_end", () -> new RoofHorizontalShiftBlock(propFactory.get()));
+//		var smallFlatEnd = BLOCKS.register(id + "_small_flat_end", () -> new RoofHorizontalShiftBlock(propFactory.get()));
 
 		//TODO remove in the future:
 		ITEMS.register(id + "_small_ridge_end", () -> new BlockItem(smallRidgeEnd.get(), itemProperties));
-		ITEMS.register(id + "_small_flat_end", () -> new BlockItem(smallFlatEnd.get(), itemProperties));
+//		ITEMS.register(id + "_small_flat_end", () -> new BlockItem(smallFlatEnd.get(), itemProperties));
 
 		var roofSmallEave = BLOCKS.register(id + "_small_eave", () -> new RoofEaveBlock(propFactory.get(), true));
 		ITEMS.register(id + "_small_eave", () -> new BlockItem(roofSmallEave.get(), itemProperties));

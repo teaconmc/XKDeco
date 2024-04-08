@@ -17,7 +17,7 @@ import net.minecraftforge.registries.GameData;
 @Mixin(value = GameData.class, remap = false)
 public class GameDataMixin {
 	@Inject(method = "postRegisterEvents", at = @At(value = "INVOKE", target = "Ljava/lang/RuntimeException;<init>()V"))
-	private static void postRegisterEvents(CallbackInfo ci, @Local(ordinal = 1) Set<ResourceLocation> ordered) {
+	private static void kiwi$postRegisterEvents(CallbackInfo ci, @Local(ordinal = 1) Set<ResourceLocation> ordered) {
 		List<ResourceLocation> copy = List.copyOf(ordered);
 		ordered.clear();
 		List<ResourceLocation> prioritized = List.of(

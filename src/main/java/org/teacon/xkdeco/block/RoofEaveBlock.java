@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,7 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofEaveBlock extends HorizontalDirectionalBlock implements XKDecoBlockRoof {
+public final class RoofEaveBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 	public static final EnumProperty<RoofEaveShape> SHAPE = EnumProperty.create("shape", RoofEaveShape.class);
 	public static final EnumProperty<RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

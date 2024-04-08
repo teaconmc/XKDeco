@@ -34,7 +34,7 @@ public class BlockBehaviourMixin {
 	public BlockBehaviour.Properties properties;
 
 	@Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getShape(
+	private void kiwi$getShape(
 			BlockState pState,
 			BlockGetter pLevel,
 			BlockPos pPos,
@@ -47,7 +47,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getCollisionShape(
+	private void kiwi$getCollisionShape(
 			BlockState pState,
 			BlockGetter pLevel,
 			BlockPos pPos,
@@ -63,7 +63,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "getInteractionShape", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<VoxelShape> cir) {
+	private void kiwi$getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<VoxelShape> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.interactionShape != null) {
 			cir.setReturnValue(settings.interactionShape.getShape(pState, CollisionContext.empty()));
@@ -71,7 +71,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "getShadeBrightness", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+	private void kiwi$getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.glassType != null) {
 			cir.setReturnValue(settings.glassType.shadeBrightness());
@@ -79,7 +79,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "skipRendering", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$skipRendering(
+	private void kiwi$skipRendering(
 			BlockState pState,
 			BlockState pAdjacentState,
 			Direction pDirection,
@@ -91,7 +91,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getVisualShape(
+	private void kiwi$getVisualShape(
 			BlockState pState,
 			BlockGetter pLevel,
 			BlockPos pPos,
@@ -104,7 +104,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "getFluidState", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getFluidState(BlockState pState, CallbackInfoReturnable<FluidState> cir) {
+	private void kiwi$getFluidState(BlockState pState, CallbackInfoReturnable<FluidState> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && pState.hasProperty(BlockStateProperties.WATERLOGGED)) {
 			cir.setReturnValue(pState.getValue(BlockStateProperties.WATERLOGGED) ?
@@ -114,7 +114,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "rotate", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$rotate(BlockState pState, Rotation pRotation, CallbackInfoReturnable<BlockState> cir) {
+	private void kiwi$rotate(BlockState pState, Rotation pRotation, CallbackInfoReturnable<BlockState> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.rotate(pState, pRotation));
@@ -122,7 +122,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "mirror", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$mirror(BlockState pState, Mirror pMirror, CallbackInfoReturnable<BlockState> cir) {
+	private void kiwi$mirror(BlockState pState, Mirror pMirror, CallbackInfoReturnable<BlockState> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.mirror(pState, pMirror));
@@ -130,7 +130,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "useShapeForLightOcclusion", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$useShapeForLightOcclusion(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
+	private void kiwi$useShapeForLightOcclusion(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null) {
 			cir.setReturnValue(settings.useShapeForLightOcclusion(pState));
@@ -138,7 +138,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "hasAnalogOutputSignal", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$hasAnalogOutputSignal(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
+	private void kiwi$hasAnalogOutputSignal(BlockState pState, CallbackInfoReturnable<Boolean> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.analogOutputSignal != null) {
 			cir.setReturnValue(true);
@@ -146,7 +146,7 @@ public class BlockBehaviourMixin {
 	}
 
 	@Inject(method = "getAnalogOutputSignal", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos, CallbackInfoReturnable<Integer> cir) {
+	private void kiwi$getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos, CallbackInfoReturnable<Integer> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
 		if (settings != null && settings.analogOutputSignal != null) {
 			cir.setReturnValue(settings.analogOutputSignal.applyAsInt(pState));

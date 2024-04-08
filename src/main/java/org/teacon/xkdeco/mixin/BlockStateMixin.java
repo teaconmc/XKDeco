@@ -5,11 +5,18 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.teacon.xkdeco.block.place.PlaceSlot;
+import org.teacon.xkdeco.block.place.SlotLink;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
+import org.teacon.xkdeco.util.CommonProxy;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -26,7 +33,7 @@ public abstract class BlockStateMixin {
 	protected abstract BlockState asState();
 
 	@Inject(method = "canSurvive", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$canSurvive(LevelReader pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
+	private void kiwi$canSurvive(LevelReader pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
 		KBlockSettings settings = KBlockSettings.of(getBlock());
 		if (settings != null && settings.canSurviveHandler != null) {
 			cir.setReturnValue(settings.canSurviveHandler.canSurvive(asState(), pLevel, pPos));
@@ -34,7 +41,7 @@ public abstract class BlockStateMixin {
 	}
 
 	@Inject(method = "updateShape", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$checkCanSurvive(
+	private void kiwi$checkCanSurvive(
 			Direction pDirection,
 			BlockState pNeighborState,
 			LevelAccessor pLevel,
@@ -49,7 +56,7 @@ public abstract class BlockStateMixin {
 	}
 
 	@Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
-	private void xkdeco$updateShape(
+	private void kiwi$updateShape(
 			Direction pDirection,
 			BlockState pNeighborState,
 			LevelAccessor pLevel,
@@ -66,7 +73,7 @@ public abstract class BlockStateMixin {
 	}
 
 	@Inject(method = "canBeReplaced(Lnet/minecraft/world/item/context/BlockPlaceContext;)Z", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$canBeReplaced(BlockPlaceContext pUseContext, CallbackInfoReturnable<Boolean> cir) {
+	private void kiwi$canBeReplaced(BlockPlaceContext pUseContext, CallbackInfoReturnable<Boolean> cir) {
 		KBlockSettings settings = KBlockSettings.of(getBlock());
 		if (settings == null) {
 			return;
@@ -74,6 +81,36 @@ public abstract class BlockStateMixin {
 		Boolean triState = settings.canBeReplaced(asState(), pUseContext);
 		if (triState != null) {
 			cir.setReturnValue(triState);
+		}
+	}
+
+	@WrapOperation(
+			method = "onRemove",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/level/block/Block;onRemove(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V"))
+	private void kiwi$onRemove(
+			Block block,
+			BlockState oldState,
+			Level level,
+			BlockPos pos,
+			BlockState newState,
+			boolean pMovedByPiston,
+			Operation<Void> original) {
+		original.call(block, oldState, level, pos, newState, pMovedByPiston);
+		if (PlaceSlot.hasNoSlots(block)) {
+			return;
+		}
+		BlockPos.MutableBlockPos mutable = pos.mutable();
+		for (Direction direction : CommonProxy.DIRECTIONS) {
+			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
+			if (PlaceSlot.hasNoSlots(neighborState.getBlock())) {
+				continue;
+			}
+			SlotLink.MatchResult result = SlotLink.find(oldState, neighborState, direction);
+			if (result != null) {
+				result.onUnlinkTo().apply(neighborState);
+			}
 		}
 	}
 }

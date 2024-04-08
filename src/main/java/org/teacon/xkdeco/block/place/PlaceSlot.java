@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.SortedMap;
 
 import com.google.common.base.Preconditions;
@@ -13,9 +15,11 @@ import com.google.common.collect.Interner;
 import com.google.common.collect.Interners;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public record PlaceSlot(Direction side, SortedMap<String, String> tags) {
@@ -30,9 +34,22 @@ public record PlaceSlot(Direction side, SortedMap<String, String> tags) {
 		return a.compareTo(b);
 	};
 	private static final Map<Pair<BlockState, Direction>, Collection<PlaceSlot>> BLOCK_STATE_LOOKUP = Maps.newHashMap();
+	private static final Set<Block> BLOCK_HAS_SLOTS = Sets.newHashSet();
 
 	public static Collection<PlaceSlot> find(BlockState blockState, Direction side) {
 		return BLOCK_STATE_LOOKUP.getOrDefault(Pair.of(blockState, side), List.of());
+	}
+
+	public static Optional<PlaceSlot> find(BlockState blockState, Direction side, String primaryTag) {
+		Collection<PlaceSlot> slots = BLOCK_STATE_LOOKUP.get(Pair.of(blockState, side));
+		if (slots.isEmpty()) {
+			return Optional.empty();
+		}
+		return slots.stream().filter(slot -> slot.primaryTag().equals(primaryTag)).findAny();
+	}
+
+	public static boolean hasNoSlots(Block block) {
+		return !BLOCK_HAS_SLOTS.contains(block);
 	}
 
 	public static PlaceSlot create(Direction side, ImmutableSortedMap<String, String> tags) {
@@ -48,11 +65,17 @@ public record PlaceSlot(Direction side, SortedMap<String, String> tags) {
 			}
 		}
 		slots.add(placeSlot);
+		BLOCK_HAS_SLOTS.add(blockState.getBlock());
 	}
 
 	public static void clear() {
 		BLOCK_STATE_LOOKUP.clear();
+		BLOCK_HAS_SLOTS.clear();
 		INTERNER = Interners.newStrongInterner();
+	}
+
+	public static int blockSize() {
+		return BLOCK_HAS_SLOTS.size();
 	}
 
 	public String primaryTag() {
