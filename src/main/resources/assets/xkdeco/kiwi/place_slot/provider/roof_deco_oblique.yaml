@@ -1,0 +1,8 @@
+target: '@xkdeco:roof_deco_oblique'
+tag:
+  - '*xkdeco.roof_deco_oblique'
+  - '@half'
+  - '@facing'
+slots:
+  - sides:
+      down: { }

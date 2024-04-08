@@ -1,0 +1,15 @@
+target: '@xkdeco:roof_eave'
+limit:
+  - type: has_tags
+    tags:
+      - '*roof_eave:side'
+      - '@facing'
+interests:
+  - when:
+      shape: straight
+    bonus: 10
+  - when:
+      shape:
+        - left_end
+        - right_end
+    bonus: -50

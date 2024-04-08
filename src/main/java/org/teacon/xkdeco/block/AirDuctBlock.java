@@ -5,6 +5,7 @@ import static org.teacon.xkdeco.block.XKDStateProperties.DIRECTION_PROPERTIES;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.block.place.PlaceSlot;
 import org.teacon.xkdeco.util.CommonProxy;
 import org.teacon.xkdeco.util.NotNullByDefault;
 
@@ -97,7 +98,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 		List<Direction> neighbors = Lists.newArrayList();
 		for (Direction direction : CommonProxy.DIRECTIONS) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
-			if (neighborState.is(this)) {
+			if (isAirDuctSlot(neighborState, direction.getOpposite())) {
 				neighbors.add(direction);
 			}
 		}
@@ -122,7 +123,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 			LevelAccessor level,
 			BlockPos pos,
 			BlockPos pNeighborPos) {
-		if (!pNeighborState.is(this)) {
+		if (!isAirDuctSlot(pNeighborState, pDirection.getOpposite())) {
 			return blockState;
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
@@ -132,7 +133,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 				continue;
 			}
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
-			if (neighborState.is(this)) {
+			if (isAirDuctSlot(neighborState, direction.getOpposite())) {
 				neighbors.add(direction);
 				if (neighbors.size() >= 2) {
 					return blockState.setValue(DIRECTION_PROPERTIES.get(pDirection.get3DDataValue()), true);
@@ -146,5 +147,9 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 					direction == pDirection || direction == theOtherDirection);
 		}
 		return blockState;
+	}
+
+	public boolean isAirDuctSlot(BlockState blockState, Direction side) {
+		return PlaceSlot.find(blockState, side, "*xkdeco.air_duct").isPresent();
 	}
 }

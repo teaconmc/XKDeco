@@ -200,10 +200,10 @@ public class CommonProxy {
 		fundamentals.blocks().forEach((id, definition) -> {
 			Block block = definition.createBlock(id);
 			if (block != null) {
-				fundamentals.slotProviders().attachSlotsA(block, definition);
-				fundamentals.placeChoices().attachChoicesA(block, definition);
 				ForgeRegistries.BLOCKS.register(id, block);
 				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
+				fundamentals.slotProviders().attachSlotsA(block, definition);
+				fundamentals.placeChoices().attachChoicesA(block, definition);
 			}
 		});
 		fundamentals.slotProviders().attachSlotsB();
@@ -241,7 +241,8 @@ public class CommonProxy {
 			MapCodec<Optional<KMaterial>> materialCodec) {
 		public static BlockFundamentals reload(ResourceManager resourceManager) {
 			var materials = OneTimeLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
-			MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.simpleByNameCodec(materials).optionalFieldOf("material");
+			MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.strictOptionalField(LoaderExtraCodecs.simpleByNameCodec(
+					materials), "material");
 			var templates = OneTimeLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
 			templates.forEach((key, value) -> value.resolve(key));
 			var slotProviders = PlaceSlotProvider.reload(resourceManager, templates);

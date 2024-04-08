@@ -199,4 +199,22 @@ public class PlacementSystem {
 			}
 		}
 	}
+
+	public static void onBlockRemoved(Level level, BlockPos pos, BlockState oldState, BlockState newState) {
+		if (PlaceSlot.hasNoSlots(oldState.getBlock())) {
+			return;
+		}
+		BlockPos.MutableBlockPos mutable = pos.mutable();
+		for (Direction direction : CommonProxy.DIRECTIONS) {
+			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
+			if (PlaceSlot.hasNoSlots(neighborState.getBlock())) {
+				continue;
+			}
+			SlotLink.MatchResult result = SlotLink.find(oldState, neighborState, direction);
+			if (result != null) {
+				neighborState = result.onUnlinkTo().apply(neighborState);
+				level.setBlockAndUpdate(mutable, neighborState);
+			}
+		}
+	}
 }

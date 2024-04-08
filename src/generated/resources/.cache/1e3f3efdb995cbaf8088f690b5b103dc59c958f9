@@ -1,4 +1,4 @@
-// 1.20.1	2024-04-04T02:55:07.4201533	XeKr's Decorations/Block Loot Tables
+// 1.20.1	2024-04-09T02:57:49.8633483	XeKr's Decorations/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_tables/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_tables/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_tables/blocks/aztec_chiseled_stonebricks.json
@@ -131,7 +131,6 @@ b2c62974e00fe32567a6eef5b91b9782244d25b5 data/xkdeco/loot_tables/blocks/ebony_st
 4e56ead9427f5c9b4bcb29014fcb0c309a656b4d data/xkdeco/loot_tables/blocks/ebony_table.json
 435ffb5de61a355c7db1ec10e74aa00722274987 data/xkdeco/loot_tables/blocks/ebony_tall_table.json
 6eca40282efe4ff5a14d373b651b1bd74a780546 data/xkdeco/loot_tables/blocks/ebony_trapdoor.json
-5ff8f28e81c93a2ca268d22312eb2e81290fd73d data/xkdeco/loot_tables/blocks/ebony_wardrobe.json
 e34167e20feaa5a9a2c9c548023d9d62761532f7 data/xkdeco/loot_tables/blocks/ebony_window.json
 b650964e29b5b77382eaed96e68ef824445f4e3b data/xkdeco/loot_tables/blocks/ebony_wood.json
 525fe5cf557fb277759e854df825c69357480f67 data/xkdeco/loot_tables/blocks/egyptian_brick_column.json
@@ -205,7 +204,6 @@ d9e0713ce754cb2f27d7638452f5d4ade04ad2b7 data/xkdeco/loot_tables/blocks/fallen_w
 174cec631c1e74433d6ce5c52a112752c3efbe25 data/xkdeco/loot_tables/blocks/framed_mud_wall_block.json
 ce9ff4be792e3c50bec2b571f977581662245a87 data/xkdeco/loot_tables/blocks/framed_steel_block.json
 34b0a30a91734865dc0f7d81bdfdc86714e0cb8e data/xkdeco/loot_tables/blocks/fruit_platter.json
-3108a14378b29ad1bf75350f4239ca7d6db04b25 data/xkdeco/loot_tables/blocks/full_glass_wardrobe.json
 b8b2e24c63ffbf7762467a4377e2e3884737e938 data/xkdeco/loot_tables/blocks/gilded_blackstone_bricks.json
 3354a3acd7e033ff0af85010015abd5c0d1d5035 data/xkdeco/loot_tables/blocks/gilded_blackstone_brick_pillar.json
 f7db3429417066692eb30a8950bafeafc25e773a data/xkdeco/loot_tables/blocks/gilded_blackstone_brick_stairs.json
@@ -213,7 +211,6 @@ b72dd6fe11429f4ca6966c208a09db496450f50a data/xkdeco/loot_tables/blocks/ginkgo_l
 71b276a44f0439c022f5daf9b45ef038b0731ff8 data/xkdeco/loot_tables/blocks/glass_tiles.json
 37fed988315f1f7ab009ccc87f05c734db42c669 data/xkdeco/loot_tables/blocks/glass_tile_stairs.json
 a5f953a4603516d96c6094e3e7bbf619b4357426 data/xkdeco/loot_tables/blocks/glass_trapdoor.json
-9d04b33f134c5475bb5ffe947e452b4229a006a5 data/xkdeco/loot_tables/blocks/glass_wardrobe.json
 75f9fc85d175e74fa736cd6bcab377e9c4b17ebd data/xkdeco/loot_tables/blocks/globe.json
 baf3b604258eaade250a69e89d7ee532aed71e97 data/xkdeco/loot_tables/blocks/glow_item_frame_cover.json
 c1315535c104a46a7db82729e0e36fc169e74e4a data/xkdeco/loot_tables/blocks/gold_bricks.json
@@ -261,7 +258,6 @@ e81bf55bf9a6ef175659a910c629a0c85c2ad991 data/xkdeco/loot_tables/blocks/inca_bri
 33c50bac58682af74db04816ff1a62e9a0f45d4d data/xkdeco/loot_tables/blocks/inca_stone_stairs.json
 4fda8e0fd1fd7ef67af237565edb1344c52241c2 data/xkdeco/loot_tables/blocks/ink_painting.json
 a025be6feef46cf41789ffbb7996efa3b65fa1dc data/xkdeco/loot_tables/blocks/inscription_bronze_block.json
-48133f599d04a8d44d9ac42215ee23edd3d042d1 data/xkdeco/loot_tables/blocks/iron_wardrobe.json
 7d4827c89295dd0992fbe6d0fbd095e9dd4f60ec data/xkdeco/loot_tables/blocks/iron_windmill.json
 418cb07a990bbe63ef2f873aa02e4fcb7f1c1a0a data/xkdeco/loot_tables/blocks/item_frame_cover.json
 7ce87af27f80523bc401fab961f4e8624d9d43c2 data/xkdeco/loot_tables/blocks/item_projector.json
@@ -294,7 +290,6 @@ edfe8684e6dccf6ae9c59a6452618db481b17220 data/xkdeco/loot_tables/blocks/mahogany
 abe9d462f6c527a2663836073fc229a33669ae45 data/xkdeco/loot_tables/blocks/mahogany_table.json
 438c23218de6cf25f0cac539b4b3ecbcee4eb00d data/xkdeco/loot_tables/blocks/mahogany_tall_table.json
 889a016b9ea6bc868525f75129fafda54f650893 data/xkdeco/loot_tables/blocks/mahogany_trapdoor.json
-df1f374aaaaa3f7bb303d7775633539afdd11b11 data/xkdeco/loot_tables/blocks/mahogany_wardrobe.json
 0443dd0fc880e96f46758b17a224960756240b3d data/xkdeco/loot_tables/blocks/mahogany_window.json
 67faff730a75ca39b2a656d2d4948861bb87a1f3 data/xkdeco/loot_tables/blocks/mahogany_wood.json
 32fbf44a4fc9c70fd5a17e85281a7c7d3b9688f0 data/xkdeco/loot_tables/blocks/maya_bricks.json
@@ -514,7 +509,6 @@ e0ae46e7ef0ebc651ce1950ffc45d18d6c9ae308 data/xkdeco/loot_tables/blocks/varnishe
 9d648a129ba7ffeab7b62b321d755f68669af02c data/xkdeco/loot_tables/blocks/varnished_table.json
 c1d0ec139c740c24cdc87fc42fd90027d3cd8907 data/xkdeco/loot_tables/blocks/varnished_tall_table.json
 031193b3111eb1a9c18b90f359a966d8728cbfe0 data/xkdeco/loot_tables/blocks/varnished_trapdoor.json
-3bf9e2af820d61f08f3ebc7e41292b196c7f955f data/xkdeco/loot_tables/blocks/varnished_wardrobe.json
 d70e2968e84a5d36dcc2322fb2d2c59760cda347 data/xkdeco/loot_tables/blocks/varnished_window.json
 c6fea2dd49d5bed9ebb8bb4c0be55d3693388a2f data/xkdeco/loot_tables/blocks/varnished_wood.json
 a3db9ea9ddf107e6eb6b33f24280b6cbea6a15a1 data/xkdeco/loot_tables/blocks/weiqi_board.json

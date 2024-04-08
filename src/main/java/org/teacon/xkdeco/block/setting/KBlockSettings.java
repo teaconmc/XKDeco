@@ -292,10 +292,6 @@ public class KBlockSettings {
 			return component(DirectionalComponent.getInstance(false));
 		}
 
-		public Builder horizontalAxis() {
-			return component(HorizontalAxisComponent.getInstance());
-		}
-
 		public boolean hasComponent(KBlockComponent.Type<?> type) {
 			return components.containsKey(type);
 		}

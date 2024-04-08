@@ -1,0 +1,35 @@
+target: '@xkdeco:roof_flat'
+tag:
+  - '@axis'
+  - '@half'
+slots:
+  - when:
+      axis: x
+    sides:
+      west:
+        tag:
+          - '*roof_flat:side'
+      east:
+        tag:
+          - '*roof_flat:side'
+      north:
+        tag:
+          - '*roof_flat:front'
+      south:
+        tag:
+          - '*roof_flat:front'
+  - when:
+      axis: z
+    sides:
+      west:
+        tag:
+          - '*roof_flat:front'
+      east:
+        tag:
+          - '*roof_flat:front'
+      north:
+        tag:
+          - '*roof_flat:side'
+      south:
+        tag:
+          - '*roof_flat:side'

@@ -1,0 +1,6 @@
+from: '*roof_small_eave:side'
+to: '*roof_small_eave:side'
+interest: 100
+test_tag:
+  - facing
+  - half

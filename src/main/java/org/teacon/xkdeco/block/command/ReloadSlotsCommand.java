@@ -41,10 +41,10 @@ public class ReloadSlotsCommand {
 		choicesCounter.addAndGet(fundamentals.placeChoices().attachChoicesB());
 		source.sendSuccess(() -> Component.literal("Slots in %d blocks have been reloaded, using %d providers".formatted(
 				PlaceSlot.blockSize(),
-				fundamentals.slotProviders().providers().size())), true);
+				fundamentals.slotProviders().providers().size())), false);
 		source.sendSuccess(() -> Component.literal("Place choices in %d blocks have been reloaded, using %d choices".formatted(
 				choicesCounter.get(),
-				fundamentals.placeChoices().choices().size())), true);
+				fundamentals.placeChoices().choices().size())), false);
 		return 1;
 	}
 

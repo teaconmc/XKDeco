@@ -7,7 +7,7 @@
       "model": "xkdeco:block/red_roof_small_end_slow_left"
     },
     "facing=east,half=lower,shape=left,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_left"
+      "model": "xkdeco:block/red_roof_small_end_steep_left_top"
     },
     "facing=east,half=lower,shape=right,variant=normal": {
       "model": "xkdeco:block/red_roof_small_end_right"
@@ -16,22 +16,22 @@
       "model": "xkdeco:block/red_roof_small_end_slow_right"
     },
     "facing=east,half=lower,shape=right,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_right"
+      "model": "xkdeco:block/red_roof_small_end_steep_right_top"
     },
     "facing=east,half=upper,shape=left,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_left"
+      "model": "xkdeco:block/red_roof_small_end_left_top"
     },
     "facing=east,half=upper,shape=left,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_left"
+      "model": "xkdeco:block/red_roof_small_end_slow_left_top"
     },
     "facing=east,half=upper,shape=left,variant=steep": {
       "model": "xkdeco:block/red_roof_small_end_steep_left"
     },
     "facing=east,half=upper,shape=right,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_right"
+      "model": "xkdeco:block/red_roof_small_end_right_top"
     },
     "facing=east,half=upper,shape=right,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_right"
+      "model": "xkdeco:block/red_roof_small_end_slow_right_top"
     },
     "facing=east,half=upper,shape=right,variant=steep": {
       "model": "xkdeco:block/red_roof_small_end_steep_right"
@@ -45,7 +45,7 @@
       "y": 270
     },
     "facing=north,half=lower,shape=left,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_left",
+      "model": "xkdeco:block/red_roof_small_end_steep_left_top",
       "y": 270
     },
     "facing=north,half=lower,shape=right,variant=normal": {
@@ -57,15 +57,15 @@
       "y": 270
     },
     "facing=north,half=lower,shape=right,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_right",
+      "model": "xkdeco:block/red_roof_small_end_steep_right_top",
       "y": 270
     },
     "facing=north,half=upper,shape=left,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_left",
+      "model": "xkdeco:block/red_roof_small_end_left_top",
       "y": 270
     },
     "facing=north,half=upper,shape=left,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_left",
+      "model": "xkdeco:block/red_roof_small_end_slow_left_top",
       "y": 270
     },
     "facing=north,half=upper,shape=left,variant=steep": {
@@ -73,11 +73,11 @@
       "y": 270
     },
     "facing=north,half=upper,shape=right,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_right",
+      "model": "xkdeco:block/red_roof_small_end_right_top",
       "y": 270
     },
     "facing=north,half=upper,shape=right,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_right",
+      "model": "xkdeco:block/red_roof_small_end_slow_right_top",
       "y": 270
     },
     "facing=north,half=upper,shape=right,variant=steep": {
@@ -93,7 +93,7 @@
       "y": 90
     },
     "facing=south,half=lower,shape=left,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_left",
+      "model": "xkdeco:block/red_roof_small_end_steep_left_top",
       "y": 90
     },
     "facing=south,half=lower,shape=right,variant=normal": {
@@ -105,15 +105,15 @@
       "y": 90
     },
     "facing=south,half=lower,shape=right,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_right",
+      "model": "xkdeco:block/red_roof_small_end_steep_right_top",
       "y": 90
     },
     "facing=south,half=upper,shape=left,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_left",
+      "model": "xkdeco:block/red_roof_small_end_left_top",
       "y": 90
     },
     "facing=south,half=upper,shape=left,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_left",
+      "model": "xkdeco:block/red_roof_small_end_slow_left_top",
       "y": 90
     },
     "facing=south,half=upper,shape=left,variant=steep": {
@@ -121,11 +121,11 @@
       "y": 90
     },
     "facing=south,half=upper,shape=right,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_right",
+      "model": "xkdeco:block/red_roof_small_end_right_top",
       "y": 90
     },
     "facing=south,half=upper,shape=right,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_right",
+      "model": "xkdeco:block/red_roof_small_end_slow_right_top",
       "y": 90
     },
     "facing=south,half=upper,shape=right,variant=steep": {
@@ -141,7 +141,7 @@
       "y": 180
     },
     "facing=west,half=lower,shape=left,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_left",
+      "model": "xkdeco:block/red_roof_small_end_steep_left_top",
       "y": 180
     },
     "facing=west,half=lower,shape=right,variant=normal": {
@@ -153,15 +153,15 @@
       "y": 180
     },
     "facing=west,half=lower,shape=right,variant=steep": {
-      "model": "xkdeco:block/red_roof_small_end_steep_top_right",
+      "model": "xkdeco:block/red_roof_small_end_steep_right_top",
       "y": 180
     },
     "facing=west,half=upper,shape=left,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_left",
+      "model": "xkdeco:block/red_roof_small_end_left_top",
       "y": 180
     },
     "facing=west,half=upper,shape=left,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_left",
+      "model": "xkdeco:block/red_roof_small_end_slow_left_top",
       "y": 180
     },
     "facing=west,half=upper,shape=left,variant=steep": {
@@ -169,11 +169,11 @@
       "y": 180
     },
     "facing=west,half=upper,shape=right,variant=normal": {
-      "model": "xkdeco:block/red_roof_small_end_top_right",
+      "model": "xkdeco:block/red_roof_small_end_right_top",
       "y": 180
     },
     "facing=west,half=upper,shape=right,variant=slow": {
-      "model": "xkdeco:block/red_roof_small_end_slow_top_right",
+      "model": "xkdeco:block/red_roof_small_end_slow_right_top",
       "y": 180
     },
     "facing=west,half=upper,shape=right,variant=steep": {

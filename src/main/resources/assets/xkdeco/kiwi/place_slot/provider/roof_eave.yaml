@@ -1,0 +1,65 @@
+target: '@xkdeco:roof_eave'
+tag:
+  - '@half'
+  - '@facing'
+transform_with: facing
+slots:
+  - when:
+      shape: straight
+      facing: north
+    sides:
+      west:
+        tag:
+          - '*roof_eave:side'
+      east:
+        tag:
+          - '*roof_eave:side'
+  - when:
+      shape: outer
+      facing: north
+    sides:
+      north:
+        tag:
+          - '*roof_eave:side'
+          - '@facing:east'
+      east:
+        tag:
+          - '*roof_eave:side'
+  - when:
+      shape: inner
+      facing: north
+    sides:
+      south:
+        tag:
+          - '*roof_eave:side'
+          - '@facing:east'
+      west:
+        tag:
+          - '*roof_eave:side'
+  - when:
+      shape: left_end
+      facing: north
+    sides:
+      east:
+        tag:
+          - '*roof_eave:side'
+  - when:
+      shape: inner
+      facing: north
+      half: lower
+    sides:
+      north:
+        tag:
+          - '*roof_eave:back'
+      east:
+        tag:
+          - '*roof_eave:back'
+          - '@facing:east'
+  - when:
+      shape: straight
+      facing: north
+      half: lower
+    sides:
+      north:
+        tag:
+          - '*roof_eave:back'

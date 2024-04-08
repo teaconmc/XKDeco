@@ -28,3 +28,4 @@ __pycache__
 /script/*.xlsx
 /script/xkdeco-blocks.csv
 /script/exported_creative_tabs.json
+/playground.yaml

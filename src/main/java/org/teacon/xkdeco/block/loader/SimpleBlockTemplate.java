@@ -3,8 +3,6 @@ package org.teacon.xkdeco.block.loader;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.apache.commons.lang3.mutable.MutableObject;
-
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -14,38 +12,42 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public record SimpleBlockTemplate(
-		Optional<BlockDefinitionProperties> properties,
-		String clazz,
-		MutableObject<Function<BlockBehaviour.Properties, Block>> constructor) implements KBlockTemplate {
-	public static Codec<SimpleBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
-		return RecordCodecBuilder.create(instance -> instance.group(
-				BlockDefinitionProperties.mapCodecField(materialCodec).forGetter(SimpleBlockTemplate::properties),
-				Codec.STRING.fieldOf("class").forGetter(SimpleBlockTemplate::clazz)
-		).apply(instance, SimpleBlockTemplate::new));
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+public final class SimpleBlockTemplate extends KBlockTemplate {
+	private final String clazz;
+	private Function<BlockBehaviour.Properties, Block> constructor;
+
+	public SimpleBlockTemplate(Optional<BlockDefinitionProperties> properties, String clazz) {
+		super(properties);
+		this.clazz = clazz;
 	}
 
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public SimpleBlockTemplate(Optional<BlockDefinitionProperties> properties, String clazz) {
-		this(properties, clazz, new MutableObject<>());
+	public static Codec<SimpleBlockTemplate> directCodec(MapCodec<Optional<KMaterial>> materialCodec) {
+		return RecordCodecBuilder.create(instance -> instance.group(
+				BlockDefinitionProperties.mapCodecField(materialCodec).forGetter(SimpleBlockTemplate::properties),
+				Codec.STRING.optionalFieldOf("class", "").forGetter(SimpleBlockTemplate::clazz)).apply(instance, SimpleBlockTemplate::new));
 	}
 
 	@Override
-	public Type<?> type() {
+	public KBlockTemplate.Type<?> type() {
 		return KBlockTemplates.SIMPLE.getOrCreate();
 	}
 
 	@Override
 	public void resolve(ResourceLocation key) {
+		if (clazz.isEmpty()) {
+			constructor = BlockCodecs.SIMPLE_BLOCK_FACTORY;
+			return;
+		}
 		try {
 			Class<?> clazz = Class.forName(this.clazz);
-			this.constructor.setValue($ -> {
+			this.constructor = $ -> {
 				try {
 					return (Block) clazz.getConstructor(BlockBehaviour.Properties.class).newInstance($);
 				} catch (Throwable e) {
 					throw new RuntimeException(e);
 				}
-			});
+			};
 		} catch (Throwable e) {
 			throw new IllegalStateException(e);
 		}
@@ -53,6 +55,16 @@ public record SimpleBlockTemplate(
 
 	@Override
 	public Block createBlock(BlockBehaviour.Properties settings, JsonObject input) {
-		return this.constructor.getValue().apply(settings);
+		return this.constructor.apply(settings);
 	}
+
+	public String clazz() {
+		return clazz;
+	}
+
+	@Override
+	public String toString() {
+		return "SimpleBlockTemplate[" + "properties=" + properties + ", " + "clazz=" + clazz + ", " + "constructor=" + constructor + ']';
+	}
+
 }

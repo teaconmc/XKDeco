@@ -1,0 +1,11 @@
+target: '@xkdeco:air_duct'
+tag:
+  - '*xkdeco.air_duct'
+slots:
+  - sides:
+      up: { }
+      down: { }
+      north: { }
+      south: { }
+      east: { }
+      west: { }

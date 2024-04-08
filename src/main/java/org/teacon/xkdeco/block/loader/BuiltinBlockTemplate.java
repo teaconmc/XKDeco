@@ -2,8 +2,6 @@ package org.teacon.xkdeco.block.loader;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.mutable.MutableObject;
-
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -15,30 +13,31 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public record BuiltinBlockTemplate(
-		Optional<BlockDefinitionProperties> properties,
-		Optional<ResourceLocation> key,
-		MutableObject<MapCodec<Block>> codec) implements KBlockTemplate {
-	public static Codec<BuiltinBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
-		return RecordCodecBuilder.create(instance -> instance.group(
-				BlockDefinitionProperties.mapCodecField(materialCodec).forGetter(BuiltinBlockTemplate::properties),
-				ResourceLocation.CODEC.optionalFieldOf("codec").forGetter(BuiltinBlockTemplate::key)
-		).apply(instance, BuiltinBlockTemplate::new));
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+public final class BuiltinBlockTemplate extends KBlockTemplate {
+	private final Optional<ResourceLocation> key;
+	private MapCodec<Block> codec;
+
+	public BuiltinBlockTemplate(Optional<BlockDefinitionProperties> properties, Optional<ResourceLocation> key) {
+		super(properties);
+		this.key = key;
 	}
 
-	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	public BuiltinBlockTemplate(Optional<BlockDefinitionProperties> properties, Optional<ResourceLocation> key) {
-		this(properties, key, new MutableObject<>());
+	public static Codec<BuiltinBlockTemplate> directCodec(MapCodec<Optional<KMaterial>> materialCodec) {
+		return RecordCodecBuilder.create(instance -> instance.group(
+						BlockDefinitionProperties.mapCodecField(materialCodec).forGetter(BuiltinBlockTemplate::properties),
+						ResourceLocation.CODEC.optionalFieldOf("codec").forGetter(BuiltinBlockTemplate::key))
+				.apply(instance, BuiltinBlockTemplate::new));
 	}
 
 	@Override
-	public Type<?> type() {
+	public KBlockTemplate.Type<?> type() {
 		return KBlockTemplates.BUILTIN.getOrCreate();
 	}
 
 	@Override
 	public void resolve(ResourceLocation key) {
-		codec.setValue(BlockCodecs.get(this.key.orElse(key)));
+		codec = BlockCodecs.get(this.key.orElse(key));
 	}
 
 	@Override
@@ -47,10 +46,20 @@ public record BuiltinBlockTemplate(
 			json.add(BlockCodecs.BLOCK_PROPERTIES_KEY, new JsonObject());
 		}
 		InjectedBlockPropertiesCodec.INJECTED.set(properties);
-		DataResult<Block> result = codec.getValue().decode(JsonOps.INSTANCE, JsonOps.INSTANCE.getMap(json).result().orElseThrow());
+		DataResult<Block> result = codec.decode(JsonOps.INSTANCE, JsonOps.INSTANCE.getMap(json).result().orElseThrow());
 		if (result.error().isPresent()) {
 			throw new IllegalStateException(result.error().get().message());
 		}
 		return result.result().orElseThrow();
 	}
+
+	public Optional<ResourceLocation> key() {
+		return key;
+	}
+
+	@Override
+	public String toString() {
+		return "BuiltinBlockTemplate[" + "properties=" + properties + ", " + "key=" + key + ", " + "codec=" + codec + ']';
+	}
+
 }

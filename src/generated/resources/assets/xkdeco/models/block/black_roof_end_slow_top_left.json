@@ -1,9 +1,0 @@
-{
-  "parent": "xkdeco:block/template_roof_end_slow_top_left",
-  "textures": {
-    "inner": "xkdeco:block/roof_inner",
-    "particle": "xkdeco:block/black_roof",
-    "ridge": "xkdeco:block/black_roof_ridge",
-    "roof": "xkdeco:block/black_roof"
-  }
-}

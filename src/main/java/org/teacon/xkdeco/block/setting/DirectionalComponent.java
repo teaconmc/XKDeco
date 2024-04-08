@@ -22,7 +22,7 @@ public record DirectionalComponent(boolean oppose) implements KBlockComponent {
 	private static final DirectionalComponent OPPOSE = new DirectionalComponent(true);
 	public static final Codec<DirectionalComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.BOOL.optionalFieldOf("oppose", false).forGetter(DirectionalComponent::oppose)
-	).apply(instance, DirectionalComponent::new));
+	).apply(instance, DirectionalComponent::getInstance));
 
 	public static DirectionalComponent getInstance(boolean oppose) {
 		return oppose ? OPPOSE : NORMAL;

@@ -41,7 +41,10 @@ public record PlaceSlot(Direction side, SortedMap<String, String> tags) {
 	}
 
 	public static Optional<PlaceSlot> find(BlockState blockState, Direction side, String primaryTag) {
-		Collection<PlaceSlot> slots = BLOCK_STATE_LOOKUP.get(Pair.of(blockState, side));
+		if (hasNoSlots(blockState.getBlock())) {
+			return Optional.empty();
+		}
+		Collection<PlaceSlot> slots = BLOCK_STATE_LOOKUP.getOrDefault(Pair.of(blockState, side), List.of());
 		if (slots.isEmpty()) {
 			return Optional.empty();
 		}
@@ -60,8 +63,9 @@ public record PlaceSlot(Direction side, SortedMap<String, String> tags) {
 		Collection<PlaceSlot> slots = BLOCK_STATE_LOOKUP.computeIfAbsent(Pair.of(blockState, placeSlot.side), key -> Lists.newArrayList());
 		if (!slots.isEmpty()) {
 			String primaryTag = placeSlot.primaryTag();
-			if (slots.stream().anyMatch(slot -> slot.primaryTag().equals(primaryTag))) {
-				throw new IllegalArgumentException("Primary tag conflict: " + primaryTag);
+			Optional<PlaceSlot> any = slots.stream().filter(slot -> slot.primaryTag().equals(primaryTag)).findAny();
+			if (any.isPresent()) {
+				throw new IllegalArgumentException("Primary tag %s conflict: %s and %s".formatted(primaryTag, placeSlot, any.get()));
 			}
 		}
 		slots.add(placeSlot);

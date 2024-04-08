@@ -3,20 +3,13 @@ package org.teacon.xkdeco.init;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
-import org.teacon.xkdeco.block.RoofEaveBlock;
-import org.teacon.xkdeco.block.RoofFlatBlock;
-import org.teacon.xkdeco.block.RoofRidgeBlock;
-import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
-import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
-import org.teacon.xkdeco.block.setting.StackableComponent;
 import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.google.common.collect.Lists;
@@ -33,7 +26,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.registries.DeferredRegister;
@@ -143,53 +135,53 @@ public final class XKDecoObjects {
 //		var blockHolder = BLOCKS.register(id, blockSupplier);
 //		ITEMS.register(id, () -> new BlockItem(blockHolder.get(), itemProperties));
 //	}
-	private static void addRoof(String id, Supplier<BlockBehaviour.Properties> propFactory, boolean asian) {
-		var itemProperties = new Item.Properties();
+//	private static void addRoof(String id, Supplier<BlockBehaviour.Properties> propFactory, boolean asian) {
+//		var itemProperties = new Item.Properties();
 //		var roof = BLOCKS.register(id, () -> new RoofBlock(propFactory.get()));
 //		ITEMS.register(id, () -> new BlockItem(roof.get(), itemProperties));
-		var roofRidge = BLOCKS.register(id + "_ridge", () -> new RoofRidgeBlock(propFactory.get(), asian));
-		ITEMS.register(id + "_ridge", () -> new BlockItem(roofRidge.get(), itemProperties));
+//		var roofRidge = BLOCKS.register(id + "_ridge", () -> new RoofRidgeBlock(propFactory.get()));
+//		ITEMS.register(id + "_ridge", () -> new BlockItem(roofRidge.get(), itemProperties));
 //		var roofSmallEnd = BLOCKS.register(id + "_small_end", () -> new RoofEndBlock(propFactory.get(), true));
 //		ITEMS.register(id + "_small_end", () -> new BlockItem(roofSmallEnd.get(), itemProperties));
-		var smallRidgeEnd = BLOCKS.register(id + "_small_ridge_end", () -> {
-			if (asian) {
-				return new RoofRidgeEndAsianBlock(propFactory.get(), true);
-			} else {
-				return new RoofRidgeEndAsianBlock(propFactory.get(), true);
-			}
-		});
+//		var smallRidgeEnd = BLOCKS.register(id + "_small_ridge_end", () -> {
+//			if (asian) {
+//				return new RoofRidgeEndAsianBlock(propFactory.get(), true);
+//			} else {
+//				return new RoofRidgeEndAsianBlock(propFactory.get(), true);
+//			}
+//		});
 //		var smallFlatEnd = BLOCKS.register(id + "_small_flat_end", () -> new RoofHorizontalShiftBlock(propFactory.get()));
-
-		//TODO remove in the future:
-		ITEMS.register(id + "_small_ridge_end", () -> new BlockItem(smallRidgeEnd.get(), itemProperties));
+//
+//		//TODO remove in the future:
+//		ITEMS.register(id + "_small_ridge_end", () -> new BlockItem(smallRidgeEnd.get(), itemProperties));
 //		ITEMS.register(id + "_small_flat_end", () -> new BlockItem(smallFlatEnd.get(), itemProperties));
 
-		var roofSmallEave = BLOCKS.register(id + "_small_eave", () -> new RoofEaveBlock(propFactory.get(), true));
-		ITEMS.register(id + "_small_eave", () -> new BlockItem(roofSmallEave.get(), itemProperties));
-		var roofFlat = BLOCKS.register(id + "_flat", () -> new RoofFlatBlock(propFactory.get()));
-		ITEMS.register(id + "_flat", () -> new BlockItem(roofFlat.get(), itemProperties));
-
-		if (!asian) {
-			return;
-		}
-
-		var roofEave = BLOCKS.register(id + "_eave", () -> new RoofEaveBlock(propFactory.get(), false));
-		ITEMS.register(id + "_eave", () -> new BlockItem(roofEave.get(), itemProperties));
+//		var roofSmallEave = BLOCKS.register(id + "_small_eave", () -> new RoofEaveBlock(propFactory.get(), true));
+//		ITEMS.register(id + "_small_eave", () -> new BlockItem(roofSmallEave.get(), itemProperties));
+//		var roofFlat = BLOCKS.register(id + "_flat", () -> new RoofFlatBlock(propFactory.get()));
+//		ITEMS.register(id + "_flat", () -> new BlockItem(roofFlat.get(), itemProperties));
+//
+//		if (!asian) {
+//			return;
+//		}
+//
+//		var roofEave = BLOCKS.register(id + "_eave", () -> new RoofEaveBlock(propFactory.get(), false));
+//		ITEMS.register(id + "_eave", () -> new BlockItem(roofEave.get(), itemProperties));
 //		var roofEnd = BLOCKS.register(id + "_end", () -> new RoofEndBlock(propFactory.get(), false));
 //		ITEMS.register(id + "_end", () -> new BlockItem(roofEnd.get(), itemProperties));
-		var roofRidgeEnd = BLOCKS.register(id + "_ridge_end", () -> new RoofRidgeEndAsianBlock(propFactory.get(), false));
-
-		//TODO remove in the future:
-		ITEMS.register(id + "_ridge_end", () -> new BlockItem(roofRidgeEnd.get(), itemProperties));
-
+//		var roofRidgeEnd = BLOCKS.register(id + "_ridge_end", () -> new RoofRidgeEndAsianBlock(propFactory.get(), false));
+//
+//		//TODO remove in the future:
+//		ITEMS.register(id + "_ridge_end", () -> new BlockItem(roofRidgeEnd.get(), itemProperties));
+//
 //		var roofDeco = BLOCKS.register(id + "_deco", () -> new HorizontalShiftBlock(propFactory.get()));
 //		ITEMS.register(id + "_deco", () -> new BlockItem(roofDeco.get(), itemProperties));
 //		var roofDecoOblique = BLOCKS.register(id + "_deco_oblique", () -> new HorizontalShiftBlock(propFactory.get()));
 //		ITEMS.register(id + "_deco_oblique", () -> new BlockItem(roofDecoOblique.get(), itemProperties));
-		var roofTip = BLOCKS.register(id + "_tip", () -> new RoofTipBlock(propFactory.get()));
-		ITEMS.register(id + "_tip", () -> new BlockItem(roofTip.get(), itemProperties));
-	}
-
+//		var roofTip = BLOCKS.register(id + "_tip", () -> new RoofTipBlock(propFactory.get()));
+//		ITEMS.register(id + "_tip", () -> new BlockItem(roofTip.get(), itemProperties));
+//	}
+//
 //	private static void addPlant(String id, KBlockSettings.Builder settings) {
 //		var itemProperties = new Item.Properties();
 //		if (id.contains(LEAVES_SUFFIX) || id.contains(BLOSSOM_SUFFIX)) {
@@ -283,18 +275,18 @@ public final class XKDecoObjects {
 	}
 
 	static {
-		addRoof("black_roof", () -> BlockSettingPresets.blackTiles().noOcclusion().get(), true);
-		addRoof("cyan_roof", () -> BlockSettingPresets.cyanTiles().noOcclusion().get(), true);
-		addRoof("yellow_roof", () -> BlockSettingPresets.yellowTiles().noOcclusion().get(), true);
-		addRoof("blue_roof", () -> BlockSettingPresets.blueTiles().noOcclusion().get(), false);
-		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), false);
-		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), false);
-		addWardrobe("varnished_wardrobe", BlockSettingPresets.thingy(null));
-		addWardrobe("ebony_wardrobe", BlockSettingPresets.thingy(null));
-		addWardrobe("mahogany_wardrobe", BlockSettingPresets.thingy(null));
-		addWardrobe("iron_wardrobe", BlockSettingPresets.thingy(null));
-		addWardrobe("glass_wardrobe", BlockSettingPresets.thingy(null));
-		addWardrobe("full_glass_wardrobe", BlockSettingPresets.thingy(null));
+//		addRoof("black_roof", () -> BlockSettingPresets.blackTiles().noOcclusion().get(), true);
+//		addRoof("cyan_roof", () -> BlockSettingPresets.cyanTiles().noOcclusion().get(), true);
+//		addRoof("yellow_roof", () -> BlockSettingPresets.yellowTiles().noOcclusion().get(), true);
+//		addRoof("blue_roof", () -> BlockSettingPresets.blueTiles().noOcclusion().get(), false);
+//		addRoof("green_roof", () -> BlockSettingPresets.greenTiles().noOcclusion().get(), false);
+//		addRoof("red_roof", () -> BlockSettingPresets.redTiles().noOcclusion().get(), false);
+//		addWardrobe("varnished_wardrobe", BlockSettingPresets.thingy(null));
+//		addWardrobe("ebony_wardrobe", BlockSettingPresets.thingy(null));
+//		addWardrobe("mahogany_wardrobe", BlockSettingPresets.thingy(null));
+//		addWardrobe("iron_wardrobe", BlockSettingPresets.thingy(null));
+//		addWardrobe("glass_wardrobe", BlockSettingPresets.thingy(null));
+//		addWardrobe("full_glass_wardrobe", BlockSettingPresets.thingy(null));
 		addItem("hologram_planet");
 		addItem("hologram_dna");
 		addItem("hologram_pictures");
@@ -733,7 +725,7 @@ public final class XKDecoObjects {
 //		addBasic("miniature_succulents", "xkdeco:miniature", false, BlockSettingPresets.thingy(null));
 //
 //		addBasic("teapot", "xkdeco:teapot", true, BlockSettingPresets.thingy(null));
-		StackableComponent component = StackableComponent.create(4);
+//		StackableComponent component = StackableComponent.create(4);
 //		addBlock(
 //				"cup",
 //				() -> new BasicBlock(BlockSettingPresets.thingy(null)

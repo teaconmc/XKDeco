@@ -32,7 +32,7 @@ public class KBlockComponents extends AbstractModule {
 	@KiwiModule.Name("minecraft:horizontal")
 	public static final KiwiGO<KBlockComponent.Type<HorizontalComponent>> HORIZONTAL = register(HorizontalComponent.CODEC);
 	@KiwiModule.Name("minecraft:horizontal_axis")
-	public static final KiwiGO<KBlockComponent.Type<HorizontalAxisComponent>> HORIZONTAL_AXIS = register(Codec.unit(HorizontalAxisComponent.getInstance()));
+	public static final KiwiGO<KBlockComponent.Type<HorizontalAxisComponent>> HORIZONTAL_AXIS = register(HorizontalAxisComponent.CODEC);
 	@KiwiModule.Name("minecraft:front_and_top")
 	public static final KiwiGO<KBlockComponent.Type<FrontAndTopComponent>> FRONT_AND_TOP = register(Codec.unit(FrontAndTopComponent.getInstance()));
 	@KiwiModule.Name("minecraft:moulding")

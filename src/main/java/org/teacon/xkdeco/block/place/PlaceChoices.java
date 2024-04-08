@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.loader.KBlockDefinition;
 import org.teacon.xkdeco.block.loader.KBlockTemplate;
+import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.duck.KBlockProperties;
 import org.teacon.xkdeco.util.CommonProxy;
@@ -33,8 +34,9 @@ public record PlaceChoices(
 
 	public static final Codec<PlaceChoices> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
-			new CompactListCodec<>(Limit.CODEC).optionalFieldOf("limit", List.of()).forGetter(PlaceChoices::limit),
-			new CompactListCodec<>(InterestProvider.CODEC).optionalFieldOf("interests", List.of()).forGetter(PlaceChoices::interests)
+			LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(Limit.CODEC), "limit", List.of()).forGetter(PlaceChoices::limit),
+			LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(InterestProvider.CODEC), "interests", List.of())
+					.forGetter(PlaceChoices::interests)
 	).apply(instance, PlaceChoices::new));
 
 	public record ParsedResult(

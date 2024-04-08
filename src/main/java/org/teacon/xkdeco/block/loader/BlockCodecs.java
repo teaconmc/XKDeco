@@ -49,16 +49,18 @@ public class BlockCodecs {
 		return RecordCodecBuilder.mapCodec(instance -> instance.group(propertiesCodec()).apply(instance, function));
 	}
 
-	public static final MapCodec<Block> BLOCK = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			propertiesCodec()
-	).apply(instance, properties -> {
+	public static final Function<BlockBehaviour.Properties, Block> SIMPLE_BLOCK_FACTORY = properties -> {
 		KBlockSettings settings = ((KBlockProperties) properties).kiwi$getSettings();
 		if (settings != null && settings.hasComponent(KBlockComponents.WATER_LOGGABLE.getOrCreate())) {
 			return new BasicBlock(properties);
 		} else {
 			return new Block(properties);
 		}
-	}));
+	};
+
+	public static final MapCodec<Block> BLOCK = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			propertiesCodec()
+	).apply(instance, SIMPLE_BLOCK_FACTORY));
 
 	public static final MapCodec<StairBlock> STAIR = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BlockState.CODEC.optionalFieldOf("base_state", Blocks.AIR.defaultBlockState()).forGetter(block -> block.baseState),

@@ -3,7 +3,6 @@ package org.teacon.xkdeco.block;
 import java.util.Locale;
 
 import org.teacon.xkdeco.util.RoofUtil;
-import org.teacon.xkdeco.util.RoofUtil.RoofEndShape;
 import org.teacon.xkdeco.util.RoofUtil.RoofShape;
 import org.teacon.xkdeco.util.StringProperty;
 
@@ -14,7 +13,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -22,9 +20,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class RoofEndBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
-	public static final StringProperty VARIANT = StringProperty.convert(XKDStateProperties.ROOF_VARIANT);
-	public static final StringProperty SHAPE = StringProperty.convert(EnumProperty.create("shape", RoofEndShape.class));
-	public static final StringProperty HALF = StringProperty.convert(XKDStateProperties.ROOF_HALF);
+	private static final StringProperty VARIANT = XKDStateProperties.ROOF_VARIANT;
+	private static final StringProperty HALF = XKDStateProperties.HALF;
 
 	public RoofEndBlock(Properties properties) {
 		super(properties);

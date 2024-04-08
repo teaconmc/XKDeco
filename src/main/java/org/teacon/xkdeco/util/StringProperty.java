@@ -14,7 +14,7 @@ public class StringProperty extends Property<String> {
 
 	public StringProperty(String pName, Collection<String> values) {
 		super(pName, String.class);
-		this.values = ImmutableSortedSet.copyOf(values);
+		this.values = ImmutableSortedSet.copyOf(values.stream().map(String::intern).toList());
 	}
 
 	public static StringProperty convert(EnumProperty<?> property) {

@@ -2,6 +2,9 @@ package org.teacon.xkdeco.block.setting;
 
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -11,12 +14,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-public record HorizontalAxisComponent() implements KBlockComponent {
+public record HorizontalAxisComponent(boolean oppose) implements KBlockComponent {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-	private static final HorizontalAxisComponent INSTANCE = new HorizontalAxisComponent();
+	private static final HorizontalAxisComponent NORMAL = new HorizontalAxisComponent(false);
+	private static final HorizontalAxisComponent OPPOSE = new HorizontalAxisComponent(true);
+	public static final Codec<HorizontalAxisComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.BOOL.optionalFieldOf("oppose", false).forGetter(HorizontalAxisComponent::oppose)
+	).apply(instance, HorizontalAxisComponent::getInstance));
 
-	public static HorizontalAxisComponent getInstance() {
-		return INSTANCE;
+	public static HorizontalAxisComponent getInstance(boolean oppose) {
+		return oppose ? OPPOSE : NORMAL;
 	}
 
 	@Override
@@ -43,7 +50,7 @@ public record HorizontalAxisComponent() implements KBlockComponent {
 			if (direction.getAxis().isVertical()) {
 				continue;
 			}
-			BlockState blockstate = state.setValue(AXIS, direction.getClockWise().getAxis());
+			BlockState blockstate = state.setValue(AXIS, (oppose ? direction : direction.getClockWise()).getAxis());
 			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
 				return blockstate;
 			}

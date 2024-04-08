@@ -36,6 +36,14 @@ class Pack:
         self.providers[provider.identifier] = provider
 
     def finish(self):
+        for moveFile in self.config.get('move_files', []):
+            src = Path(moveFile)
+            if not src.exists():
+                continue
+            dest = Path(src.name)
+            shutil.move(src, dest)
+            print('Moved', src.absolute(), 'to', dest.absolute())
+
         for provider in self.providers.values():
             provider.generate()
             print('Generated', provider.count, 'files for', str(provider))

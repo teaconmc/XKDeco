@@ -1,6 +1,12 @@
 package org.teacon.xkdeco.data;
 
 import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
+import static org.teacon.xkdeco.block.XKDStateProperties.HALF;
+import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_EAVE_SHAPE;
+import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_END_SHAPE;
+import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_SHAPE;
+import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_VARIANT;
+import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_VARIANT_WITHOUT_SLOW;
 
 import java.util.List;
 import java.util.Set;
@@ -13,19 +19,12 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
-import org.teacon.xkdeco.block.FallenLeavesBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
-import org.teacon.xkdeco.block.RoofBlock;
-import org.teacon.xkdeco.block.RoofEaveBlock;
-import org.teacon.xkdeco.block.RoofEndBlock;
-import org.teacon.xkdeco.block.RoofFlatBlock;
-import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
-import org.teacon.xkdeco.block.RoofTipBlock;
 import org.teacon.xkdeco.block.loader.KBlockComponents;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
 import org.teacon.xkdeco.block.setting.LayeredComponent;
-import org.teacon.xkdeco.util.RoofUtil;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
@@ -63,6 +62,8 @@ import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import snownee.kiwi.datagen.GameObjectLookup;
 
+@SuppressWarnings({"deprecation", "SameParameterValue"})
+@NotNullByDefault
 public class XKDModelProvider extends FabricModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final ResourceLocation ROOF_INNER_TEXTURE = XKDeco.id("block/roof_inner");
@@ -539,9 +540,9 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation model0 = XKDModelTemplates.FALLEN_LEAVES.create(fallenLeaves, textureMapping, generators.modelOutput);
 		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
-				.with(PropertyDispatch.property(FallenLeavesBlock.HALF)
-						.select(RoofUtil.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(RoofUtil.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+				.with(PropertyDispatch.property(HALF)
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1101,9 +1102,9 @@ public class XKDModelProvider extends FabricModelProvider {
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(altRotation ? createHorizontalFacingDispatchAlt() : BlockModelGenerators.createHorizontalFacingDispatch())
-				.with(PropertyDispatch.property(RoofTipBlock.HALF)
-						.select(RoofUtil.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(RoofUtil.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+				.with(PropertyDispatch.property(HALF)
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1115,7 +1116,7 @@ public class XKDModelProvider extends FabricModelProvider {
 			boolean narrow) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(RoofRidgeEndAsianBlock.VARIANT, RoofRidgeEndAsianBlock.HALF)
+				.with(PropertyDispatch.properties(ROOF_VARIANT_WITHOUT_SLOW, HALF)
 						.generate((variant, half) -> {
 							String path = narrow ? "template_roof_small_ridge_end_asian" : "template_roof_ridge_end";
 							TextureMapping textureMapping = TextureMapping.particle(roofTexture);
@@ -1126,12 +1127,12 @@ public class XKDModelProvider extends FabricModelProvider {
 								textureMapping.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE);
 								textureMapping.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture);
 							}
-							if (variant != RoofUtil.RoofVariant.NORMAL) {
+							if (!variant.equals("normal")) {
 								path += "_" + variant;
 							}
-							if (half == RoofUtil.RoofHalf.UPPER && variant != RoofUtil.RoofVariant.STEEP) {
+							if (half.equals("upper") && !variant.equals("steep")) {
 								path += "_top";
-							} else if (half == RoofUtil.RoofHalf.LOWER && variant == RoofUtil.RoofVariant.STEEP) {
+							} else if (half.equals("lower") && variant.equals("steep")) {
 								path += "_top";
 							}
 							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
@@ -1147,18 +1148,18 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createRoofEnd(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture, boolean narrow) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(RoofEndBlock.VARIANT, RoofEndBlock.SHAPE, RoofEndBlock.HALF)
+				.with(PropertyDispatch.properties(ROOF_VARIANT, ROOF_END_SHAPE, HALF)
 						.generate((variant, shape, half) -> {
 							String path = narrow ? "template_roof_small_end" : "template_roof_end";
 							if (!"normal".equals(variant)) {
 								path += "_" + variant;
 							}
+							path += "_" + shape;
 							if ("upper".equals(half) && !"steep".equals(variant)) {
 								path += "_top";
 							} else if ("lower".equals(half) && "steep".equals(variant)) {
 								path += "_top";
 							}
-							path += "_" + shape;
 							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
 									block,
 									TextureMapping.particle(roofTexture)
@@ -1175,12 +1176,12 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createRoofEave(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture, boolean narrow) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(RoofEaveBlock.SHAPE, RoofEaveBlock.HALF).generate((shape, half) -> {
+				.with(PropertyDispatch.properties(ROOF_EAVE_SHAPE, HALF).generate((shape, half) -> {
 					String path = narrow ? "template_roof_small_eave" : "template_roof_eave";
-					if (shape != RoofUtil.RoofEaveShape.STRAIGHT) {
+					if (!shape.equals("straight")) {
 						path += "_" + shape;
 					}
-					if (half == RoofUtil.RoofHalf.UPPER) {
+					if (half.equals("upper")) {
 						path += "_top";
 					}
 					ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
@@ -1206,12 +1207,12 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE),
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.property(RoofFlatBlock.AXIS)
+				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
 						.select(Direction.Axis.Z, Variant.variant())
 						.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
-				.with(PropertyDispatch.property(RoofFlatBlock.HALF)
-						.select(RoofUtil.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(RoofUtil.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+				.with(PropertyDispatch.property(HALF)
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1324,27 +1325,28 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createRoofNormal(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture) {
 		Block block = block(id);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(RoofBlock.VARIANT, RoofBlock.SHAPE, RoofBlock.HALF).generate((variant, shape, half) -> {
-					String path = "template_roof";
-					if (!"normal".equals(variant)) {
-						path += "_" + variant;
-					}
-					if (!"straight".equals(shape)) {
-						path += "_" + shape;
-					}
-					if ("upper".equals(half) && !"steep".equals(variant)) {
-						path += "_top";
-					} else if ("lower".equals(half) && "steep".equals(variant)) {
-						path += "_top";
-					}
-					ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
-							block,
-							TextureMapping.particle(roofTexture)
-									.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE)
-									.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture),
-							generators.modelOutput);
-					return Variant.variant().with(VariantProperties.MODEL, model);
-				}))
+				.with(PropertyDispatch.properties(ROOF_VARIANT, ROOF_SHAPE, HALF)
+						.generate((variant, shape, half) -> {
+							String path = "template_roof";
+							if (!"normal".equals(variant)) {
+								path += "_" + variant;
+							}
+							if (!"straight".equals(shape)) {
+								path += "_" + shape;
+							}
+							if ("upper".equals(half) && !"steep".equals(variant)) {
+								path += "_top";
+							} else if ("lower".equals(half) && "steep".equals(variant)) {
+								path += "_top";
+							}
+							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
+									block,
+									TextureMapping.particle(roofTexture)
+											.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE)
+											.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture),
+									generators.modelOutput);
+							return Variant.variant().with(VariantProperties.MODEL, model);
+						}))
 				.with(createHorizontalFacingDispatchAlt());
 		generators.blockStateOutput.accept(generator);
 	}
@@ -1372,9 +1374,9 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping.cube(block),
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.property(RoofTipBlock.HALF)
-						.select(RoofUtil.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(RoofUtil.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+				.with(PropertyDispatch.property(HALF)
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
