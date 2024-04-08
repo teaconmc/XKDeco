@@ -18,7 +18,7 @@ import net.minecraft.world.item.Items;
 @Mixin(DebugRenderer.class)
 public class DebugRendererMixin {
 	@Inject(method = "render", at = @At("HEAD"))
-	private void xkdeco$render(
+	private void kiwi$render(
 			PoseStack pPoseStack,
 			MultiBufferSource.BufferSource pBufferSource,
 			double pCamX,

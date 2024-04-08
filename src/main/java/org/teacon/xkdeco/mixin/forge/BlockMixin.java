@@ -18,7 +18,7 @@ import net.minecraftforge.common.PlantType;
 @Mixin(Block.class)
 public abstract class BlockMixin {
 	@Inject(method = "canSustainPlant", at = @At("HEAD"), cancellable = true, remap = false)
-	private void xkdeco$canSustainPlant(
+	private void kiwi$canSustainPlant(
 			BlockState state,
 			BlockGetter world,
 			BlockPos pos,

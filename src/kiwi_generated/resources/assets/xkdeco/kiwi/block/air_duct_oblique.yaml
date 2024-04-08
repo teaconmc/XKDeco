@@ -1,3 +1,6 @@
 template: xkdeco:horizontal_shift
 render_type: cutout
+shape: xkdeco:air_duct_oblique
+interaction_shape: block
+no_occlusion: true
 glass_type: hollow_steel

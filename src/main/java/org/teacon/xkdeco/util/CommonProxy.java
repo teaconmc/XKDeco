@@ -198,17 +198,16 @@ public class CommonProxy {
 		ResourceManager resourceManager = collectKiwiPacks();
 		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager);
 		fundamentals.blocks().forEach((id, definition) -> {
-//			if (definition.template() == KBlockDefinition.DEFAULT_TEMPLATE.getValue()) {
-//				return;
-//			}
 			Block block = definition.createBlock(id);
 			if (block != null) {
-				fundamentals.slotProviders().attachSlots(block, definition);
-				fundamentals.placeChoices().attachChoices(block, definition);
+				fundamentals.slotProviders().attachSlotsA(block, definition);
+				fundamentals.placeChoices().attachChoicesA(block, definition);
 				ForgeRegistries.BLOCKS.register(id, block);
 				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
 			}
 		});
+		fundamentals.slotProviders().attachSlotsB();
+		fundamentals.placeChoices().attachChoicesB();
 		if (Platform.isPhysicalClient()) {
 			BlockRenderSettings.init(fundamentals.blocks(), ClientModLoader.isLoading());
 		}

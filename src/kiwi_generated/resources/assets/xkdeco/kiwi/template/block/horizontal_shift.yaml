@@ -1,2 +1,6 @@
 type: simple
 class: org.teacon.xkdeco.block.HorizontalShiftBlock
+properties:
+  components:
+  - water_loggable
+  - horizontal

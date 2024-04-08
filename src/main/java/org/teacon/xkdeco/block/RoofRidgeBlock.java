@@ -2,11 +2,12 @@ package org.teacon.xkdeco.block;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.WallBlock;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofRidgeBlock extends WallBlock implements XKDecoBlockRoof {
+public final class RoofRidgeBlock extends WallBlock implements SimpleWaterloggedBlock {
 	public RoofRidgeBlock(Properties properties, boolean asian) {
 		super(properties);
 	}

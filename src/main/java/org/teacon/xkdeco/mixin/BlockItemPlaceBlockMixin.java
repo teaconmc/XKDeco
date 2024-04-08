@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(BlockItem.class)
 public class BlockItemPlaceBlockMixin {
 	@Inject(method = "placeBlock", at = @At("TAIL"))
-	private void xkdeco$placeBlock(BlockPlaceContext pContext, BlockState pState, CallbackInfoReturnable<Boolean> cir) {
+	private void kiwi$placeBlock(BlockPlaceContext pContext, BlockState pState, CallbackInfoReturnable<Boolean> cir) {
 		if (cir.getReturnValueZ()) {
 			PlacementSystem.onBlockPlaced(pContext);
 		}

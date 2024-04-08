@@ -4,12 +4,11 @@ import java.util.Locale;
 
 import org.teacon.xkdeco.block.RoofBlock;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+@NotNullByDefault
 public class RoofUtil {
 //	private static final Logger LOGGER = LoggerFactory.getLogger("RoofUtil");
 //
@@ -107,8 +106,6 @@ public class RoofUtil {
 		};
 	}
 
-	@MethodsReturnNonnullByDefault
-	@ParametersAreNonnullByDefault
 	public enum RoofHalf implements StringRepresentable {
 		UPPER, LOWER;
 
@@ -123,8 +120,6 @@ public class RoofUtil {
 		}
 	}
 
-	@MethodsReturnNonnullByDefault
-	@ParametersAreNonnullByDefault
 	public enum RoofShape implements StringRepresentable {
 		STRAIGHT, INNER, OUTER;
 
@@ -139,8 +134,6 @@ public class RoofUtil {
 		}
 	}
 
-	@MethodsReturnNonnullByDefault
-	@ParametersAreNonnullByDefault
 	public enum RoofEndShape implements StringRepresentable {
 		LEFT, RIGHT;
 
@@ -155,8 +148,6 @@ public class RoofUtil {
 		}
 	}
 
-	@MethodsReturnNonnullByDefault
-	@ParametersAreNonnullByDefault
 	public enum RoofEaveShape implements StringRepresentable {
 		STRAIGHT, INNER, OUTER, LEFT_END, RIGHT_END;
 
@@ -171,8 +162,6 @@ public class RoofUtil {
 		}
 	}
 
-	@MethodsReturnNonnullByDefault
-	@ParametersAreNonnullByDefault
 	public enum RoofVariant implements StringRepresentable {
 		NORMAL, SLOW, STEEP;
 

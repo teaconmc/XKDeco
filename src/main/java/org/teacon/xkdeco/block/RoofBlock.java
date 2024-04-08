@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class RoofBlock extends BasicBlock implements XKDecoBlockRoof {
+public final class RoofBlock extends BasicBlock {
 	public static final StringProperty VARIANT = StringProperty.convert(XKDStateProperties.ROOF_VARIANT);
 	public static final StringProperty SHAPE = StringProperty.convert(EnumProperty.create("shape", RoofShape.class));
 	public static final StringProperty HALF = StringProperty.convert(XKDStateProperties.ROOF_HALF);

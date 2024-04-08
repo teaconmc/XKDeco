@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(HalfTransparentBlock.class)
 public abstract class HalfTransparentBlockMixin {
 	@Inject(method = "skipRendering", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$skipRendering(
+	private void kiwi$skipRendering(
 			BlockState pState,
 			BlockState pAdjacentBlockState,
 			Direction pSide,

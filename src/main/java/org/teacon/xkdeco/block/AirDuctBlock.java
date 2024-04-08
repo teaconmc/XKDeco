@@ -1,51 +1,57 @@
 package org.teacon.xkdeco.block;
 
+import static org.teacon.xkdeco.block.XKDStateProperties.DIRECTION_PROPERTIES;
+
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.util.CommonProxy;
+import org.teacon.xkdeco.util.NotNullByDefault;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
+@SuppressWarnings("deprecation")
+@NotNullByDefault
 public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
-	public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
-	public static final BooleanProperty EAST = BlockStateProperties.EAST;
-	public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
-	public static final BooleanProperty WEST = BlockStateProperties.WEST;
-	public static final BooleanProperty UP = BlockStateProperties.UP;
-	public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
 
 	public AirDuctBlock(Properties pProperties) {
 		super(pProperties);
-		this.registerDefaultState(this.stateDefinition.any()
-				.setValue(NORTH, false)
-				.setValue(EAST, false)
-				.setValue(SOUTH, false)
-				.setValue(WEST, false)
-				.setValue(UP, false)
-				.setValue(DOWN, false));
+		BlockState blockState = this.stateDefinition.any();
+		for (BooleanProperty property : DIRECTION_PROPERTIES) {
+			blockState = blockState.setValue(property, false);
+		}
+		this.registerDefaultState(blockState);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+		DIRECTION_PROPERTIES.forEach(pBuilder::add);
 	}
 
 	@Override
 	public BlockState rotate(BlockState pState, Rotation pRotation) {
 		BlockState newState = pState;
 		for (Direction direction : Direction.Plane.HORIZONTAL) {
-			boolean value = pState.getValue(XKDStateProperties.DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
-			newState = newState.setValue(XKDStateProperties.DIRECTION_PROPERTIES.get(pRotation.rotate(direction).get3DDataValue()), value);
+			boolean value = pState.getValue(DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
+			newState = newState.setValue(DIRECTION_PROPERTIES.get(pRotation.rotate(direction).get3DDataValue()), value);
 		}
 		return newState;
 	}
@@ -54,8 +60,8 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 	public BlockState mirror(BlockState pState, Mirror pMirror) {
 		BlockState newState = pState;
 		for (Direction direction : Direction.Plane.HORIZONTAL) {
-			boolean value = pState.getValue(XKDStateProperties.DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
-			newState = newState.setValue(XKDStateProperties.DIRECTION_PROPERTIES.get(pMirror.mirror(direction).get3DDataValue()), value);
+			boolean value = pState.getValue(DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
+			newState = newState.setValue(DIRECTION_PROPERTIES.get(pMirror.mirror(direction).get3DDataValue()), value);
 		}
 		return newState;
 	}
@@ -68,8 +74,11 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 			Player pPlayer,
 			InteractionHand pHand,
 			BlockHitResult pHit) {
+		if (!pPlayer.getOffhandItem().is(Items.CHAINMAIL_HELMET)) {
+			return InteractionResult.PASS;
+		}
 		Direction direction = pHit.getDirection();
-		pState = pState.cycle(XKDStateProperties.DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
+		pState = pState.cycle(DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
 		pLevel.setBlockAndUpdate(pPos, pState);
 		return InteractionResult.sidedSuccess(pLevel.isClientSide);
 	}
@@ -77,5 +86,65 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public boolean useShapeForLightOcclusion(BlockState pState) {
 		return true;
+	}
+
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+		Level level = pContext.getLevel();
+		BlockPos pos = pContext.getClickedPos();
+		BlockPos.MutableBlockPos mutable = pos.mutable();
+		List<Direction> neighbors = Lists.newArrayList();
+		for (Direction direction : CommonProxy.DIRECTIONS) {
+			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
+			if (neighborState.is(this)) {
+				neighbors.add(direction);
+			}
+		}
+		BlockState blockState = defaultBlockState();
+		if (neighbors.size() < 2) {
+			Direction face = neighbors.isEmpty() ? pContext.getClickedFace() : neighbors.get(0);
+			return blockState.setValue(DIRECTION_PROPERTIES.get(face.get3DDataValue()), true)
+					.setValue(DIRECTION_PROPERTIES.get(face.getOpposite().get3DDataValue()), true);
+		} else {
+			for (Direction direction : neighbors) {
+				blockState = blockState.setValue(DIRECTION_PROPERTIES.get(direction.get3DDataValue()), true);
+			}
+			return blockState;
+		}
+	}
+
+	@Override
+	public BlockState updateShape(
+			BlockState blockState,
+			Direction pDirection,
+			BlockState pNeighborState,
+			LevelAccessor level,
+			BlockPos pos,
+			BlockPos pNeighborPos) {
+		if (!pNeighborState.is(this)) {
+			return blockState;
+		}
+		BlockPos.MutableBlockPos mutable = pos.mutable();
+		List<Direction> neighbors = Lists.newArrayListWithExpectedSize(2);
+		for (Direction direction : CommonProxy.DIRECTIONS) {
+			if (direction == pDirection) {
+				continue;
+			}
+			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
+			if (neighborState.is(this)) {
+				neighbors.add(direction);
+				if (neighbors.size() >= 2) {
+					return blockState.setValue(DIRECTION_PROPERTIES.get(pDirection.get3DDataValue()), true);
+				}
+			}
+		}
+		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.get(0);
+		for (Direction direction : CommonProxy.DIRECTIONS) {
+			blockState = blockState.setValue(
+					DIRECTION_PROPERTIES.get(direction.get3DDataValue()),
+					direction == pDirection || direction == theOtherDirection);
+		}
+		return blockState;
 	}
 }

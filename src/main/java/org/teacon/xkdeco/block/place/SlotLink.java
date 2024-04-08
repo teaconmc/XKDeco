@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.block.place;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -97,6 +99,46 @@ public record SlotLink(
 		String key2 = slot2.primaryTag();
 		Pair<String, String> key = isUprightLink(slot1, slot2) ? Pair.of(key1, key2) : Pair.of(key2, key1);
 		return LOOKUP.get(key);
+	}
+
+	@Nullable
+	public static MatchResult find(Collection<PlaceSlot> slots1, Collection<PlaceSlot> slots2) {
+		if (slots1.isEmpty() || slots2.isEmpty()) {
+			return null;
+		}
+		int maxInterest = 0;
+		SlotLink matchedLink = null;
+		boolean isUpright = false;
+		for (PlaceSlot slot1 : slots1) {
+			for (PlaceSlot slot2 : slots2) {
+				SlotLink link = SlotLink.find(slot1, slot2);
+				if (link != null && link.interest() > maxInterest && link.matches(slot1, slot2)) {
+					maxInterest = link.interest();
+					matchedLink = link;
+					isUpright = SlotLink.isUprightLink(slot1, slot2);
+				}
+			}
+		}
+		return matchedLink == null ? null : new MatchResult(matchedLink, isUpright);
+	}
+
+	@Nullable
+	public static MatchResult find(BlockState oldState, BlockState neighborState, Direction direction) {
+		return null;
+	}
+
+	public record MatchResult(SlotLink link, boolean isUpright) {
+		public ResultAction onLinkFrom() {
+			return isUpright ? link.onLinkFrom : link.onLinkTo;
+		}
+
+		public ResultAction onLinkTo() {
+			return isUpright ? link.onLinkTo : link.onLinkFrom;
+		}
+
+		public ResultAction onUnlinkTo() {
+			return isUpright ? link.onUnlinkTo : link.onUnlinkFrom;
+		}
 	}
 
 	public static boolean isUprightLink(PlaceSlot slot1, PlaceSlot slot2) {

@@ -61,6 +61,9 @@ public class PlacementSystem {
 	}
 
 	public static BlockState onPlace(BlockState blockState, BlockPlaceContext context) {
+		if (PlaceSlot.hasNoSlots(blockState.getBlock())) {
+			return blockState;
+		}
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		BlockPos.MutableBlockPos mutable = pos.mutable();
@@ -132,67 +135,46 @@ public class PlacementSystem {
 				Kiwi.LOGGER.info("Alt Interest: %d : %s".formatted($.interest(), $.blockState()));
 			});
 		}
-		blockState = result.blockState();
-		for (int i = 0; i < result.links().size(); i++) {
-			SlotLink link = result.links().get(i);
-			boolean isUpright = result.uprightStatus().get(i);
-			SlotLink.ResultAction action = isUpright ? link.onLinkFrom() : link.onLinkTo();
-			blockState = action.apply(blockState);
+		BlockState resultState = result.blockState();
+		for (SlotLink.MatchResult link : result.links()) {
+			resultState = link.onLinkFrom().apply(resultState);
 		}
 		RESULT_CONTEXT.put(context, result);
-		return blockState;
+		return resultState;
 	}
 
 	//TODO cache based on BlockStates and Direction, see Block.OCCLUSION_CACHE
 	@Nullable
 	public static PlaceMatchResult getPlaceMatchResultAt(
 			BlockState blockState,
-			Map<Direction, Collection<PlaceSlot>> neighborSlots,
+			Map<Direction, Collection<PlaceSlot>> theirSlotsMap,
 			int bonusInterest) {
 		int interest = 0;
-		List<SlotLink> links = null;
+		List<SlotLink.MatchResult> results = null;
 		List<Vec3i> offsets = null;
 		BitSet uprightStatus = null;
 		for (Direction side : CommonProxy.DIRECTIONS) {
-			Collection<PlaceSlot> theirSlots = neighborSlots.get(side);
+			Collection<PlaceSlot> theirSlots = theirSlotsMap.get(side);
 			if (theirSlots == null) {
 				continue;
 			}
 			Collection<PlaceSlot> ourSlots = PlaceSlot.find(blockState, side);
-			if (ourSlots.isEmpty()) {
-				continue;
-			}
-			int maxInterest = 0;
-			SlotLink matchedLink = null;
-			Vec3i offset = null;
-			boolean isUpright = false;
-			for (PlaceSlot ourSlot : ourSlots) {
-				for (PlaceSlot theirSlot : theirSlots) {
-					SlotLink link = SlotLink.find(ourSlot, theirSlot);
-					if (link != null && link.interest() > maxInterest && link.matches(ourSlot, theirSlot)) {
-						maxInterest = link.interest();
-						matchedLink = link;
-						offset = ourSlot.side().getNormal();
-						isUpright = SlotLink.isUprightLink(ourSlot, theirSlot);
-					}
+			SlotLink.MatchResult result = SlotLink.find(ourSlots, theirSlots);
+			if (result != null) {
+				SlotLink link = result.link();
+				interest += link.interest();
+				if (results == null) {
+					results = Lists.newArrayListWithExpectedSize(theirSlotsMap.size());
+					offsets = Lists.newArrayListWithExpectedSize(theirSlotsMap.size());
 				}
-			}
-			interest += maxInterest;
-			if (matchedLink != null) {
-				if (links == null) {
-					links = Lists.newArrayListWithExpectedSize(neighborSlots.size());
-					offsets = Lists.newArrayListWithExpectedSize(neighborSlots.size());
-					uprightStatus = new BitSet(neighborSlots.size());
-				}
-				links.add(matchedLink);
-				offsets.add(offset);
-				uprightStatus.set(links.size() - 1, isUpright);
+				results.add(result);
+				offsets.add(side.getNormal());
 			}
 		}
 		if (interest <= 0) {
 			return null;
 		}
-		return new PlaceMatchResult(blockState, interest + bonusInterest, links, offsets, uprightStatus);
+		return new PlaceMatchResult(blockState, interest + bonusInterest, results, offsets);
 	}
 
 	public static void onBlockPlaced(BlockPlaceContext context) {
@@ -203,12 +185,10 @@ public class PlacementSystem {
 		RESULT_CONTEXT.invalidate(context);
 		BlockPos.MutableBlockPos mutable = context.getClickedPos().mutable();
 		for (int i = 0; i < result.links().size(); i++) {
-			SlotLink link = result.links().get(i);
-			boolean isUpright = result.uprightStatus().get(i);
-			SlotLink.ResultAction action = isUpright ? link.onLinkTo() : link.onLinkFrom();
 			BlockPos theirPos = mutable.setWithOffset(context.getClickedPos(), result.offsets().get(i));
 			BlockState theirState = context.getLevel().getBlockState(theirPos);
-			theirState = action.apply(theirState);
+			SlotLink.MatchResult link = result.links().get(i);
+			theirState = link.onLinkTo().apply(theirState);
 			context.getLevel().setBlock(theirPos, theirState, 11);
 		}
 		Player player = context.getPlayer();

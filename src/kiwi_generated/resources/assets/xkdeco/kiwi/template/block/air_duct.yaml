@@ -1,2 +1,9 @@
 type: simple
 class: org.teacon.xkdeco.block.AirDuctBlock
+properties:
+  render_type: cutout
+  components:
+  - water_loggable
+  shape: xkdeco:air_duct
+  interaction_shape: block
+  no_occlusion: true

@@ -26,7 +26,6 @@ import org.teacon.xkdeco.block.RoofBlock;
 import org.teacon.xkdeco.block.RoofEaveBlock;
 import org.teacon.xkdeco.block.RoofEndBlock;
 import org.teacon.xkdeco.block.RoofFlatBlock;
-import org.teacon.xkdeco.block.RoofHorizontalShiftBlock;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.RoofRidgeEndAsianBlock;
 import org.teacon.xkdeco.block.RoofTipBlock;
@@ -109,7 +108,6 @@ public class ExportBlocksCommand {
 		map.put(RoofEaveBlock.class, "xkdeco:roof_eave");
 		map.put(RoofEndBlock.class, "xkdeco:roof_end");
 		map.put(RoofFlatBlock.class, "xkdeco:roof_flat");
-		map.put(RoofHorizontalShiftBlock.class, "xkdeco:roof_horizontal_shift");
 		map.put(RoofRidgeBlock.class, "xkdeco:roof_ridge");
 		map.put(RoofRidgeEndAsianBlock.class, "xkdeco:roof_ridge_end_asian");
 		map.put(RoofTipBlock.class, "xkdeco:roof_tip");
