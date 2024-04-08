@@ -154,10 +154,10 @@ public class XKDModelTemplates {
 					if (variant != RoofUtil.RoofVariant.NORMAL) {
 						suffix += "_" + variant;
 					}
+					suffix += "_" + shape;
 					if (half == RoofUtil.RoofHalf.UPPER) {
 						suffix += "_top";
 					}
-					suffix += "_" + shape;
 					create("template_roof_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
 					create("template_roof_small_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
 					create("template_roof_small_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);

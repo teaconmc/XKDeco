@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import org.teacon.xkdeco.block.XKDStateProperties;
 import org.teacon.xkdeco.block.setting.LayeredComponent;
 import org.teacon.xkdeco.util.MathUtil;
-import org.teacon.xkdeco.util.RoofUtil;
 
 import com.google.common.base.Preconditions;
 
@@ -98,7 +97,7 @@ public interface ShapeGenerator {
 
 	static ShapeGenerator horizontalShifted(VoxelShape trueNorth, VoxelShape falseNorth) {
 		return shifted(
-				state -> state.getValue(XKDStateProperties.ROOF_HALF) == RoofUtil.RoofHalf.UPPER,
+				state -> state.getValue(XKDStateProperties.HALF).equals("upper"),
 				horizontal(trueNorth),
 				horizontal(falseNorth));
 	}

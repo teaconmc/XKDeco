@@ -1,0 +1,9 @@
+target: '@xkdeco:air_duct_oblique'
+tag:
+  - '*xkdeco.air_duct'
+transform_with: facing
+slots:
+  - when:
+      facing: north
+    sides:
+      south: { }

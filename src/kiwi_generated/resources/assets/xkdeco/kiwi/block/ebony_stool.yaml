@@ -1,6 +1,3 @@
+template: xkdeco:stool
 material: xkdeco:ebony
-components:
-- water_loggable
-- horizontal
 shape: xkdeco:long_stool
-no_occlusion: true

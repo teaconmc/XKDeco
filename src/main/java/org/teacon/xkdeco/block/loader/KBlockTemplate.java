@@ -11,21 +11,31 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public interface KBlockTemplate {
-	static Codec<KBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+public abstract class KBlockTemplate {
+
+	public static Codec<KBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
 		return LoaderExtraRegistries.BLOCK_TEMPLATE.byNameCodec().dispatch(
 				"type",
 				KBlockTemplate::type,
 				type -> type.codec().apply(materialCodec));
 	}
 
-	Type<?> type();
+	protected final Optional<BlockDefinitionProperties> properties;
 
-	void resolve(ResourceLocation key);
+	protected KBlockTemplate(Optional<BlockDefinitionProperties> properties) {
+		this.properties = properties;
+	}
 
-	Block createBlock(BlockBehaviour.Properties properties, JsonObject input);
+	public abstract Type<?> type();
 
-	Optional<BlockDefinitionProperties> properties();
+	public abstract void resolve(ResourceLocation key);
 
-	record Type<T extends KBlockTemplate>(Function<MapCodec<Optional<KMaterial>>, Codec<T>> codec) {}
+	abstract Block createBlock(BlockBehaviour.Properties properties, JsonObject input);
+
+	public final Optional<BlockDefinitionProperties> properties() {
+		return properties;
+	}
+
+	public record Type<T extends KBlockTemplate>(Function<MapCodec<Optional<KMaterial>>, Codec<T>> codec) {}
 }

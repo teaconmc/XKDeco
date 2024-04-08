@@ -1,0 +1,6 @@
+from: '*xkdeco.roof_deco_oblique:base'
+to: '*xkdeco.roof_deco_oblique'
+interest: 100
+test_tag:
+  - facing
+  - half

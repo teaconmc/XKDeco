@@ -1,0 +1,9 @@
+{
+  "parent": "xkdeco:block/template_roof_end_steep_right_top",
+  "textures": {
+    "inner": "xkdeco:block/roof_inner",
+    "particle": "xkdeco:block/cyan_roof",
+    "ridge": "xkdeco:block/cyan_roof_ridge",
+    "roof": "xkdeco:block/cyan_roof"
+  }
+}

@@ -1,0 +1,5 @@
+type: simple
+properties:
+  components:
+  - water_loggable
+  - horizontal

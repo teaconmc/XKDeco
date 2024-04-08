@@ -1,0 +1,18 @@
+from: '*roof:front'
+to: '*roof_small_eave:back'
+interest: 150
+test_tag:
+  - facing
+on_link:
+  from:
+    set_properties:
+      variant: slow
+      half: upper
+  to:
+    set_properties:
+      half: lower
+on_unlink:
+  from:
+    set_properties:
+      variant: normal
+      half: lower

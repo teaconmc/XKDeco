@@ -1,0 +1,16 @@
+type: simple
+properties:
+  render_type: cutout
+  components:
+  - water_loggable
+  - horizontal
+  - type: simple
+    shape_for_light_occlusion: true
+    properties:
+    - name: half
+      values:
+      - upper
+      - lower
+  shape: xkdeco:air_duct_oblique
+  interaction_shape: block
+  no_occlusion: true

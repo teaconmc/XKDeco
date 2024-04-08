@@ -1,8 +1,0 @@
-{
-  "parent": "xkdeco:block/template_roof_small_end_slow_top_right",
-  "textures": {
-    "particle": "xkdeco:block/blue_roof",
-    "ridge": "xkdeco:block/blue_roof_ridge",
-    "roof": "xkdeco:block/blue_roof"
-  }
-}

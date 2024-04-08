@@ -24,7 +24,7 @@ public record HorizontalComponent(boolean oppose) implements KBlockComponent {
 	private static final HorizontalComponent OPPOSE = new HorizontalComponent(true);
 	public static final Codec<HorizontalComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.BOOL.optionalFieldOf("oppose", false).forGetter(HorizontalComponent::oppose)
-	).apply(instance, HorizontalComponent::new));
+	).apply(instance, HorizontalComponent::getInstance));
 
 	public static HorizontalComponent getInstance(boolean oppose) {
 		return oppose ? OPPOSE : NORMAL;

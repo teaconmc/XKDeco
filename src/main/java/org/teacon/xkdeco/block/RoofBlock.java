@@ -16,7 +16,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -25,9 +24,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public final class RoofBlock extends BasicBlock {
-	public static final StringProperty VARIANT = StringProperty.convert(XKDStateProperties.ROOF_VARIANT);
-	public static final StringProperty SHAPE = StringProperty.convert(EnumProperty.create("shape", RoofShape.class));
-	public static final StringProperty HALF = StringProperty.convert(XKDStateProperties.ROOF_HALF);
+	private static final StringProperty VARIANT = XKDStateProperties.ROOF_VARIANT;
+	private static final StringProperty SHAPE = XKDStateProperties.ROOF_SHAPE;
+	private static final StringProperty HALF = XKDStateProperties.HALF;
 
 	public static final VoxelShape ROOF_E = Shapes.or(Block.box(0, 8, 0, 8, 16, 16), Block.box(0, 0, 0, 16, 8, 16));
 	public static final VoxelShape ROOF_INNER_EN = Shapes.or(

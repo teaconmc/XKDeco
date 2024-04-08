@@ -1,10 +1,10 @@
 package org.teacon.xkdeco.block.place;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -45,18 +45,18 @@ public record PlaceSlotProvider(
 		Optional<String> transformWith,
 		List<String> tag,
 		List<Slot> slots) {
-	public static final Predicate<String> TAG_PATTERN = Pattern.compile("^[*@]?(?:[a-z_/]+:)?[a-z_/]+$").asPredicate();
+	public static final Predicate<String> TAG_PATTERN = Pattern.compile("^[*@]?(?:[a-z0-9_/.]+:)?[a-z0-9_/.]+$").asPredicate();
 	public static final Codec<String> TAG_CODEC = ExtraCodecs.validate(Codec.STRING, s -> {
 		if (TAG_PATTERN.test(s)) {
 			return DataResult.success(s);
 		} else {
-			return DataResult.error(() -> "Invalid tag: " + s);
+			return DataResult.error(() -> "Bad tag format: " + s);
 		}
 	});
 	public static final Codec<PlaceSlotProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceSlotProvider::target),
-			Codec.STRING.optionalFieldOf("transform_with").forGetter(PlaceSlotProvider::transformWith),
-			TAG_CODEC.listOf().optionalFieldOf("tag", List.of()).forGetter(PlaceSlotProvider::tag),
+			LoaderExtraCodecs.strictOptionalField(Codec.STRING, "transform_with").forGetter(PlaceSlotProvider::transformWith),
+			LoaderExtraCodecs.strictOptionalField(TAG_CODEC.listOf(), "tag", List.of()).forGetter(PlaceSlotProvider::tag),
 			Slot.CODEC.listOf().fieldOf("slots").forGetter(PlaceSlotProvider::slots)
 	).apply(instance, PlaceSlotProvider::new));
 
@@ -76,13 +76,14 @@ public record PlaceSlotProvider(
 			List<StatePropertiesPredicate> when,
 			Optional<String> transformWith,
 			List<String> tag,
-			EnumMap<Direction, Side> sides) {
+			Map<Direction, Side> sides) {
 		public static final Codec<Slot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				new CompactListCodec<>(StatePropertiesPredicate.CODEC, false).fieldOf("when").forGetter(Slot::when),
-				Codec.STRING.optionalFieldOf("transform_with").forGetter(Slot::transformWith),
-				TAG_CODEC.listOf().optionalFieldOf("tag", List.of()).forGetter(Slot::tag),
+				LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(StatePropertiesPredicate.CODEC, false), "when", List.of())
+						.forGetter(Slot::when),
+				LoaderExtraCodecs.strictOptionalField(Codec.STRING, "transform_with").forGetter(Slot::transformWith),
+				LoaderExtraCodecs.strictOptionalField(TAG_CODEC.listOf(), "tag", List.of()).forGetter(Slot::tag),
 				Codec.unboundedMap(LoaderExtraCodecs.DIRECTION, Side.CODEC)
-						.xmap(EnumMap::new, $ -> $)
+						.xmap(Map::copyOf, Function.identity())
 						.fieldOf("sides")
 						.forGetter(Slot::sides)
 		).apply(instance, Slot::new));
@@ -90,7 +91,7 @@ public record PlaceSlotProvider(
 
 	public record Side(List<String> tag) {
 		public static final Codec<Side> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				TAG_CODEC.listOf().fieldOf("tag").forGetter(Side::tag)
+				LoaderExtraCodecs.strictOptionalField(TAG_CODEC.listOf(), "tag", List.of()).forGetter(Side::tag)
 		).apply(instance, Side::new));
 	}
 
@@ -150,7 +151,7 @@ public record PlaceSlotProvider(
 	private void attachSlots(Block block) {
 		for (Slot slot : this.slots) {
 			for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-				if (slot.when.stream().noneMatch(predicate -> predicate.test(blockState))) {
+				if (!slot.when.isEmpty() && slot.when.stream().noneMatch(predicate -> predicate.test(blockState))) {
 					continue;
 				}
 				for (Direction direction : CommonProxy.DIRECTIONS) {
@@ -221,7 +222,7 @@ public record PlaceSlotProvider(
 		}
 		String primaryValue = map.get(primaryKey.getValue());
 		map.remove(primaryKey.getValue());
-		if (primaryValue == null) {
+		if (primaryValue.isEmpty()) {
 			map.put("*%s".formatted(primaryKey.getValue()), "");
 		} else {
 			map.put("*%s:%s".formatted(primaryKey.getValue(), primaryValue), "");

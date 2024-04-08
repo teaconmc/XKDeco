@@ -38,15 +38,15 @@ public record SlotLink(
 			PRIMARY_TAG_CODEC.fieldOf("from").forGetter(SlotLink::from),
 			PRIMARY_TAG_CODEC.fieldOf("to").forGetter(SlotLink::to),
 			Codec.INT.optionalFieldOf("interest", 100).forGetter(SlotLink::interest),
-			TagTest.CODEC.listOf().optionalFieldOf("test_tag", List.of()).forGetter(SlotLink::testTag),
+			LoaderExtraCodecs.strictOptionalField(TagTest.CODEC.listOf(), "test_tag", List.of()).forGetter(SlotLink::testTag),
 			fromToPairCodec("on_link").forGetter($ -> Pair.of($.onLinkFrom, $.onLinkTo)),
 			fromToPairCodec("on_unlink").forGetter($ -> Pair.of($.onUnlinkFrom, $.onUnlinkTo))
 	).apply(instance, SlotLink::create));
 
 	private static MapCodec<Pair<ResultAction, ResultAction>> fromToPairCodec(String fieldName) {
 		Codec<Pair<ResultAction, ResultAction>> pairCodec = RecordCodecBuilder.create(instance -> instance.group(
-				ResultAction.CODEC.optionalFieldOf("from", ResultAction.EMPTY).forGetter(Pair::getFirst),
-				ResultAction.CODEC.optionalFieldOf("to", ResultAction.EMPTY).forGetter(Pair::getSecond)
+				LoaderExtraCodecs.strictOptionalField(ResultAction.CODEC, "from", ResultAction.EMPTY).forGetter(Pair::getFirst),
+				LoaderExtraCodecs.strictOptionalField(ResultAction.CODEC, "to", ResultAction.EMPTY).forGetter(Pair::getSecond)
 		).apply(instance, Pair::of));
 		return pairCodec.optionalFieldOf(fieldName, Pair.of(ResultAction.EMPTY, ResultAction.EMPTY));
 	}
@@ -123,8 +123,10 @@ public record SlotLink(
 	}
 
 	@Nullable
-	public static MatchResult find(BlockState oldState, BlockState neighborState, Direction direction) {
-		return null;
+	public static MatchResult find(BlockState ourState, BlockState theirState, Direction direction) {
+		Collection<PlaceSlot> slots1 = PlaceSlot.find(ourState, direction);
+		Collection<PlaceSlot> slots2 = PlaceSlot.find(theirState, direction.getOpposite());
+		return find(slots1, slots2);
 	}
 
 	public record MatchResult(SlotLink link, boolean isUpright) {

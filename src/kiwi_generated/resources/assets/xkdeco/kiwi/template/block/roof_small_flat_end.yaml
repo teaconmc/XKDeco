@@ -1,0 +1,14 @@
+type: simple
+properties:
+  components:
+  - water_loggable
+  - type: horizontal
+    oppose: true
+  - type: simple
+    shape_for_light_occlusion: true
+    properties:
+    - name: half
+      values:
+      - upper
+      - lower
+  no_occlusion: true

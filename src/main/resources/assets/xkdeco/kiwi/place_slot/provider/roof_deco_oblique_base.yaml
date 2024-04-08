@@ -1,0 +1,12 @@
+target: '@xkdeco:roof_eave'
+tag:
+  - '*xkdeco.roof_deco_oblique:base'
+  - '@half'
+  - '@facing'
+transform_with: facing
+slots:
+  - when:
+      shape: outer
+      facing: north
+    sides:
+      up: { }

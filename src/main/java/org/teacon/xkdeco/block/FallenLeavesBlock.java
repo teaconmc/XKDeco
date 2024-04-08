@@ -2,7 +2,7 @@ package org.teacon.xkdeco.block;
 
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.util.NotNullByDefault;
-import org.teacon.xkdeco.util.RoofUtil;
+import org.teacon.xkdeco.util.StringProperty;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,16 +13,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
 
 @NotNullByDefault
 public final class FallenLeavesBlock extends Block {
-	public static final EnumProperty<RoofUtil.RoofHalf> HALF = XKDStateProperties.ROOF_HALF;
+	private static final StringProperty HALF = XKDStateProperties.HALF;
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(this.stateDefinition.any().setValue(HALF, RoofUtil.RoofHalf.LOWER));
+		registerDefaultState(this.stateDefinition.any().setValue(HALF, "upper"));
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public final class FallenLeavesBlock extends Block {
 			BlockPos pPos,
 			BlockPos pNeighborPos) {
 		if (pDirection == Direction.DOWN) {
-			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? RoofUtil.RoofHalf.UPPER : RoofUtil.RoofHalf.LOWER);
+			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? "upper" : "lower");
 		}
 		return pState;
 	}
@@ -47,7 +46,7 @@ public final class FallenLeavesBlock extends Block {
 	@Override
 	public @NotNull BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState blockState = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
-		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? RoofUtil.RoofHalf.UPPER : RoofUtil.RoofHalf.LOWER);
+		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? "upper" : "lower");
 	}
 
 	private static boolean isBottomSlab(BlockState state) {

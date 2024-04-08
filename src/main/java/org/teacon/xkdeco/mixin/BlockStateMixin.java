@@ -5,10 +5,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.teacon.xkdeco.block.place.PlaceSlot;
-import org.teacon.xkdeco.block.place.SlotLink;
+import org.teacon.xkdeco.block.place.PlacementSystem;
 import org.teacon.xkdeco.block.setting.KBlockSettings;
-import org.teacon.xkdeco.util.CommonProxy;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -98,19 +96,6 @@ public abstract class BlockStateMixin {
 			boolean pMovedByPiston,
 			Operation<Void> original) {
 		original.call(block, oldState, level, pos, newState, pMovedByPiston);
-		if (PlaceSlot.hasNoSlots(block)) {
-			return;
-		}
-		BlockPos.MutableBlockPos mutable = pos.mutable();
-		for (Direction direction : CommonProxy.DIRECTIONS) {
-			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
-			if (PlaceSlot.hasNoSlots(neighborState.getBlock())) {
-				continue;
-			}
-			SlotLink.MatchResult result = SlotLink.find(oldState, neighborState, direction);
-			if (result != null) {
-				result.onUnlinkTo().apply(neighborState);
-			}
-		}
+		PlacementSystem.onBlockRemoved(level, pos, oldState, newState);
 	}
 }
