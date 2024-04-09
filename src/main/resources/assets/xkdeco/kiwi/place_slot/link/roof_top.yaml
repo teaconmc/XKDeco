@@ -8,8 +8,8 @@ on_link:
   from:
     set_properties:
       variant: steep
-      half: upper
+      half: lower
   to:
     set_properties:
       variant: steep
-      half: lower
+      half: upper
