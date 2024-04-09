@@ -3,11 +3,14 @@ package org.teacon.xkdeco.block.place;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
 import org.teacon.xkdeco.util.KBlockUtils;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -16,8 +19,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.Kiwi;
+import snownee.kiwi.loader.Platform;
 
 public record SlotLink(
 		String from,
@@ -49,6 +55,40 @@ public record SlotLink(
 				LoaderExtraCodecs.strictOptionalField(ResultAction.CODEC, "to", ResultAction.EMPTY).forGetter(Pair::getSecond)
 		).apply(instance, Pair::of));
 		return pairCodec.optionalFieldOf(fieldName, Pair.of(ResultAction.EMPTY, ResultAction.EMPTY));
+	}
+
+	public record Preparation(Map<ResourceLocation, SlotLink> slotLinks, PlaceSlotProvider.Preparation slotProviders) {
+		public static Preparation of(
+				Supplier<Map<ResourceLocation, SlotLink>> slotLinksSupplier,
+				PlaceSlotProvider.Preparation slotProviders) {
+			Map<ResourceLocation, SlotLink> slotLinks = Platform.isDataGen() ? Map.of() : slotLinksSupplier.get();
+			return new Preparation(slotLinks, slotProviders);
+		}
+
+		public void finish() {
+			SlotLink.renewData(this);
+		}
+	}
+
+	private static void renewData(Preparation preparation) {
+		Map<Pair<String, String>, SlotLink> map = Maps.newHashMapWithExpectedSize(preparation.slotLinks.size());
+		Set<String> primaryTags = preparation.slotProviders.knownPrimaryTags();
+		for (SlotLink link : preparation.slotLinks.values()) {
+			if (!primaryTags.contains(link.from)) {
+				Kiwi.LOGGER.error("Unknown primary tag in \"from\": %s".formatted(link.from));
+				continue;
+			}
+			if (!primaryTags.contains(link.to)) {
+				Kiwi.LOGGER.error("Unknown primary tag in \"to\": %s".formatted(link.to));
+				continue;
+			}
+			Pair<String, String> key = link.from.compareTo(link.to) <= 0 ? Pair.of(link.from, link.to) : Pair.of(link.to, link.from);
+			SlotLink oldLink = map.put(key, link);
+			if (oldLink != null) {
+				Kiwi.LOGGER.error("Duplicate link: %s and %s".formatted(link, oldLink));
+			}
+		}
+		LOOKUP = ImmutableMap.copyOf(map);
 	}
 
 	public static SlotLink create(
@@ -91,7 +131,7 @@ public record SlotLink(
 		}
 	}
 
-	public static final Map<Pair<String, String>, SlotLink> LOOKUP = Maps.newHashMap();
+	private static ImmutableMap<Pair<String, String>, SlotLink> LOOKUP = ImmutableMap.of();
 
 	@Nullable
 	public static SlotLink find(PlaceSlot slot1, PlaceSlot slot2) {
@@ -115,7 +155,7 @@ public record SlotLink(
 				if (link != null && link.interest() > maxInterest && link.matches(slot1, slot2)) {
 					maxInterest = link.interest();
 					matchedLink = link;
-					isUpright = SlotLink.isUprightLink(slot1, slot2);
+					isUpright = isUprightLink(slot1, slot2) == link.from().compareTo(link.to()) <= 0;
 				}
 			}
 		}
@@ -159,17 +199,5 @@ public record SlotLink(
 			}
 		}
 		return true;
-	}
-
-	public static void register(SlotLink link) {
-		Pair<String, String> key = link.from.compareTo(link.to) < 0 ? Pair.of(link.from, link.to) : Pair.of(link.to, link.from);
-		SlotLink oldLink = LOOKUP.put(key, link);
-		if (oldLink != null) {
-			throw new IllegalArgumentException("Duplicate link: " + oldLink + " and " + link);
-		}
-	}
-
-	public static void clear() {
-		LOOKUP.clear();
 	}
 }

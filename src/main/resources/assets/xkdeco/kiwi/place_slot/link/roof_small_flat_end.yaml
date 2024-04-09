@@ -1,0 +1,6 @@
+from: '*roof_small_flat_end:side'
+to: '*roof_small_flat_end:side'
+interest: 100
+test_tag:
+  - half
+  - facing

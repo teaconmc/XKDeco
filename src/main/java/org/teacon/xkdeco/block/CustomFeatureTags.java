@@ -7,4 +7,5 @@ import snownee.kiwi.Kiwi;
 
 public class CustomFeatureTags {
 	public static final TagKey<Block> SUSTAIN_PLANT = AbstractModule.blockTag(Kiwi.ID, "sustain_plant");
+	public static final TagKey<Block> SITTABLE = AbstractModule.blockTag(Kiwi.ID, "sittable");
 }

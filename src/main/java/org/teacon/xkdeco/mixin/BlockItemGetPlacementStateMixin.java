@@ -13,6 +13,7 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.Kiwi;
 
 @Mixin({BlockItem.class, StandingAndWallBlockItem.class})
 public class BlockItemGetPlacementStateMixin {
@@ -30,7 +31,11 @@ public class BlockItemGetPlacementStateMixin {
 		if (settings != null) {
 			state = settings.getStateForPlacement(state, pContext);
 		}
-		state = PlacementSystem.onPlace(state, pContext);
+		try {
+			state = PlacementSystem.onPlace(state, pContext);
+		} catch (Throwable t) {
+			Kiwi.LOGGER.error("Failed to handle placement for %s".formatted(state), t);
+		}
 		return state;
 	}
 }

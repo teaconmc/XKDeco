@@ -196,7 +196,7 @@ public class CommonProxy {
 
 	public static void initLoader() {
 		ResourceManager resourceManager = collectKiwiPacks();
-		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager);
+		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager, true);
 		fundamentals.blocks().forEach((id, definition) -> {
 			Block block = definition.createBlock(id);
 			if (block != null) {
@@ -208,6 +208,7 @@ public class CommonProxy {
 		});
 		fundamentals.slotProviders().attachSlotsB();
 		fundamentals.placeChoices().attachChoicesB();
+		fundamentals.slotLinks().finish();
 		if (Platform.isPhysicalClient()) {
 			BlockRenderSettings.init(fundamentals.blocks(), ClientModLoader.isLoading());
 		}
@@ -234,26 +235,28 @@ public class CommonProxy {
 	public record BlockFundamentals(
 			Map<ResourceLocation, KMaterial> materials,
 			Map<ResourceLocation, KBlockTemplate> templates,
-			PlaceSlotProvider.ParsedResult slotProviders,
-			Map<ResourceLocation, SlotLink> slotLinks,
-			PlaceChoices.ParsedResult placeChoices,
+			PlaceSlotProvider.Preparation slotProviders,
+			SlotLink.Preparation slotLinks,
+			PlaceChoices.Preparation placeChoices,
 			Map<ResourceLocation, KBlockDefinition> blocks,
 			MapCodec<Optional<KMaterial>> materialCodec) {
-		public static BlockFundamentals reload(ResourceManager resourceManager) {
+		public static BlockFundamentals reload(ResourceManager resourceManager, boolean booting) {
 			var materials = OneTimeLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
 			MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.strictOptionalField(LoaderExtraCodecs.simpleByNameCodec(
 					materials), "material");
 			var templates = OneTimeLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
-			templates.forEach((key, value) -> value.resolve(key));
-			var slotProviders = PlaceSlotProvider.reload(resourceManager, templates);
-			boolean isDataGen = Platform.isDataGen();
-			Map<ResourceLocation, SlotLink> slotLinks = isDataGen ? Map.of() : OneTimeLoader.load(
+			if (booting) {
+				templates.forEach((key, value) -> value.resolve(key));
+			}
+			var slotProviders = PlaceSlotProvider.Preparation.of(() -> OneTimeLoader.load(
+					resourceManager,
+					"kiwi/place_slot/provider",
+					PlaceSlotProvider.CODEC), templates);
+			var slotLinks = SlotLink.Preparation.of(() -> OneTimeLoader.load(
 					resourceManager,
 					"kiwi/place_slot/link",
-					SlotLink.CODEC);
-			SlotLink.clear();
-			slotLinks.values().forEach(SlotLink::register);
-			var placeChoices = PlaceChoices.ParsedResult.of(isDataGen ? Map.of() : OneTimeLoader.load(
+					SlotLink.CODEC), slotProviders);
+			var placeChoices = PlaceChoices.Preparation.of(() -> OneTimeLoader.load(
 					resourceManager,
 					"kiwi/place_slot/choices",
 					PlaceChoices.CODEC), templates);

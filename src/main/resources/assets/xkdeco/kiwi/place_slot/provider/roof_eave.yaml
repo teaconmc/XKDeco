@@ -44,6 +44,13 @@ slots:
         tag:
           - '*roof_eave:side'
   - when:
+      shape: right_end
+      facing: north
+    sides:
+      west:
+        tag:
+          - '*roof_eave:side'
+  - when:
       shape: inner
       facing: north
       half: lower
