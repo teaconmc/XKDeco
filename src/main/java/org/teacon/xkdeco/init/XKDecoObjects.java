@@ -41,8 +41,6 @@ public final class XKDecoObjects {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, XKDeco.ID);
 
 	public static final String WALL_BLOCK_ENTITY = "mimic_wall";
-	public static final String STOOL_SUFFIX = "_stool";
-	public static final String CHAIR_SUFFIX = "_chair";
 
 	private static final ResourceKey<CreativeModeTab> STRUCTURE_TAB_KEY = ResourceKey.create(
 			Registries.CREATIVE_MODE_TAB,

@@ -1,10 +1,7 @@
 package org.teacon.xkdeco.entity;
 
-import java.util.Objects;
-
-import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.CustomFeatureTags;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
-import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -26,7 +23,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -125,12 +121,7 @@ public final class CushionEntity extends Entity {
 	}
 
 	private static boolean canBlockBeSeated(BlockState state) {
-		var name = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(state.getBlock()));
-		if (XKDeco.ID.equals(name.getNamespace())) {
-			var id = name.getPath();
-			return id.contains(XKDecoObjects.CHAIR_SUFFIX) || id.contains(XKDecoObjects.STOOL_SUFFIX);
-		}
-		return false;
+		return state.is(CustomFeatureTags.SITTABLE);
 	}
 
 	public static void onBreakBlock(BlockEvent.BreakEvent event) {

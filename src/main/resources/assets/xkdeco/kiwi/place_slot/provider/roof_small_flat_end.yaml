@@ -1,0 +1,28 @@
+target: '@xkdeco:roof_small_flat_end'
+tag:
+  - '@half'
+  - '@facing'
+transform_with: facing
+slots:
+  - when:
+      facing: north
+    sides:
+      north:
+        tag:
+          - '*roof_flat:side'
+      west:
+        tag:
+          - '*roof_small_flat_end:side'
+      east:
+        tag:
+          - '*roof_small_flat_end:side'
+  - when:
+      facing: north
+      half: lower
+    sides:
+      west:
+        tag:
+          - '*roof_small_flat_end:slow_end_base'
+      east:
+        tag:
+          - '*roof_small_flat_end:slow_end_base'

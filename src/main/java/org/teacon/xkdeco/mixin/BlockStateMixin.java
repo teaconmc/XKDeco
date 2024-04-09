@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.Kiwi;
 
 @Mixin(BlockBehaviour.BlockStateBase.class)
 public abstract class BlockStateMixin {
@@ -96,6 +97,10 @@ public abstract class BlockStateMixin {
 			boolean pMovedByPiston,
 			Operation<Void> original) {
 		original.call(block, oldState, level, pos, newState, pMovedByPiston);
-		PlacementSystem.onBlockRemoved(level, pos, oldState, newState);
+		try {
+			PlacementSystem.onBlockRemoved(level, pos, oldState, newState);
+		} catch (Throwable t) {
+			Kiwi.LOGGER.error("Failed to handle placement for %s".formatted(oldState), t);
+		}
 	}
 }

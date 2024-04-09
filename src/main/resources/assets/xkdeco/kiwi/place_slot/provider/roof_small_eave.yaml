@@ -43,6 +43,21 @@ slots:
       east:
         tag:
           - '*roof_small_eave:side'
+      north:
+        tag:
+          - '*roof_small_flat_end:side'
+          - '@facing:east'
+  - when:
+      shape: right_end
+      facing: north
+    sides:
+      west:
+        tag:
+          - '*roof_small_eave:side'
+      north:
+        tag:
+          - '*roof_small_flat_end:side'
+          - '@facing:west'
   - when:
       shape: inner
       facing: north

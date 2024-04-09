@@ -1,5 +1,5 @@
 from: '*roof_flat:front'
-to: '*roof_flat:front'
+to: '*roof_small_eave:back'
 interest: 20
 test_tag:
   - half
