@@ -8,8 +8,8 @@ on_link:
   from:
     set_properties:
       variant: slow
-      half: lower
+      half: upper
   to:
     set_properties:
       variant: slow
-      half: upper
+      half: lower
