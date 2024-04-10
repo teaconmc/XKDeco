@@ -8,6 +8,7 @@
     "xkdeco:blue_tile_slab",
     "xkdeco:cobblestone_path_slab",
     "xkdeco:copper_tile_slab",
+    "xkdeco:crimson_nylium_slab",
     "xkdeco:crossed_mud_wall_slab",
     "xkdeco:crying_obsidian_brick_slab",
     "xkdeco:cut_bronze_block_slab",
@@ -19,6 +20,7 @@
     "xkdeco:deepslate_pavement_slab",
     "xkdeco:dirt_cobblestone_path_slab",
     "xkdeco:dirt_cobblestone_slab",
+    "xkdeco:dirt_path_slab",
     "xkdeco:dirt_slab",
     "xkdeco:dirty_mud_wall_slab",
     "xkdeco:end_stone_slab",
@@ -29,6 +31,7 @@
     "xkdeco:gilded_blackstone_brick_slab",
     "xkdeco:glass_tile_slab",
     "xkdeco:gold_brick_slab",
+    "xkdeco:grass_block_slab",
     "xkdeco:grass_cobblestone_path_slab",
     "xkdeco:grass_cobblestone_slab",
     "xkdeco:green_tile_slab",
@@ -46,7 +49,9 @@
     "xkdeco:maya_stonebrick_slab",
     "xkdeco:mossy_deepslate_brick_slab",
     "xkdeco:mud_wall_slab",
+    "xkdeco:mycelium_slab",
     "xkdeco:netherrack_slab",
+    "xkdeco:podzol_slab",
     "xkdeco:polished_red_sandstone_slab",
     "xkdeco:polished_sandstone_slab",
     "xkdeco:quartz_glass_slab",
@@ -67,6 +72,7 @@
     "xkdeco:translucent_lamp_slab",
     "xkdeco:varnished_log_slab",
     "xkdeco:varnished_slab",
+    "xkdeco:warped_nylium_slab",
     "xkdeco:yellow_tile_slab"
   ]
 }

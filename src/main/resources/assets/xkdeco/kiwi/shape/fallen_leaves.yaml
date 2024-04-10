@@ -1,0 +1,6 @@
+type: choices
+keys:
+  - half
+choices:
+  lower: empty
+  upper: carpet

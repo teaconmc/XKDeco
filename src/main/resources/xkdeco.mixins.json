@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "org.teacon.xkdeco.mixin",
+	"package": "snownee.kiwi.customization.mixin",
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [

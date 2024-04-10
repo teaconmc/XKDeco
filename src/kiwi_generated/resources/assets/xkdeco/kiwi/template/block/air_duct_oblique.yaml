@@ -9,8 +9,8 @@ properties:
     properties:
     - name: half
       values:
-      - upper
       - lower
+      - upper
   shape: xkdeco:air_duct_oblique
   interaction_shape: block
   no_occlusion: true

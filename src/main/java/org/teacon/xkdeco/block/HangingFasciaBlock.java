@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.util.NotNullByDefault;
+import snownee.kiwi.customization.util.NotNullByDefault;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import snownee.kiwi.customization.block.BasicBlock;
 
 @NotNullByDefault
 public class HangingFasciaBlock extends BasicBlock {

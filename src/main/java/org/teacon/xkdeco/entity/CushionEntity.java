@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.entity;
 
-import org.teacon.xkdeco.block.CustomFeatureTags;
+import snownee.kiwi.customization.CustomFeatureTags;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;

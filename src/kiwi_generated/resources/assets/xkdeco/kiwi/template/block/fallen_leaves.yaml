@@ -2,6 +2,13 @@ type: simple
 class: org.teacon.xkdeco.block.FallenLeavesBlock
 properties:
   render_type: cutout_mipped
+  components:
+  - type: simple
+    properties:
+    - name: half
+      values:
+      - upper
+      - lower
   shape: xkdeco:fallen_leaves
   no_collision: true
   no_occlusion: true

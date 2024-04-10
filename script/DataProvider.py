@@ -15,7 +15,7 @@ class DataProvider:
         self.exportFormat = pack.config['export_format']
         self.count = 0
 
-    def writeFile(self, file: ResourceLocation, data: dict):
+    def writeFile(self, file: ResourceLocation, data: any):
         file = self.pack.toAbsPath(self.dataPath, file, '.' + self.exportFormat)
         Path(file).parent.mkdir(parents=True, exist_ok=True)
         with open(file, 'w', encoding='utf-8') as f:

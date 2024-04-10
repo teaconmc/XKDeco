@@ -2,9 +2,11 @@ package org.teacon.xkdeco.util;
 
 import java.util.List;
 
-import org.teacon.xkdeco.block.command.ExportBlocksCommand;
-import org.teacon.xkdeco.block.command.ExportCreativeTabsCommand;
-import org.teacon.xkdeco.block.command.ReloadSlotsCommand;
+import snownee.kiwi.customization.command.ExportBlocksCommand;
+import snownee.kiwi.customization.command.ExportCreativeTabsCommand;
+import snownee.kiwi.customization.command.ExportShapesCommand;
+import snownee.kiwi.customization.command.ReloadBlockSettingsCommand;
+import snownee.kiwi.customization.command.ReloadSlotsCommand;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
@@ -78,28 +80,14 @@ public final class ClientProxy {
 				}
 			});
 		});
-//		modEventBus.addListener((FMLClientSetupEvent event) -> {
-//			event.enqueueWork(() -> {
-////				for (String s : List.of("")) {
-////					RenderType cutout = RenderType.cutout();
-////					ItemBlockRenderTypes.setRenderLayer(BuiltInRegistries.BLOCK.get(XKDeco.id(s)), cutout);
-////				}
-//
-//				//TODO temporary implementation. data-gen it in the future
-//				for (RegistryObject<Block> registryObject : XKDecoObjects.BLOCKS.getEntries()) {
-//					Block block = registryObject.get();
-//					if (block instanceof DoorBlock || block instanceof TrapDoorBlock) {
-//						ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-//					}
-//				}
-//			});
-//		});
 
 		var forgeEventBus = MinecraftForge.EVENT_BUS;
 		forgeEventBus.addListener((RegisterCommandsEvent event) -> {
 			ExportBlocksCommand.register(event.getDispatcher());
+			ExportShapesCommand.register(event.getDispatcher());
 			ExportCreativeTabsCommand.register(event.getDispatcher());
 			ReloadSlotsCommand.register(event.getDispatcher());
+			ReloadBlockSettingsCommand.register(event.getDispatcher());
 		});
 	}
 

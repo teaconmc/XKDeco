@@ -5,9 +5,6 @@
 	"translation_dest": "%TEMP%/assets/xkdeco_extra/lang",
 	"json_pretty_print": false,
 	"export_format": "yaml",
-	"move_files": [
-		"D:/Downloads/xkdeco.xlsx"
-	],
 	"materials": [
 		"xkdeco.xlsx"
 	],
@@ -22,5 +19,8 @@
 	],
 	"creative_tabs": [
 		"xkdeco.xlsx"
+	],
+	"shapes": [
+		"exported_shapes.json"
 	]
 }

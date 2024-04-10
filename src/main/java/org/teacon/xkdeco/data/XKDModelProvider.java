@@ -21,10 +21,10 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
-import org.teacon.xkdeco.block.loader.KBlockComponents;
-import org.teacon.xkdeco.block.setting.KBlockSettings;
-import org.teacon.xkdeco.block.setting.LayeredComponent;
-import org.teacon.xkdeco.util.NotNullByDefault;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.component.LayeredComponent;
+import snownee.kiwi.customization.util.NotNullByDefault;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
@@ -541,8 +541,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
 				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 

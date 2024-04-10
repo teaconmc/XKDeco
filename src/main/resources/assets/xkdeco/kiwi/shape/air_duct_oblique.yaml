@@ -1,0 +1,10 @@
+type: choices
+keys:
+  - half
+choices:
+  lower:
+    type: horizontal
+    north: xkdeco:air_duct_oblique_lower
+  upper:
+    type: horizontal
+    north: xkdeco:air_duct_oblique_upper

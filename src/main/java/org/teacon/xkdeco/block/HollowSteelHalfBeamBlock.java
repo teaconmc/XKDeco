@@ -1,7 +1,7 @@
 package org.teacon.xkdeco.block;
 
-import org.teacon.xkdeco.block.setting.CheckedWaterloggedBlock;
-import org.teacon.xkdeco.util.NotNullByDefault;
+import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
+import snownee.kiwi.customization.util.NotNullByDefault;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
