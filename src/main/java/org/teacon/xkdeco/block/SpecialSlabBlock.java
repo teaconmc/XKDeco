@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.loader.BlockCodecs;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;

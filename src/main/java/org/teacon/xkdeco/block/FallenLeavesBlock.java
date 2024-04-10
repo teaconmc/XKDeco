@@ -1,8 +1,8 @@
 package org.teacon.xkdeco.block;
 
 import org.jetbrains.annotations.NotNull;
-import org.teacon.xkdeco.util.NotNullByDefault;
-import org.teacon.xkdeco.util.StringProperty;
+import snownee.kiwi.customization.util.NotNullByDefault;
+import snownee.kiwi.customization.block.StringProperty;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,7 +12,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.SlabType;
 
 @NotNullByDefault
@@ -21,12 +20,6 @@ public final class FallenLeavesBlock extends Block {
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(this.stateDefinition.any().setValue(HALF, "upper"));
-	}
-
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(HALF);
 	}
 
 	@Override
@@ -38,7 +31,7 @@ public final class FallenLeavesBlock extends Block {
 			BlockPos pPos,
 			BlockPos pNeighborPos) {
 		if (pDirection == Direction.DOWN) {
-			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? "upper" : "lower");
+			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? "lower" : "upper");
 		}
 		return pState;
 	}
@@ -46,7 +39,7 @@ public final class FallenLeavesBlock extends Block {
 	@Override
 	public @NotNull BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState blockState = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
-		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? "upper" : "lower");
+		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? "lower" : "upper");
 	}
 
 	private static boolean isBottomSlab(BlockState state) {

@@ -11,26 +11,28 @@ import java.util.function.Consumer;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
-import org.teacon.xkdeco.block.behavior.BlockBehaviorRegistry;
-import org.teacon.xkdeco.block.loader.BlockCodecs;
-import org.teacon.xkdeco.block.loader.KBlockDefinition;
-import org.teacon.xkdeco.block.loader.KBlockTemplate;
-import org.teacon.xkdeco.block.loader.KCreativeTab;
-import org.teacon.xkdeco.block.loader.KMaterial;
-import org.teacon.xkdeco.block.loader.LoaderExtraCodecs;
-import org.teacon.xkdeco.block.loader.LoaderExtraRegistries;
-import org.teacon.xkdeco.block.place.PlaceChoices;
-import org.teacon.xkdeco.block.place.PlaceSlotProvider;
-import org.teacon.xkdeco.block.place.PlacementSystem;
-import org.teacon.xkdeco.block.place.SlotLink;
-import org.teacon.xkdeco.block.setting.BlockRenderSettings;
-import org.teacon.xkdeco.block.setting.KBlockComponent;
-import org.teacon.xkdeco.block.setting.KBlockSettings;
+import snownee.kiwi.customization.block.behavior.BlockBehaviorRegistry;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
+import snownee.kiwi.customization.block.loader.KBlockDefinition;
+import snownee.kiwi.customization.block.loader.KBlockTemplate;
+import snownee.kiwi.customization.block.loader.KCreativeTab;
+import snownee.kiwi.customization.block.loader.KMaterial;
+import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
+import snownee.kiwi.customization.place.PlaceChoices;
+import snownee.kiwi.customization.place.PlaceSlotProvider;
+import snownee.kiwi.customization.place.PlacementSystem;
+import snownee.kiwi.customization.place.SlotLink;
+import snownee.kiwi.customization.block.BlockRenderSettings;
+import snownee.kiwi.customization.block.component.KBlockComponent;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.shape.ShapeStorage;
+import snownee.kiwi.customization.shape.UnbakedShapeCodec;
 import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
-import org.teacon.xkdeco.util.resource.OneTimeLoader;
-import org.teacon.xkdeco.util.resource.RequiredFolderRepositorySource;
+import snownee.kiwi.customization.util.resource.OneTimeLoader;
+import snownee.kiwi.customization.util.resource.RequiredFolderRepositorySource;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
@@ -198,7 +200,7 @@ public class CommonProxy {
 		ResourceManager resourceManager = collectKiwiPacks();
 		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager, true);
 		fundamentals.blocks().forEach((id, definition) -> {
-			Block block = definition.createBlock(id);
+			Block block = definition.createBlock(id, fundamentals.shapes);
 			if (block != null) {
 				ForgeRegistries.BLOCKS.register(id, block);
 				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
@@ -238,6 +240,7 @@ public class CommonProxy {
 			PlaceSlotProvider.Preparation slotProviders,
 			SlotLink.Preparation slotLinks,
 			PlaceChoices.Preparation placeChoices,
+			ShapeStorage shapes,
 			Map<ResourceLocation, KBlockDefinition> blocks,
 			MapCodec<Optional<KMaterial>> materialCodec) {
 		public static BlockFundamentals reload(ResourceManager resourceManager, boolean booting) {
@@ -260,11 +263,15 @@ public class CommonProxy {
 					resourceManager,
 					"kiwi/place_slot/choices",
 					PlaceChoices.CODEC), templates);
+			var shapes = ShapeStorage.reload(() -> OneTimeLoader.load(
+					resourceManager,
+					"kiwi/shape",
+					new UnbakedShapeCodec()));
 			var blocks = OneTimeLoader.load(
 					resourceManager,
 					"kiwi/block",
 					KBlockDefinition.codec(templates, materialCodec));
-			return new BlockFundamentals(materials, templates, slotProviders, slotLinks, placeChoices, blocks, materialCodec);
+			return new BlockFundamentals(materials, templates, slotProviders, slotLinks, placeChoices, shapes, blocks, materialCodec);
 		}
 	}
 

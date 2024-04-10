@@ -3,7 +3,7 @@ package org.teacon.xkdeco.block;
 import java.util.List;
 
 import org.teacon.xkdeco.util.RoofUtil;
-import org.teacon.xkdeco.util.StringProperty;
+import snownee.kiwi.customization.block.StringProperty;
 
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;

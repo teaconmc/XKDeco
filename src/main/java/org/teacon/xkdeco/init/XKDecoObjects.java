@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
-import org.teacon.xkdeco.block.loader.KBlockComponents;
-import org.teacon.xkdeco.block.setting.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
+import snownee.kiwi.customization.block.KBlockSettings;
 import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.google.common.collect.Lists;

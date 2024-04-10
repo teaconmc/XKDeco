@@ -1,0 +1,4 @@
+type: six_way
+base: xkdeco:air_duct_base
+true_down: empty
+false_down: xkdeco:air_duct_side

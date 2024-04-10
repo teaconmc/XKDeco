@@ -3,9 +3,9 @@ package org.teacon.xkdeco.data;
 import java.util.stream.IntStream;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.loader.KBlockComponents;
-import org.teacon.xkdeco.block.setting.KBlockSettings;
-import org.teacon.xkdeco.block.setting.LayeredComponent;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.component.LayeredComponent;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;

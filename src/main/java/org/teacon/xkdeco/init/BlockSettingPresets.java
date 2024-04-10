@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.init;
 
-import org.teacon.xkdeco.block.setting.KBlockSettings;
+import snownee.kiwi.customization.block.KBlockSettings;
 
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;

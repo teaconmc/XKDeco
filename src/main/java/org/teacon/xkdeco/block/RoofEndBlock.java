@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.teacon.xkdeco.util.RoofUtil;
 import org.teacon.xkdeco.util.RoofUtil.RoofShape;
-import org.teacon.xkdeco.util.StringProperty;
+import snownee.kiwi.customization.block.StringProperty;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

@@ -5,9 +5,9 @@ import static org.teacon.xkdeco.block.XKDStateProperties.DIRECTION_PROPERTIES;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
-import org.teacon.xkdeco.block.place.PlaceSlot;
+import snownee.kiwi.customization.place.PlaceSlot;
 import org.teacon.xkdeco.util.CommonProxy;
-import org.teacon.xkdeco.util.NotNullByDefault;
+import snownee.kiwi.customization.util.NotNullByDefault;
 
 import com.google.common.collect.Lists;
 
