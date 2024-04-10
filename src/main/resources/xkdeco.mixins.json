@@ -15,6 +15,7 @@
 		"PlayerMixin",
 		"data.BlockFamilyProviderMixin",
 		"data.RecipeProviderMixin",
+		"family.RecipeManagerMixin",
 		"forge.BlockMixin",
 		"forge.GameDataMixin",
 		"property_inject.BlockMixin",

@@ -7,13 +7,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.customization.block.loader.Holder;
+
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.loader.KHolder;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.duck.KBlockProperties;
-import org.teacon.xkdeco.util.CommonProxy;
 import snownee.kiwi.customization.util.codec.CompactListCodec;
 
 import com.google.common.collect.Maps;
@@ -44,16 +45,16 @@ public record PlaceChoices(
 
 	public record Preparation(
 			Map<ResourceLocation, PlaceChoices> choices,
-			Map<KBlockTemplate, Holder<PlaceChoices>> byTemplate,
-			Map<ResourceLocation, Holder<PlaceChoices>> byBlock) {
+			Map<KBlockTemplate, KHolder<PlaceChoices>> byTemplate,
+			Map<ResourceLocation, KHolder<PlaceChoices>> byBlock) {
 		public static Preparation of(
 				Supplier<Map<ResourceLocation, PlaceChoices>> choicesSupplier,
 				Map<ResourceLocation, KBlockTemplate> templates) {
 			Map<ResourceLocation, PlaceChoices> choices = Platform.isDataGen() ? Map.of() : choicesSupplier.get();
-			Map<KBlockTemplate, Holder<PlaceChoices>> byTemplate = Maps.newHashMap();
-			Map<ResourceLocation, Holder<PlaceChoices>> byBlock = Maps.newHashMap();
+			Map<KBlockTemplate, KHolder<PlaceChoices>> byTemplate = Maps.newHashMap();
+			Map<ResourceLocation, KHolder<PlaceChoices>> byBlock = Maps.newHashMap();
 			for (var entry : choices.entrySet()) {
-				Holder<PlaceChoices> holder = new Holder<>(entry.getKey(), entry.getValue());
+				KHolder<PlaceChoices> holder = new KHolder<>(entry.getKey(), entry.getValue());
 				for (PlaceTarget target : holder.value().target) {
 					switch (target.type()) {
 						case TEMPLATE -> {
@@ -62,13 +63,13 @@ public record PlaceChoices(
 								Kiwi.LOGGER.error("Template {} not found for place choices {}", target.id(), holder);
 								continue;
 							}
-							Holder<PlaceChoices> oldChoices = byTemplate.put(template, holder);
+							KHolder<PlaceChoices> oldChoices = byTemplate.put(template, holder);
 							if (oldChoices != null) {
 								Kiwi.LOGGER.error("Duplicate place choices for template {}: {} and {}", template, oldChoices, holder);
 							}
 						}
 						case BLOCK -> {
-							Holder<PlaceChoices> oldChoices = byBlock.put(target.id(), holder);
+							KHolder<PlaceChoices> oldChoices = byBlock.put(target.id(), holder);
 							if (oldChoices != null) {
 								Kiwi.LOGGER.error("Duplicate place choices for block {}: {} and {}", target.id(), oldChoices, holder);
 							}
@@ -80,7 +81,7 @@ public record PlaceChoices(
 		}
 
 		public boolean attachChoicesA(Block block, KBlockDefinition definition) {
-			Holder<PlaceChoices> choices = byTemplate.get(definition.template().template());
+			KHolder<PlaceChoices> choices = byTemplate.get(definition.template().template());
 			setTo(block, choices);
 			return choices != null;
 		}
@@ -100,7 +101,7 @@ public record PlaceChoices(
 		}
 	}
 
-	public static void setTo(Block block, @Nullable Holder<PlaceChoices> holder) {
+	public static void setTo(Block block, @Nullable KHolder<PlaceChoices> holder) {
 		KBlockSettings settings = KBlockSettings.of(block);
 		if (settings == null && holder != null) {
 			((KBlockProperties) block.properties).kiwi$setSettings(settings = KBlockSettings.empty());
@@ -137,7 +138,7 @@ public record PlaceChoices(
 				//noinspection SwitchStatementWithTooFewBranches
 				boolean pass = switch (this.type) {
 					case "has_tags" -> {
-						for (Direction direction : CommonProxy.DIRECTIONS) {
+						for (Direction direction : CustomizationHooks.DIRECTIONS) {
 							Collection<PlaceSlot> slots = PlaceSlot.find(targetState, direction);
 							for (PlaceSlot slot : slots) {
 								if (slot.hasTag(resolvedTag)) {

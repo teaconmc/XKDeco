@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 import org.teacon.xkdeco.XKDeco;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
@@ -18,7 +17,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -30,8 +28,7 @@ import net.minecraft.world.level.block.SpreadingSnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -40,9 +37,6 @@ public class SpecialSlabBlock extends SlabBlock {
 			BlockCodecs.propertiesCodec(),
 			StringRepresentable.fromEnum(Type::values).fieldOf("type").forGetter(block -> block.type)
 	).apply(instance, SpecialSlabBlock::new));
-	private static final VoxelShape PATH_TOP_AABB = Block.box(0, 8, 0, 16, 15, 16);
-	private static final VoxelShape PATH_BOTTOM_AABB = Block.box(0, 0, 0, 16, 7, 16);
-	private static final VoxelShape PATH_DOUBLE_AABB = Block.box(0, 0, 0, 16, 15, 16);
 	private static final Supplier<Block> DIRT_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.get(XKDeco.id("dirt_slab")));
 	private static final Supplier<Block> NETHERRACK_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.get(XKDeco.id("netherrack_slab")));
 
@@ -56,18 +50,6 @@ public class SpecialSlabBlock extends SlabBlock {
 	@Override
 	public boolean useShapeForLightOcclusion(BlockState state) {
 		return type == Type.PATH || super.useShapeForLightOcclusion(state);
-	}
-
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		if (type == Type.PATH) {
-			return switch (state.getValue(TYPE)) {
-				case TOP -> PATH_TOP_AABB;
-				case BOTTOM -> PATH_BOTTOM_AABB;
-				case DOUBLE -> PATH_DOUBLE_AABB;
-			};
-		}
-		return super.getShape(state, level, pos, context);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
-import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 
@@ -40,10 +40,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ExportCreativeTabsCommand {
 
-	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands
-				.literal("exportCreativeTabs")
-				.requires(source -> source.hasPermission(2))
+	public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
+		builder.then(Commands
+				.literal("creative_tabs")
 				.then(Commands.argument("signPos", BlockPosArgument.blockPos())
 						.executes(ctx -> exportCreativeTabs(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "signPos")))));
 	}

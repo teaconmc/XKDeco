@@ -4,10 +4,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import snownee.kiwi.customization.block.BasicBlock;
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.duck.KBlockProperties;
-
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -26,6 +22,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import snownee.kiwi.customization.block.BasicBlock;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.duck.KBlockProperties;
 
 public class BlockCodecs {
 	private static final Map<ResourceLocation, MapCodec<Block>> CODECS = Maps.newHashMap();
@@ -58,9 +57,7 @@ public class BlockCodecs {
 		}
 	};
 
-	public static final MapCodec<Block> BLOCK = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			propertiesCodec()
-	).apply(instance, SIMPLE_BLOCK_FACTORY));
+	public static final MapCodec<Block> BLOCK = simpleCodec(SIMPLE_BLOCK_FACTORY);
 
 	public static final MapCodec<StairBlock> STAIR = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BlockState.CODEC.optionalFieldOf("base_state", Blocks.AIR.defaultBlockState()).forGetter(block -> block.baseState),

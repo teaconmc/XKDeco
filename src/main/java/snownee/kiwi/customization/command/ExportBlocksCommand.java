@@ -17,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 
@@ -85,10 +85,9 @@ public class ExportBlocksCommand {
 		return new Yaml(dumperOptions);
 	});
 
-	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands
-				.literal("exportBlocks")
-				.requires(source -> source.hasPermission(2))
+	public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
+		builder.then(Commands
+				.literal("blocks")
 				.executes(ctx -> exportBlocks(
 						ctx.getSource(),
 						BuiltInRegistries.ITEM.getKey(ctx.getSource().getPlayerOrException().getMainHandItem().getItem()).getNamespace()))
