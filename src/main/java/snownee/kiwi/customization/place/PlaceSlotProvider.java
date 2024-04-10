@@ -12,11 +12,12 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.mutable.MutableObject;
-import snownee.kiwi.customization.block.loader.Holder;
+
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.loader.KHolder;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
-import org.teacon.xkdeco.util.CommonProxy;
 import snownee.kiwi.customization.block.KBlockUtils;
 import snownee.kiwi.customization.util.codec.CompactListCodec;
 
@@ -92,8 +93,8 @@ public record PlaceSlotProvider(
 
 	public record Preparation(
 			Map<ResourceLocation, PlaceSlotProvider> providers,
-			ListMultimap<KBlockTemplate, Holder<PlaceSlotProvider>> byTemplate,
-			ListMultimap<ResourceLocation, Holder<PlaceSlotProvider>> byBlock,
+			ListMultimap<KBlockTemplate, KHolder<PlaceSlotProvider>> byTemplate,
+			ListMultimap<ResourceLocation, KHolder<PlaceSlotProvider>> byBlock,
 			ListMultimap<Pair<BlockState, Direction>, PlaceSlot> slots,
 			Interner<PlaceSlot> slotInterner,
 			Set<Block> accessedBlocks,
@@ -102,10 +103,10 @@ public record PlaceSlotProvider(
 				Supplier<Map<ResourceLocation, PlaceSlotProvider>> providersSupplier,
 				Map<ResourceLocation, KBlockTemplate> templates) {
 			Map<ResourceLocation, PlaceSlotProvider> providers = Platform.isDataGen() ? Map.of() : providersSupplier.get();
-			ListMultimap<KBlockTemplate, Holder<PlaceSlotProvider>> byTemplate = ArrayListMultimap.create();
-			ListMultimap<ResourceLocation, Holder<PlaceSlotProvider>> byBlock = ArrayListMultimap.create();
+			ListMultimap<KBlockTemplate, KHolder<PlaceSlotProvider>> byTemplate = ArrayListMultimap.create();
+			ListMultimap<ResourceLocation, KHolder<PlaceSlotProvider>> byBlock = ArrayListMultimap.create();
 			for (var entry : providers.entrySet()) {
-				Holder<PlaceSlotProvider> holder = new Holder<>(entry.getKey(), entry.getValue());
+				KHolder<PlaceSlotProvider> holder = new KHolder<>(entry.getKey(), entry.getValue());
 				for (PlaceTarget target : holder.value().target) {
 					switch (target.type()) {
 						case TEMPLATE -> {
@@ -135,7 +136,7 @@ public record PlaceSlotProvider(
 			if (!accessedBlocks.add(block)) {
 				return;
 			}
-			for (Holder<PlaceSlotProvider> holder : byTemplate.get(definition.template().template())) {
+			for (KHolder<PlaceSlotProvider> holder : byTemplate.get(definition.template().template())) {
 				try {
 					holder.value().attachSlots(this, block);
 				} catch (Exception e) {
@@ -151,7 +152,7 @@ public record PlaceSlotProvider(
 					Kiwi.LOGGER.error("Block %s not found for slot providers %s".formatted(blockId, holders));
 					return;
 				}
-				for (Holder<PlaceSlotProvider> holder : holders) {
+				for (KHolder<PlaceSlotProvider> holder : holders) {
 					try {
 						holder.value().attachSlots(this, block);
 					} catch (Exception e) {
@@ -190,7 +191,7 @@ public record PlaceSlotProvider(
 				if (!slot.when.isEmpty() && slot.when.stream().noneMatch(predicate -> predicate.test(blockState))) {
 					continue;
 				}
-				for (Direction direction : CommonProxy.DIRECTIONS) {
+				for (Direction direction : CustomizationHooks.DIRECTIONS) {
 					Side side = slot.sides.get(direction);
 					if (side == null) {
 						continue;
@@ -228,7 +229,7 @@ public record PlaceSlotProvider(
 			if (rotation == null) {
 				throw new IllegalStateException("Invalid direction: " + newDirection);
 			}
-			for (Direction direction : CommonProxy.DIRECTIONS) {
+			for (Direction direction : CustomizationHooks.DIRECTIONS) {
 				Side side = slot.sides.get(direction);
 				if (side == null) {
 					continue;

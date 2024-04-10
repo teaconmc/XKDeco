@@ -11,10 +11,11 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
+
+import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.duck.KPlayer;
 import snownee.kiwi.customization.network.SSyncPlaceCountPacket;
-import org.teacon.xkdeco.util.CommonProxy;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -153,7 +154,7 @@ public class PlacementSystem {
 		List<SlotLink.MatchResult> results = null;
 		List<Vec3i> offsets = null;
 		BitSet uprightStatus = null;
-		for (Direction side : CommonProxy.DIRECTIONS) {
+		for (Direction side : CustomizationHooks.DIRECTIONS) {
 			Collection<PlaceSlot> theirSlots = theirSlotsMap.get(side);
 			if (theirSlots == null) {
 				continue;
@@ -205,7 +206,7 @@ public class PlacementSystem {
 			return;
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
-		for (Direction direction : CommonProxy.DIRECTIONS) {
+		for (Direction direction : CustomizationHooks.DIRECTIONS) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
 			if (PlaceSlot.hasNoSlots(neighborState.getBlock())) {
 				continue;

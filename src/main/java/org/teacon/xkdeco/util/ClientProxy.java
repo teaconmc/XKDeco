@@ -2,11 +2,6 @@ package org.teacon.xkdeco.util;
 
 import java.util.List;
 
-import snownee.kiwi.customization.command.ExportBlocksCommand;
-import snownee.kiwi.customization.command.ExportCreativeTabsCommand;
-import snownee.kiwi.customization.command.ExportShapesCommand;
-import snownee.kiwi.customization.command.ReloadBlockSettingsCommand;
-import snownee.kiwi.customization.command.ReloadSlotsCommand;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
@@ -35,9 +30,7 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @MethodsReturnNonnullByDefault
@@ -79,15 +72,6 @@ public final class ClientProxy {
 					return new UnbakedGeometryWrapper(new AirDuctModel(straight, corner, cover, frame));
 				}
 			});
-		});
-
-		var forgeEventBus = MinecraftForge.EVENT_BUS;
-		forgeEventBus.addListener((RegisterCommandsEvent event) -> {
-			ExportBlocksCommand.register(event.getDispatcher());
-			ExportShapesCommand.register(event.getDispatcher());
-			ExportCreativeTabsCommand.register(event.getDispatcher());
-			ReloadSlotsCommand.register(event.getDispatcher());
-			ReloadBlockSettingsCommand.register(event.getDispatcher());
 		});
 	}
 

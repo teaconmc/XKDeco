@@ -5,8 +5,9 @@ import static org.teacon.xkdeco.block.XKDStateProperties.DIRECTION_PROPERTIES;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
+
+import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.place.PlaceSlot;
-import org.teacon.xkdeco.util.CommonProxy;
 import snownee.kiwi.customization.util.NotNullByDefault;
 
 import com.google.common.collect.Lists;
@@ -96,7 +97,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 		BlockPos pos = pContext.getClickedPos();
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayList();
-		for (Direction direction : CommonProxy.DIRECTIONS) {
+		for (Direction direction : CustomizationHooks.DIRECTIONS) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
 			if (isAirDuctSlot(neighborState, direction.getOpposite())) {
 				neighbors.add(direction);
@@ -128,7 +129,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayListWithExpectedSize(2);
-		for (Direction direction : CommonProxy.DIRECTIONS) {
+		for (Direction direction : CustomizationHooks.DIRECTIONS) {
 			if (direction == pDirection) {
 				continue;
 			}
@@ -141,7 +142,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 			}
 		}
 		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.get(0);
-		for (Direction direction : CommonProxy.DIRECTIONS) {
+		for (Direction direction : CustomizationHooks.DIRECTIONS) {
 			blockState = blockState.setValue(
 					DIRECTION_PROPERTIES.get(direction.get3DDataValue()),
 					direction == pDirection || direction == theOtherDirection);

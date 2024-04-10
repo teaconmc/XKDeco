@@ -2,13 +2,9 @@ package snownee.kiwi.customization.command;
 
 import java.util.Set;
 
-import snownee.kiwi.customization.block.loader.KBlockDefinition;
-import snownee.kiwi.customization.block.KBlockSettings;
-import org.teacon.xkdeco.util.CommonProxy;
-
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Sets;
-import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -17,19 +13,22 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.BlockFundamentals;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockDefinition;
 
 public class ReloadBlockSettingsCommand {
 
-	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands
-				.literal("reloadBlockSettings")
-				.requires(source -> source.hasPermission(2))
+	public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
+		builder.then(Commands
+				.literal("block_settings")
 				.executes(ctx -> reloadSlots(ctx.getSource())));
 	}
 
 	private static int reloadSlots(CommandSourceStack source) {
 		Stopwatch stopwatch = Stopwatch.createStarted();
-		CommonProxy.BlockFundamentals fundamentals = CommonProxy.BlockFundamentals.reload(CommonProxy.collectKiwiPacks(), false);
+		BlockFundamentals fundamentals = BlockFundamentals.reload(CustomizationHooks.collectKiwiPacks(), false);
 		long parseTime = stopwatch.elapsed().toMillis();
 		stopwatch.reset().start();
 		Set<Block> set = Sets.newHashSet();

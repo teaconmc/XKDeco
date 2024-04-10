@@ -5,30 +5,29 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
-import snownee.kiwi.customization.shape.ShapeGenerator;
-import snownee.kiwi.customization.shape.UnbakedShapeCodec;
-import org.teacon.xkdeco.util.CommonProxy;
-
 import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
-import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.BlockFundamentals;
+import snownee.kiwi.customization.shape.ShapeGenerator;
+import snownee.kiwi.customization.shape.UnbakedShapeCodec;
 
 public class ExportShapesCommand {
-	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands
-				.literal("exportShapes")
-				.requires(source -> source.hasPermission(2))
+	public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
+		builder.then(Commands
+				.literal("shapes")
 				.executes(ctx -> exportShapes(ctx.getSource())));
 	}
 
 	private static int exportShapes(CommandSourceStack source) {
 		Map<String, String> data = Maps.newTreeMap();
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("exported_shapes.json"))) {
-			CommonProxy.BlockFundamentals fundamentals = CommonProxy.BlockFundamentals.reload(CommonProxy.collectKiwiPacks(), false);
+			BlockFundamentals fundamentals = BlockFundamentals.reload(CustomizationHooks.collectKiwiPacks(), false);
 			fundamentals.shapes().forEach((key, value) -> {
 				if (value.getClass() != ShapeGenerator.Unit.class) {
 					return;
