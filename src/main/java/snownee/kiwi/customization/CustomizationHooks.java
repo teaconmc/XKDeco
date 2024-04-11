@@ -227,18 +227,7 @@ public final class CustomizationHooks {
 			}
 		});
 		if (Platform.isPhysicalClient()) {
-			forgeEventBus.addListener((RegisterCommandsEvent event) -> {
-				LiteralArgumentBuilder<CommandSourceStack> kiwic = Commands.literal("kiwic").requires(source -> source.hasPermission(2));
-				LiteralArgumentBuilder<CommandSourceStack> export = Commands.literal("export");
-				ExportBlocksCommand.register(export);
-				ExportShapesCommand.register(export);
-				ExportCreativeTabsCommand.register(export);
-				LiteralArgumentBuilder<CommandSourceStack> reload = Commands.literal("reload");
-				ReloadSlotsCommand.register(reload);
-				ReloadBlockSettingsCommand.register(reload);
-				ReloadFamiliesCommand.register(reload);
-				event.getDispatcher().register(kiwic.then(export).then(reload));
-			});
+			CustomizationClient.init();
 		}
 	}
 
