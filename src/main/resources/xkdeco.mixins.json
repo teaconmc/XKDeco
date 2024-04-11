@@ -13,6 +13,7 @@
 		"BushBlockMixin",
 		"HalfTransparentBlockMixin",
 		"PlayerMixin",
+		"client.GameRendererMixin",
 		"data.BlockFamilyProviderMixin",
 		"data.RecipeProviderMixin",
 		"family.RecipeManagerMixin",
@@ -23,6 +24,7 @@
 	],
 	"client": [
 		"client.DebugRendererMixin",
+		"client.ScreenAccess",
 		"forge.BlockColorsAccess",
 		"forge.ItemColorsAccess"
 	],
