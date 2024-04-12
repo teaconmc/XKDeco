@@ -12,7 +12,9 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.inventory.Slot;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RenderHighlightEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -23,7 +25,7 @@ import snownee.kiwi.customization.command.ExportBlocksCommand;
 import snownee.kiwi.customization.command.ExportCreativeTabsCommand;
 import snownee.kiwi.customization.command.ExportShapesCommand;
 import snownee.kiwi.customization.command.ReloadBlockSettingsCommand;
-import snownee.kiwi.customization.command.ReloadFamiliesCommand;
+import snownee.kiwi.customization.command.ReloadFamiliesAndRulesCommand;
 import snownee.kiwi.customization.command.ReloadSlotsCommand;
 import snownee.kiwi.customization.util.SmartKey;
 
@@ -74,8 +76,16 @@ public final class CustomizationClient {
 			LiteralArgumentBuilder<CommandSourceStack> reload = Commands.literal("reload");
 			ReloadSlotsCommand.register(reload);
 			ReloadBlockSettingsCommand.register(reload);
-			ReloadFamiliesCommand.register(reload);
+			ReloadFamiliesAndRulesCommand.register(reload);
 			event.getDispatcher().register(kiwic.then(export).then(reload));
+		});
+		forgeEventBus.addListener((CustomizeGuiOverlayEvent.DebugText event) -> {
+			BuildersButton.renderDebugText(event.getLeft(), event.getRight());
+		});
+		forgeEventBus.addListener((RenderHighlightEvent.Block event) -> {
+			if (BuildersButton.cancelRenderHighlight()) {
+				event.setCanceled(true);
+			}
 		});
 	}
 

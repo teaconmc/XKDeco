@@ -1,4 +1,5 @@
 stonecutter_exchange: true
+quick_switch: true
 values:
   - xkdeco:black_roof
   - xkdeco:black_roof_ridge

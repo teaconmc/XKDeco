@@ -18,8 +18,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.customization.util.NotNullByDefault;
 import snownee.kiwi.util.VoxelUtil;
 
+@NotNullByDefault
 public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 	private static final PlaceDebugRenderer INSTANCE = new PlaceDebugRenderer();
 	private List<SlotRenderInstance> slots = List.of();
@@ -28,7 +30,7 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 		return INSTANCE;
 	}
 
-	private double lastUpdateTime = Double.MIN_VALUE;
+	private long lastUpdateTime = Long.MIN_VALUE;
 
 	@Override
 	public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, double pCamX, double pCamY, double pCamZ) {
@@ -36,9 +38,9 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 		if (mc.isPaused()) {
 			return;
 		}
-		double nanos = (double) Util.getNanos();
-		if (nanos - this.lastUpdateTime > 1.0E5D) {
-			this.lastUpdateTime = nanos;
+		long millis = Util.getMillis();
+		if (millis - this.lastUpdateTime > 1.0E8D) {
+			this.lastUpdateTime = millis;
 			Entity entity = mc.gameRenderer.getMainCamera().getEntity();
 			Level level = entity.level();
 			this.slots = BlockPos.betweenClosedStream(entity.getBoundingBox().inflate(4)).map(BlockPos::immutable).flatMap(pos -> {
@@ -50,17 +52,17 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 		}
 
 		VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.lines());
-		for (SlotRenderInstance slot : slots) {
-			float r = ((slot.color >> 16) & 0xFF) / 255.0F;
-			float g = ((slot.color >> 8) & 0xFF) / 255.0F;
-			float b = (slot.color & 0xFF) / 255.0F;
+		for (SlotRenderInstance instance : slots) {
+			float r = ((instance.color >> 16) & 0xFF) / 255.0F;
+			float g = ((instance.color >> 8) & 0xFF) / 255.0F;
+			float b = (instance.color & 0xFF) / 255.0F;
 			LevelRenderer.renderVoxelShape(
 					pPoseStack,
 					vertexconsumer,
-					slot.shape,
-					slot.pos.getX() - pCamX,
-					slot.pos.getY() - pCamY,
-					slot.pos.getZ() - pCamZ,
+					instance.shape,
+					instance.pos.getX() - pCamX,
+					instance.pos.getY() - pCamY,
+					instance.pos.getZ() - pCamZ,
 					r,
 					g,
 					b,

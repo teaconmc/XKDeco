@@ -23,7 +23,7 @@ public class BlockFamily {
 					.forGetter(BlockFamily::holders),
 			Codec.BOOL.optionalFieldOf("stonecutter_exchange", false).forGetter(BlockFamily::stonecutterExchange),
 			BuiltInRegistries.ITEM.byNameCodec().optionalFieldOf("stonecutter_from", Items.AIR).forGetter(BlockFamily::stonecutterSource),
-			Codec.BOOL.optionalFieldOf("quick_switch", true).forGetter(BlockFamily::quickSwitch)
+			Codec.BOOL.optionalFieldOf("quick_switch", false).forGetter(BlockFamily::quickSwitch)
 	).apply(instance, BlockFamily::new));
 
 	private final List<Holder<Block>> blocks;

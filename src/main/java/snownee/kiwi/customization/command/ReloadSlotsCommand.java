@@ -21,15 +21,15 @@ public class ReloadSlotsCommand {
 	public static void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
 		builder.then(Commands
 				.literal("placement_system")
-				.executes(ctx -> reloadSlots(ctx.getSource())));
+				.executes(ctx -> reload(ctx.getSource())));
 	}
 
-	private static int reloadSlots(CommandSourceStack source) {
+	private static int reload(CommandSourceStack source) {
 		Stopwatch stopwatch = Stopwatch.createStarted();
 		BlockFundamentals fundamentals = BlockFundamentals.reload(CustomizationHooks.collectKiwiPacks(), false);
 		long parseTime = stopwatch.elapsed().toMillis();
 		stopwatch.reset().start();
-		int choicesCount = reloadSlots(fundamentals);
+		int choicesCount = reload(fundamentals);
 		long attachTime = stopwatch.elapsed().toMillis();
 		Kiwi.LOGGER.info("Parse time %dms + Attach time %dms = %dms".formatted(parseTime, attachTime, parseTime + attachTime));
 		source.sendSuccess(() -> Component.literal("Slots in %d blocks, %d block states have been reloaded, using %d providers".formatted(
@@ -42,7 +42,7 @@ public class ReloadSlotsCommand {
 		return 1;
 	}
 
-	public static int reloadSlots(BlockFundamentals fundamentals) {
+	public static int reload(BlockFundamentals fundamentals) {
 		AtomicInteger choicesCounter = new AtomicInteger();
 		BuiltInRegistries.BLOCK.holders().forEach(holder -> {
 			PlaceChoices.setTo(holder.value(), null);
