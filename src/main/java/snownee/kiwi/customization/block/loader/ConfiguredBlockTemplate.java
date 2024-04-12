@@ -11,6 +11,7 @@ import com.mojang.serialization.codecs.KeyDispatchCodec;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 public record ConfiguredBlockTemplate(KBlockTemplate template, JsonObject json) {
 	public static final JsonObject DEFAULT_JSON = new JsonObject();
@@ -30,10 +31,10 @@ public record ConfiguredBlockTemplate(KBlockTemplate template, JsonObject json) 
 		}, template -> {
 			return DataResult.error(() -> "Unsupported operation");
 		}));
-		return LoaderExtraCodecs.withAlternative(
+		return CustomizationCodecs.withAlternative(
 				KeyDispatchCodec.unsafe(
 						"kiwi:type",
-						LoaderExtraCodecs.simpleByNameCodec(templates),
+						CustomizationCodecs.simpleByNameCodec(templates),
 						type,
 						codec,
 						v -> getCodec(type, codec, v)

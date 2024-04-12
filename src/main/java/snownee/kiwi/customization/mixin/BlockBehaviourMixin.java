@@ -6,8 +6,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.block.KBlockSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +21,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.shape.BlockShapeType;
 
 @Mixin(BlockBehaviour.class)
 public class BlockBehaviourMixin {
@@ -30,7 +31,6 @@ public class BlockBehaviourMixin {
 	@Final
 	protected boolean hasCollision;
 	@Shadow
-	@Final
 	public BlockBehaviour.Properties properties;
 
 	@Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
@@ -41,9 +41,9 @@ public class BlockBehaviourMixin {
 			CollisionContext pContext,
 			CallbackInfoReturnable<VoxelShape> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
-		if (settings != null && settings.shape != null) {
+		if (settings != null && settings.getShape(BlockShapeType.MAIN) != null) {
 			try {
-				cir.setReturnValue(settings.shape.getShape(pState, pContext));
+				cir.setReturnValue(settings.getShape(BlockShapeType.MAIN).getShape(pState, pContext));
 			} catch (Exception ignored) {
 			}
 		}
@@ -60,9 +60,9 @@ public class BlockBehaviourMixin {
 			return;
 		}
 		KBlockSettings settings = KBlockSettings.of(this);
-		if (settings != null && settings.collisionShape != null) {
+		if (settings != null && settings.getShape(BlockShapeType.COLLISION) != null) {
 			try {
-				cir.setReturnValue(settings.collisionShape.getShape(pState, pContext));
+				cir.setReturnValue(settings.getShape(BlockShapeType.COLLISION).getShape(pState, pContext));
 			} catch (Exception ignored) {
 			}
 		}
@@ -71,9 +71,9 @@ public class BlockBehaviourMixin {
 	@Inject(method = "getInteractionShape", at = @At("HEAD"), cancellable = true)
 	private void kiwi$getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CallbackInfoReturnable<VoxelShape> cir) {
 		KBlockSettings settings = KBlockSettings.of(this);
-		if (settings != null && settings.interactionShape != null) {
+		if (settings != null && settings.getShape(BlockShapeType.INTERACTION) != null) {
 			try {
-				cir.setReturnValue(settings.interactionShape.getShape(pState, CollisionContext.empty()));
+				cir.setReturnValue(settings.getShape(BlockShapeType.INTERACTION).getShape(pState, CollisionContext.empty()));
 			} catch (Exception ignored) {
 			}
 		}

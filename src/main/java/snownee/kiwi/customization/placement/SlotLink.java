@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.customization.block.KBlockUtils;
 
 import com.google.common.collect.ImmutableMap;
@@ -44,15 +44,15 @@ public record SlotLink(
 			PRIMARY_TAG_CODEC.fieldOf("from").forGetter(SlotLink::from),
 			PRIMARY_TAG_CODEC.fieldOf("to").forGetter(SlotLink::to),
 			Codec.INT.optionalFieldOf("interest", 100).forGetter(SlotLink::interest),
-			LoaderExtraCodecs.strictOptionalField(TagTest.CODEC.listOf(), "test_tag", List.of()).forGetter(SlotLink::testTag),
+			CustomizationCodecs.strictOptionalField(TagTest.CODEC.listOf(), "test_tag", List.of()).forGetter(SlotLink::testTag),
 			fromToPairCodec("on_link").forGetter($ -> Pair.of($.onLinkFrom, $.onLinkTo)),
 			fromToPairCodec("on_unlink").forGetter($ -> Pair.of($.onUnlinkFrom, $.onUnlinkTo))
 	).apply(instance, SlotLink::create));
 
 	private static MapCodec<Pair<ResultAction, ResultAction>> fromToPairCodec(String fieldName) {
 		Codec<Pair<ResultAction, ResultAction>> pairCodec = RecordCodecBuilder.create(instance -> instance.group(
-				LoaderExtraCodecs.strictOptionalField(ResultAction.CODEC, "from", ResultAction.EMPTY).forGetter(Pair::getFirst),
-				LoaderExtraCodecs.strictOptionalField(ResultAction.CODEC, "to", ResultAction.EMPTY).forGetter(Pair::getSecond)
+				CustomizationCodecs.strictOptionalField(ResultAction.CODEC, "from", ResultAction.EMPTY).forGetter(Pair::getFirst),
+				CustomizationCodecs.strictOptionalField(ResultAction.CODEC, "to", ResultAction.EMPTY).forGetter(Pair::getSecond)
 		).apply(instance, Pair::of));
 		return pairCodec.optionalFieldOf(fieldName, Pair.of(ResultAction.EMPTY, ResultAction.EMPTY));
 	}
@@ -110,7 +110,7 @@ public record SlotLink(
 	}
 
 	public record TagTest(String key, TagTestOperator operator) {
-		public static final Codec<TagTest> CODEC = LoaderExtraCodecs.withAlternative(RecordCodecBuilder.create(instance -> instance.group(
+		public static final Codec<TagTest> CODEC = CustomizationCodecs.withAlternative(RecordCodecBuilder.create(instance -> instance.group(
 				Codec.STRING.fieldOf("key").forGetter(TagTest::key),
 				TagTestOperator.CODEC.fieldOf("operator").forGetter(TagTest::operator)
 		).apply(instance, TagTest::new)), ExtraCodecs.NON_EMPTY_STRING.xmap(s -> new TagTest(s, TagTestOperator.EQUAL), TagTest::key));

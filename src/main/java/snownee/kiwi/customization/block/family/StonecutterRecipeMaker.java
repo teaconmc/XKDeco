@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
-import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.util.KHolder;
 
 public class StonecutterRecipeMaker {
 	private static final Cache<Item, List<StonecutterRecipe>> EXCHANGE_CACHE = CacheBuilder.newBuilder().expireAfterAccess(Duration.of(

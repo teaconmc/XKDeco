@@ -2,16 +2,6 @@ package snownee.kiwi.customization.block.loader;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-
-import snownee.kiwi.customization.block.component.KBlockComponent;
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.shape.ChoicesShape;
-import snownee.kiwi.customization.shape.DirectionalShape;
-import snownee.kiwi.customization.shape.HorizontalShape;
-import snownee.kiwi.customization.shape.MouldingShape;
-import snownee.kiwi.customization.shape.ShapeGenerator;
-import snownee.kiwi.customization.shape.ShapeStorage;
 
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Either;
@@ -24,6 +14,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.component.KBlockComponent;
+import snownee.kiwi.customization.shape.BlockShapeType;
+import snownee.kiwi.customization.shape.ChoicesShape;
+import snownee.kiwi.customization.shape.ConfiguringShape;
+import snownee.kiwi.customization.shape.DirectionalShape;
+import snownee.kiwi.customization.shape.HorizontalShape;
+import snownee.kiwi.customization.shape.MouldingShape;
+import snownee.kiwi.customization.shape.ShapeGenerator;
+import snownee.kiwi.customization.shape.ShapeStorage;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.util.VanillaActions;
 import snownee.kiwi.util.VoxelUtil;
 
@@ -40,7 +41,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		Preconditions.checkNotNull(defaultTemplate);
 		ConfiguredBlockTemplate defaultConfiguredTemplate = new ConfiguredBlockTemplate(defaultTemplate);
 		return RecordCodecBuilder.create(instance -> instance.group(
-				LoaderExtraCodecs.strictOptionalField(
+				CustomizationCodecs.strictOptionalField(
 								ConfiguredBlockTemplate.codec(templates),
 								"template",
 								defaultConfiguredTemplate)
@@ -111,26 +112,41 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 				}
 			}
 		}
-		deriveAndSet(shapes, builder, properties.shape(), builder::shape);
-		deriveAndSet(shapes, builder, properties.collisionShape(), builder::collisionShape);
-		deriveAndSet(shapes, builder, properties.interactionShape(), builder::interactionShape);
+		deriveAndSetShape(shapes, builder, BlockShapeType.MAIN, properties.shape());
+		deriveAndSetShape(shapes, builder, BlockShapeType.COLLISION, properties.collisionShape());
+		deriveAndSetShape(shapes, builder, BlockShapeType.INTERACTION, properties.interactionShape());
 		return builder;
 	}
 
 	public Block createBlock(ResourceLocation id, ShapeStorage shapes) {
 		KBlockSettings.Builder builder = createSettings(id, shapes);
 		Block block = template.template().createBlock(builder.get(), template.json());
+		setConfiguringShape(block);
 		properties.material().ifPresent(mat -> {
 			VanillaActions.setFireInfo(block, mat.igniteOdds(), mat.burnOdds());
 		});
 		return block;
 	}
 
+	public static void setConfiguringShape(Block block) {
+		KBlockSettings settings = KBlockSettings.of(block);
+		if (settings == null) {
+			return;
+		}
+		for (BlockShapeType shapeType : BlockShapeType.VALUES) {
+			ConfiguringShape shape = settings.removeIfPossible(shapeType);
+			if (shape != null) {
+				shape.configure(block, shapeType);
+			}
+		}
+	}
+
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private void deriveAndSet(
+	private void deriveAndSetShape(
 			ShapeStorage shapes,
-			KBlockSettings.Builder builder, Optional<ResourceLocation> shapeId,
-			Consumer<ShapeGenerator> setter) {
+			KBlockSettings.Builder builder,
+			BlockShapeType type,
+			Optional<ResourceLocation> shapeId) {
 		if (shapeId.isEmpty()) {
 			return;
 		}
@@ -139,28 +155,27 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 			Kiwi.LOGGER.warn("Shape {} is not registered", shapeId);
 			return;
 		}
-		if (shapeGenerator.getClass() != ShapeGenerator.Unit.class) {
-			setter.accept(shapeGenerator);
-		} else if (builder.hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
-			setter.accept(HorizontalShape.create(shapeGenerator));
-		} else if (builder.hasComponent(KBlockComponents.DIRECTIONAL.getOrCreate())) {
-			setter.accept(DirectionalShape.create(shapeGenerator, "facing"));
-		} else if (builder.hasComponent(KBlockComponents.MOULDING.getOrCreate())) {
-			setter.accept(MouldingShape.create(shapeGenerator));
-		} else if (builder.hasComponent(KBlockComponents.FRONT_AND_TOP.getOrCreate())) {
-			setter.accept(DirectionalShape.create(shapeGenerator, "orientation"));
-		} else if (builder.hasComponent(KBlockComponents.HORIZONTAL_AXIS.getOrCreate())) {
-			setter.accept(ChoicesShape.chooseOneProperty(
-					BlockStateProperties.HORIZONTAL_AXIS,
-					Map.of(
-							Direction.Axis.X,
-							shapeGenerator,
-							Direction.Axis.Z,
-							ShapeGenerator.unit(VoxelUtil.rotateHorizontal(
-									ShapeGenerator.Unit.unboxOrThrow(shapeGenerator),
-									Direction.EAST)))));
-		} else {
-			setter.accept(shapeGenerator);
+		if (shapeGenerator.getClass() == ShapeGenerator.Unit.class) {
+			if (builder.hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
+				shapeGenerator = HorizontalShape.create(shapeGenerator);
+			} else if (builder.hasComponent(KBlockComponents.DIRECTIONAL.getOrCreate())) {
+				shapeGenerator = DirectionalShape.create(shapeGenerator, "facing");
+			} else if (builder.hasComponent(KBlockComponents.MOULDING.getOrCreate())) {
+				shapeGenerator = MouldingShape.create(shapeGenerator);
+			} else if (builder.hasComponent(KBlockComponents.FRONT_AND_TOP.getOrCreate())) {
+				shapeGenerator = DirectionalShape.create(shapeGenerator, "orientation");
+			} else if (builder.hasComponent(KBlockComponents.HORIZONTAL_AXIS.getOrCreate())) {
+				shapeGenerator = ChoicesShape.chooseOneProperty(
+						BlockStateProperties.HORIZONTAL_AXIS,
+						Map.of(
+								Direction.Axis.X,
+								shapeGenerator,
+								Direction.Axis.Z,
+								ShapeGenerator.unit(VoxelUtil.rotateHorizontal(
+										ShapeGenerator.Unit.unboxOrThrow(shapeGenerator),
+										Direction.EAST))));
+			}
 		}
+		builder.shape(type, shapeGenerator);
 	}
 }

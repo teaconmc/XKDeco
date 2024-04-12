@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.util.NotNullByDefault;
 
 @NotNullByDefault

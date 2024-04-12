@@ -35,7 +35,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import snownee.kiwi.customization.block.family.BlockFamily;
-import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.network.CConvertItemPacket;
 import snownee.kiwi.customization.util.NotNullByDefault;
 import snownee.kiwi.customization.util.SmoothChasingValue;

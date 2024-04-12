@@ -2,7 +2,7 @@ package snownee.kiwi.customization.shape;
 
 import java.util.stream.Stream;
 
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;
@@ -54,7 +54,7 @@ public record DirectionalShape(VoxelShape[] shapes, String property) implements 
 		public static Codec<Unbaked> codec(UnbakedShapeCodec parentCodec) {
 			return RecordCodecBuilder.create(instance -> instance.group(
 					parentCodec.fieldOf("up").forGetter(Unbaked::wrapped),
-					LoaderExtraCodecs.strictOptionalField(ExtraCodecs.NON_EMPTY_STRING, "property", "facing").forGetter(Unbaked::property)
+					CustomizationCodecs.strictOptionalField(ExtraCodecs.NON_EMPTY_STRING, "property", "facing").forGetter(Unbaked::property)
 			).apply(instance, Unbaked::new));
 		}
 

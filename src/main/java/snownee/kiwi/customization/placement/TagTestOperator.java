@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -19,7 +19,7 @@ public record TagTestOperator(String name, BiPredicate<String, String> test) {
 			$ -> $.getOpposite().getSerializedName()));
 	public static final BiMap<String, TagTestOperator> VALUES = HashBiMap.create(4);
 	public static final TagTestOperator EQUAL = new TagTestOperator("==", Objects::equals);
-	public static final Codec<TagTestOperator> CODEC = LoaderExtraCodecs.simpleByNameCodec(VALUES);
+	public static final Codec<TagTestOperator> CODEC = CustomizationCodecs.simpleByNameCodec(VALUES);
 
 	static {
 		register(EQUAL);

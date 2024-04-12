@@ -24,8 +24,8 @@ import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
-import snownee.kiwi.customization.block.loader.KHolder;
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.KHolder;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.customization.duck.KBlockProperties;
 import snownee.kiwi.customization.util.codec.CompactListCodec;
 import snownee.kiwi.loader.Platform;
@@ -38,8 +38,8 @@ public record PlaceChoices(
 
 	public static final Codec<PlaceChoices> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
-			LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(Limit.CODEC), "limit", List.of()).forGetter(PlaceChoices::limit),
-			LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(InterestProvider.CODEC), "interests", List.of())
+			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Limit.CODEC), "limit", List.of()).forGetter(PlaceChoices::limit),
+			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(InterestProvider.CODEC), "interests", List.of())
 					.forGetter(PlaceChoices::interests),
 			Codec.BOOL.optionalFieldOf("skippable", true).forGetter(PlaceChoices::skippable)
 	).apply(instance, PlaceChoices::new));

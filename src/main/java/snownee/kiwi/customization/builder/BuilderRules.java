@@ -14,7 +14,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.block.Block;
 import snownee.kiwi.customization.block.family.BlockFamilies;
 import snownee.kiwi.customization.block.family.BlockFamily;
-import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.util.resource.OneTimeLoader;
 
 public class BuilderRules {

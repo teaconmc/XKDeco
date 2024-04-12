@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.block.loader;
+package snownee.kiwi.customization.util;
 
 import net.minecraft.resources.ResourceLocation;
 

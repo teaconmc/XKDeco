@@ -21,7 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.customization.CustomizationClient;
 import snownee.kiwi.customization.block.family.BlockFamilies;
 import snownee.kiwi.customization.block.family.BlockFamily;
-import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.network.CApplyBuilderRulePacket;
 
 public class BuildersButton {

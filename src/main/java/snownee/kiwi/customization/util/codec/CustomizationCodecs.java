@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.block.loader;
+package snownee.kiwi.customization.util.codec;
 
 import java.util.Locale;
 import java.util.Map;
@@ -35,7 +35,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import snownee.kiwi.KiwiModule;
 
-public class LoaderExtraCodecs {
+public class CustomizationCodecs {
 	public static final BiMap<ResourceLocation, SoundType> SOUND_TYPES = HashBiMap.create();
 	public static final Codec<SoundType> SOUND_TYPE_CODEC = simpleByNameCodec(SOUND_TYPES);
 	public static final BiMap<String, NoteBlockInstrument> INSTRUMENTS = HashBiMap.create();
@@ -304,8 +304,8 @@ public class LoaderExtraCodecs {
 				Optional<Boolean> booleanValue = ops.getBooleanValue(input).result();
 				if (booleanValue.isPresent()) {
 					BlockBehaviour.StateArgumentPredicate<T> predicate = booleanValue.get() ?
-							LoaderExtraCodecs::always :
-							LoaderExtraCodecs::never;
+							CustomizationCodecs::always :
+							CustomizationCodecs::never;
 					return DataResult.success(Pair.of(predicate, ops.empty()));
 				}
 				Optional<String> stringValue = ops.getStringValue(input).result();
