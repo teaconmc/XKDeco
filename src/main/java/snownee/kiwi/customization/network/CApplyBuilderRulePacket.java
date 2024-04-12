@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.builder.BuilderRule;
 import snownee.kiwi.customization.builder.BuilderRules;
 import snownee.kiwi.network.KiwiPacket;

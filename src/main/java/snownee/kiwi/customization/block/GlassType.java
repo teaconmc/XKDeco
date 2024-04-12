@@ -1,6 +1,6 @@
 package snownee.kiwi.customization.block;
 
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 import net.minecraft.resources.ResourceLocation;
 import snownee.kiwi.KiwiModule;
@@ -18,6 +18,6 @@ public record GlassType(String name, boolean skipRendering, float shadeBrightnes
 		this.skipRendering = skipRendering;
 		this.shadeBrightness = shadeBrightness;
 		this.renderType = renderType;
-		LoaderExtraCodecs.GLASS_TYPES.put(new ResourceLocation(name), this);
+		CustomizationCodecs.GLASS_TYPES.put(new ResourceLocation(name), this);
 	}
 }

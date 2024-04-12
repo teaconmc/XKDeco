@@ -48,7 +48,9 @@ public class UnbakedShapeCodec implements Codec<UnbakedShape> {
 				Map.entry("horizontal", HorizontalShape.Unbaked.codec(this)),
 				Map.entry("choices", ChoicesShape.Unbaked.codec(this)),
 				Map.entry("moulding", MouldingShape.Unbaked.codec(this)),
-				Map.entry("six_way", SixWayShape.Unbaked.codec(this)));
+				Map.entry("six_way", SixWayShape.Unbaked.codec(this)),
+				Map.entry("configure_wall", ConfigureWallShape.codec())
+		);
 	}
 
 	@Override

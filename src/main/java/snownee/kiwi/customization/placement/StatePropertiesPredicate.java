@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.customization.block.KBlockUtils;
 import snownee.kiwi.customization.util.codec.CompactListCodec;
 
@@ -21,7 +21,7 @@ public record StatePropertiesPredicate(List<PropertyMatcher> properties) impleme
 
 	public static final Codec<StatePropertiesPredicate> CODEC = Codec.compoundList(Codec.STRING, Codec.either(
 			new CompactListCodec<>(Codec.STRING),
-			LoaderExtraCodecs.INT_BOUNDS)
+			CustomizationCodecs.INT_BOUNDS)
 	).xmap($ -> new StatePropertiesPredicate($.stream().map(pair -> {
 		Optional<List<String>> strValues = pair.getSecond().left();
 		return strValues.map(strings -> new PropertyMatcher(pair.getFirst(), Either.left(Set.copyOf(strings))))

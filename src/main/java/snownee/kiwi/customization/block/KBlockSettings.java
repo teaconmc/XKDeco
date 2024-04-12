@@ -5,14 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
-import snownee.kiwi.customization.block.component.DirectionalComponent;
-import snownee.kiwi.customization.block.component.HorizontalComponent;
-import snownee.kiwi.customization.block.component.KBlockComponent;
-import snownee.kiwi.customization.block.component.WaterLoggableComponent;
-import snownee.kiwi.customization.placement.PlaceChoices;
-import snownee.kiwi.customization.shape.ShapeGenerator;
-import snownee.kiwi.customization.duck.KBlockProperties;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -33,32 +25,38 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
+import snownee.kiwi.customization.block.component.DirectionalComponent;
+import snownee.kiwi.customization.block.component.HorizontalComponent;
+import snownee.kiwi.customization.block.component.KBlockComponent;
+import snownee.kiwi.customization.block.component.WaterLoggableComponent;
+import snownee.kiwi.customization.duck.KBlockProperties;
+import snownee.kiwi.customization.placement.PlaceChoices;
+import snownee.kiwi.customization.shape.BlockShapeType;
+import snownee.kiwi.customization.shape.ConfiguringShape;
+import snownee.kiwi.customization.shape.ShapeGenerator;
 
 public class KBlockSettings {
 	public final boolean customPlacement;
 	public final GlassType glassType;
 	@Nullable
-	public final ShapeGenerator shape;
-	@Nullable
-	public final ShapeGenerator collisionShape;
-	@Nullable
-	public final ShapeGenerator interactionShape;
-	@Nullable
 	public final CanSurviveHandler canSurviveHandler;
 	@Nullable
 	public final ToIntFunction<BlockState> analogOutputSignal;
 	public final Map<KBlockComponent.Type<?>, KBlockComponent> components;
+	@Nullable
+	private ShapeGenerator[] shapes;
 	public PlaceChoices placeChoices;
 
 	private KBlockSettings(Builder builder) {
 		this.customPlacement = builder.customPlacement;
 		this.glassType = builder.glassType;
-		this.shape = builder.shape;
-		this.collisionShape = builder.collisionShape;
-		this.interactionShape = builder.interactionShape;
 		this.canSurviveHandler = builder.canSurviveHandler;
 		this.analogOutputSignal = builder.getAnalogOutputSignal();
 		this.components = Map.copyOf(builder.components);
+		for (BlockShapeType type : BlockShapeType.VALUES) {
+			setShape(type, builder.getShape(type));
+		}
 //		if (Platform.isPhysicalClient() && XKDecoClientConfig.exportBlocksMore) {
 //			if (builder.shapeId != null || builder.collisionShapeId != null || builder.interactionShapeId != null) {
 //				ExportBlocksCommand.putMoreInfo(this, new MoreInfo(builder.shapeId, builder.collisionShapeId, builder.interactionShapeId));
@@ -176,17 +174,35 @@ public class KBlockSettings {
 		return null;
 	}
 
+	public ConfiguringShape removeIfPossible(BlockShapeType shapeType) {
+		if (getShape(shapeType) instanceof ConfiguringShape shape) {
+			setShape(shapeType, null);
+			return shape;
+		}
+		return null;
+	}
+
+	public ShapeGenerator getShape(BlockShapeType shapeType) {
+		return shapes != null ? shapes[shapeType.ordinal()] : null;
+	}
+
+	private void setShape(BlockShapeType shapeType, @Nullable ShapeGenerator shape) {
+		if (shape != null) {
+			if (shapes == null) {
+				shapes = new ShapeGenerator[BlockShapeType.VALUES.size()];
+			}
+			shapes[shapeType.ordinal()] = shape;
+		} else if (shapes != null) {
+			shapes[shapeType.ordinal()] = null;
+		}
+	}
+
 	public static class Builder {
 		private final BlockBehaviour.Properties properties;
 		private boolean customPlacement;
 		@Nullable
 		private GlassType glassType;
-		@Nullable
-		private ShapeGenerator shape;
-		@Nullable
-		private ShapeGenerator collisionShape;
-		@Nullable
-		private ShapeGenerator interactionShape;
+		private final ShapeGenerator[] shapes = new ShapeGenerator[BlockShapeType.VALUES.size()];
 		@Nullable
 		private CanSurviveHandler canSurviveHandler;
 		private final Map<KBlockComponent.Type<?>, KBlockComponent> components = Maps.newLinkedHashMap();
@@ -228,19 +244,14 @@ public class KBlockSettings {
 			return this;
 		}
 
-		public Builder shape(ShapeGenerator shape) {
-			this.shape = shape;
+		public Builder shape(BlockShapeType type, ShapeGenerator shape) {
+			shapes[type.ordinal()] = shape;
 			return this;
 		}
 
-		public Builder collisionShape(ShapeGenerator collisionShape) {
-			this.collisionShape = collisionShape;
-			return this;
-		}
-
-		public Builder interactionShape(ShapeGenerator interactionShape) {
-			this.interactionShape = interactionShape;
-			return this;
+		@Nullable
+		private ShapeGenerator getShape(BlockShapeType type) {
+			return shapes[type.ordinal()];
 		}
 
 		public Builder canSurviveHandler(CanSurviveHandler canSurviveHandler) {

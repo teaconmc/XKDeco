@@ -10,7 +10,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.KMaterial;
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.customization.placement.PlaceChoices;
 import snownee.kiwi.customization.placement.PlaceSlotProvider;
 import snownee.kiwi.customization.placement.SlotLink;
@@ -29,7 +29,7 @@ public record BlockFundamentals(
 		MapCodec<Optional<KMaterial>> materialCodec) {
 	public static BlockFundamentals reload(ResourceManager resourceManager, boolean booting) {
 		var materials = OneTimeLoader.load(resourceManager, "kiwi/material", KMaterial.DIRECT_CODEC);
-		MapCodec<Optional<KMaterial>> materialCodec = LoaderExtraCodecs.strictOptionalField(LoaderExtraCodecs.simpleByNameCodec(
+		MapCodec<Optional<KMaterial>> materialCodec = CustomizationCodecs.strictOptionalField(CustomizationCodecs.simpleByNameCodec(
 				materials), "material");
 		var templates = OneTimeLoader.load(resourceManager, "kiwi/template/block", KBlockTemplate.codec(materialCodec));
 		if (booting) {

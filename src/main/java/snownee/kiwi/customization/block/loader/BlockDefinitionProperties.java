@@ -19,6 +19,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
 import snownee.kiwi.KiwiModule;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 public record BlockDefinitionProperties(
 		List<Either<KBlockComponent, String>> components,
@@ -33,24 +34,24 @@ public record BlockDefinitionProperties(
 		PartialVanillaProperties vanillaProperties) {
 	public static MapCodec<BlockDefinitionProperties> mapCodec(MapCodec<Optional<KMaterial>> materialCodec) {
 		return RecordCodecBuilder.mapCodec(instance -> instance.group(
-				LoaderExtraCodecs.strictOptionalField(
+				CustomizationCodecs.strictOptionalField(
 								Codec.either(KBlockComponent.DIRECT_CODEC, Codec.STRING).listOf(),
 								"components",
 								List.of())
 						.forGetter(BlockDefinitionProperties::components),
 				materialCodec.forGetter(BlockDefinitionProperties::material),
-				LoaderExtraCodecs.strictOptionalField(LoaderExtraCodecs.GLASS_TYPE_CODEC, "glass_type")
+				CustomizationCodecs.strictOptionalField(CustomizationCodecs.GLASS_TYPE_CODEC, "glass_type")
 						.forGetter(BlockDefinitionProperties::glassType),
-				LoaderExtraCodecs.strictOptionalField(LoaderExtraCodecs.RENDER_TYPE, "render_type")
+				CustomizationCodecs.strictOptionalField(CustomizationCodecs.RENDER_TYPE, "render_type")
 						.forGetter(BlockDefinitionProperties::renderType),
-				LoaderExtraCodecs.strictOptionalField(ResourceLocation.CODEC, "color_provider")
+				CustomizationCodecs.strictOptionalField(ResourceLocation.CODEC, "color_provider")
 						.forGetter(BlockDefinitionProperties::colorProvider),
-				LoaderExtraCodecs.strictOptionalField(ResourceLocation.CODEC, "shape").forGetter(BlockDefinitionProperties::shape),
-				LoaderExtraCodecs.strictOptionalField(ResourceLocation.CODEC, "collision_shape")
+				CustomizationCodecs.strictOptionalField(ResourceLocation.CODEC, "shape").forGetter(BlockDefinitionProperties::shape),
+				CustomizationCodecs.strictOptionalField(ResourceLocation.CODEC, "collision_shape")
 						.forGetter(BlockDefinitionProperties::collisionShape),
-				LoaderExtraCodecs.strictOptionalField(ResourceLocation.CODEC, "interaction_shape")
+				CustomizationCodecs.strictOptionalField(ResourceLocation.CODEC, "interaction_shape")
 						.forGetter(BlockDefinitionProperties::interactionShape),
-				LoaderExtraCodecs.strictOptionalField(new CanSurviveHandlerCodec(), "can_survive_handler")
+				CustomizationCodecs.strictOptionalField(new CanSurviveHandlerCodec(), "can_survive_handler")
 						.forGetter(BlockDefinitionProperties::canSurviveHandler),
 				PartialVanillaProperties.MAP_CODEC.forGetter(BlockDefinitionProperties::vanillaProperties)
 		).apply(instance, BlockDefinitionProperties::new));
@@ -110,18 +111,18 @@ public record BlockDefinitionProperties(
 				Codec.INT.optionalFieldOf("light_emission").forGetter(PartialVanillaProperties::lightEmission),
 				Codec.BOOL.optionalFieldOf("dynamic_shape").forGetter(PartialVanillaProperties::dynamicShape),
 				Codec.BOOL.optionalFieldOf("no_occlusion").forGetter(PartialVanillaProperties::noOcclusion),
-				LoaderExtraCodecs.PUSH_REACTION_CODEC.optionalFieldOf("push_reaction").forGetter(PartialVanillaProperties::pushReaction),
-				LoaderExtraCodecs.OFFSET_TYPE_CODEC.optionalFieldOf("offset_function")
+				CustomizationCodecs.PUSH_REACTION_CODEC.optionalFieldOf("push_reaction").forGetter(PartialVanillaProperties::pushReaction),
+				CustomizationCodecs.OFFSET_TYPE_CODEC.optionalFieldOf("offset_function")
 						.forGetter(PartialVanillaProperties::offsetType),
 				Codec.BOOL.optionalFieldOf("replaceable").forGetter(PartialVanillaProperties::replaceable),
-				LoaderExtraCodecs.<EntityType<?>>stateArgumentPredicate().optionalFieldOf("is_valid_spawn")
+				CustomizationCodecs.<EntityType<?>>stateArgumentPredicate().optionalFieldOf("is_valid_spawn")
 						.forGetter(PartialVanillaProperties::isValidSpawn),
-				LoaderExtraCodecs.STATE_PREDICATE.optionalFieldOf("is_redstone_conductor")
+				CustomizationCodecs.STATE_PREDICATE.optionalFieldOf("is_redstone_conductor")
 						.forGetter(PartialVanillaProperties::isRedstoneConductor),
-				LoaderExtraCodecs.STATE_PREDICATE.optionalFieldOf("is_suffocating").forGetter(PartialVanillaProperties::isSuffocating),
-				LoaderExtraCodecs.STATE_PREDICATE.optionalFieldOf("is_view_blocking").forGetter(PartialVanillaProperties::isViewBlocking),
-				LoaderExtraCodecs.STATE_PREDICATE.optionalFieldOf("has_post_process").forGetter(PartialVanillaProperties::hasPostProcess),
-				LoaderExtraCodecs.STATE_PREDICATE.optionalFieldOf("emissive_rendering")
+				CustomizationCodecs.STATE_PREDICATE.optionalFieldOf("is_suffocating").forGetter(PartialVanillaProperties::isSuffocating),
+				CustomizationCodecs.STATE_PREDICATE.optionalFieldOf("is_view_blocking").forGetter(PartialVanillaProperties::isViewBlocking),
+				CustomizationCodecs.STATE_PREDICATE.optionalFieldOf("has_post_process").forGetter(PartialVanillaProperties::hasPostProcess),
+				CustomizationCodecs.STATE_PREDICATE.optionalFieldOf("emissive_rendering")
 						.forGetter(PartialVanillaProperties::emissiveRendering)
 		).apply(instance, PartialVanillaProperties::new));
 

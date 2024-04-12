@@ -13,7 +13,7 @@ public record PlaceMatchResult(
 		List<SlotLink.MatchResult> links,
 		List<Vec3i> offsets) implements Comparable<PlaceMatchResult> {
 	@Override
-	public int compareTo(@NotNull PlaceMatchResult o) {
+	public int compareTo(PlaceMatchResult o) {
 		return Integer.compare(o.interest, this.interest);
 	}
 }
