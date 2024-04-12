@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.place;
+package snownee.kiwi.customization.placement;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 		return INSTANCE;
 	}
 
-	private long lastUpdateTime = Long.MIN_VALUE;
+	private long lastUpdateTime;
 
 	@Override
 	public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, double pCamX, double pCamY, double pCamZ) {
@@ -39,7 +39,7 @@ public class PlaceDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 			return;
 		}
 		long millis = Util.getMillis();
-		if (millis - this.lastUpdateTime > 1.0E8D) {
+		if (millis - this.lastUpdateTime > 300) {
 			this.lastUpdateTime = millis;
 			Entity entity = mc.gameRenderer.getMainCamera().getEntity();
 			Level level = entity.level();

@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.debug.DebugRenderer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
 import snownee.kiwi.customization.builder.BuildersButton;
-import snownee.kiwi.customization.place.PlaceDebugRenderer;
+import snownee.kiwi.customization.placement.PlaceDebugRenderer;
 
 @Mixin(DebugRenderer.class)
 public class DebugRendererMixin {

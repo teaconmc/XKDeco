@@ -13,8 +13,8 @@ import snownee.kiwi.Kiwi;
 import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.BlockFundamentals;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
-import snownee.kiwi.customization.place.PlaceChoices;
-import snownee.kiwi.customization.place.PlaceSlot;
+import snownee.kiwi.customization.placement.PlaceChoices;
+import snownee.kiwi.customization.placement.PlaceSlot;
 
 public class ReloadSlotsCommand {
 

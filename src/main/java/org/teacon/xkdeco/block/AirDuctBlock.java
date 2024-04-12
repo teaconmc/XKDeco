@@ -7,7 +7,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.place.PlaceSlot;
+import snownee.kiwi.customization.placement.PlaceSlot;
 import snownee.kiwi.customization.util.NotNullByDefault;
 
 import com.google.common.collect.Lists;

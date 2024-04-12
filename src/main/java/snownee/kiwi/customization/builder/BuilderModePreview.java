@@ -44,7 +44,7 @@ public class BuilderModePreview implements DebugRenderer.SimpleDebugRenderer {
 	private BlockState blockState = Blocks.AIR.defaultBlockState();
 	public List<BlockPos> positions = List.of();
 	private final ListMultimap<Direction, AABB> faces = ArrayListMultimap.create(6, 32);
-	private long lastUpdateTime = Long.MIN_VALUE;
+	private long lastUpdateTime;
 
 	@Override
 	public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, double pCamX, double pCamY, double pCamZ) {

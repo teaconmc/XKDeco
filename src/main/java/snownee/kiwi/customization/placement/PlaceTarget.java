@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.place;
+package snownee.kiwi.customization.placement;
 
 import com.mojang.serialization.Codec;
 

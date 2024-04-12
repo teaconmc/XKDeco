@@ -11,9 +11,9 @@ import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.KMaterial;
 import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
-import snownee.kiwi.customization.place.PlaceChoices;
-import snownee.kiwi.customization.place.PlaceSlotProvider;
-import snownee.kiwi.customization.place.SlotLink;
+import snownee.kiwi.customization.placement.PlaceChoices;
+import snownee.kiwi.customization.placement.PlaceSlotProvider;
+import snownee.kiwi.customization.placement.SlotLink;
 import snownee.kiwi.customization.shape.ShapeStorage;
 import snownee.kiwi.customization.shape.UnbakedShapeCodec;
 import snownee.kiwi.customization.util.resource.OneTimeLoader;
@@ -37,15 +37,15 @@ public record BlockFundamentals(
 		}
 		var slotProviders = PlaceSlotProvider.Preparation.of(() -> OneTimeLoader.load(
 				resourceManager,
-				"kiwi/place_slot/provider",
+				"kiwi/placement/slot",
 				PlaceSlotProvider.CODEC), templates);
 		var slotLinks = SlotLink.Preparation.of(() -> OneTimeLoader.load(
 				resourceManager,
-				"kiwi/place_slot/link",
+				"kiwi/placement/link",
 				SlotLink.CODEC), slotProviders);
 		var placeChoices = PlaceChoices.Preparation.of(() -> OneTimeLoader.load(
 				resourceManager,
-				"kiwi/place_slot/choices",
+				"kiwi/placement/choices",
 				PlaceChoices.CODEC), templates);
 		var shapes = ShapeStorage.reload(() -> OneTimeLoader.load(
 				resourceManager,

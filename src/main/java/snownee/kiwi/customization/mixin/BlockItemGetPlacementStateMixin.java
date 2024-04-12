@@ -2,7 +2,7 @@ package snownee.kiwi.customization.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import snownee.kiwi.customization.place.PlacementSystem;
+import snownee.kiwi.customization.placement.PlacementSystem;
 import snownee.kiwi.customization.block.KBlockSettings;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
