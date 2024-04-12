@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.place;
+package snownee.kiwi.customization.placement;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,15 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
-
-import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.block.loader.KHolder;
-import snownee.kiwi.customization.block.loader.KBlockDefinition;
-import snownee.kiwi.customization.block.loader.KBlockTemplate;
-import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.duck.KBlockProperties;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
 
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
@@ -29,18 +20,28 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockDefinition;
+import snownee.kiwi.customization.block.loader.KBlockTemplate;
+import snownee.kiwi.customization.block.loader.KHolder;
+import snownee.kiwi.customization.block.loader.LoaderExtraCodecs;
+import snownee.kiwi.customization.duck.KBlockProperties;
+import snownee.kiwi.customization.util.codec.CompactListCodec;
 import snownee.kiwi.loader.Platform;
 
 public record PlaceChoices(
 		List<PlaceTarget> target,
 		List<Limit> limit,
-		List<InterestProvider> interests) {
+		List<InterestProvider> interests,
+		boolean skippable) {
 
 	public static final Codec<PlaceChoices> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
 			LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(Limit.CODEC), "limit", List.of()).forGetter(PlaceChoices::limit),
 			LoaderExtraCodecs.strictOptionalField(new CompactListCodec<>(InterestProvider.CODEC), "interests", List.of())
-					.forGetter(PlaceChoices::interests)
+					.forGetter(PlaceChoices::interests),
+			Codec.BOOL.optionalFieldOf("skippable", true).forGetter(PlaceChoices::skippable)
 	).apply(instance, PlaceChoices::new));
 
 	public record Preparation(

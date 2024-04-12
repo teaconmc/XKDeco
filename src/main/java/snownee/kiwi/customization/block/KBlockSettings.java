@@ -10,7 +10,7 @@ import snownee.kiwi.customization.block.component.DirectionalComponent;
 import snownee.kiwi.customization.block.component.HorizontalComponent;
 import snownee.kiwi.customization.block.component.KBlockComponent;
 import snownee.kiwi.customization.block.component.WaterLoggableComponent;
-import snownee.kiwi.customization.place.PlaceChoices;
+import snownee.kiwi.customization.placement.PlaceChoices;
 import snownee.kiwi.customization.shape.ShapeGenerator;
 import snownee.kiwi.customization.duck.KBlockProperties;
 

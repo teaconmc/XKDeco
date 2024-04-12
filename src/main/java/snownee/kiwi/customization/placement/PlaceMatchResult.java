@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.place;
+package snownee.kiwi.customization.placement;
 
 import java.util.List;
 

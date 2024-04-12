@@ -24,7 +24,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.customization.block.KBlockUtils;
-import snownee.kiwi.customization.place.StatePropertiesPredicate;
+import snownee.kiwi.customization.placement.StatePropertiesPredicate;
 
 public record BlockSpread(
 		Type type,

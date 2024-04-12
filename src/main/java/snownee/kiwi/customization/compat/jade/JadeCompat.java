@@ -13,7 +13,7 @@ import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
 import snownee.kiwi.Kiwi;
-import snownee.kiwi.customization.place.PlaceSlot;
+import snownee.kiwi.customization.placement.PlaceSlot;
 import snownee.kiwi.loader.Platform;
 
 @WailaPlugin

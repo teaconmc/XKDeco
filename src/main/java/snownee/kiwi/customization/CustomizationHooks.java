@@ -76,7 +76,7 @@ import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.KCreativeTab;
 import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
 import snownee.kiwi.customization.builder.BuilderRules;
-import snownee.kiwi.customization.place.PlacementSystem;
+import snownee.kiwi.customization.placement.PlacementSystem;
 import snownee.kiwi.customization.util.resource.OneTimeLoader;
 import snownee.kiwi.customization.util.resource.RequiredFolderRepositorySource;
 import snownee.kiwi.datagen.GameObjectLookup;

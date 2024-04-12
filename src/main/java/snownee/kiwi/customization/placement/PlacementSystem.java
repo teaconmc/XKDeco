@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.place;
+package snownee.kiwi.customization.placement;
 
 import java.util.BitSet;
 import java.util.Collection;
@@ -11,11 +11,6 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
-
-import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.duck.KPlayer;
-import snownee.kiwi.customization.network.SSyncPlaceCountPacket;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -34,6 +29,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.CustomizationHooks;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.duck.KPlayer;
+import snownee.kiwi.customization.network.SSyncPlaceCountPacket;
 
 public class PlacementSystem {
 	private static final Cache<BlockPlaceContext, PlaceMatchResult> RESULT_CONTEXT = CacheBuilder.newBuilder().weakKeys().expireAfterWrite(
@@ -65,6 +64,14 @@ public class PlacementSystem {
 		if (PlaceSlot.hasNoSlots(blockState.getBlock())) {
 			return blockState;
 		}
+		PlaceChoices choices = null;
+		KBlockSettings settings = KBlockSettings.of(blockState.getBlock());
+		if (settings != null) {
+			choices = settings.placeChoices;
+		}
+		if (context.isSecondaryUseActive() && (choices == null || choices.skippable())) {
+			return blockState;
+		}
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		BlockPos.MutableBlockPos mutable = pos.mutable();
@@ -82,11 +89,6 @@ public class PlacementSystem {
 		List<PlaceMatchResult> results = Lists.newArrayList();
 		boolean waterLoggable = blockState.hasProperty(BlockStateProperties.WATERLOGGED);
 		boolean hasWater = waterLoggable && blockState.getValue(BlockStateProperties.WATERLOGGED);
-		PlaceChoices choices = null;
-		KBlockSettings settings = KBlockSettings.of(blockState.getBlock());
-		if (settings != null) {
-			choices = settings.placeChoices;
-		}
 		for (BlockState possibleState : blockState.getBlock().getStateDefinition().getPossibleStates()) {
 			if (waterLoggable && hasWater != possibleState.getValue(BlockStateProperties.WATERLOGGED)) {
 				continue;
