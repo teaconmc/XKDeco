@@ -1,21 +1,21 @@
-import json
 import os
 import shutil
 from pathlib import Path
 
+import yaml
+
+from BlockDefinitionProvider import BlockDefinitionProvider
 from BlockTemplateProvider import BlockTemplateProvider
 from CreativeTabProvider import CreativeTabProvider
-from ShapeProvider import ShapeProvider
-from TableDataProvider import TableDataProvider
-from BlockDefinitionProvider import BlockDefinitionProvider
 from MaterialProvider import MaterialProvider
 from Pack import Pack
+from ShapeProvider import ShapeProvider
 from TagsProvider import TagsProvider
 from TranslationProvider import TranslationProvider
 
 
 def main():
-    configPath = 'config.json'
+    configPath = 'config.yaml'
     if len(os.sys.argv) > 1:
         configPath = os.sys.argv[1]
     if not Path(configPath).exists():
@@ -25,9 +25,9 @@ def main():
             print(configPath + ' not found')
             return
 
-    if Path('move_files.json').exists():
-        with open('move_files.json', encoding='utf-8') as f:
-            moveFiles = json.load(f).get(configPath, {}).get('move', [])
+    if Path('move_files.yaml').exists():
+        with open('move_files.yaml', encoding='utf-8') as f:
+            moveFiles = yaml.safe_load(f).get(configPath, {}).get('move', [])
         for moveFile in moveFiles:
             src = Path(moveFile)
             if not src.exists():
@@ -37,7 +37,7 @@ def main():
             print('Moved', src.absolute(), 'to', dest.absolute())
 
     with open(configPath, encoding='utf-8') as f:
-        config = json.load(f)
+        config = yaml.safe_load(f)
     pack = Pack(config)
     pack.addProvider(MaterialProvider(pack))
     pack.addProvider(BlockTemplateProvider(pack))
