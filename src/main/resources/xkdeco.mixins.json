@@ -24,6 +24,7 @@
 	],
 	"client": [
 		"client.DebugRendererMixin",
+		"client.MultiPlayerGameModeMixin",
 		"client.ScreenAccess",
 		"forge.BlockColorsAccess",
 		"forge.ItemColorsAccess"

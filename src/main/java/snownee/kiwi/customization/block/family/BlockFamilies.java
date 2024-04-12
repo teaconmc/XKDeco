@@ -50,8 +50,7 @@ public class BlockFamilies {
 						Function.identity())));
 		ImmutableListMultimap.Builder<ItemLike, KHolder<BlockFamily>> byItemLikeBuilder = ImmutableListMultimap.builder();
 		ImmutableListMultimap.Builder<Item, KHolder<BlockFamily>> byStonecutterBuilder = ImmutableListMultimap.builder();
-		for (var entry : byId.entrySet()) {
-			KHolder<BlockFamily> family = entry.getValue();
+		for (var family : byId.values()) {
 			for (var block : family.value().holders()) {
 				Item item = block.value().asItem();
 				if (item == Items.AIR) {

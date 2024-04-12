@@ -13,13 +13,10 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.data.XKDDataGen;
 
 import com.google.common.collect.Lists;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.SharedConstants;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -49,7 +46,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -79,12 +75,7 @@ import snownee.kiwi.customization.block.family.BlockFamilies;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.KCreativeTab;
 import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
-import snownee.kiwi.customization.command.ExportBlocksCommand;
-import snownee.kiwi.customization.command.ExportCreativeTabsCommand;
-import snownee.kiwi.customization.command.ExportShapesCommand;
-import snownee.kiwi.customization.command.ReloadBlockSettingsCommand;
-import snownee.kiwi.customization.command.ReloadFamiliesCommand;
-import snownee.kiwi.customization.command.ReloadSlotsCommand;
+import snownee.kiwi.customization.builder.BuilderRules;
 import snownee.kiwi.customization.place.PlacementSystem;
 import snownee.kiwi.customization.util.resource.OneTimeLoader;
 import snownee.kiwi.customization.util.resource.RequiredFolderRepositorySource;
@@ -268,6 +259,7 @@ public final class CustomizationHooks {
 			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
 		});
 		BlockFamilies.reload(resourceManager);
+		BuilderRules.reload(resourceManager);
 	}
 
 	public static ResourceManager collectKiwiPacks() {

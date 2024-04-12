@@ -11,7 +11,7 @@ public class SmartKey extends KeyMapping {
 	//	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final long SHORT_PRESS_MAX_MS = 200;
 	private static final long DOUBLE_PRESS_INTERVAL_MS = 200;
-	private static final long LONG_PRESS_MIN_MS = 600;
+	private static final long LONG_PRESS_MIN_MS = 400;
 	protected long pressSince = -1;
 	protected long lastShortPress = -1;
 	protected State state = State.Idle;

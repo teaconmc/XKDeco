@@ -80,7 +80,7 @@ public class ConvertScreen extends Screen {
 			return slot.getItem();
 		}
 		Inventory inventory = Objects.requireNonNull(Minecraft.getInstance().player).getInventory();
-		return inventory.getItem(inventory.selected);
+		return inventory.getItem(slotIndex);
 	}
 
 	@Override
@@ -196,11 +196,13 @@ public class ConvertScreen extends Screen {
 		if (super.mouseClicked(pMouseX, pMouseY, pButton)) {
 			return true;
 		}
-		Rect2i bounds = layout.getBounds();
-		Rect2i tolerance = new Rect2i(bounds.getX() - 10, bounds.getY() - 10, bounds.getWidth() + 20, bounds.getHeight() + 20);
-		if (!tolerance.contains((int) pMouseX, (int) pMouseY)) {
-			onClose();
-			return true;
+		if (pButton == 0) {
+			Rect2i bounds = layout.getBounds();
+			Rect2i tolerance = new Rect2i(bounds.getX() - 10, bounds.getY() - 10, bounds.getWidth() + 20, bounds.getHeight() + 20);
+			if (!tolerance.contains((int) pMouseX, (int) pMouseY)) {
+				onClose();
+				return true;
+			}
 		}
 		return false;
 	}
