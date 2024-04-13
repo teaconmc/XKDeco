@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -43,12 +44,15 @@ public class CApplyBuilderRulePacket extends PacketHandler {
 			Function<Runnable, CompletableFuture<FriendlyByteBuf>> function,
 			FriendlyByteBuf buf,
 			@Nullable ServerPlayer player) {
+		Objects.requireNonNull(player);
 		InteractionHand hand = buf.readEnum(InteractionHand.class);
 		BlockPos pos = buf.readBlockPos();
 		ResourceLocation ruleId = buf.readResourceLocation();
 		List<BlockPos> positions = buf.readCollection(Lists::newArrayListWithExpectedSize, FriendlyByteBuf::readBlockPos);
+		if (Stream.concat(Stream.of(pos), positions.stream()).anyMatch($ -> !player.level().isLoaded($))) {
+			return null;
+		}
 		return function.apply(() -> {
-			Objects.requireNonNull(player);
 			BuilderRule rule = BuilderRules.get(ruleId);
 			if (rule == null) {
 				return;

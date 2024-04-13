@@ -31,7 +31,7 @@ public record ConfigureWallShape(
 	@Override
 	public void configure(Block block, BlockShapeType type) {
 		if (!(block instanceof WallBlock wallBlock)) {
-			throw new IllegalArgumentException("Block %s is not a wall block".formatted(block));
+			throw new IllegalArgumentException("Block %s is not a WallBlock".formatted(block));
 		}
 		Map<BlockState, VoxelShape> shapes = wallBlock.makeShapes(
 				width / 2,

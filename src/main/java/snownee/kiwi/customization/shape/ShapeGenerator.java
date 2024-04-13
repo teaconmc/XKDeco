@@ -25,10 +25,6 @@ public interface ShapeGenerator {
 		}
 	}
 
-	//	static <T extends Enum<T> & StringRepresentable> ShapeGenerator choices(EnumProperty<T> property, Map<T, ShapeGenerator> map) {
-//		return (blockState, context) -> map.get(blockState.getValue(property)).getShape(blockState, context);
-//	}
-
 	//	static ShapeGenerator faceAttached(ShapeGenerator floor, ShapeGenerator ceiling, ShapeGenerator wall) {
 //		return choices(
 //				BlockStateProperties.ATTACH_FACE,
