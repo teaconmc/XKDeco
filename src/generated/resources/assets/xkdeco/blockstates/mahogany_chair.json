@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/mahogany_chair",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/mahogany_chair"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/mahogany_chair",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/mahogany_chair",
+      "y": 270
+    }
+  }
+}
