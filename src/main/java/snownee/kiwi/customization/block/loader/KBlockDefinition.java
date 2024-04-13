@@ -25,6 +25,7 @@ import snownee.kiwi.customization.shape.MouldingShape;
 import snownee.kiwi.customization.shape.ShapeGenerator;
 import snownee.kiwi.customization.shape.ShapeStorage;
 import snownee.kiwi.customization.util.codec.CustomizationCodecs;
+import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.VanillaActions;
 import snownee.kiwi.util.VoxelUtil;
 
@@ -105,6 +106,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 					s = s.substring(1);
 				}
 				KBlockComponent.Type<?> type = LoaderExtraRegistries.BLOCK_COMPONENT.get(new ResourceLocation(s));
+				Preconditions.checkNotNull(type, "Unknown component type %s", s);
 				if (remove) {
 					builder.removeComponent(type);
 				} else {
@@ -112,9 +114,11 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 				}
 			}
 		}
-		deriveAndSetShape(shapes, builder, BlockShapeType.MAIN, properties.shape());
-		deriveAndSetShape(shapes, builder, BlockShapeType.COLLISION, properties.collisionShape());
-		deriveAndSetShape(shapes, builder, BlockShapeType.INTERACTION, properties.interactionShape());
+		if (!Platform.isDataGen()) {
+			deriveAndSetShape(shapes, builder, BlockShapeType.MAIN, properties.shape());
+			deriveAndSetShape(shapes, builder, BlockShapeType.COLLISION, properties.collisionShape());
+			deriveAndSetShape(shapes, builder, BlockShapeType.INTERACTION, properties.interactionShape());
+		}
 		return builder;
 	}
 
@@ -152,7 +156,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		}
 		ShapeGenerator shapeGenerator = shapes.get(shapeId.get());
 		if (shapeGenerator == null) {
-			Kiwi.LOGGER.warn("Shape {} is not registered", shapeId);
+			Kiwi.LOGGER.warn("Shape {} is not registered", shapeId.get());
 			return;
 		}
 		if (shapeGenerator.getClass() == ShapeGenerator.Unit.class) {
