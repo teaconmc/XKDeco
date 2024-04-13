@@ -11,7 +11,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,12 +20,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.customization.CustomFeatureTags;
 
 public class SitManager {
 	public static final Component ENTITY_NAME = Component.literal("Seat from Kiwi");
 
 	public static void tick(Display.BlockDisplay display) {
+		if (display.tickCount < 7) {
+			return;
+		}
 		if (!display.isVehicle()) {
 			display.discard();
 		}
@@ -39,6 +42,9 @@ public class SitManager {
 
 	public static boolean sit(Player player, BlockHitResult hitResult) {
 		if (hitResult.getDirection() == Direction.DOWN || player.isSecondaryUseActive()) {
+			return false;
+		}
+		if (player.getEyePosition().distanceToSqr(hitResult.getLocation()) > 12) {
 			return false;
 		}
 		Level level = player.level();
@@ -77,7 +83,7 @@ public class SitManager {
 			if (facing != null) {
 				float yRot = facing.toYRot();
 				display.setYRot(yRot);
-				display.setPose(Pose.DIGGING); //hacky way to tell the client that this block has facing
+				display.setNoGravity(true); //hacky way to tell the client that this block has facing
 			}
 			if (seatPos == null) {
 				seatPos = Vec3.atCenterOf(pos);
@@ -115,7 +121,7 @@ public class SitManager {
 
 	//modified from Boat
 	public static void clampRotation(Player player, Entity seat) {
-		if (seat.getPose() != Pose.DIGGING) {
+		if (!seat.isNoGravity()) {
 			return;
 		}
 		float seatRot = Mth.wrapDegrees(seat.getYRot());

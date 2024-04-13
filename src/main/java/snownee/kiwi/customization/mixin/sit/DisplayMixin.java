@@ -22,7 +22,7 @@ public abstract class DisplayMixin extends Entity {
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void kiwi$tick(CallbackInfo ci) {
-		if (level().isClientSide && SitManager.isSeatEntity(this)) {
+		if (!level().isClientSide && SitManager.isSeatEntity(this)) {
 			SitManager.tick(Objects.requireNonNull(EntityType.BLOCK_DISPLAY.tryCast(this)));
 		}
 	}
