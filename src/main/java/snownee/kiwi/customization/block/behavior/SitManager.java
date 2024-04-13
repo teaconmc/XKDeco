@@ -78,7 +78,6 @@ public class SitManager {
 				float yRot = facing.toYRot();
 				display.setYRot(yRot);
 				display.setPose(Pose.DIGGING); //hacky way to tell the client that this block has facing
-				//TODO restrict player view angle
 			}
 			if (seatPos == null) {
 				seatPos = Vec3.atCenterOf(pos);

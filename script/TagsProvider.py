@@ -17,7 +17,7 @@ class TagsProvider(TableDataProvider):
         self.data[tagKey].add(str(value))
 
     def generateRow(self, row, csvConfig):
-        if row['ID'] == '' or row['Values'] == '':
+        if row['Values'] == '':
             return
         for value in row['Values'].split(','):
             self.addEntry(ResourceLocation(row['ID']), self.pack.defaultResourceLocation(value))

@@ -8,8 +8,6 @@ class CreativeTabProvider(TableDataProvider):
         self.contents = {}
 
     def generateRow(self, row, csvConfig):
-        if row['ID'] == '':
-            return
         data = {}
         self.tabCount += 1
         data['order'] = self.tabCount

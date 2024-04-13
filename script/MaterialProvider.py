@@ -11,12 +11,10 @@ class MaterialProvider(TableDataProvider):
         self.tagTransformers = {}
 
     def generateRow(self, row, csvConfig):
-        if row['ID'] == '':
-            return
-        blockId = self.pack.defaultResourceLocation(row['ID'])
+        materialId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
-        if blockId in self.tagTransformers:
-            transformers = self.tagTransformers[blockId]
+        if materialId in self.tagTransformers:
+            transformers = self.tagTransformers[materialId]
         else:
             transformers = {}
 
@@ -63,6 +61,6 @@ class MaterialProvider(TableDataProvider):
                     raise Exception('Invalid tag transformer value: ' + value)
 
         if len(transformers) > 0:
-            self.tagTransformers[blockId] = transformers
+            self.tagTransformers[materialId] = transformers
 
-        self.writeFile(blockId, data)
+        self.writeFile(materialId, data)
