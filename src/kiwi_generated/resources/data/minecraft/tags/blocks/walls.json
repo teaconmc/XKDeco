@@ -8,6 +8,7 @@
     "xkdeco:dark_stone_handrail",
     "xkdeco:dirty_mud_wall_wall",
     "xkdeco:ebony_column_wall",
+    "xkdeco:ebony_wall",
     "xkdeco:green_roof_ridge",
     "xkdeco:hollow_ebony_column_wall",
     "xkdeco:hollow_mahogany_column_wall",
@@ -15,6 +16,7 @@
     "xkdeco:hollow_varnished_column_wall",
     "xkdeco:light_stone_handrail",
     "xkdeco:mahogany_column_wall",
+    "xkdeco:mahogany_wall",
     "xkdeco:maya_brick_wall",
     "xkdeco:maya_mossy_brick_wall",
     "xkdeco:maya_mossy_stonebrick_wall",
@@ -23,6 +25,7 @@
     "xkdeco:quartz_wall",
     "xkdeco:red_roof_ridge",
     "xkdeco:varnished_column_wall",
+    "xkdeco:varnished_wall",
     "xkdeco:yellow_roof_ridge"
   ]
 }

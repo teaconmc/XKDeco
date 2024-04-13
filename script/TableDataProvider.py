@@ -51,7 +51,6 @@ class TableDataProvider(DataProvider):
             else:
                 raise Exception('Unsupported file format: ' + ext)
 
-
     def _generateRowPre(self, row, tableConfig):
         rowId = row['ID']
         if rowId == '':

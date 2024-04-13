@@ -956,7 +956,8 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping mapping = TextureMapping.particle(block);
 				model = XKDModelTemplates.SCREEN.create(block, mapping, generators.modelOutput);
 			} else {
-				throw new IllegalStateException("Unknown block type: " + id);
+//				throw new IllegalStateException("Unknown block type: " + id);
+				model = id.withPrefix("block/furniture/");
 			}
 			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
 							block,

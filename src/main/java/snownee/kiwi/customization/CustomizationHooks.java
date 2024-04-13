@@ -234,12 +234,16 @@ public final class CustomizationHooks {
 		ResourceManager resourceManager = collectKiwiPacks();
 		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager, true);
 		fundamentals.blocks().forEach((id, definition) -> {
-			Block block = definition.createBlock(id, fundamentals.shapes());
-			if (block != null) {
-				ForgeRegistries.BLOCKS.register(id, block);
-				ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
-				fundamentals.slotProviders().attachSlotsA(block, definition);
-				fundamentals.placeChoices().attachChoicesA(block, definition);
+			try {
+				Block block = definition.createBlock(id, fundamentals.shapes());
+				if (block != null) {
+					ForgeRegistries.BLOCKS.register(id, block);
+					ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
+					fundamentals.slotProviders().attachSlotsA(block, definition);
+					fundamentals.placeChoices().attachChoicesA(block, definition);
+				}
+			} catch (Exception e) {
+				Kiwi.LOGGER.error("Failed to create block %s".formatted(id), e);
 			}
 		});
 		fundamentals.slotProviders().attachSlotsB();

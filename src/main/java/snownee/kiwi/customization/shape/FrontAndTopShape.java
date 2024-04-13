@@ -9,7 +9,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class FaceAttachedShape {
+public class FrontAndTopShape {
 	public static ShapeGenerator create(ShapeGenerator floor, ShapeGenerator ceiling, ShapeGenerator wall) {
 		return ChoicesShape.chooseOneProperty(
 				BlockStateProperties.ATTACH_FACE,
