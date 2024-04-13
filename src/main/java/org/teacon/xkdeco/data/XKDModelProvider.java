@@ -807,6 +807,7 @@ public class XKDModelProvider extends FabricModelProvider {
 //		createTrivialBlock(id + "_tall_table", XKDModelTemplates.TALL_TABLE_PROVIDER);
 		createHorizontalAxis(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
 //		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
+		createGadget(block(id + "_chair"));
 
 		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
 		createWoodenWall(id + "_column_wall", "wooden_column_wall", textureMapping);

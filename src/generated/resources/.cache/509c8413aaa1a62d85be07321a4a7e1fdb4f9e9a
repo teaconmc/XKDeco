@@ -1,4 +1,4 @@
-// 1.20.1	2024-04-10T17:52:29.2801426	XeKr's Decorations/Model Definitions
+// 1.20.1	2024-04-13T18:27:52.0965101	XeKr's Decorations/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -130,6 +130,7 @@ a46452596cf10fe283bc64a5285aa4cc4f3cc383 assets/xkdeco/blockstates/dirt_cobblest
 4914dab453a0ce63af1c740f918b42bb5e62ec76 assets/xkdeco/blockstates/dirt_cobblestone_stairs.json
 a0085542d1e68254e5d92ce75816d417baa032b0 assets/xkdeco/blockstates/dirt_path_slab.json
 69233165e99e78425130243eb80e709a7ae6d13b assets/xkdeco/blockstates/dirt_slab.json
+9c53398827080f2d28bf3834bd874b37634fcfde assets/xkdeco/blockstates/ebony_chair.json
 7621f5132fa823a36eb017f120b478bd318b725c assets/xkdeco/blockstates/ebony_column_wall.json
 ce16a139978c0b0b3fbc54128899cf2f8b54ca6e assets/xkdeco/blockstates/ebony_desk.json
 1f72b5f89319e6a692d4cc67d4100c75f0b3e3d8 assets/xkdeco/blockstates/ebony_door.json
@@ -299,6 +300,7 @@ d6a000826b72d4b13506bc4babd8b65664e0cf00 assets/xkdeco/blockstates/light_wall_ba
 bc5bd6aaec54bcf938a7b6b6a9c5ffd1af16a462 assets/xkdeco/blockstates/lined_mud_wall_slab.json
 a9b065a20bfc1a08d4be19224319572894c36508 assets/xkdeco/blockstates/lined_mud_wall_stairs.json
 20724bafcdcb182ebe4b952c90e7250cdae9af2a assets/xkdeco/blockstates/luxury_gilded_blackstone.json
+521013ad40ef21fbba8ee7b1df987300755a25bb assets/xkdeco/blockstates/mahogany_chair.json
 513598ff5b30898d471e3b91c4a769c57c05749b assets/xkdeco/blockstates/mahogany_column_wall.json
 6e64bce3e65b0cdc1f254b5b49958b669e2758df assets/xkdeco/blockstates/mahogany_desk.json
 dfa57ec9bf6e0a35242451bd7c208a082526aa4d assets/xkdeco/blockstates/mahogany_door.json
@@ -518,6 +520,7 @@ d894d796563d8c902361471c21b575af44828d5d assets/xkdeco/blockstates/toughened_gla
 faff457ac5b93b9d3fb2864d4c82c1c936824481 assets/xkdeco/blockstates/translucent_lamp_block.json
 006fa6e6c7e9a16093e1171e20beb94f729b4088 assets/xkdeco/blockstates/translucent_lamp_slab.json
 747a79281e63389e427660fc6e191cc1f0ef861e assets/xkdeco/blockstates/translucent_lamp_stairs.json
+cf51a67a26d03289a454053c1da021540e474dea assets/xkdeco/blockstates/varnished_chair.json
 5424b99d4ba805a888da6681f1ce9e1aa5f81b4a assets/xkdeco/blockstates/varnished_column_wall.json
 9f67290580d4120021b14a38125939890b627a24 assets/xkdeco/blockstates/varnished_desk.json
 afb9d89d60c45db0a82531a25f3a45919a7dcf3d assets/xkdeco/blockstates/varnished_door.json
@@ -1754,6 +1757,7 @@ f429d8e0ba54467ab30a6df6494e0cdee5dd3547 assets/xkdeco/models/item/dirt_cobblest
 f918adaec7020900fc182dfd01beb93c737a2d6b assets/xkdeco/models/item/dirt_cobblestone_stairs.json
 ba8b5b54b8400d18c0c0a2d4f5f2ba8bc3e4c8d3 assets/xkdeco/models/item/dirt_path_slab.json
 926306369236ce9643ac71a71997ac6ce0e50888 assets/xkdeco/models/item/dirt_slab.json
+148114128fba908f57d7a9252a6a369b1c2a3455 assets/xkdeco/models/item/ebony_chair.json
 30c6c2b08c367790668058e13d458fc93d20527a assets/xkdeco/models/item/ebony_column_wall.json
 6f48cf96f7bc2170c4f027705f0763a68a8dd984 assets/xkdeco/models/item/ebony_desk.json
 dc2269848c02c9ae48af9e3a29747baa3b30b0f8 assets/xkdeco/models/item/ebony_door.json
@@ -1922,6 +1926,7 @@ e716fc183c23b87bee96e86f75c62c2986092693 assets/xkdeco/models/item/lined_mud_wal
 d4f2ca223f5497928364e8adf069633dda4ab94b assets/xkdeco/models/item/lined_mud_wall_slab.json
 e4d04860bacc49417e02db44ca7aec92811f9ecc assets/xkdeco/models/item/lined_mud_wall_stairs.json
 d17f80502a1f88c5fdfec9dd70ca02d3a0cbc81a assets/xkdeco/models/item/luxury_gilded_blackstone.json
+5f21d5a224f6137ed19f471ce2a57fc86541d4f3 assets/xkdeco/models/item/mahogany_chair.json
 3a3533aa0e08845bad984f00f6d29277041ae35c assets/xkdeco/models/item/mahogany_column_wall.json
 58d44805669dc40bba79ff97c5e45cba95f223f6 assets/xkdeco/models/item/mahogany_desk.json
 29222e1f393e4d55f696373c5eac372c53b01bf9 assets/xkdeco/models/item/mahogany_door.json
@@ -2141,6 +2146,7 @@ b1ee19df9a9bcaee17f2f132ff3fdbf7b2a8a87c assets/xkdeco/models/item/toughened_san
 f1fe3ef0fe09bb908018584ae0bf4435c48e03d2 assets/xkdeco/models/item/translucent_lamp_block.json
 d1907d79e65d96dcb7e74e629be1d1cbc15c87d5 assets/xkdeco/models/item/translucent_lamp_slab.json
 61ea4b7e38350e8e05d4ae777425da5b333c7b1a assets/xkdeco/models/item/translucent_lamp_stairs.json
+b3e0ea7cf2b7b70c97ec5a9d40d610e46e9f9670 assets/xkdeco/models/item/varnished_chair.json
 b47e8fbc4b4c561c84c317578eb52454016a4ced assets/xkdeco/models/item/varnished_column_wall.json
 31cb38fecaf0200f57bfe59b5f7e67b448528620 assets/xkdeco/models/item/varnished_desk.json
 01b9614a8a65143e93e0a880bf681bbad6298bf5 assets/xkdeco/models/item/varnished_door.json

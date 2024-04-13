@@ -3,7 +3,6 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
-import org.teacon.xkdeco.entity.CushionEntity;
 import org.teacon.xkdeco.init.XKDecoObjects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -41,9 +40,6 @@ public class CommonProxy {
 		if (Platform.isPhysicalClient()) {
 			ClientProxy.init();
 		}
-
-		forgeEventBus.addListener(CushionEntity::onRightClickBlock);
-		forgeEventBus.addListener(CushionEntity::onBreakBlock);
 
 		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
 		BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));

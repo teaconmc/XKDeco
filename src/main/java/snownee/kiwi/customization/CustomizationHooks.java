@@ -31,6 +31,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -70,6 +71,7 @@ import snownee.kiwi.customization.block.BlockRenderSettings;
 import snownee.kiwi.customization.block.GlassType;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.behavior.BlockBehaviorRegistry;
+import snownee.kiwi.customization.block.behavior.SitManager;
 import snownee.kiwi.customization.block.component.KBlockComponent;
 import snownee.kiwi.customization.block.family.BlockFamilies;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
@@ -215,6 +217,12 @@ public final class CustomizationHooks {
 			if (result.consumesAction()) {
 				event.setCanceled(true);
 				event.setCancellationResult(result);
+			}
+		});
+		forgeEventBus.addListener((PlayerInteractEvent.RightClickBlock event) -> {
+			if (event.getHand() == InteractionHand.MAIN_HAND && SitManager.sit(event.getEntity(), event.getHitVec())) {
+				event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+				event.setCanceled(true);
 			}
 		});
 		if (Platform.isPhysicalClient()) {

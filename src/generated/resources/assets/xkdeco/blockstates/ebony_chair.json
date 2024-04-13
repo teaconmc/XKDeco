@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/ebony_chair",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/ebony_chair"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/ebony_chair",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/ebony_chair",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "xkdeco:block/furniture/ebony_chair",
+  "textures": {
+    "particle": "xkdeco:block/mahogany_chair_back",
+    "back": "xkdeco:block/mahogany_chair_back",
+    "side": "xkdeco:block/mahogany_chair_side",
+    "face": "xkdeco:block/mahogany_chair_top"
+  }
+}

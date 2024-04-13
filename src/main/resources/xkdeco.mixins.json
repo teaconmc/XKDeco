@@ -20,14 +20,17 @@
 		"forge.BlockMixin",
 		"forge.GameDataMixin",
 		"property_inject.BlockMixin",
-		"property_inject.StateDefinitionBuilderMixin"
+		"property_inject.StateDefinitionBuilderMixin",
+		"sit.DisplayMixin"
 	],
 	"client": [
 		"client.DebugRendererMixin",
 		"client.MultiPlayerGameModeMixin",
 		"client.ScreenAccess",
 		"forge.BlockColorsAccess",
-		"forge.ItemColorsAccess"
+		"forge.ItemColorsAccess",
+		"sit.ClientPacketListenerMixin",
+		"sit.LocalPlayerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

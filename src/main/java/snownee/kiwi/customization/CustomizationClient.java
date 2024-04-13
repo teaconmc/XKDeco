@@ -9,6 +9,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.inventory.Slot;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import snownee.kiwi.customization.block.behavior.SitManager;
 import snownee.kiwi.customization.builder.BuildersButton;
 import snownee.kiwi.customization.command.ExportBlocksCommand;
 import snownee.kiwi.customization.command.ExportCreativeTabsCommand;
@@ -85,6 +87,15 @@ public final class CustomizationClient {
 		forgeEventBus.addListener((RenderHighlightEvent.Block event) -> {
 			if (BuildersButton.cancelRenderHighlight()) {
 				event.setCanceled(true);
+			}
+		});
+		forgeEventBus.addListener((TickEvent.RenderTickEvent event) -> {
+			if (event.phase != TickEvent.Phase.START) {
+				return;
+			}
+			LocalPlayer player = Minecraft.getInstance().player;
+			if (player != null && SitManager.isSeatEntity(player.getVehicle())) {
+				SitManager.clampRotation(player, player.getVehicle());
 			}
 		});
 	}
