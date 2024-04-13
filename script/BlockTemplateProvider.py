@@ -11,8 +11,6 @@ class BlockTemplateProvider(TableDataProvider):
         self.properties = {}
 
     def generateRow(self, row, csvConfig):
-        if row['ID'] == '':
-            return
         templateId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         for field in row:

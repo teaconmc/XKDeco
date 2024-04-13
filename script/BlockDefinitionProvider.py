@@ -22,8 +22,6 @@ class BlockDefinitionProvider(TableDataProvider):
         super().generate()
 
     def generateRow(self, row, csvConfig):
-        if row['ID'] == '':
-            return
         blockId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         tags = set()
@@ -67,6 +65,10 @@ class BlockDefinitionProvider(TableDataProvider):
         translationKey = 'block.{namespace}.{name}'.format(namespace=self.pack.config['namespace'], name=row['ID'])
         if 'Name:en_us' in row and row['Name:en_us'] != '':
             self.pack.providers['translations'].putTranslation('en_us', translationKey, row['Name:en_us'])
+        else:
+            parts = blockId.path.split('_')
+            translatedName = ' '.join(parts).title()
+            self.pack.providers['translations'].putTranslation('en_us', translationKey, translatedName)
         if 'SecondaryName' in csvConfig:
             fieldName = 'Name:' + csvConfig['SecondaryName']
             if fieldName in row and row[fieldName] != '':

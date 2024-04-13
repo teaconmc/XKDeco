@@ -12,6 +12,7 @@ class TableDataProvider(DataProvider):
         super().__init__(pack, table, dataPath)
         self.table = table
         self.ignoredFields = ignoredFields if ignoredFields is not None else set()
+        self.added = set()
 
     def generate(self):
         if self.table not in self.pack.config:
@@ -30,7 +31,7 @@ class TableDataProvider(DataProvider):
                         rowDict = {}
                         for key, value in row.items(): #TODO dry-run
                             rowDict[key] = value.strip()
-                        self.generateRow(rowDict, tableConfig)
+                        self._generateRowPre(rowDict, tableConfig)
             elif ext == '.xlsx':
                 # it will return us fewer columns if we use read_only=True, took me one hour to figure out
                 workbook = openpyxl.load_workbook(inputFile, read_only=False)
@@ -46,13 +47,21 @@ class TableDataProvider(DataProvider):
                     for i, field in enumerate(fields):
                         value = row[i]
                         rowDict[field.value] = str(value).strip() if value is not None else ''
-                    self.generateRow(rowDict, tableConfig)
+                    self._generateRowPre(rowDict, tableConfig)
             else:
                 raise Exception('Unsupported file format: ' + ext)
 
-    def generateRow(self, row, tableConfig):
-        if row['ID'] == '':
+
+    def _generateRowPre(self, row, tableConfig):
+        rowId = row['ID']
+        if rowId == '':
             return
+        if rowId in self.added:
+            raise ValueError('Duplicate ID: ' + rowId)
+        self.added.add(rowId)
+        self.generateRow(row, tableConfig)
+
+    def generateRow(self, row, tableConfig):
         data = {}
         for field in row:
             if field != 'ID' and field not in self.ignoredFields and field != '' and row[field] != '':
