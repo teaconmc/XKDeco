@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,6 +18,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -27,6 +29,7 @@ public class ShapeStorage {
 //	private static Map<ResourceLocation, ShapeGenerator> tempResolved;
 
 	private final ImmutableMap<ResourceLocation, ShapeGenerator> shapes;
+	private final Map<Pair<ShapeGenerator, Object>, ShapeGenerator> transformed = Maps.newHashMap();
 
 	public ShapeStorage(Map<ResourceLocation, ShapeGenerator> shapes) {
 		this.shapes = ImmutableMap.copyOf(shapes);
@@ -252,6 +255,17 @@ public class ShapeStorage {
 
 	public void forEach(BiConsumer<? super ResourceLocation, ? super ShapeGenerator> action) {
 		shapes.forEach(action);
+	}
+
+	public ShapeGenerator transform(ShapeGenerator shape, Object key, UnaryOperator<ShapeGenerator> factory) {
+		Pair<ShapeGenerator, Object> pair = Pair.of(shape, key);
+		if (transformed.containsKey(pair)) {
+			return transformed.get(pair);
+		} else {
+			ShapeGenerator result = factory.apply(shape);
+			transformed.put(pair, result);
+			return result;
+		}
 	}
 
 	private record UnresolvedEntry(ResourceLocation key, UnbakedShape unbakedShape, Set<ShapeRef> dependencies) {

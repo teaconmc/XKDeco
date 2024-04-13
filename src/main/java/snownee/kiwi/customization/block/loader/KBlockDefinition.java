@@ -154,32 +154,32 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 		if (shapeId.isEmpty()) {
 			return;
 		}
-		ShapeGenerator shapeGenerator = shapes.get(shapeId.get());
-		if (shapeGenerator == null) {
+		ShapeGenerator shape = shapes.get(shapeId.get());
+		if (shape == null) {
 			Kiwi.LOGGER.warn("Shape {} is not registered", shapeId.get());
 			return;
 		}
-		if (shapeGenerator.getClass() == ShapeGenerator.Unit.class) {
-			if (builder.hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
-				shapeGenerator = HorizontalShape.create(shapeGenerator);
-			} else if (builder.hasComponent(KBlockComponents.DIRECTIONAL.getOrCreate())) {
-				shapeGenerator = DirectionalShape.create(shapeGenerator, "facing");
-			} else if (builder.hasComponent(KBlockComponents.MOULDING.getOrCreate())) {
-				shapeGenerator = MouldingShape.create(shapeGenerator);
-			} else if (builder.hasComponent(KBlockComponents.FRONT_AND_TOP.getOrCreate())) {
-				shapeGenerator = DirectionalShape.create(shapeGenerator, "orientation");
-			} else if (builder.hasComponent(KBlockComponents.HORIZONTAL_AXIS.getOrCreate())) {
-				shapeGenerator = ChoicesShape.chooseOneProperty(
-						BlockStateProperties.HORIZONTAL_AXIS,
-						Map.of(
-								Direction.Axis.X,
-								shapeGenerator,
-								Direction.Axis.Z,
-								ShapeGenerator.unit(VoxelUtil.rotateHorizontal(
-										ShapeGenerator.Unit.unboxOrThrow(shapeGenerator),
-										Direction.EAST))));
-			}
+		if (shape.getClass() != ShapeGenerator.Unit.class) {
+			builder.shape(type, shape);
+			return;
 		}
-		builder.shape(type, shapeGenerator);
+		if (builder.hasComponent(KBlockComponents.HORIZONTAL.getOrCreate())) {
+			shape = shapes.transform(shape, KBlockComponents.HORIZONTAL.getOrCreate(), HorizontalShape::create);
+		} else if (builder.hasComponent(KBlockComponents.DIRECTIONAL.getOrCreate())) {
+			shape = shapes.transform(shape, KBlockComponents.DIRECTIONAL.getOrCreate(), $ -> DirectionalShape.create($, "facing"));
+		} else if (builder.hasComponent(KBlockComponents.MOULDING.getOrCreate())) {
+			shape = shapes.transform(shape, KBlockComponents.MOULDING.getOrCreate(), MouldingShape::create);
+		} else if (builder.hasComponent(KBlockComponents.FRONT_AND_TOP.getOrCreate())) {
+			shape = shapes.transform(shape, KBlockComponents.FRONT_AND_TOP.getOrCreate(), $ -> DirectionalShape.create($, "orientation"));
+		} else if (builder.hasComponent(KBlockComponents.HORIZONTAL_AXIS.getOrCreate())) {
+			shape = shapes.transform(shape, KBlockComponents.HORIZONTAL_AXIS.getOrCreate(), $ -> ChoicesShape.chooseOneProperty(
+					BlockStateProperties.HORIZONTAL_AXIS,
+					Map.of(
+							Direction.Axis.X,
+							$,
+							Direction.Axis.Z,
+							ShapeGenerator.unit(VoxelUtil.rotateHorizontal(ShapeGenerator.Unit.unboxOrThrow($), Direction.EAST)))));
+		}
+		builder.shape(type, shape);
 	}
 }
