@@ -1,0 +1,7 @@
+stonecutter_from: deepslate
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:deepslate_pavement
+- xkdeco:deepslate_pavement_slab
+- xkdeco:deepslate_pillar

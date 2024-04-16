@@ -95,6 +95,9 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 				}
 			});
 		});
+		if (properties.material().isEmpty()) {
+			builder.configure($ -> $.strength(2, 3));
+		}
 		properties.canSurviveHandler().ifPresent(builder::canSurviveHandler);
 		for (Either<KBlockComponent, String> component : properties.components()) {
 			if (component.left().isPresent()) {

@@ -36,11 +36,11 @@ public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 				continue;
 			}
 			if (block instanceof SlabBlock) {
-				createSlabItemTable(block);
+				add(block, createSlabItemTable(block));
 				continue;
 			}
 			if (block instanceof DoorBlock) {
-				createDoorTable(block);
+				add(block, createDoorTable(block));
 				continue;
 			}
 			KBlockSettings settings = KBlockSettings.of(block);

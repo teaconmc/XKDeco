@@ -15,8 +15,6 @@ class TableDataProvider(DataProvider):
         self.added = set()
 
     def generate(self):
-        if self.table not in self.pack.config:
-            return
         for inputFile in self.pack.config[self.table]:
             ext = Path(inputFile).suffix.lower()
             if ext == '.csv':
@@ -29,7 +27,7 @@ class TableDataProvider(DataProvider):
                             tableConfig['SecondaryName'] = field[5:]
                     for row in csvReader:
                         rowDict = {}
-                        for key, value in row.items(): #TODO dry-run
+                        for key, value in row.items():  # TODO dry-run
                             rowDict[key] = value.strip()
                         self._generateRowPre(rowDict, tableConfig)
             elif ext == '.xlsx':
@@ -37,16 +35,20 @@ class TableDataProvider(DataProvider):
                 workbook = openpyxl.load_workbook(inputFile, read_only=False)
                 sheet = workbook[self.table]
                 tableConfig = {}
-                fields = sheet[1]
-                for cell in fields:
-                    field = cell.value
+                fields = []
+                num = 0
+                for cell in sheet[1]:
+                    if cell.value is not None:
+                        fields.append((cell.value, num))
+                    num += 1
+                for field, i in fields:
                     if field != 'Name:en_us' and field.startswith('Name:'):
                         tableConfig['SecondaryName'] = field[5:]
                 for row in sheet.iter_rows(min_row=2, values_only=True):
                     rowDict = {}
-                    for i, field in enumerate(fields):
+                    for field, i in fields:
                         value = row[i]
-                        rowDict[field.value] = str(value).strip() if value is not None else ''
+                        rowDict[field] = str(value).strip() if value is not None else ''
                     self._generateRowPre(rowDict, tableConfig)
             else:
                 raise Exception('Unsupported file format: ' + ext)
@@ -67,6 +69,9 @@ class TableDataProvider(DataProvider):
                 data[field] = row[field]
 
         self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
+
+    def canGenerate(self) -> bool:
+        return self.table in self.pack.config
 
     def __str__(self):
         if self.__class__.__name__ == 'TableDataProvider':

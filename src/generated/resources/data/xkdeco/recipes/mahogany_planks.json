@@ -1,15 +1,14 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "group": "planks",
   "ingredients": [
     {
-      "item": "minecraft:acacia_planks"
-    },
-    {
-      "item": "minecraft:red_dye"
+      "tag": "xkdeco:mahogany_logs"
     }
   ],
   "result": {
+    "count": 4,
     "item": "xkdeco:mahogany_planks"
   }
 }

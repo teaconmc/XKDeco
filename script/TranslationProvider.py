@@ -22,6 +22,7 @@ class TranslationProvider(DataProvider):
         assert format.endswith('.json'), 'Translation file name must end with .json'
         format = format[:-5]
         for lang, translations in self.data.items():
+            translations = dict(sorted(translations.items()))
             self.writeFile(self.pack.defaultResourceLocation(format.format(lang)), translations)
 
     def writeFile(self, file, data: dict):

@@ -8,10 +8,12 @@ from BlockDefinitionProvider import BlockDefinitionProvider
 from BlockTemplateProvider import BlockTemplateProvider
 from CreativeTabProvider import CreativeTabProvider
 from MaterialProvider import MaterialProvider
+from BlockFamilyProvider import BlockFamilyProvider
 from Pack import Pack
 from ShapeProvider import ShapeProvider
 from TagsProvider import TagsProvider
 from TranslationProvider import TranslationProvider
+import Download
 
 
 def main():
@@ -25,6 +27,15 @@ def main():
             print(configPath + ' not found')
             return
 
+    with open(configPath, encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+
+    if 'namespace' not in config:
+        raise ValueError('namespace not found in config')
+
+    if 'google_sheets_id' in config:
+        Download.downloadFileFromGoogleSheets(config['google_sheets_id'], '../' + config['namespace'] + '.xlsx')
+
     if Path('move_files.yaml').exists():
         with open('move_files.yaml', encoding='utf-8') as f:
             moveFiles = yaml.safe_load(f).get(configPath, {}).get('move', [])
@@ -36,8 +47,6 @@ def main():
             shutil.move(src, dest)
             print('Moved', src.absolute(), 'to', dest.absolute())
 
-    with open(configPath, encoding='utf-8') as f:
-        config = yaml.safe_load(f)
     pack = Pack(config)
     pack.addProvider(MaterialProvider(pack))
     pack.addProvider(BlockTemplateProvider(pack))
@@ -45,6 +54,7 @@ def main():
     pack.addProvider(CreativeTabProvider(pack))
     pack.addProvider(TranslationProvider(pack))
     pack.addProvider(TagsProvider(pack, 'block', 'blocks'))
+    pack.addProvider(BlockFamilyProvider(pack))
     pack.addProvider(ShapeProvider(pack))
     pack.finish()
 

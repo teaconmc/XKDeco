@@ -1,0 +1,4 @@
+destroy_time: 0.2
+ignited_by_lava: true
+ignite_odds: 30
+burn_odds: 60

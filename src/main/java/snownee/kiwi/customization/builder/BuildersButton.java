@@ -21,8 +21,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.customization.CustomizationClient;
 import snownee.kiwi.customization.block.family.BlockFamilies;
 import snownee.kiwi.customization.block.family.BlockFamily;
-import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.network.CApplyBuilderRulePacket;
+import snownee.kiwi.customization.util.KHolder;
 
 public class BuildersButton {
 	private static final BuilderModePreview PREVIEW_RENDERER = new BuilderModePreview();
@@ -34,6 +34,9 @@ public class BuildersButton {
 	private static boolean builderMode;
 
 	public static boolean isBuilderModeOn() {
+		if (builderMode && CustomizationClient.buildersButtonKey.isUnbound()) {
+			builderMode = false;
+		}
 		return builderMode;
 	}
 

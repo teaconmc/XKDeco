@@ -1,3 +1,4 @@
 render_type: translucent
+material: xkdeco:mahogany
 components:
 - water_loggable

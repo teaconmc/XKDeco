@@ -1,4 +1,5 @@
 render_type: translucent
+material: xkdeco:stone
 components:
 - horizontal
 shape: xkdeco:maya_crystal_skull

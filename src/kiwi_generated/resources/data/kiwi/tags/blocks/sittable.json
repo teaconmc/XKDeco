@@ -1,12 +1,15 @@
 {
   "values": [
     "xkdeco:ebony_chair",
+    "xkdeco:ebony_meiren_kao",
     "xkdeco:ebony_stool",
     "xkdeco:mahogany_chair",
+    "xkdeco:mahogany_meiren_kao",
     "xkdeco:mahogany_stool",
     "xkdeco:mechanical_chair",
     "xkdeco:tech_chair",
     "xkdeco:varnished_chair",
+    "xkdeco:varnished_meiren_kao",
     "xkdeco:varnished_stool"
   ]
 }

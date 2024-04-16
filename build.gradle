@@ -184,11 +184,11 @@ dependencies {
         jarJar.ranged(it, "[0.3.2,)")
     }
 
-//    // compile against the JEI API but do not include it at runtime
-//    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
-//    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-//    //// at runtime, use the full JEI jar for Forge
-//    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    // compile against the JEI API but do not include it at runtime
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    //// at runtime, use the full JEI jar for Forge
+    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
@@ -260,14 +260,13 @@ publishing {
     }
 }
 
-/*
 unifiedPublishing {
     project {
         displayName = "[Forge $project.supported_version] $project.mod_version"
         version = project.mod_version // Optional, Inferred from project by default
         changelog = file("CHANGELOG.md").exists() ? file("CHANGELOG.md").text : ""
         releaseType = project.release_type // Optional, use "release", "beta" or "alpha"
-        gameVersions = ["1.20", "1.20.1"]
+        gameVersions = ["1.20.1"]
         gameLoaders = ["forge", "neoforge"]
 
         mainPublication tasks.jarJar // Declares the publicated jar
@@ -275,14 +274,10 @@ unifiedPublishing {
         if (System.getenv("CURSE_TOKEN") != null) {
             curseforge {
                 token = System.getenv("CURSE_TOKEN")
-                id = "885292" // Required, must be a string, ID of CurseForge project
+                id = "497637" // Required, must be a string, ID of CurseForge project
 
                 relations { // Optional, Inferred from the relations above by default
-                    depends "kiwi"
-                    optional "cloth-config"
-                    optional "lychee"
-                    optional "kubejs"
-                    optional "huge-structure-blocks"
+//                    includes "kiwi"
                 }
             }
         }
@@ -290,16 +285,12 @@ unifiedPublishing {
         if (System.getenv("CURSE_TOKEN") != null) {
             modrinth {
                 token = System.getenv("MODRINTH_TOKEN")
-                id = "xnn6vBkh" // Required, must be a string, ID of Modrinth project
+                id = "XlwMlNhH" // Required, must be a string, ID of Modrinth project
 
                 relations { // Optional, Inferred from the relations above by default
-                    depends "kiwi"
-                    optional "cloth-config"
-                    optional "lychee"
-                    optional "kubejs"
-                    optional "huge-structure-blocks"
+//                    includes "kiwi"
                 }
             }
         }
     }
-}*/
+}

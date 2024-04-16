@@ -1,0 +1,21 @@
+namespace: xkdeco
+google_sheets_id: 18y2gvjkuD6iutqg4evWvteOJQkhJBoST6FQk96kFNx4
+dest: ../run_client/kiwipacks/
+translation_file_name: '{}.json'
+translation_dest: '%TEMP%/assets/xkdeco_extra/lang'
+json_pretty_print: false
+export_format: yaml
+includes:
+  - ../includes
+materials:
+  - ../xkdeco.xlsx
+block_templates:
+  - ../xkdeco.xlsx
+blocks:
+  - ../xkdeco.xlsx
+block_tags:
+  - ../xkdeco.xlsx
+creative_tabs:
+  - ../xkdeco.xlsx
+# shapes:
+#   - ../exported_shapes.json

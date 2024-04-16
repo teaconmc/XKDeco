@@ -1,0 +1,17 @@
+stonecutter_from: xkdeco:cyan_tiles
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:cyan_roof
+- xkdeco:cyan_roof_deco
+- xkdeco:cyan_roof_deco_oblique
+- xkdeco:cyan_roof_eave
+- xkdeco:cyan_roof_end
+- xkdeco:cyan_roof_flat
+- xkdeco:cyan_roof_ridge
+- xkdeco:cyan_roof_ridge_end
+- xkdeco:cyan_roof_small_eave
+- xkdeco:cyan_roof_small_end
+- xkdeco:cyan_roof_small_flat_end
+- xkdeco:cyan_roof_small_ridge_end
+- xkdeco:cyan_roof_tip

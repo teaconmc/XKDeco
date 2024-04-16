@@ -46,9 +46,9 @@ class MaterialProvider(TableDataProvider):
         if 'IgnitedByLava' in row and row['IgnitedByLava'].lower() == 'true':
             data['ignited_by_lava'] = True
         if 'IgniteOdds' in row and row['IgniteOdds'] != '':
-            data['ignite_odds'] = int(row['IgniteOdds'])
+            data['ignite_odds'] = int(float(row['IgniteOdds']))
         if 'BurnOdds' in row and row['BurnOdds'] != '':
-            data['burn_odds'] = int(row['BurnOdds'])
+            data['burn_odds'] = int(float(row['BurnOdds']))
         if 'TagTransformers' in row and row['TagTransformers'] != '':
             parsed = yaml.safe_load('{' + row['TagTransformers'] + '}')
             # Map<TagKey, List<TagKey>>

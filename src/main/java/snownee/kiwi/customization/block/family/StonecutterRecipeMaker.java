@@ -22,6 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import snownee.kiwi.customization.util.KHolder;
 
 public class StonecutterRecipeMaker {
@@ -54,11 +56,7 @@ public class StonecutterRecipeMaker {
 					if (list == null) {
 						list = Lists.newArrayList();
 					}
-					ResourceLocation itemKey = BuiltInRegistries.ITEM.getKey(item);
-					list.addAll(makeRecipes(
-							"%s/%s".formatted(itemKey.getNamespace(), itemKey.getPath()),
-							family.value().ingredient(),
-							family));
+					list.addAll(makeRecipes("exchange", family));
 				}
 				return list == null ? List.of() : list;
 			});
@@ -74,8 +72,7 @@ public class StonecutterRecipeMaker {
 			sourceRecipes = SOURCE_CACHE.get(item, () -> {
 				List<StonecutterRecipe> list = Lists.newArrayList();
 				for (KHolder<BlockFamily> family : families) {
-					Ingredient from = family.value().stonecutterSourceIngredient();
-					list.addAll(makeRecipes("to", from, family));
+					list.addAll(makeRecipes("to", family));
 				}
 				return list;
 			});
@@ -88,9 +85,24 @@ public class StonecutterRecipeMaker {
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
-	private static List<StonecutterRecipe> makeRecipes(String type, Ingredient input, KHolder<BlockFamily> family) {
+	public static List<StonecutterRecipe> makeRecipes(String type, KHolder<BlockFamily> family) {
+		Ingredient input = switch (type) {
+			case "exchange" -> family.value().ingredient();
+			case "exchange_in_viewer" -> family.value().ingredientInViewer();
+			case "to" -> family.value().stonecutterSourceIngredient();
+			default -> throw new IllegalArgumentException();
+		};
+		if ("exchange_in_viewer".equals(type)) {
+			type = "exchange";
+		}
 		ResourceLocation prefix = family.key().withPath("fake/stonecutter/%s/%s".formatted(family.key().getPath(), type));
 		return family.value().values().map(block -> {
+			int count = 1;
+			if (block instanceof SlabBlock) {
+				count = 2;
+			} else if (block instanceof DoorBlock) {
+				return null;
+			}
 			Item item = block.asItem();
 			if (item == Items.AIR) {
 				return null;
@@ -100,7 +112,7 @@ public class StonecutterRecipeMaker {
 					prefix.withSuffix("/%s/%s".formatted(itemKey.getNamespace(), itemKey.getPath())),
 					prefix.toString(),
 					input,
-					new ItemStack(block));
+					new ItemStack(block, count));
 		}).filter(Objects::nonNull).toList();
 	}
 

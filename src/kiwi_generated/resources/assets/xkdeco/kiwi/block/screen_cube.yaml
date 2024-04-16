@@ -1,3 +1,4 @@
+material: xkdeco:wood
 light_emission: 9
 components:
 - water_loggable

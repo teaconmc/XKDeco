@@ -1,3 +1,4 @@
 template: slab
 render_type: translucent
+material: xkdeco:stone
 glass_type: toughened

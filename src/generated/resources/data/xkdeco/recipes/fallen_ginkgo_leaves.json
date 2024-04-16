@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "fallen_leaves",
+  "key": {
+    "#": {
+      "item": "xkdeco:ginkgo_leaves"
+    }
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "item": "xkdeco:fallen_ginkgo_leaves"
+  },
+  "show_notification": true
+}

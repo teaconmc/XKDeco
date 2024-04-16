@@ -1,3 +1,4 @@
 template: xkdeco:block_display
+material: xkdeco:wood
 components:
 - water_loggable

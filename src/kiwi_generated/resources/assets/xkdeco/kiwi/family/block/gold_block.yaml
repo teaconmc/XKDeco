@@ -1,0 +1,13 @@
+stonecutter_from: gold_block
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:chiseled_gold_block
+- xkdeco:cut_gold_block
+- xkdeco:cut_gold_block_slab
+- xkdeco:cut_gold_block_stairs
+- xkdeco:gold_brick_slab
+- xkdeco:gold_brick_stairs
+- xkdeco:gold_bricks
+- xkdeco:gold_pillar
+- xkdeco:painted_gold_block

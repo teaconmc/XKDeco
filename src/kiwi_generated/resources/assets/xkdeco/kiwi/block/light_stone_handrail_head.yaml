@@ -1,3 +1,4 @@
+material: xkdeco:stone
 components:
 - water_loggable
 - directional

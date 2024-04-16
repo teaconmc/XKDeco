@@ -1,0 +1,10 @@
+exchange_inputs_in_viewer: xkdeco:grass_cobblestone
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:grass_cobblestone
+- xkdeco:grass_cobblestone_path
+- xkdeco:grass_cobblestone_path_slab
+- xkdeco:grass_cobblestone_path_stairs
+- xkdeco:grass_cobblestone_slab
+- xkdeco:grass_cobblestone_stairs

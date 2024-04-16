@@ -1,5 +1,13 @@
 {
   "values": [
-    "xkdeco:ebony_trapdoor"
+    "xkdeco:ebony_awning_window",
+    "xkdeco:ebony_trapdoor",
+    "xkdeco:ebony_window",
+    "xkdeco:mahogany_awning_window",
+    "xkdeco:mahogany_trapdoor",
+    "xkdeco:mahogany_window",
+    "xkdeco:varnished_awning_window",
+    "xkdeco:varnished_trapdoor",
+    "xkdeco:varnished_window"
   ]
 }

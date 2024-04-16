@@ -14,5 +14,7 @@ block_tags:
   - xkdeco.xlsx
 creative_tabs:
   - xkdeco.xlsx
+block_families:
+  - xkdeco.xlsx
 shapes:
   - exported_shapes.json

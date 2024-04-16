@@ -1,3 +1,4 @@
+material: xkdeco:stone
 components:
 - directional
 shape: xkdeco:item_frame_cover
