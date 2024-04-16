@@ -1,0 +1,11 @@
+stonecutter_from: xkdeco:red_tiles
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:red_roof
+- xkdeco:red_roof_flat
+- xkdeco:red_roof_ridge
+- xkdeco:red_roof_small_eave
+- xkdeco:red_roof_small_end
+- xkdeco:red_roof_small_flat_end
+- xkdeco:red_roof_small_ridge_end

@@ -1,10 +1,18 @@
 {
   "values": [
+    "xkdeco:bronze_block",
+    "xkdeco:bronze_pillar",
+    "xkdeco:chiseled_bronze_block",
     "xkdeco:chiseled_steel_block",
+    "xkdeco:cut_bronze_block",
+    "xkdeco:cut_bronze_block_slab",
+    "xkdeco:cut_bronze_block_stairs",
     "xkdeco:framed_steel_block",
     "xkdeco:hollow_steel_block",
     "xkdeco:hollow_steel_trapdoor",
-    "xkdeco:red_tile_stairs",
+    "xkdeco:inscription_bronze_block",
+    "xkdeco:screw_thread_bronze_block",
+    "xkdeco:smooth_bronze_block",
     "xkdeco:smooth_steel_block",
     "xkdeco:steel_block",
     "xkdeco:steel_floor",
@@ -14,6 +22,7 @@
     "xkdeco:steel_pillar",
     "xkdeco:steel_safety_ladder",
     "xkdeco:steel_tile_slab",
+    "xkdeco:steel_tile_stairs",
     "xkdeco:steel_tiles",
     "xkdeco:steel_trapdoor"
   ]

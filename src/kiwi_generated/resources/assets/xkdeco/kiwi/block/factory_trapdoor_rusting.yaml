@@ -2,3 +2,4 @@ template:
   kiwi:type: trapdoor
   block_set_type: iron
 render_type: cutout
+material: xkdeco:stone

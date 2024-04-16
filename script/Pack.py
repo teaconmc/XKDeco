@@ -37,6 +37,8 @@ class Pack:
 
     def finish(self):
         for provider in self.providers.values():
+            if not provider.canGenerate():
+                continue
             provider.generate()
             print('Generated', provider.count, 'files for', str(provider))
         self.providers.clear()

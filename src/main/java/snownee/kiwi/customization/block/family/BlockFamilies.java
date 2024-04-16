@@ -74,4 +74,8 @@ public class BlockFamilies {
 		KHolder<BlockFamily> holder = byId.get(id);
 		return holder == null ? null : holder.value();
 	}
+
+	public static Collection<KHolder<BlockFamily>> all() {
+		return byId.values();
+	}
 }

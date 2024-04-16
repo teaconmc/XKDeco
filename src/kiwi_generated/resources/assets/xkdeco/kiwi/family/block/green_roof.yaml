@@ -1,0 +1,11 @@
+stonecutter_from: xkdeco:green_tiles
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:green_roof
+- xkdeco:green_roof_flat
+- xkdeco:green_roof_ridge
+- xkdeco:green_roof_small_eave
+- xkdeco:green_roof_small_end
+- xkdeco:green_roof_small_flat_end
+- xkdeco:green_roof_small_ridge_end

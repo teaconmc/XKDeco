@@ -2,12 +2,14 @@ package snownee.kiwi.customization.builder;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 
+import com.google.common.collect.Sets;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -34,9 +36,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import snownee.kiwi.customization.block.family.BlockFamily;
-import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.network.CConvertItemPacket;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.util.NotNullByDefault;
 import snownee.kiwi.customization.util.SmoothChasingValue;
 
@@ -91,9 +95,25 @@ public class ConvertScreen extends Screen {
 		int yStart = 0;
 		int curX = xStart;
 		int curY = yStart;
+		Set<Block> items = Sets.newHashSet();
+		LocalPlayer player = Objects.requireNonNull(getMinecraft().player);
+		for (KHolder<BlockFamily> family : families) {
+			for (Block block : family.value().values().toList()) {
+				if (!player.isCreative()) {
+					if (block instanceof SlabBlock || block instanceof DoorBlock) {
+						continue;
+					}
+				}
+				items.add(block);
+			}
+		}
+		int itemsPerLine = items.size() > 30 ? 11 : 4;
 		Button cursorOn = null;
 		for (KHolder<BlockFamily> family : families) {
 			for (Block block : family.value().values().toList()) {
+				if (!items.contains(block)) {
+					continue;
+				}
 				ItemStack itemStack = new ItemStack(block);
 				Button button = ItemButton.builder(itemStack, btn -> {
 					Item from = sourceItem.getItem();
@@ -103,7 +123,7 @@ public class ConvertScreen extends Screen {
 						return;
 					}
 					boolean convertOne = hasControlDown();
-					LocalPlayer player = Objects.requireNonNull(getMinecraft().player);
+					LocalPlayer player0 = Objects.requireNonNull(getMinecraft().player);
 					if (inCreativeContainer && convertOne) {
 						// magic number time
 						CConvertItemPacket.send(false, -500, family, from, to, true);
@@ -113,18 +133,18 @@ public class ConvertScreen extends Screen {
 						newItem.setCount(slot.getItem().getCount());
 						newItem.setPopTime(5);
 						slot.setByPlayer(newItem);
-						NonNullList<Slot> slots = player.inventoryMenu.slots;
+						NonNullList<Slot> slots = player0.inventoryMenu.slots;
 						for (int i = 0; i < slots.size(); i++) {
 							if (slots.get(i).getItem() == newItem) {
 								Objects.requireNonNull(getMinecraft().gameMode).handleCreativeModeItemAdd(newItem, i);
-								CConvertItemPacket.playPickupSound(player);
+								CConvertItemPacket.playPickupSound(player0);
 								break;
 							}
 						}
 					} else {
 						CConvertItemPacket.send(inContainer, slotIndex, family, from, to, convertOne);
 					}
-					if (convertOne && player.isCreative()) {
+					if (convertOne && player0.isCreative()) {
 						return;
 					}
 					if (inContainer) {
@@ -138,7 +158,7 @@ public class ConvertScreen extends Screen {
 				}
 				layout.addWidget(button);
 				curX += step;
-				if (curX >= xStart + 4 * step) {
+				if (curX >= xStart + itemsPerLine * step) {
 					curX = xStart;
 					curY += step;
 				}
@@ -147,29 +167,27 @@ public class ConvertScreen extends Screen {
 		int x;
 		int y;
 		Vector2f anchor;
-		Minecraft mc = getMinecraft();
 		if (inContainer) {
 			x = width / 2;
 			y = height / 2;
 			anchor = new Vector2f(0.5f, 0.5f);
 		} else {
-			LocalPlayer player = Objects.requireNonNull(mc.player);
 			if (slotIndex == Inventory.SLOT_OFFHAND) {
 				HumanoidArm humanoidarm = player.getMainArm().getOpposite();
 				if (humanoidarm == HumanoidArm.LEFT) {
-					x = width / 2 - 91 - 29 + 10;
+					x = width / 2 - 91 - 29 + 11;
 				} else {
-					x = width / 2 + 91 + 10;
+					x = width / 2 + 91 + 17;
 				}
 			} else {
-				x = width / 2 - 91 + 10 + player.getInventory().selected * 20;
+				x = width / 2 - 91 + 11 + player.getInventory().selected * 20;
 			}
 			y = height - 24;
 			anchor = new Vector2f(0.5f, 1f);
 		}
 		layout.bind(this, new Vector2i(x, y), anchor);
 		if (cursorOn != null) {
-			Window window = mc.getWindow();
+			Window window = getMinecraft().getWindow();
 			double scale = window.getGuiScale();
 			GLFW.glfwSetCursorPos(window.getWindow(), (cursorOn.getX() + 15) * scale, (cursorOn.getY() + 15) * scale);
 		}
@@ -235,8 +253,8 @@ public class ConvertScreen extends Screen {
 					0);
 		}
 		super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-		pose.pushPose();
-		if (openProgress.value > 0.8f) {
+		pose.popPose();
+		if (openProgress.value > 0.95f) {
 			ItemButton button = null;
 			if (getChildAt(pMouseX, pMouseY).orElse(null) instanceof ItemButton b) {
 				button = b;

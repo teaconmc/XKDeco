@@ -2,4 +2,5 @@ template:
   kiwi:type: trapdoor
   block_set_type: oak
 render_type: cutout
+material: xkdeco:stone
 glass_type: clear

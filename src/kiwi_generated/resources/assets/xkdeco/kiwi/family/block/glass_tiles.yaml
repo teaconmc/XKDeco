@@ -1,0 +1,7 @@
+stonecutter_from: glass
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:glass_tile_slab
+- xkdeco:glass_tile_stairs
+- xkdeco:glass_tiles

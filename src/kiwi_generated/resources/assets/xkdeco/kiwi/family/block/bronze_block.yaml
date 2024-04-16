@@ -1,0 +1,13 @@
+exchange_inputs_in_viewer: xkdeco:bronze_block
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:bronze_block
+- xkdeco:bronze_pillar
+- xkdeco:chiseled_bronze_block
+- xkdeco:cut_bronze_block
+- xkdeco:cut_bronze_block_slab
+- xkdeco:cut_bronze_block_stairs
+- xkdeco:inscription_bronze_block
+- xkdeco:screw_thread_bronze_block
+- xkdeco:smooth_bronze_block

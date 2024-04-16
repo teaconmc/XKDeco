@@ -1,4 +1,5 @@
 template:
   kiwi:type: xkdeco:special_slab
   type: path
+material: xkdeco:stone
 shape: xkdeco:dirt_path_slab

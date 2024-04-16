@@ -11,7 +11,7 @@ def read(row: dict, pack: Pack) -> dict:
         materialId = pack.defaultResourceLocation(row['Material'])
         data['material'] = str(materialId)
     if 'LightEmission' in row and row['LightEmission'] != '0' and row['LightEmission'] != 'custom' and row['LightEmission'] != '':
-        data['light_emission'] = int(row['LightEmission'])
+        data['light_emission'] = int(float(row['LightEmission']))
     components = []
     if 'WaterLoggable' in row and row['WaterLoggable'].lower() == 'true':
         components.append('water_loggable')

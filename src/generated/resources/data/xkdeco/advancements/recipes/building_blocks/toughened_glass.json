@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:toughened_glass"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_toughened_sand": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:toughened_sand"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_toughened_sand",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:toughened_glass"
+    ]
+  },
+  "sends_telemetry_event": false
+}

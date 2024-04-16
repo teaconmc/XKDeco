@@ -30,5 +30,8 @@ class DataProvider:
     def generate(self):
         pass
 
+    def canGenerate(self) -> bool:
+        return True
+
     def __str__(self):
         return self.__class__.__name__

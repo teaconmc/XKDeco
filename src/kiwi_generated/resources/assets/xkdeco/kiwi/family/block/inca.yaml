@@ -1,0 +1,13 @@
+exchange_inputs_in_viewer: xkdeco:inca_stone
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:inca_brick_slab
+- xkdeco:inca_brick_stairs
+- xkdeco:inca_bricks
+- xkdeco:inca_stone
+- xkdeco:inca_stone_slab
+- xkdeco:inca_stone_stairs
+- xkdeco:inca_stonebrick_slab
+- xkdeco:inca_stonebrick_stairs
+- xkdeco:inca_stonebricks

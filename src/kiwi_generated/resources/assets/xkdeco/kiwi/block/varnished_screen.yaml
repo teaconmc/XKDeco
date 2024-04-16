@@ -1,3 +1,4 @@
 render_type: translucent
+material: xkdeco:varnished_wood
 components:
 - water_loggable

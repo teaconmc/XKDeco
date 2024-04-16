@@ -1,6 +1,10 @@
 {
   "values": [
     "xkdeco:ebony_log_slab",
-    "xkdeco:ebony_slab"
+    "xkdeco:ebony_slab",
+    "xkdeco:mahogany_log_slab",
+    "xkdeco:mahogany_slab",
+    "xkdeco:varnished_log_slab",
+    "xkdeco:varnished_slab"
   ]
 }

@@ -1,3 +1,4 @@
 template: iron_bars
 render_type: cutout_mipped
+material: xkdeco:stone
 glass_type: hollow_steel

@@ -1,18 +1,20 @@
 namespace: xkdeco
-dest: ../run_client/kiwipacks/xkdeco.zip
+dest: ../run_client/kiwipacks/
 translation_file_name: '{}.json'
 translation_dest: '%TEMP%/assets/xkdeco_extra/lang'
 json_pretty_print: false
 export_format: yaml
+includes:
+  - ../includes
 materials:
-  - xkdeco.xlsx
+  - ../xkdeco.xlsx
 block_templates:
-  - xkdeco.xlsx
+  - ../xkdeco.xlsx
 blocks:
-  - xkdeco.xlsx
+  - ../xkdeco.xlsx
 block_tags:
-  - xkdeco.xlsx
+  - ../xkdeco.xlsx
 creative_tabs:
-  - xkdeco.xlsx
-shapes:
-  - exported_shapes.json
+  - ../xkdeco.xlsx
+# shapes:
+#   - ../exported_shapes.json

@@ -1,5 +1,6 @@
 template: xkdeco:hanging_fascia
 render_type: cutout
+material: xkdeco:ebony
 components:
 - water_loggable
 - horizontal_axis

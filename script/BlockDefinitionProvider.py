@@ -62,6 +62,8 @@ class BlockDefinitionProvider(TableDataProvider):
         #     data['item'] = item
         if 'ItemGroup' in row and row['ItemGroup'] != '':
             self.pack.providers['creative_tabs'].addContent(row['ItemGroup'], blockId)
+        if 'MainFamily' in row and row['MainFamily'] != '':
+            self.pack.providers['block_families'].addEntry(self.pack.defaultResourceLocation(row['MainFamily']), blockId)
         translationKey = 'block.{namespace}.{name}'.format(namespace=self.pack.config['namespace'], name=row['ID'])
         if 'Name:en_us' in row and row['Name:en_us'] != '':
             self.pack.providers['translations'].putTranslation('en_us', translationKey, row['Name:en_us'])

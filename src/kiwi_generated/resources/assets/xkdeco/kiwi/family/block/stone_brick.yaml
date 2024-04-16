@@ -1,0 +1,7 @@
+stonecutter_from: stone_bricks
+stonecutter_exchange: true
+quick_switch: true
+values:
+- xkdeco:stone_brick_pavement
+- xkdeco:stone_brick_pavement_slab
+- xkdeco:stone_brick_pillar
