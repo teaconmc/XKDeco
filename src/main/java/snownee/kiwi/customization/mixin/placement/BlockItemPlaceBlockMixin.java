@@ -1,15 +1,15 @@
-package snownee.kiwi.customization.mixin;
+package snownee.kiwi.customization.mixin.placement;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import snownee.kiwi.customization.placement.PlacementSystem;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.placement.PlacementSystem;
 
 @Mixin(BlockItem.class)
 public class BlockItemPlaceBlockMixin {

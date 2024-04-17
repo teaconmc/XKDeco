@@ -3,15 +3,13 @@ package org.teacon.xkdeco.data;
 import java.util.stream.IntStream;
 
 import org.teacon.xkdeco.XKDeco;
-import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.block.component.LayeredComponent;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -22,6 +20,9 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.component.LayeredComponent;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
 import snownee.kiwi.datagen.GameObjectLookup;
 
 public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
@@ -33,6 +34,10 @@ public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 	public void generate() {
 		for (Block block : GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).toList()) {
 			if (map.containsKey(BuiltInRegistries.BLOCK.getKey(block))) {
+				continue;
+			}
+			if (block.asItem() == Items.AIR) {
+				add(block, noDrop());
 				continue;
 			}
 			if (block instanceof SlabBlock) {

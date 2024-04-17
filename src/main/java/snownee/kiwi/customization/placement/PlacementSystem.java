@@ -1,6 +1,5 @@
 package snownee.kiwi.customization.placement;
 
-import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -60,14 +60,24 @@ public class PlacementSystem {
 		return XKDeco.ID.equals(namespace);
 	}
 
-	public static BlockState onPlace(BlockState blockState, BlockPlaceContext context) {
+	public static BlockState onPlace(BlockItem blockItem, BlockState blockState, BlockPlaceContext context) {
+		PlaceChoices choices = null;
+		{
+			KBlockSettings settings = KBlockSettings.of(blockState.getBlock());
+			if (settings != null) {
+				choices = settings.placeChoices;
+			}
+		}
+		if (choices != null && !choices.alter().isEmpty()) {
+			for (PlaceChoices.Alter alter : choices.alter()) {
+				BlockState altered = alter.alter(blockItem, context);
+				if (altered != null) {
+					return onPlace(blockItem, altered, context);
+				}
+			}
+		}
 		if (PlaceSlot.hasNoSlots(blockState.getBlock())) {
 			return blockState;
-		}
-		PlaceChoices choices = null;
-		KBlockSettings settings = KBlockSettings.of(blockState.getBlock());
-		if (settings != null) {
-			choices = settings.placeChoices;
 		}
 		if (context.isSecondaryUseActive() && (choices == null || choices.skippable())) {
 			return blockState;
@@ -155,7 +165,6 @@ public class PlacementSystem {
 		int interest = 0;
 		List<SlotLink.MatchResult> results = null;
 		List<Vec3i> offsets = null;
-		BitSet uprightStatus = null;
 		for (Direction side : CustomizationHooks.DIRECTIONS) {
 			Collection<PlaceSlot> theirSlots = theirSlotsMap.get(side);
 			if (theirSlots == null) {

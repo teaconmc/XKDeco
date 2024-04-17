@@ -16,13 +16,13 @@ public final class CompactListCodec<E> implements Codec<List<E>> {
 	private final boolean isNestedList;
 
 	public CompactListCodec(Codec<E> singleCodec) {
-		this(singleCodec, false);
-	}
-
-	public CompactListCodec(Codec<E> singleCodec, boolean nonEmpty) {
 		this.singleCodec = singleCodec;
 		this.isNestedList = singleCodec instanceof ListCodec;
-		this.listCodec = nonEmpty ? ExtraCodecs.nonEmptyList(singleCodec.listOf()) : singleCodec.listOf();
+		this.listCodec = singleCodec.listOf();
+	}
+
+	public Codec<List<E>> nonEmpty() {
+		return ExtraCodecs.nonEmptyList(this);
 	}
 
 	@Override
@@ -50,19 +50,7 @@ public final class CompactListCodec<E> implements Codec<List<E>> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj != null && getClass() == obj.getClass()) {
-			CompactListCodec<?> other = (CompactListCodec<?>) obj;
-			return singleCodec.equals(other.singleCodec);
-		}
-		return false;
-	}
-
-	@Override
 	public String toString() {
-		return "CompactListCodec[" + singleCodec + "]";
+		return "CompactListCodec[" + singleCodec + ", isNestedList=" + isNestedList + "]";
 	}
 }

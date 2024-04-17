@@ -38,6 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.customization.block.family.BlockFamily;
 import snownee.kiwi.customization.network.CConvertItemPacket;
 import snownee.kiwi.customization.util.KHolder;
@@ -234,6 +235,7 @@ public class ConvertScreen extends Screen {
 		layout.update();
 		Vector2i pos = layout.getAnchoredPos();
 		float openValue = openProgress.value;
+		Kiwi.LOGGER.info("openValue: " + openValue);
 		pose.pushPose();
 		pose.translate(pos.x, pos.y, 0);
 		pose.scale(openValue, openValue, openValue);

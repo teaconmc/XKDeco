@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_crossed_mud_wall_block": {
+    "has_netherrack": {
       "conditions": {
         "items": [
           {
             "items": [
-              "xkdeco:crossed_mud_wall_block"
+              "minecraft:netherrack"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "xkdeco:crossed_mud_wall_stairs"
+        "recipe": "minecraft:crimson_nylium_slab_from_netherrack_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_crossed_mud_wall_block",
+      "has_netherrack",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "xkdeco:crossed_mud_wall_stairs"
+      "minecraft:crimson_nylium_slab_from_netherrack_stonecutting"
     ]
   },
   "sends_telemetry_event": false

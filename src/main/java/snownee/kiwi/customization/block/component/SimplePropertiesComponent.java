@@ -160,7 +160,7 @@ public record SimplePropertiesComponent(
 	public static final Codec<SimplePropertiesComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.BOOL.optionalFieldOf("shape_for_light_occlusion", false)
 					.forGetter(SimplePropertiesComponent::useShapeForLightOcclusion),
-			new CompactListCodec<>(SINGLE_CODEC, false).fieldOf("properties").forGetter(SimplePropertiesComponent::properties)
+			new CompactListCodec<>(SINGLE_CODEC).nonEmpty().fieldOf("properties").forGetter(SimplePropertiesComponent::properties)
 	).apply(instance, ($1, $2) -> INTERNER.intern(new SimplePropertiesComponent($1, $2))));
 
 	@Override

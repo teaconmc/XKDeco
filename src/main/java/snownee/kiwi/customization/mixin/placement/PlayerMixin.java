@@ -1,10 +1,10 @@
-package snownee.kiwi.customization.mixin;
+package snownee.kiwi.customization.mixin.placement;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import snownee.kiwi.customization.duck.KPlayer;
 
 import net.minecraft.world.entity.player.Player;
+import snownee.kiwi.customization.duck.KPlayer;
 
 @Mixin(Player.class)
 public class PlayerMixin implements KPlayer {

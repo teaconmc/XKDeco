@@ -1,0 +1,7 @@
+target:
+  - '@xkdeco:roof_deco'
+alter:
+  - when:
+      faces: down
+      tags: '*xkdeco.roof_deco_oblique:base'
+    use: oblique
