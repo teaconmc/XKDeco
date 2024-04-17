@@ -7,6 +7,8 @@ import yaml
 from BlockDefinitionProvider import BlockDefinitionProvider
 from BlockTemplateProvider import BlockTemplateProvider
 from CreativeTabProvider import CreativeTabProvider
+from ItemDefinitionProvider import ItemDefinitionProvider
+from ItemTemplateProvider import ItemTemplateProvider
 from MaterialProvider import MaterialProvider
 from BlockFamilyProvider import BlockFamilyProvider
 from Pack import Pack
@@ -48,14 +50,21 @@ def main():
             print('Moved', src.absolute(), 'to', dest.absolute())
 
     pack = Pack(config)
+
     pack.addProvider(MaterialProvider(pack))
     pack.addProvider(BlockTemplateProvider(pack))
     pack.addProvider(BlockDefinitionProvider(pack))
+    pack.addProvider(TagsProvider(pack, 'block', 'blocks'))
+    pack.addProvider(ShapeProvider(pack))
+
+    pack.addProvider(ItemTemplateProvider(pack))
+    pack.addProvider(ItemDefinitionProvider(pack))
+    pack.addProvider(TagsProvider(pack, 'item', 'items'))
+
+    pack.addProvider(BlockFamilyProvider(pack))
     pack.addProvider(CreativeTabProvider(pack))
     pack.addProvider(TranslationProvider(pack))
-    pack.addProvider(TagsProvider(pack, 'block', 'blocks'))
-    pack.addProvider(BlockFamilyProvider(pack))
-    pack.addProvider(ShapeProvider(pack))
+
     pack.finish()
 
 

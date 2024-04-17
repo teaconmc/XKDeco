@@ -1,6 +1,7 @@
 package snownee.kiwi.customization.block.behavior;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -11,8 +12,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -24,6 +27,7 @@ import snownee.kiwi.customization.CustomFeatureTags;
 
 public class SitManager {
 	public static final Component ENTITY_NAME = Component.literal("Seat from Kiwi");
+	public static final double VERTICAL_OFFSET = 0.15;
 
 	public static void tick(Display.BlockDisplay display) {
 		if (display.tickCount < 7) {
@@ -32,7 +36,7 @@ public class SitManager {
 		if (!display.isVehicle()) {
 			display.discard();
 		}
-		BlockPos pos = BlockPos.containing(display.getX(), display.getY() + 0.15, display.getZ());
+		BlockPos pos = BlockPos.containing(display.getX(), display.getY() + VERTICAL_OFFSET, display.getZ());
 		BlockState blockState = display.level().getBlockState(pos);
 		if (!blockState.is(display.getBlockState().getBlock())) {
 			display.discard();
@@ -87,7 +91,7 @@ public class SitManager {
 			if (seatPos == null) {
 				seatPos = Vec3.atCenterOf(pos);
 			}
-			display.setPos(seatPos.x, seatPos.y - 0.15, seatPos.z);
+			display.setPos(seatPos.x, seatPos.y - VERTICAL_OFFSET, seatPos.z);
 			if (level.addFreshEntity(display)) {
 				player.startRiding(display, true);
 			}
@@ -133,5 +137,22 @@ public class SitManager {
 		f = Mth.wrapDegrees(player.getXRot());
 		f1 = Math.max(f, -45F);
 		player.setXRot(f1);
+	}
+
+	public static Vec3 dismount(Entity display, LivingEntity passenger) {
+		Direction direction;
+		if (display.isNoGravity()) {
+			direction = display.getDirection();
+		} else {
+			direction = passenger.getDirection();
+		}
+		BlockPos pos = BlockPos.containing(display.getX(), display.getY() + VERTICAL_OFFSET, display.getZ());
+		Optional<Vec3> vec3 = BedBlock.findStandUpPosition(
+				passenger.getType(),
+				passenger.level(),
+				pos,
+				direction,
+				passenger.getYRot());
+		return vec3.isPresent() ? vec3.get() : Vec3.atBottomCenterOf(pos.above());
 	}
 }

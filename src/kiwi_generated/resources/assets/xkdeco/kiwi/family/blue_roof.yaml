@@ -1,0 +1,11 @@
+stonecutter_from: xkdeco:blue_tiles
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:blue_roof
+- xkdeco:blue_roof_flat
+- xkdeco:blue_roof_ridge
+- xkdeco:blue_roof_small_eave
+- xkdeco:blue_roof_small_end
+- xkdeco:blue_roof_small_flat_end
+- xkdeco:blue_roof_small_ridge_end

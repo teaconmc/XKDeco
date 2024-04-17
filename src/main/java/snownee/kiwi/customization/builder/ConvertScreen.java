@@ -95,26 +95,27 @@ public class ConvertScreen extends Screen {
 		int yStart = 0;
 		int curX = xStart;
 		int curY = yStart;
-		Set<Block> items = Sets.newHashSet();
+		Set<Item> items = Sets.newHashSet();
 		LocalPlayer player = Objects.requireNonNull(getMinecraft().player);
 		for (KHolder<BlockFamily> family : families) {
-			for (Block block : family.value().values().toList()) {
+			for (Item item : family.value().items().toList()) {
 				if (!player.isCreative()) {
+					Block block = Block.byItem(item);
 					if (block instanceof SlabBlock || block instanceof DoorBlock) {
 						continue;
 					}
 				}
-				items.add(block);
+				items.add(item);
 			}
 		}
 		int itemsPerLine = items.size() > 30 ? 11 : 4;
 		Button cursorOn = null;
 		for (KHolder<BlockFamily> family : families) {
-			for (Block block : family.value().values().toList()) {
-				if (!items.contains(block)) {
+			for (Item item : family.value().items().toList()) {
+				if (!items.contains(item)) {
 					continue;
 				}
-				ItemStack itemStack = new ItemStack(block);
+				ItemStack itemStack = new ItemStack(item);
 				Button button = ItemButton.builder(itemStack, btn -> {
 					Item from = sourceItem.getItem();
 					Item to = ((ItemButton) btn).getItem().getItem();

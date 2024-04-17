@@ -144,9 +144,9 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("grass_block_slab"), Items.DIRT, 2);
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("mycelium_slab"), Items.DIRT, 2);
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("podzol_slab"), Items.DIRT, 2);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("netherrack_slab"), Items.NETHER_BRICK, 2);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("crimson_nylium_slab"), Items.NETHER_BRICK, 2);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("warped_nylium_slab"), Items.NETHER_BRICK, 2);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("netherrack_slab"), Items.NETHERRACK, 2);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("crimson_nylium_slab"), Items.NETHERRACK, 2);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("warped_nylium_slab"), Items.NETHERRACK, 2);
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("end_stone_slab"), Items.END_STONE, 2);
 
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("dirt_cobblestone"), Items.DIRT, Items.COBBLESTONE, 1, false);

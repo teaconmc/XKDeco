@@ -7,9 +7,6 @@ import java.util.stream.Collectors;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
-import org.teacon.xkdeco.block.WardrobeBlock;
-import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.customization.block.KBlockSettings;
 import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.google.common.collect.Lists;
@@ -20,7 +17,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -193,15 +189,15 @@ public final class XKDecoObjects {
 //			throw new IllegalArgumentException("Illegal id (" + id + ") for plant blocks");
 //		}
 //	}
-
-	private static void addWardrobe(String id, KBlockSettings.Builder settings) {
-		var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(KBlockComponents.WATER_LOGGABLE.get()).get()));
-		ITEMS.register(id, () -> new BlockItem(block.get(), new Item.Properties()));
-	}
-
-	private static void addItem(String id) {
-		ITEMS.register(id, () -> new Item(new Item.Properties()));
-	}
+//
+//	private static void addWardrobe(String id, KBlockSettings.Builder settings) {
+//		var block = BLOCKS.register(id, () -> new WardrobeBlock(settings.removeComponent(KBlockComponents.WATER_LOGGABLE.get()).get()));
+//		ITEMS.register(id, () -> new BlockItem(block.get(), new Item.Properties()));
+//	}
+//
+//	private static void addItem(String id) {
+//		ITEMS.register(id, () -> new Item(new Item.Properties()));
+//	}
 
 	public static void addMimicWallBlocks(RegisterEvent event) {
 		var vanillaWalls = List.of(
@@ -285,12 +281,12 @@ public final class XKDecoObjects {
 //		addWardrobe("iron_wardrobe", BlockSettingPresets.thingy(null));
 //		addWardrobe("glass_wardrobe", BlockSettingPresets.thingy(null));
 //		addWardrobe("full_glass_wardrobe", BlockSettingPresets.thingy(null));
-		addItem("hologram_planet");
-		addItem("hologram_dna");
-		addItem("hologram_pictures");
-		addItem("hologram_message");
-		addItem("hologram_xekr_logo");
-
+//		addItem("hologram_planet");
+//		addItem("hologram_dna");
+//		addItem("hologram_pictures");
+//		addItem("hologram_message");
+//		addItem("hologram_xekr_logo");
+//
 //		addIsotropic("black_tiles", BlockSettingPresets.blackTiles());
 //		addIsotropic("black_tile_slab", BlockSettingPresets.blackTiles());
 //		addIsotropic("black_tile_stairs", BlockSettingPresets.blackTiles());

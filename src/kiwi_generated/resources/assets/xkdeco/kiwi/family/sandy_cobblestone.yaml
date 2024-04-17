@@ -1,0 +1,10 @@
+exchange_inputs_in_viewer: xkdeco:sandy_cobblestone
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:sandy_cobblestone
+- xkdeco:sandy_cobblestone_path
+- xkdeco:sandy_cobblestone_path_slab
+- xkdeco:sandy_cobblestone_path_stairs
+- xkdeco:sandy_cobblestone_slab
+- xkdeco:sandy_cobblestone_stairs

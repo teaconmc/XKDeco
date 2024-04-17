@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.behavior.BlockBehaviorRegistry;
-import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
+import snownee.kiwi.customization.CustomizationRegistries;
 
 import com.mojang.serialization.Codec;
 
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
 public interface KBlockComponent {
-	Codec<KBlockComponent> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(() -> LoaderExtraRegistries.BLOCK_COMPONENT.byNameCodec()
+	Codec<KBlockComponent> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(() -> CustomizationRegistries.BLOCK_COMPONENT.byNameCodec()
 			.dispatch(KBlockComponent::type, KBlockComponent.Type::codec));
 
 	Type<?> type();
@@ -74,7 +74,7 @@ public interface KBlockComponent {
 	record Type<T extends KBlockComponent>(Codec<T> codec) {
 		@Override
 		public String toString() {
-			return "XKBlockComponent.Type[" + LoaderExtraRegistries.BLOCK_COMPONENT.getKey(this) + "]";
+			return "XKBlockComponent.Type[" + CustomizationRegistries.BLOCK_COMPONENT.getKey(this) + "]";
 		}
 	}
 }

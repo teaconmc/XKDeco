@@ -6,8 +6,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import snownee.kiwi.customization.block.GlassType;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.datafixers.util.Either;
@@ -34,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import snownee.kiwi.KiwiModule;
+import snownee.kiwi.customization.block.GlassType;
 
 public class CustomizationCodecs {
 	public static final BiMap<ResourceLocation, SoundType> SOUND_TYPES = HashBiMap.create();
@@ -331,7 +330,7 @@ public class CustomizationCodecs {
 	}
 
 	public static <T> Codec<T> withAlternative(Codec<T> codec, Codec<? extends T> codec2) {
-		return Codec.either(codec, codec2).xmap(either -> either.map(object -> object, object -> object), Either::left);
+		return new EitherCodec<>(codec, codec2).xmap(either -> either.map(object -> object, object -> object), Either::left);
 	}
 
 	public static <A> MapCodec<Optional<A>> strictOptionalField(Codec<A> codec, String string) {

@@ -1,0 +1,13 @@
+exchange_inputs_in_viewer: xkdeco:aztec_stonebricks
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:aztec_chiseled_stonebricks
+- xkdeco:aztec_cut_stonebricks
+- xkdeco:aztec_mossy_stonebrick_slab
+- xkdeco:aztec_mossy_stonebrick_stairs
+- xkdeco:aztec_mossy_stonebricks
+- xkdeco:aztec_sculpture_stone
+- xkdeco:aztec_stonebrick_slab
+- xkdeco:aztec_stonebrick_stairs
+- xkdeco:aztec_stonebricks

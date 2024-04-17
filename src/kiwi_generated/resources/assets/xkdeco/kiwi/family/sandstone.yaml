@@ -1,0 +1,13 @@
+stonecutter_from: sandstone
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:polished_sandstone
+- xkdeco:polished_sandstone_slab
+- xkdeco:sandstone_brick_slab
+- xkdeco:sandstone_brick_stairs
+- xkdeco:sandstone_bricks
+- xkdeco:sandstone_pillar
+- xkdeco:sandstone_small_brick_slab
+- xkdeco:sandstone_small_brick_stairs
+- xkdeco:sandstone_small_bricks

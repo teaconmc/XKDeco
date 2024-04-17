@@ -17,6 +17,11 @@ class TranslationProvider(DataProvider):
             self.data[lang] = {}
         self.data[lang][key] = value
 
+    def removeTranslation(self, key: str):
+        for lang in self.data:
+            if key in self.data[lang]:
+                del self.data[lang][key]
+
     def generate(self):
         format: str = self.pack.config['translation_file_name']
         assert format.endswith('.json'), 'Translation file name must end with .json'

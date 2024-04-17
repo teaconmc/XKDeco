@@ -1,0 +1,21 @@
+stonecutter_from: xkdeco:stone_brick_pillar
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:roman_column
+- xkdeco:roman_column_base
+- xkdeco:roman_composite_column_base
+- xkdeco:roman_composite_column_head
+- xkdeco:roman_corinthian_column_base
+- xkdeco:roman_corinthian_column_head
+- xkdeco:roman_doric_column
+- xkdeco:roman_doric_column_base
+- xkdeco:roman_doric_column_head
+- xkdeco:roman_ionic_column_base
+- xkdeco:roman_ionic_column_head
+- xkdeco:roman_ionic_column_head_corner
+- xkdeco:roman_moulding
+- xkdeco:roman_moulding2
+- xkdeco:roman_toscan_column
+- xkdeco:roman_toscan_column_base
+- xkdeco:roman_toscan_column_head

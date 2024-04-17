@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.CustomizationRegistries;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.KBlockComponent;
 import snownee.kiwi.customization.shape.BlockShapeType;
@@ -108,7 +109,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 				if (remove) {
 					s = s.substring(1);
 				}
-				KBlockComponent.Type<?> type = LoaderExtraRegistries.BLOCK_COMPONENT.get(new ResourceLocation(s));
+				KBlockComponent.Type<?> type = CustomizationRegistries.BLOCK_COMPONENT.get(new ResourceLocation(s));
 				Preconditions.checkNotNull(type, "Unknown component type %s", s);
 				if (remove) {
 					builder.removeComponent(type);
@@ -127,7 +128,7 @@ public record KBlockDefinition(ConfiguredBlockTemplate template, BlockDefinition
 
 	public Block createBlock(ResourceLocation id, ShapeStorage shapes) {
 		KBlockSettings.Builder builder = createSettings(id, shapes);
-		Block block = template.template().createBlock(builder.get(), template.json());
+		Block block = template.template().createBlock(id, builder.get(), template.json());
 		setConfiguringShape(block);
 		properties.material().ifPresent(mat -> {
 			VanillaActions.setFireInfo(block, mat.igniteOdds(), mat.burnOdds());

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
+import snownee.kiwi.customization.CustomizationRegistries;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
@@ -21,8 +21,9 @@ public class GameDataMixin {
 		List<ResourceLocation> copy = List.copyOf(ordered);
 		ordered.clear();
 		List<ResourceLocation> prioritized = List.of(
-				LoaderExtraRegistries.BLOCK_COMPONENT_KEY.location(),
-				LoaderExtraRegistries.BLOCK_TEMPLATE_KEY.location());
+				CustomizationRegistries.BLOCK_COMPONENT_KEY.location(),
+				CustomizationRegistries.BLOCK_TEMPLATE_KEY.location(),
+				CustomizationRegistries.ITEM_TEMPLATE_KEY.location());
 		ordered.addAll(prioritized);
 		ordered.addAll(copy.stream().filter($ -> !prioritized.contains($)).toList());
 	}

@@ -1,0 +1,6 @@
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:cyan_brick_slab
+- xkdeco:cyan_brick_stairs
+- xkdeco:cyan_bricks

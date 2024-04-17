@@ -15,7 +15,7 @@ public class KBlockTemplates extends AbstractModule {
 	@KiwiModule.Name("minecraft:simple")
 	public static final KiwiGO<KBlockTemplate.Type<SimpleBlockTemplate>> SIMPLE = register(SimpleBlockTemplate::directCodec);
 	@KiwiModule.Name("minecraft:built_in")
-	public static final KiwiGO<KBlockTemplate.Type<BuiltinBlockTemplate>> BUILT_IN = register(BuiltinBlockTemplate::directCodec);
+	public static final KiwiGO<KBlockTemplate.Type<BuiltInBlockTemplate>> BUILT_IN = register(BuiltInBlockTemplate::directCodec);
 
 	private static <T extends KBlockTemplate> KiwiGO<KBlockTemplate.Type<T>> register(Function<MapCodec<Optional<KMaterial>>, Codec<T>> codec) {
 		return go(() -> new KBlockTemplate.Type<>(codec));

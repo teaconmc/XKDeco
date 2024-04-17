@@ -1,0 +1,6 @@
+template:
+  kiwi:type: blocks
+  blocks:
+    normal: xkdeco:red_roof_small_end
+    ridge: xkdeco:red_roof_small_ridge_end
+    flat: xkdeco:red_roof_small_flat_end

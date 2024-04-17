@@ -12,6 +12,12 @@ blocks:
   - xkdeco.xlsx
 block_tags:
   - xkdeco.xlsx
+item_templates:
+  - xkdeco.xlsx
+items:
+  - xkdeco.xlsx
+item_tags:
+  - xkdeco.xlsx
 creative_tabs:
   - xkdeco.xlsx
 block_families:

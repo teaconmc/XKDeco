@@ -56,7 +56,7 @@ import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.KBlockComponent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
+import snownee.kiwi.customization.CustomizationRegistries;
 import snownee.kiwi.datagen.GameObjectLookup;
 import snownee.kiwi.shadowed.org.yaml.snakeyaml.DumperOptions;
 import snownee.kiwi.shadowed.org.yaml.snakeyaml.Yaml;
@@ -139,7 +139,7 @@ public class ExportBlocksCommand {
 					KBlockComponents.HORIZONTAL_AXIS.get(),
 					KBlockComponents.FRONT_AND_TOP.get()
 			);
-			Codec<List<KBlockComponent>> componentsCodec = Codec.list(LoaderExtraRegistries.BLOCK_COMPONENT.byNameCodec()
+			Codec<List<KBlockComponent>> componentsCodec = Codec.list(CustomizationRegistries.BLOCK_COMPONENT.byNameCodec()
 					.dispatch("type", KBlockComponent::type, KBlockComponent.Type::codec));
 			CsvOutput csvOutput = row.keySet().stream().reduce(
 					CsvOutput.builder(), CsvOutput.Builder::addColumn,
@@ -208,7 +208,7 @@ public class ExportBlocksCommand {
 						.orElse(null);
 				row.put(
 						"BaseComponent",
-						baseComponent == null ? "" : LoaderExtraRegistries.BLOCK_COMPONENT.getKey(baseComponent).getPath());
+						baseComponent == null ? "" : CustomizationRegistries.BLOCK_COMPONENT.getKey(baseComponent).getPath());
 				List<KBlockComponent> components = settings.components.values().stream().filter(component -> {
 					return !KBlockComponents.WATER_LOGGABLE.is(component.type()) && !baseComponents.contains(component.type());
 				}).toList();

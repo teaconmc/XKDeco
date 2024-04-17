@@ -10,12 +10,13 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import snownee.kiwi.customization.CustomizationRegistries;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public abstract class KBlockTemplate {
 
 	public static Codec<KBlockTemplate> codec(MapCodec<Optional<KMaterial>> materialCodec) {
-		return LoaderExtraRegistries.BLOCK_TEMPLATE.byNameCodec().dispatch(
+		return CustomizationRegistries.BLOCK_TEMPLATE.byNameCodec().dispatch(
 				"type",
 				KBlockTemplate::type,
 				type -> type.codec().apply(materialCodec));
@@ -31,7 +32,7 @@ public abstract class KBlockTemplate {
 
 	public abstract void resolve(ResourceLocation key);
 
-	abstract Block createBlock(BlockBehaviour.Properties properties, JsonObject input);
+	abstract Block createBlock(ResourceLocation id, BlockBehaviour.Properties properties, JsonObject input);
 
 	public final Optional<BlockDefinitionProperties> properties() {
 		return properties;

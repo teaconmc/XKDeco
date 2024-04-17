@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import snownee.kiwi.customization.mixin.client.ScreenAccess;
 
 public class PanelLayout {
 	private final Vector2i pos = new Vector2i();
@@ -36,7 +35,11 @@ public class PanelLayout {
 		int maxX = Integer.MIN_VALUE;
 		int maxY = Integer.MIN_VALUE;
 		for (AbstractWidget widget : widgets) {
-			((ScreenAccess) screen).callAddRenderableWidget(widget);
+			//don't know why, but I can't mixin-access Screen.addRenderableWidget()
+			screen.renderables.add(widget);
+			screen.children.add(widget);
+			screen.narratables.add(widget);
+
 			minX = Math.min(minX, widget.getX());
 			minY = Math.min(minY, widget.getY());
 			maxX = Math.max(maxX, widget.getX() + widget.getWidth());

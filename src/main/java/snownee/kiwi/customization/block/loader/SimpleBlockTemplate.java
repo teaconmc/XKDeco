@@ -25,7 +25,8 @@ public final class SimpleBlockTemplate extends KBlockTemplate {
 	public static Codec<SimpleBlockTemplate> directCodec(MapCodec<Optional<KMaterial>> materialCodec) {
 		return RecordCodecBuilder.create(instance -> instance.group(
 				BlockDefinitionProperties.mapCodecField(materialCodec).forGetter(SimpleBlockTemplate::properties),
-				Codec.STRING.optionalFieldOf("class", "").forGetter(SimpleBlockTemplate::clazz)).apply(instance, SimpleBlockTemplate::new));
+				Codec.STRING.optionalFieldOf("class", "").forGetter(SimpleBlockTemplate::clazz)
+		).apply(instance, SimpleBlockTemplate::new));
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public final class SimpleBlockTemplate extends KBlockTemplate {
 	}
 
 	@Override
-	public Block createBlock(BlockBehaviour.Properties settings, JsonObject input) {
+	public Block createBlock(ResourceLocation id, BlockBehaviour.Properties settings, JsonObject input) {
 		return this.constructor.apply(settings);
 	}
 

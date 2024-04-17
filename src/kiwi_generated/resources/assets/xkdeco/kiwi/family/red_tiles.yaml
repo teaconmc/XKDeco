@@ -1,0 +1,6 @@
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:red_tile_slab
+- xkdeco:red_tile_stairs
+- xkdeco:red_tiles

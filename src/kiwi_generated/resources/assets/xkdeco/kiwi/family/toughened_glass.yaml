@@ -1,0 +1,7 @@
+exchange_inputs_in_viewer: xkdeco:toughened_glass
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:toughened_glass
+- xkdeco:toughened_glass_slab
+- xkdeco:toughened_glass_stairs

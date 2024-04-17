@@ -1,0 +1,5 @@
+template:
+  kiwi:type: blocks
+  blocks:
+    normal: xkdeco:cyan_roof_deco
+    oblique: xkdeco:cyan_roof_deco_oblique
