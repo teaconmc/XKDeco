@@ -25,7 +25,7 @@ import snownee.kiwi.customization.block.family.BlockFamily;
 public record ReplaceBuilderRule(Map<BlockFamily, Object> families, BlockSpread spread) implements BuilderRule {
 	@Override
 	public Stream<Block> relatedBlocks() {
-		return families.keySet().stream().flatMap(BlockFamily::values);
+		return families.keySet().stream().flatMap(BlockFamily::blocks);
 	}
 
 	@Override

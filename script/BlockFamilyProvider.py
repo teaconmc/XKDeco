@@ -5,14 +5,23 @@ from TableDataProvider import TableDataProvider
 
 class BlockFamilyProvider(TableDataProvider):
     def __init__(self, pack: Pack):
-        super().__init__(pack, 'assets/{}/kiwi/family/block', 'block_families')
-        self.data = {}
+        super().__init__(pack, 'assets/{}/kiwi/family', 'block_families')
+        self.ids = set()
+        self.blocks = {}
+        self.items = {}
         self.stonecutterFrom = {}
 
-    def addEntry(self, key: ResourceLocation, value: ResourceLocation):
-        if key not in self.data:
-            self.data[key] = set()
-        self.data[key].add(str(value))
+    def addBlock(self, key: ResourceLocation, value: ResourceLocation):
+        if key not in self.blocks:
+            self.blocks[key] = set()
+            self.ids.add(key)
+        self.blocks[key].add(str(value))
+
+    def addItem(self, key: ResourceLocation, value: ResourceLocation):
+        if key not in self.items:
+            self.items[key] = set()
+            self.ids.add(key)
+        self.items[key].add(str(value))
 
     def generateRow(self, row, csvConfig):
         familyId = self.pack.defaultResourceLocation(row['ID'])
@@ -31,13 +40,16 @@ class BlockFamilyProvider(TableDataProvider):
 
     def generate(self):
         super().generate()
-        for key, value in self.data.items():
+        for key in self.ids:
             singleData = {}
             if key in self.stonecutterFrom:
                 singleData.update(self.stonecutterFrom[key])
             singleData.update({
                 'stonecutter_exchange': True,
-                'quick_switch': True,
-                'values': sorted(list(value))
+                'quick_switch': True
             })
+            if key in self.blocks:
+                singleData['blocks'] = sorted(list(self.blocks[key]))
+            if key in self.items:
+                singleData['items'] = sorted(list(self.items[key]))
             self.writeFile(key, singleData)

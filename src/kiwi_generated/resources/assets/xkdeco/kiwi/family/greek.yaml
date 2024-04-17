@@ -1,0 +1,13 @@
+stonecutter_from: quartz_pillar
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:greek_column
+- xkdeco:greek_corinthian_column_base
+- xkdeco:greek_corinthian_column_head
+- xkdeco:greek_doric_column_head
+- xkdeco:greek_ionic_column_base
+- xkdeco:greek_ionic_column_head
+- xkdeco:greek_ionic_column_head_corner
+- xkdeco:greek_moulding
+- xkdeco:greek_moulding2

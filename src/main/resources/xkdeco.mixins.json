@@ -21,12 +21,12 @@
 		"forge.GameDataMixin",
 		"property_inject.BlockMixin",
 		"property_inject.StateDefinitionBuilderMixin",
-		"sit.DisplayMixin"
+		"sit.DisplayMixin",
+		"sit.EntityMixin"
 	],
 	"client": [
 		"client.DebugRendererMixin",
 		"client.MultiPlayerGameModeMixin",
-		"client.ScreenAccess",
 		"forge.BlockColorsAccess",
 		"forge.ItemColorsAccess",
 		"sit.ClientPacketListenerMixin",

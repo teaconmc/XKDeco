@@ -1,0 +1,10 @@
+stonecutter_from: obsidian
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:cut_obsidian
+- xkdeco:cut_obsidian_brick_slab
+- xkdeco:cut_obsidian_brick_stairs
+- xkdeco:cut_obsidian_bricks
+- xkdeco:cut_obsidian_pillar
+- xkdeco:cut_obsidian_slab

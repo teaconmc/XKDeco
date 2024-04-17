@@ -19,9 +19,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import snownee.kiwi.customization.util.KHolder;
@@ -96,15 +96,12 @@ public class StonecutterRecipeMaker {
 			type = "exchange";
 		}
 		ResourceLocation prefix = family.key().withPath("fake/stonecutter/%s/%s".formatted(family.key().getPath(), type));
-		return family.value().values().map(block -> {
+		return family.value().items().map(item -> {
 			int count = 1;
+			Block block = Block.byItem(item);
 			if (block instanceof SlabBlock) {
 				count = 2;
 			} else if (block instanceof DoorBlock) {
-				return null;
-			}
-			Item item = block.asItem();
-			if (item == Items.AIR) {
 				return null;
 			}
 			ResourceLocation itemKey = BuiltInRegistries.ITEM.getKey(item);

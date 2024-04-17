@@ -634,9 +634,14 @@
   "block.xkdeco.yellow_tile_slab": "Yellow Tile Slab",
   "block.xkdeco.yellow_tile_stairs": "Yellow Tile Stairs",
   "block.xkdeco.yellow_tiles": "Yellow Tiles",
+  "item.xkdeco.hologram_dna": "Hologram Dna",
+  "item.xkdeco.hologram_message": "Hologram Message",
+  "item.xkdeco.hologram_pictures": "Hologram Pictures",
+  "item.xkdeco.hologram_planet": "Hologram Planet",
+  "item.xkdeco.hologram_xekr_logo": "Hologram Xekr Logo",
   "itemGroup.xkdeco.basic": "XKDeco: Basic",
   "itemGroup.xkdeco.functional": "XKDeco: Functional",
-  "itemGroup.xkdeco.furniture": "XKDeco: Nature",
-  "itemGroup.xkdeco.nature": "XKDeco: Furniture",
+  "itemGroup.xkdeco.furniture": "XKDeco: Furniture",
+  "itemGroup.xkdeco.nature": "XKDeco: Nature",
   "itemGroup.xkdeco.structure": "XKDeco: Structure"
 }

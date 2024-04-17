@@ -1,0 +1,10 @@
+exchange_inputs_in_viewer: xkdeco:dirt_cobblestone
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:dirt_cobblestone
+- xkdeco:dirt_cobblestone_path
+- xkdeco:dirt_cobblestone_path_slab
+- xkdeco:dirt_cobblestone_path_stairs
+- xkdeco:dirt_cobblestone_slab
+- xkdeco:dirt_cobblestone_stairs

@@ -1,7 +1,0 @@
-stonecutter_from: xkdeco:steel_block
-stonecutter_exchange: true
-quick_switch: true
-values:
-- xkdeco:steel_tile_slab
-- xkdeco:steel_tile_stairs
-- xkdeco:steel_tiles

@@ -1,7 +1,0 @@
-stonecutter_from: cobblestone
-stonecutter_exchange: true
-quick_switch: true
-values:
-- xkdeco:cobblestone_path
-- xkdeco:cobblestone_path_slab
-- xkdeco:cobblestone_path_stairs

@@ -1,0 +1,22 @@
+exchange_inputs_in_viewer: xkdeco:steel_block
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:air_duct
+- xkdeco:air_duct_oblique
+- xkdeco:chiseled_steel_block
+- xkdeco:framed_steel_block
+- xkdeco:hollow_steel_bars
+- xkdeco:hollow_steel_beam
+- xkdeco:hollow_steel_block
+- xkdeco:hollow_steel_half_beam
+- xkdeco:hollow_steel_trapdoor
+- xkdeco:smooth_steel_block
+- xkdeco:steel_block
+- xkdeco:steel_floor
+- xkdeco:steel_floor_slab
+- xkdeco:steel_floor_stairs
+- xkdeco:steel_ladder
+- xkdeco:steel_pillar
+- xkdeco:steel_safety_ladder
+- xkdeco:steel_trapdoor

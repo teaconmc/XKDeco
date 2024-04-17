@@ -28,3 +28,9 @@ class CreativeTabProvider(TableDataProvider):
         if tabId not in self.contents:
             self.contents[tabId] = []
         self.contents[tabId].append(str(content))
+
+    def removeContent(self, content):
+        content = str(content)
+        for tabId in self.contents:
+            if content in self.contents[tabId]:
+                self.contents[tabId].remove(content)

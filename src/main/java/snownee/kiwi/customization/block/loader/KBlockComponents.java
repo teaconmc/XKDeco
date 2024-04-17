@@ -4,6 +4,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+
+import snownee.kiwi.AbstractModule;
+import snownee.kiwi.KiwiGO;
+import snownee.kiwi.KiwiModule;
+import snownee.kiwi.customization.CustomizationRegistries;
 import snownee.kiwi.customization.block.component.ConsumableComponent;
 import snownee.kiwi.customization.block.component.CycleVariantsComponent;
 import snownee.kiwi.customization.block.component.DirectionalComponent;
@@ -15,15 +22,7 @@ import snownee.kiwi.customization.block.component.MouldingComponent;
 import snownee.kiwi.customization.block.component.SimplePropertiesComponent;
 import snownee.kiwi.customization.block.component.StackableComponent;
 import snownee.kiwi.customization.block.component.WaterLoggableComponent;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
-
-import snownee.kiwi.AbstractModule;
-import snownee.kiwi.KiwiGO;
-import snownee.kiwi.KiwiModule;
+import snownee.kiwi.customization.util.codec.JavaOps;
 
 @KiwiModule("block_components")
 public class KBlockComponents extends AbstractModule {
@@ -56,10 +55,9 @@ public class KBlockComponents extends AbstractModule {
 	public static KBlockComponent getSimpleInstance(KBlockComponent.Type<?> type) {
 		if (SIMPLE_INSTANCES == null) {
 			ImmutableMap.Builder<KBlockComponent.Type<?>, KBlockComponent> builder = ImmutableMap.builder();
-			JsonObject json = new JsonObject();
-			for (KBlockComponent.Type<? extends KBlockComponent> type1 : LoaderExtraRegistries.BLOCK_COMPONENT) {
-				Optional<? extends KBlockComponent> component = type1.codec().parse(JsonOps.INSTANCE, json).result();
-				component.ifPresent(kBlockComponent -> builder.put(type1, kBlockComponent));
+			for (KBlockComponent.Type<? extends KBlockComponent> type1 : CustomizationRegistries.BLOCK_COMPONENT) {
+				Optional<? extends KBlockComponent> component = type1.codec().parse(JavaOps.INSTANCE, Map.of()).result();
+				component.ifPresent($ -> builder.put(type1, $));
 			}
 			SIMPLE_INSTANCES = builder.build();
 		}

@@ -1,6 +1,8 @@
 package snownee.kiwi.customization.block.family;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
@@ -9,7 +11,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,10 +22,13 @@ import snownee.kiwi.customization.util.codec.CompactListCodec;
 
 public class BlockFamily {
 	public static final Codec<BlockFamily> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ExtraCodecs.nonEmptyList(BuiltInRegistries.BLOCK.holderByNameCodec().listOf())
-					.fieldOf("values")
-					.forGetter(BlockFamily::holders),
-			new CompactListCodec<>(BuiltInRegistries.BLOCK.holderByNameCodec())
+			BuiltInRegistries.BLOCK.holderByNameCodec().listOf()
+					.optionalFieldOf("blocks", List.of())
+					.forGetter(BlockFamily::blockHolders),
+			BuiltInRegistries.ITEM.holderByNameCodec().listOf()
+					.optionalFieldOf("items", List.of())
+					.forGetter(BlockFamily::itemHolders),
+			new CompactListCodec<>(BuiltInRegistries.ITEM.holderByNameCodec())
 					.optionalFieldOf("exchange_inputs_in_viewer", List.of())
 					.forGetter(BlockFamily::exchangeInputsInViewer),
 			Codec.BOOL.optionalFieldOf("stonecutter_exchange", false).forGetter(BlockFamily::stonecutterExchange),
@@ -33,7 +37,8 @@ public class BlockFamily {
 	).apply(instance, BlockFamily::new));
 
 	private final List<Holder<Block>> blocks;
-	private final List<Holder<Block>> exchangeInputsInViewer;
+	private final List<Holder<Item>> items;
+	private final List<Holder<Item>> exchangeInputsInViewer;
 	private final boolean stonecutterExchange;
 	private final Item stonecutterFrom;
 	private final boolean quickSwitch;
@@ -42,31 +47,53 @@ public class BlockFamily {
 
 	public BlockFamily(
 			List<Holder<Block>> blocks,
-			List<Holder<Block>> exchangeInputsInViewer,
+			List<Holder<Item>> items,
+			List<Holder<Item>> exchangeInputsInViewer,
 			boolean stonecutterExchange,
 			Item stonecutterFrom,
 			boolean quickSwitch) {
 		this.blocks = blocks;
+		this.items = Stream.concat(blocks.stream()
+				.map(Holder::value)
+				.map(ItemLike::asItem)
+				.filter(Predicate.not(Items.AIR::equals))
+				.mapToInt(BuiltInRegistries.ITEM::getId)
+				.distinct()
+				.mapToObj(BuiltInRegistries.ITEM::getHolder)
+				.map(Optional::orElseThrow), items.stream()).toList();
 		this.exchangeInputsInViewer = exchangeInputsInViewer;
 		this.stonecutterExchange = stonecutterExchange;
 		this.stonecutterFrom = stonecutterFrom;
 		this.quickSwitch = quickSwitch;
+		Preconditions.checkArgument(!blocks.isEmpty() || !items.isEmpty(), "No entries found in family");
 		Preconditions.checkArgument(
-				blocks.stream().map(Holder::value).distinct().count() == blocks.size(),
+				blocks().distinct().count() == this.blocks.size(),
 				"Duplicate blocks found in family %s",
+				this);
+		Preconditions.checkArgument(
+				items().distinct().count() == this.items.size(),
+				"Duplicate items found in family %s",
 				this);
 	}
 
-	public List<Holder<Block>> holders() {
+	public List<Holder<Block>> blockHolders() {
 		return blocks;
 	}
 
-	public List<Holder<Block>> exchangeInputsInViewer() {
+	public List<Holder<Item>> itemHolders() {
+		return items;
+	}
+
+	public List<Holder<Item>> exchangeInputsInViewer() {
 		return exchangeInputsInViewer;
 	}
 
-	public Stream<Block> values() {
+	public Stream<Block> blocks() {
 		return blocks.stream().map(Holder::value);
+	}
+
+	public Stream<Item> items() {
+		return items.stream().map(Holder::value);
 	}
 
 	public boolean stonecutterExchange() {
@@ -85,8 +112,9 @@ public class BlockFamily {
 		return quickSwitch;
 	}
 
-	protected Ingredient toIngredient(List<Holder<Block>> blocks) {
-		return Ingredient.of(blocks.stream().map(Holder::value).filter(block -> {
+	protected Ingredient toIngredient(List<Holder<Item>> items) {
+		return Ingredient.of(items.stream().map(Holder::value).filter(item -> {
+			Block block = Block.byItem(item);
 			if (block instanceof SlabBlock || block instanceof DoorBlock) {
 				return false;
 			}
@@ -96,7 +124,7 @@ public class BlockFamily {
 
 	public Ingredient ingredient() {
 		if (ingredient == null) {
-			ingredient = toIngredient(blocks);
+			ingredient = toIngredient(items);
 		}
 		return ingredient;
 	}
@@ -113,6 +141,6 @@ public class BlockFamily {
 	}
 
 	public boolean contains(ItemLike item) {
-		return blocks.stream().anyMatch(h -> h.value().asItem() == item);
+		return items.stream().anyMatch(h -> h.value().asItem() == item);
 	}
 }

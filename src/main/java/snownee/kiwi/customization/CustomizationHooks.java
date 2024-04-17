@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.data.XKDDataGen;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
@@ -33,7 +34,6 @@ import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -76,8 +76,9 @@ import snownee.kiwi.customization.block.component.KBlockComponent;
 import snownee.kiwi.customization.block.family.BlockFamilies;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.block.loader.KCreativeTab;
-import snownee.kiwi.customization.block.loader.LoaderExtraRegistries;
 import snownee.kiwi.customization.builder.BuilderRules;
+import snownee.kiwi.customization.item.ItemFundamentals;
+import snownee.kiwi.customization.item.loader.KItemTemplate;
 import snownee.kiwi.customization.placement.PlacementSystem;
 import snownee.kiwi.customization.util.resource.OneTimeLoader;
 import snownee.kiwi.customization.util.resource.RequiredFolderRepositorySource;
@@ -174,26 +175,37 @@ public final class CustomizationHooks {
 		});
 		modEventBus.addListener((NewRegistryEvent event) -> {
 			event.create(
-					new RegistryBuilder<>().setName(LoaderExtraRegistries.BLOCK_COMPONENT_KEY.location())
+					new RegistryBuilder<>().setName(CustomizationRegistries.BLOCK_COMPONENT_KEY.location())
 							.disableOverrides()
 							.disableSaving()
 							.hasTags(),
 					$ -> {
 						//noinspection unchecked
-						LoaderExtraRegistries.BLOCK_COMPONENT = (Registry<KBlockComponent.Type<?>>) BuiltInRegistries.REGISTRY.get(
-								LoaderExtraRegistries.BLOCK_COMPONENT_KEY.location());
+						CustomizationRegistries.BLOCK_COMPONENT = (Registry<KBlockComponent.Type<?>>) BuiltInRegistries.REGISTRY.get(
+								CustomizationRegistries.BLOCK_COMPONENT_KEY.location());
 						Kiwi.registerRegistry($, KBlockComponent.Type.class);
 					});
 			event.create(
-					new RegistryBuilder<>().setName(LoaderExtraRegistries.BLOCK_TEMPLATE_KEY.location())
+					new RegistryBuilder<>().setName(CustomizationRegistries.BLOCK_TEMPLATE_KEY.location())
 							.disableOverrides()
 							.disableSaving()
 							.hasTags(),
 					$ -> {
 						//noinspection unchecked
-						LoaderExtraRegistries.BLOCK_TEMPLATE = (Registry<KBlockTemplate.Type<?>>) BuiltInRegistries.REGISTRY.get(
-								LoaderExtraRegistries.BLOCK_TEMPLATE_KEY.location());
+						CustomizationRegistries.BLOCK_TEMPLATE = (Registry<KBlockTemplate.Type<?>>) BuiltInRegistries.REGISTRY.get(
+								CustomizationRegistries.BLOCK_TEMPLATE_KEY.location());
 						Kiwi.registerRegistry($, KBlockTemplate.Type.class);
+					});
+			event.create(
+					new RegistryBuilder<>().setName(CustomizationRegistries.ITEM_TEMPLATE_KEY.location())
+							.disableOverrides()
+							.disableSaving()
+							.hasTags(),
+					$ -> {
+						//noinspection unchecked
+						CustomizationRegistries.ITEM_TEMPLATE = (Registry<KItemTemplate.Type<?>>) BuiltInRegistries.REGISTRY.get(
+								CustomizationRegistries.ITEM_TEMPLATE_KEY.location());
+						Kiwi.registerRegistry($, KItemTemplate.Type.class);
 					});
 		});
 		modEventBus.addListener((AddPackFindersEvent event) -> {
@@ -232,25 +244,45 @@ public final class CustomizationHooks {
 
 	public static void initLoader() {
 		ResourceManager resourceManager = collectKiwiPacks();
-		BlockFundamentals fundamentals = BlockFundamentals.reload(resourceManager, true);
-		fundamentals.blocks().forEach((id, definition) -> {
+		BlockFundamentals blockFundamentals = BlockFundamentals.reload(resourceManager, true);
+		ItemFundamentals itemFundamentals = ItemFundamentals.reload(resourceManager, true);
+		blockFundamentals.blocks().forEach((id, definition) -> {
 			try {
-				Block block = definition.createBlock(id, fundamentals.shapes());
-				if (block != null) {
-					ForgeRegistries.BLOCKS.register(id, block);
-					ForgeRegistries.ITEMS.register(id, new BlockItem(block, new Item.Properties()));
-					fundamentals.slotProviders().attachSlotsA(block, definition);
-					fundamentals.placeChoices().attachChoicesA(block, definition);
+				Block block = definition.createBlock(id, blockFundamentals.shapes());
+				if (block == null) {
+					return;
+				}
+				ForgeRegistries.BLOCKS.register(id, block);
+				blockFundamentals.slotProviders().attachSlotsA(block, definition);
+				blockFundamentals.placeChoices().attachChoicesA(block, definition);
+				if (!itemFundamentals.items().containsKey(id)) {
+					itemFundamentals.addDefaultBlockItem(id);
 				}
 			} catch (Exception e) {
 				Kiwi.LOGGER.error("Failed to create block %s".formatted(id), e);
 			}
 		});
-		fundamentals.slotProviders().attachSlotsB();
-		fundamentals.placeChoices().attachChoicesB();
-		fundamentals.slotLinks().finish();
+		KItemTemplate none = itemFundamentals.templates().get(new ResourceLocation("none"));
+		Preconditions.checkNotNull(none, "Missing 'none' item definition");
+		itemFundamentals.items().forEach((id, definition) -> {
+			try {
+				if (definition.template().template() == none) {
+					return;
+				}
+				Item item = definition.createItem(id);
+				if (item == null) {
+					return;
+				}
+				ForgeRegistries.ITEMS.register(id, item);
+			} catch (Exception e) {
+				Kiwi.LOGGER.error("Failed to create item %s".formatted(id), e);
+			}
+		});
+		blockFundamentals.slotProviders().attachSlotsB();
+		blockFundamentals.placeChoices().attachChoicesB();
+		blockFundamentals.slotLinks().finish();
 		if (Platform.isPhysicalClient()) {
-			BlockRenderSettings.init(fundamentals.blocks(), ClientModLoader.isLoading());
+			BlockRenderSettings.init(blockFundamentals.blocks(), ClientModLoader.isLoading());
 		}
 		var tabs = OneTimeLoader.load(resourceManager, "kiwi/creative_tab", KCreativeTab.CODEC);
 		tabs.entrySet().stream().sorted(Comparator.comparingInt($ -> $.getValue()
@@ -270,8 +302,10 @@ public final class CustomizationHooks {
 					.build();
 			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
 		});
-		BlockFamilies.reload(resourceManager);
-		BuilderRules.reload(resourceManager);
+		BlockFamilies.reload(resourceManager); // might be useful for data-gen
+		if (!Platform.isDataGen()) {
+			BuilderRules.reload(resourceManager);
+		}
 	}
 
 	public static ResourceManager collectKiwiPacks() {

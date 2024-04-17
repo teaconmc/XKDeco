@@ -1,7 +1,0 @@
-exchange_inputs_in_viewer: xkdeco:translucent_lamp_block
-stonecutter_exchange: true
-quick_switch: true
-values:
-- xkdeco:translucent_lamp_block
-- xkdeco:translucent_lamp_slab
-- xkdeco:translucent_lamp_stairs
