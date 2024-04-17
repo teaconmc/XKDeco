@@ -2,7 +2,7 @@
   "type": "minecraft:stonecutting",
   "count": 2,
   "ingredient": {
-    "item": "minecraft:nether_brick"
+    "item": "minecraft:netherrack"
   },
   "result": "xkdeco:netherrack_slab"
 }

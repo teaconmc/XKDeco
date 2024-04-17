@@ -6,7 +6,7 @@ license="BSD-3-Clause"
 modId="xkdeco"
 authors="XeKr, Snownee, TeaConMC"
 version="${file.jarVersion}"
-displayName="XeKr's Decorations"
+displayName="XeKr's Decoration"
 description='''
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
@@ -28,6 +28,6 @@ side="BOTH"
 [[dependencies.xkdeco]]
 modId="kiwi"
 mandatory=true
-versionRange="[11.5.5,12)"
+versionRange="[11.5.5,11.7)"
 ordering="NONE"
 side="BOTH"

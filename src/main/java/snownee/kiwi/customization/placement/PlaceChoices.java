@@ -4,17 +4,26 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.advancements.critereon.BlockPredicate;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -24,22 +33,37 @@ import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
-import snownee.kiwi.customization.util.KHolder;
-import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.customization.duck.KBlockProperties;
+import snownee.kiwi.customization.item.MultipleBlockItem;
+import snownee.kiwi.customization.util.BlockPredicateHelper;
+import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.util.codec.CompactListCodec;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.loader.Platform;
 
 public record PlaceChoices(
 		List<PlaceTarget> target,
+		List<Alter> alter,
 		List<Limit> limit,
-		List<InterestProvider> interests,
+		List<Interests> interests,
 		boolean skippable) {
+	public static final BiMap<String, BlockFaceType> BLOCK_FACE_TYPES = HashBiMap.create();
+
+	static {
+		BLOCK_FACE_TYPES.put("any", BlockFaceType.ANY);
+		BLOCK_FACE_TYPES.put("horizontal", BlockFaceType.HORIZONTAL);
+		BLOCK_FACE_TYPES.put("vertical", BlockFaceType.VERTICAL);
+		BLOCK_FACE_TYPES.put("clicked_face", (context, direction) -> context.getClickedFace() == direction.getOpposite());
+		for (Direction direction : CustomizationHooks.DIRECTIONS) {
+			BLOCK_FACE_TYPES.put(direction.getSerializedName(), (context, dir) -> dir == direction);
+		}
+	}
 
 	public static final Codec<PlaceChoices> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
+			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Alter.CODEC), "alter", List.of()).forGetter(PlaceChoices::alter),
 			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Limit.CODEC), "limit", List.of()).forGetter(PlaceChoices::limit),
-			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(InterestProvider.CODEC), "interests", List.of())
+			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Interests.CODEC), "interests", List.of())
 					.forGetter(PlaceChoices::interests),
 			Codec.BOOL.optionalFieldOf("skippable", true).forGetter(PlaceChoices::skippable)
 	).apply(instance, PlaceChoices::new));
@@ -119,7 +143,7 @@ public record PlaceChoices(
 			}
 		}
 		int interest = 0;
-		for (InterestProvider provider : this.interests) {
+		for (Interests provider : this.interests) {
 			if (provider.when().smartTest(baseState, targetState)) {
 				interest += provider.bonus;
 			}
@@ -159,10 +183,90 @@ public record PlaceChoices(
 		}
 	}
 
-	public record InterestProvider(StatePropertiesPredicate when, int bonus) {
-		public static final Codec<InterestProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				StatePropertiesPredicate.CODEC.fieldOf("when").forGetter(InterestProvider::when),
-				Codec.INT.fieldOf("bonus").forGetter(InterestProvider::bonus)
-		).apply(instance, InterestProvider::new));
+	public record Interests(StatePropertiesPredicate when, int bonus) {
+		public static final Codec<Interests> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				StatePropertiesPredicate.CODEC.fieldOf("when").forGetter(Interests::when),
+				Codec.INT.fieldOf("bonus").forGetter(Interests::bonus)
+		).apply(instance, Interests::new));
+	}
+
+	//TODO check if `use` exists when attaching choices
+	public record Alter(List<AlterCondition> when, String use) {
+		public static final Codec<Alter> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				new CompactListCodec<>(AlterCondition.CODEC).nonEmpty().fieldOf("when").forGetter(Alter::when),
+				Codec.STRING.fieldOf("use").forGetter(Alter::use)
+		).apply(instance, Alter::new));
+
+		@Nullable
+		public BlockState alter(BlockItem blockItem, BlockPlaceContext context) {
+			if (!(blockItem instanceof MultipleBlockItem multipleBlockItem)) {
+				return null;
+			}
+			for (AlterCondition condition : when) {
+				if (condition.test(context)) {
+					Block block = multipleBlockItem.getBlock(use);
+					Preconditions.checkNotNull(block, "Block %s not found in %s", use, multipleBlockItem);
+					Preconditions.checkState(
+							block != blockItem.getBlock(),
+							"Block %s is the same as the original block, dead loop detected", block);
+					BlockState blockState = block.getStateForPlacement(context);
+					if (blockState == null) {
+						return null;
+					}
+					KBlockSettings settings = KBlockSettings.of(block);
+					if (settings != null) {
+						blockState = settings.getStateForPlacement(blockState, context);
+					}
+					return blockState;
+				}
+			}
+			return null;
+		}
+	}
+
+	public record AlterCondition(String target, BlockFaceType faces, BlockPredicate block, List<ParsedProtoTag> tags) {
+		public static final Codec<AlterCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				CustomizationCodecs.strictOptionalField(Codec.STRING, "target", "neighbor").forGetter(AlterCondition::target),
+				CustomizationCodecs.strictOptionalField(CustomizationCodecs.simpleByNameCodec(BLOCK_FACE_TYPES), "faces", BlockFaceType.ANY)
+						.forGetter(AlterCondition::faces),
+				CustomizationCodecs.strictOptionalField(CustomizationCodecs.BLOCK_PREDICATE, "block", BlockPredicate.ANY)
+						.forGetter(AlterCondition::block),
+				CustomizationCodecs.strictOptionalField(new CompactListCodec<>(ParsedProtoTag.CODEC), "tags", List.of())
+						.forGetter(AlterCondition::tags)
+		).apply(instance, AlterCondition::new));
+
+		public boolean test(BlockPlaceContext context) {
+			List<Direction> directions = switch (target) {
+				case "clicked_face" -> List.of(context.getClickedFace().getOpposite());
+				case "neighbor" -> CustomizationHooks.DIRECTIONS;
+				default -> throw new IllegalStateException("Unexpected value: " + target);
+			};
+			BlockPos pos = context.getClickedPos();
+			BlockPos.MutableBlockPos mutable = pos.mutable();
+			directions:
+			for (Direction direction : directions) {
+				if (!faces.test(context, direction)) {
+					continue;
+				}
+				BlockState neighbor = context.getLevel().getBlockState(mutable.setWithOffset(pos, direction));
+				if (!BlockPredicateHelper.fastMatch(block, neighbor)) {
+					continue;
+				}
+				for (ParsedProtoTag tag : tags) {
+					ParsedProtoTag resolvedTag = tag.resolve(neighbor, Rotation.NONE);
+					if (PlaceSlot.find(neighbor, direction.getOpposite()).stream().noneMatch(slot -> slot.hasTag(resolvedTag))) {
+						continue directions;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+	}
+
+	public interface BlockFaceType extends BiPredicate<UseOnContext, Direction> {
+		BlockFaceType ANY = (context, direction) -> true;
+		BlockFaceType HORIZONTAL = (context, direction) -> direction.getAxis().isHorizontal();
+		BlockFaceType VERTICAL = (context, direction) -> direction.getAxis().isVertical();
 	}
 }

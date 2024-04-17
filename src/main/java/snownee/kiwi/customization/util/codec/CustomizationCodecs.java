@@ -17,10 +17,14 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.MapLike;
 import com.mojang.serialization.RecordBuilder;
 
+import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
@@ -65,6 +69,28 @@ public class CustomizationCodecs {
 	public static final Codec<MinMaxBounds.Ints> INT_BOUNDS = ExtraCodecs.JSON.xmap(
 			MinMaxBounds.Ints::fromJson,
 			MinMaxBounds::serializeToJson);
+	public static final Codec<BlockPredicate> BLOCK_PREDICATE = new Codec<>() {
+		@Override
+		public <T> DataResult<Pair<BlockPredicate, T>> decode(DynamicOps<T> ops, T input) {
+			String stringValue = ops.getStringValue(input).result().orElse(null);
+			if (stringValue != null) {
+				if (stringValue.startsWith("#")) {
+					return DataResult.success(Pair.of(BlockPredicate.Builder.block()
+							.of(TagKey.create(Registries.BLOCK, new ResourceLocation(stringValue.substring(1))))
+							.build(), ops.empty()));
+				}
+				return DataResult.success(Pair.of(BlockPredicate.Builder.block()
+						.of(BuiltInRegistries.BLOCK.get(new ResourceLocation(stringValue)))
+						.build(), ops.empty()));
+			}
+			return ExtraCodecs.JSON.decode(ops, input).map($ -> $.mapFirst(BlockPredicate::fromJson));
+		}
+
+		@Override
+		public <T> DataResult<T> encode(BlockPredicate input, DynamicOps<T> ops, T prefix) {
+			return ExtraCodecs.JSON.encodeStart(ops, input.serializeToJson());
+		}
+	};
 
 	static {
 		// https://regex101.com/:

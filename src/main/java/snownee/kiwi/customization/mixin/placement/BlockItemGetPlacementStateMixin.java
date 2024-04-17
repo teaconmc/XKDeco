@@ -1,9 +1,7 @@
-package snownee.kiwi.customization.mixin;
+package snownee.kiwi.customization.mixin.placement;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import snownee.kiwi.customization.placement.PlacementSystem;
-import snownee.kiwi.customization.block.KBlockSettings;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -14,6 +12,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.placement.PlacementSystem;
 
 @Mixin({BlockItem.class, StandingAndWallBlockItem.class})
 public class BlockItemGetPlacementStateMixin {
@@ -23,19 +23,21 @@ public class BlockItemGetPlacementStateMixin {
 					value = "INVOKE",
 					target = "Lnet/minecraft/world/level/block/Block;getStateForPlacement(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/level/block/state/BlockState;"))
 	private BlockState kiwi$getPlacementState(Block block, BlockPlaceContext pContext, Operation<BlockState> original) {
-		BlockState state = original.call(block, pContext);
-		if (state == null || !state.is(block)) {
-			return state;
+		BlockState blockState = original.call(block, pContext);
+		if (blockState == null || !blockState.is(block)) {
+			return blockState;
 		}
 		KBlockSettings settings = KBlockSettings.of(block);
 		if (settings != null) {
-			state = settings.getStateForPlacement(state, pContext);
+			blockState = settings.getStateForPlacement(blockState, pContext);
 		}
 		try {
-			state = PlacementSystem.onPlace(state, pContext);
+			//noinspection DataFlowIssue
+			BlockItem item = (BlockItem) (Object) this;
+			blockState = PlacementSystem.onPlace(item, blockState, pContext);
 		} catch (Throwable t) {
-			Kiwi.LOGGER.error("Failed to handle placement for %s".formatted(state), t);
+			Kiwi.LOGGER.error("Failed to handle placement for %s".formatted(blockState), t);
 		}
-		return state;
+		return blockState;
 	}
 }

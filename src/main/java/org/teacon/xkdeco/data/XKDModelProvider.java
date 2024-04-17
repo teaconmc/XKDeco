@@ -21,10 +21,6 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
-import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.block.component.LayeredComponent;
-import snownee.kiwi.customization.util.NotNullByDefault;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
@@ -60,6 +56,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.component.LayeredComponent;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
+import snownee.kiwi.customization.util.NotNullByDefault;
 import snownee.kiwi.datagen.GameObjectLookup;
 
 @SuppressWarnings({"deprecation", "SameParameterValue"})
@@ -1074,6 +1074,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createRoofEave(id + "_eave", roofTexture, ridgeTexture, false);
 		createRoofEnd(id + "_end", roofTexture, ridgeTexture, false);
 		createAsianRoofRidgeEnd(id + "_ridge_end", roofTexture, ridgeTexture, smallRidgeTexture, false);
+		generators.delegateItemModel(block(id + "_deco"), ModelLocationUtils.getModelLocation(block(id + "_deco")));
 		createHorizontalShift(
 				id + "_deco",
 				"template_roof_deco",

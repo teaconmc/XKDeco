@@ -24,7 +24,7 @@ class BlockTemplateProvider(TableDataProvider):
             data['properties'] = properties
 
         if 'Tags' in row and row['Tags'] != '':
-            tags = [ResourceLocation(tag) for tag in row['Tags'].split(',')]
+            tags = [ResourceLocation(tag.strip()) for tag in row['Tags'].split(',')]
             self.tags[templateId] = tags
 
         self.writeFile(templateId, data)

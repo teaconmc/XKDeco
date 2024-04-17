@@ -74,7 +74,7 @@ public record PlaceSlotProvider(
 			List<String> tag,
 			Map<Direction, Side> sides) {
 		public static final Codec<Slot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				CustomizationCodecs.strictOptionalField(new CompactListCodec<>(StatePropertiesPredicate.CODEC, false), "when", List.of())
+				CustomizationCodecs.strictOptionalField(new CompactListCodec<>(StatePropertiesPredicate.CODEC).nonEmpty(), "when", List.of())
 						.forGetter(Slot::when),
 				CustomizationCodecs.strictOptionalField(Codec.STRING, "transform_with").forGetter(Slot::transformWith),
 				CustomizationCodecs.strictOptionalField(TAG_CODEC.listOf(), "tag", List.of()).forGetter(Slot::tag),

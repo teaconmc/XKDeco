@@ -39,6 +39,9 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	@Override
 	public void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		XKDBlockFamilies.getAllFamilies().forEach(family -> {
+			if (family.getBaseBlock().asItem() == Items.AIR) {
+				return;
+			}
 			generateRecipes(consumer, family);
 		});
 
