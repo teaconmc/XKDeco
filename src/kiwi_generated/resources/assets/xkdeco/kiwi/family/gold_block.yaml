@@ -1,4 +1,5 @@
 stonecutter_from: gold_block
+stonecutter_from_multiplier: 4
 stonecutter_exchange: true
 quick_switch: true
 blocks:

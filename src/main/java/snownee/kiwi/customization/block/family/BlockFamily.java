@@ -33,6 +33,7 @@ public class BlockFamily {
 					.forGetter(BlockFamily::exchangeInputsInViewer),
 			Codec.BOOL.optionalFieldOf("stonecutter_exchange", false).forGetter(BlockFamily::stonecutterExchange),
 			BuiltInRegistries.ITEM.byNameCodec().optionalFieldOf("stonecutter_from", Items.AIR).forGetter(BlockFamily::stonecutterSource),
+			Codec.intRange(1, 64).optionalFieldOf("stonecutter_from_multiplier", 1).forGetter(BlockFamily::stonecutterSourceMultiplier),
 			Codec.BOOL.optionalFieldOf("quick_switch", false).forGetter(BlockFamily::quickSwitch)
 	).apply(instance, BlockFamily::new));
 
@@ -41,6 +42,7 @@ public class BlockFamily {
 	private final List<Holder<Item>> exchangeInputsInViewer;
 	private final boolean stonecutterExchange;
 	private final Item stonecutterFrom;
+	private final int stonecutterFromMultiplier;
 	private final boolean quickSwitch;
 	private Ingredient ingredient;
 	private Ingredient ingredientInViewer;
@@ -51,6 +53,7 @@ public class BlockFamily {
 			List<Holder<Item>> exchangeInputsInViewer,
 			boolean stonecutterExchange,
 			Item stonecutterFrom,
+			int stonecutterFromMultiplier,
 			boolean quickSwitch) {
 		this.blocks = blocks;
 		this.items = Stream.concat(blocks.stream()
@@ -64,6 +67,7 @@ public class BlockFamily {
 		this.exchangeInputsInViewer = exchangeInputsInViewer;
 		this.stonecutterExchange = stonecutterExchange;
 		this.stonecutterFrom = stonecutterFrom;
+		this.stonecutterFromMultiplier = stonecutterFromMultiplier;
 		this.quickSwitch = quickSwitch;
 		Preconditions.checkArgument(!blocks.isEmpty() || !items.isEmpty(), "No entries found in family");
 		Preconditions.checkArgument(
@@ -104,6 +108,10 @@ public class BlockFamily {
 		return stonecutterFrom;
 	}
 
+	public int stonecutterSourceMultiplier() {
+		return stonecutterFromMultiplier;
+	}
+
 	public Ingredient stonecutterSourceIngredient() {
 		return stonecutterFrom == Items.AIR ? Ingredient.EMPTY : Ingredient.of(stonecutterFrom);
 	}
@@ -140,7 +148,7 @@ public class BlockFamily {
 		return ingredientInViewer;
 	}
 
-	public boolean contains(ItemLike item) {
+	public boolean contains(Item item) {
 		return items.stream().anyMatch(h -> h.value().asItem() == item);
 	}
 }

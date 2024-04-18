@@ -169,9 +169,11 @@ public class XKDModelProvider extends FabricModelProvider {
 		if (!TREATED_WOOD_FAMILIES.contains(family)) {
 			return false;
 		}
+		TextureMapping postTextures = TextureMapping.defaultTexture(getBlockTexture(block, "_post"));
+		postTextures.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block));
 		ResourceLocation post = XKDModelTemplates.WOODEN_FENCE_POST.create(
 				block,
-				TextureMapping.defaultTexture(getBlockTexture(block, "_post")),
+				postTextures,
 				generators.modelOutput);
 		ResourceLocation side = XKDModelTemplates.WOODEN_FENCE_SIDE.create(
 				block,
@@ -179,7 +181,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				generators.modelOutput);
 		ResourceLocation inventory = XKDModelTemplates.WOODEN_FENCE_INVENTORY.create(
 				block,
-				TextureMapping.defaultTexture(family.getBaseBlock()),
+				postTextures,
 				generators.modelOutput);
 		generators.blockStateOutput.accept(createFenceNoUvLock(block, post, side));
 		generators.delegateItemModel(block, inventory);

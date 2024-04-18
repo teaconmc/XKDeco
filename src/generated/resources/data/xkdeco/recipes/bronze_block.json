@@ -2,19 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "M": {
-      "item": "minecraft:copper_ingot"
+    "B": {
+      "item": "minecraft:iron_nugget"
     },
-    "S": {
-      "item": "minecraft:gold_ingot"
+    "T": {
+      "item": "minecraft:copper_ingot"
     }
   },
   "pattern": [
-    "SSS",
-    "SMS",
-    "SSS"
+    "TB",
+    "BT"
   ],
   "result": {
+    "count": 4,
     "item": "xkdeco:bronze_block"
   },
   "show_notification": true
