@@ -91,7 +91,11 @@ public class XKDModelTemplates {
 	public static final ModelTemplate WOODEN_FENCE_SIDE = create("wooden_fence_side", "_side", TextureSlot.TEXTURE);
 	public static final ModelTemplate WOODEN_FENCE_HEAD = create("wooden_fence_head", TextureSlot.PARTICLE);
 	public static final ModelTemplate WOODEN_FENCE_HEAD_FLIP = create("wooden_fence_head_flip", "_flip", TextureSlot.PARTICLE);
-	public static final ModelTemplate WOODEN_FENCE_INVENTORY = create("wooden_fence_inventory", "_inventory", TextureSlot.TEXTURE);
+	public static final ModelTemplate WOODEN_FENCE_INVENTORY = create(
+			"wooden_fence_inventory",
+			"_inventory",
+			TextureSlot.TEXTURE,
+			TextureSlot.SIDE);
 	public static final ModelTemplate WOODEN_FENCE_GATE_OPEN = create("wooden_fence_gate_open", "_open", TextureSlot.TEXTURE);
 	public static final ModelTemplate WOODEN_FENCE_GATE_CLOSED = create("wooden_fence_gate", TextureSlot.TEXTURE);
 	public static final ModelTemplate GLASS_STAIRS = create("glass_stairs", TextureSlot.SIDE);

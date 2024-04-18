@@ -92,14 +92,15 @@ public class StonecutterRecipeMaker {
 			case "to" -> family.value().stonecutterSourceIngredient();
 			default -> throw new IllegalArgumentException();
 		};
-		if ("exchange_in_viewer".equals(type)) {
-			type = "exchange";
-		}
-		ResourceLocation prefix = family.key().withPath("fake/stonecutter/%s/%s".formatted(family.key().getPath(), type));
+		ResourceLocation prefix = family.key().withPath("fake/stonecutter/%s/%s".formatted(
+				family.key().getPath(),
+				"exchange_in_viewer".equals(type) ? "exchange" : type));
 		return family.value().items().map(item -> {
 			int count = 1;
 			Block block = Block.byItem(item);
-			if (block instanceof SlabBlock) {
+			if ("to".equals(type)) {
+				count = family.value().stonecutterSourceMultiplier();
+			} else if (block instanceof SlabBlock) {
 				count = 2;
 			} else if (block instanceof DoorBlock) {
 				return null;

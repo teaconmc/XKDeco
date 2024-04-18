@@ -15,6 +15,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -22,7 +23,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import snownee.kiwi.AbstractModule;
@@ -117,7 +117,8 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				Items.VINE,
 				1,
 				true);
-		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("maya_stone"), 6)
+		Item mayaStone = i("maya_stone");
+		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, mayaStone, 6)
 				.pattern("TB")
 				.pattern("BT")
 				.define('B', Items.ANDESITE)
@@ -125,22 +126,40 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.unlockedBy(getHasName(Items.ANDESITE), has(Items.ANDESITE))
 				.unlockedBy(getHasName(Items.GRANITE), has(Items.GRANITE))
 				.save(consumer);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("bronze_block"), Items.COPPER_INGOT, Items.GOLD_INGOT, 1);
-
-		smokingRecipe(consumer, i("steel_block"), Blocks.IRON_BLOCK);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("factory_block"), Blocks.IRON_BLOCK, 32);
-
-		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("factory_lamp_block"), 2)
-				.pattern(" F ")
-				.pattern("FGF")
-				.pattern(" F ")
-				.define('F', i("factory_block"))
-				.define('G', Items.GLOWSTONE_DUST)
-				.unlockedBy("has_item", has(i("factory_block")))
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("aztec_stonebricks"), mayaStone);
+		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("inca_stone"), 4)
+				.pattern("TB")
+				.pattern("BT")
+				.define('B', mayaStone)
+				.define('T', Items.GRANITE)
+				.unlockedBy(getHasName(mayaStone), has(mayaStone))
+				.unlockedBy(getHasName(Items.GRANITE), has(Items.GRANITE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("bronze_block"), 4)
+				.pattern("TB")
+				.pattern("BT")
+				.define('B', Items.IRON_NUGGET)
+				.define('T', Items.COPPER_INGOT)
+				.unlockedBy(getHasName(Items.IRON_NUGGET), has(Items.IRON_NUGGET))
+				.unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT))
 				.save(consumer);
 
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(Items.IRON_BLOCK), BUILDING_BLOCKS, i("steel_block"), 0.1f, 100)
+				.unlockedBy("has_item", has(Items.IRON_BLOCK))
+				.save(consumer);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("factory_block"), Blocks.IRON_BLOCK, 9);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("factory_lamp_block"), Items.GLOWSTONE, 4);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("tech_lamp_block"), Items.SEA_LANTERN, 4);
+		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("translucent_lamp_block"), i("tech_lamp_block"), Items.GLASS, 2, false);
+
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("steel_filings"), i("steel_block"), 4);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("quartz_sand"), Items.QUARTZ_BLOCK, 4);
+		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("toughened_sand"), i("steel_filings"), i("quartz_sand"), 4, false);
 		smeltingResultFromBase(consumer, i("quartz_glass"), i("quartz_sand"));
 		smeltingResultFromBase(consumer, i("toughened_glass"), i("toughened_sand"));
+
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("quartz_wall"), Items.QUARTZ_BLOCK, 1);
+		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("quartz_wall"), Items.QUARTZ_PILLAR, 1);
 
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("dirt_slab"), Items.DIRT, 2);
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("dirt_path_slab"), Items.DIRT, 2);
@@ -198,6 +217,32 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.requires(Items.GLOWSTONE_DUST)
 				.unlockedBy("has_item", has(i("item_frame_cover")))
 				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("plain_item_display"))
+				.pattern(" F ")
+				.pattern("SSS")
+				.pattern(" B ")
+				.define('F', Items.ITEM_FRAME)
+				.define('S', Items.SMOOTH_STONE_SLAB)
+				.define('B', Items.SMOOTH_STONE)
+				.unlockedBy("has_item", has(Items.ITEM_FRAME))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("plain_block_display"))
+				.pattern(" F ")
+				.pattern("SSS")
+				.pattern("B B")
+				.define('F', Items.ITEM_FRAME)
+				.define('S', Items.SMOOTH_STONE_SLAB)
+				.define('B', Items.SMOOTH_STONE)
+				.unlockedBy("has_item", has(Items.ITEM_FRAME))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("item_projector"))
+				.pattern("A")
+				.pattern("B")
+				.define('A', Items.SPYGLASS)
+				.define('B', i("tech_item_display"))
+				.unlockedBy("has_item", has(Items.ITEM_FRAME))
+				.save(consumer);
 	}
 
 	private static void fallenLeaves(Consumer<FinishedRecipe> consumer, ItemLike pCarpet, ItemLike pMaterial) {
@@ -246,7 +291,9 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	}
 
 	private static void smokingRecipe(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike material) {
-		simpleCookingRecipe(consumer, "smoking", RecipeSerializer.SMOKING_RECIPE, 100, material, result, 0);
+		SimpleCookingRecipeBuilder.smoking(Ingredient.of(material), BUILDING_BLOCKS, result, 0.1f, 100)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, BuiltInRegistries.ITEM.getKey(result.asItem()).getPath() + "_from_smoking");
 	}
 
 	private static void coloredTiles(Consumer<FinishedRecipe> consumer, String color, ItemLike terracotta) {

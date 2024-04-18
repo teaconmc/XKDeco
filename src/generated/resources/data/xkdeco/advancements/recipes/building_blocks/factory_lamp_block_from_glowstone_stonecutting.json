@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_glowstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:glowstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:factory_lamp_block_from_glowstone_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_glowstone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:factory_lamp_block_from_glowstone_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

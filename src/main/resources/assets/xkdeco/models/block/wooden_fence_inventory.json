@@ -3,7 +3,7 @@
 	"parent": "block/fence_inventory",
 	"textures": {
 		"particle": "#side",
-		"post": "xkdeco:block/ebony_fence_post",
+		"texture": "xkdeco:block/ebony_fence_post",
 		"side": "xkdeco:block/ebony_fence"
 	},
 	"elements": [
@@ -141,24 +141,24 @@
 			"from": [6, 0, -2],
 			"to": [10, 16, 2],
 			"faces": {
-				"north": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"east": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"south": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"west": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"up": {"uv": [6, 0, 10, 4], "texture": "#post"},
-				"down": {"uv": [6, 0, 10, 4], "texture": "#post"}
+				"north": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"east": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"south": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"west": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"up": {"uv": [6, 0, 10, 4], "texture": "#texture"},
+				"down": {"uv": [6, 0, 10, 4], "texture": "#texture"}
 			}
 		},
 		{
 			"from": [6, 0, 14],
 			"to": [10, 16, 18],
 			"faces": {
-				"north": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"east": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"south": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"west": {"uv": [6, 0, 10, 16], "texture": "#post"},
-				"up": {"uv": [6, 0, 10, 4], "texture": "#post"},
-				"down": {"uv": [6, 0, 10, 4], "texture": "#post"}
+				"north": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"east": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"south": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"west": {"uv": [6, 0, 10, 16], "texture": "#texture"},
+				"up": {"uv": [6, 0, 10, 4], "texture": "#texture"},
+				"down": {"uv": [6, 0, 10, 4], "texture": "#texture"}
 			}
 		}
 	],

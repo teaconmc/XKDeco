@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_granite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:granite"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_maya_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "xkdeco:maya_stone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:inca_stone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_maya_stone",
+      "has_granite",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:inca_stone"
+    ]
+  },
+  "sends_telemetry_event": false
+}

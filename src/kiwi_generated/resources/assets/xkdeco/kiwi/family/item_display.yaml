@@ -1,0 +1,8 @@
+exchange_inputs_in_viewer: xkdeco:plain_item_display
+stonecutter_exchange: true
+quick_switch: true
+blocks:
+- xkdeco:gorgeous_item_display
+- xkdeco:mechanical_item_display
+- xkdeco:plain_item_display
+- xkdeco:tech_item_display

@@ -28,6 +28,8 @@ class BlockFamilyProvider(TableDataProvider):
         data = {}
         if 'StonecutterFrom' in row and row['StonecutterFrom'] != '':
             data['stonecutter_from'] = row['StonecutterFrom']
+            if 'StonecutterFromMultiplier' in row and row['StonecutterFromMultiplier'] != '':
+                data['stonecutter_from_multiplier'] = int(float(row['StonecutterFromMultiplier']))
         if 'InputsInViewer' in row and row['InputsInViewer'] != '':
             inputs = []
             for value in row['InputsInViewer'].split(','):

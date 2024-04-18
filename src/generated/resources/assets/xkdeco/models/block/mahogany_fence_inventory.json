@@ -1,6 +1,7 @@
 {
   "parent": "xkdeco:block/wooden_fence_inventory",
   "textures": {
-    "texture": "xkdeco:block/mahogany_planks"
+    "side": "xkdeco:block/mahogany_fence",
+    "texture": "xkdeco:block/mahogany_fence_post"
   }
 }
