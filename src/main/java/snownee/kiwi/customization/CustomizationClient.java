@@ -23,6 +23,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import snownee.kiwi.customization.block.behavior.SitManager;
 import snownee.kiwi.customization.builder.BuildersButton;
+import snownee.kiwi.customization.builder.ConvertScreen;
 import snownee.kiwi.customization.command.ExportBlocksCommand;
 import snownee.kiwi.customization.command.ExportCreativeTabsCommand;
 import snownee.kiwi.customization.command.ExportShapesCommand;
@@ -47,6 +48,7 @@ public final class CustomizationClient {
 		forgeEventBus.addListener((TickEvent.ClientTickEvent event) -> {
 			if (event.phase == TickEvent.Phase.END) {
 				buildersButtonKey.tick();
+				ConvertScreen.tickLingering();
 			}
 		});
 		forgeEventBus.addListener((ScreenEvent.MouseButtonPressed.Pre event) -> {
