@@ -356,7 +356,7 @@ public class CustomizationCodecs {
 	}
 
 	public static <T> Codec<T> withAlternative(Codec<T> codec, Codec<? extends T> codec2) {
-		return new EitherCodec<>(codec, codec2).xmap(either -> either.map(object -> object, object -> object), Either::left);
+		return new ExtraCodecs.EitherCodec<>(codec, codec2).xmap(either -> either.map(object -> object, object -> object), Either::left);
 	}
 
 	public static <A> MapCodec<Optional<A>> strictOptionalField(Codec<A> codec, String string) {

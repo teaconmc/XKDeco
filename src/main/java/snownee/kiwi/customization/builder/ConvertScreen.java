@@ -38,12 +38,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
-import snownee.kiwi.Kiwi;
 import snownee.kiwi.customization.block.family.BlockFamily;
 import snownee.kiwi.customization.network.CConvertItemPacket;
 import snownee.kiwi.customization.util.KHolder;
+import snownee.kiwi.customization.util.LerpedFloat;
 import snownee.kiwi.customization.util.NotNullByDefault;
-import snownee.kiwi.customization.util.SmoothChasingValue;
 
 @NotNullByDefault
 public class ConvertScreen extends Screen {
@@ -54,7 +53,7 @@ public class ConvertScreen extends Screen {
 	private final Slot slot;
 	private final int slotIndex;
 	private final Collection<KHolder<BlockFamily>> families;
-	private final SmoothChasingValue openProgress;
+	private final LerpedFloat openProgress = LerpedFloat.linear();
 	private PanelLayout layout;
 	private ClientTooltipPositioner tooltipPositioner;
 	private Tooltip lastTooltip;
@@ -76,7 +75,8 @@ public class ConvertScreen extends Screen {
 		inContainer = parent instanceof AbstractContainerScreen;
 		inCreativeContainer = parent instanceof CreativeModeInventoryScreen;
 		originalMousePos = getMousePos();
-		openProgress = new SmoothChasingValue().target(1).set(0.2f).withSpeed(0.8f);
+		openProgress.setValue(0.2f);
+		openProgress.chase(1, 0.8, LerpedFloat.Chaser.EXP);
 		sourceItem = getSourceItem();
 	}
 
@@ -206,6 +206,7 @@ public class ConvertScreen extends Screen {
 
 	@Override
 	public void tick() {
+		openProgress.tickChaser();
 		if (!ItemStack.isSameItemSameTags(sourceItem, getSourceItem())) {
 			onClose();
 		}
@@ -230,12 +231,10 @@ public class ConvertScreen extends Screen {
 	@Override
 	public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
 		Objects.requireNonNull(minecraft);
-		openProgress.tick(pPartialTick);
 		PoseStack pose = pGuiGraphics.pose();
 		layout.update();
 		Vector2i pos = layout.getAnchoredPos();
-		float openValue = openProgress.value;
-		Kiwi.LOGGER.info("openValue: " + openValue);
+		float openValue = openProgress.getValue(minecraft.getPartialTick());
 		pose.pushPose();
 		pose.translate(pos.x, pos.y, 0);
 		pose.scale(openValue, openValue, openValue);
@@ -257,7 +256,7 @@ public class ConvertScreen extends Screen {
 		}
 		super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
 		pose.popPose();
-		if (openProgress.value > 0.95f) {
+		if (openValue > 0.95f) {
 			ItemButton button = null;
 			if (getChildAt(pMouseX, pMouseY).orElse(null) instanceof ItemButton b) {
 				button = b;
@@ -279,7 +278,7 @@ public class ConvertScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		openProgress.target(0);
+		openProgress.chase(0, 0.8, LerpedFloat.Chaser.EXP);
 		lingeringScreen = this;
 		super.onClose();
 	}
@@ -294,10 +293,16 @@ public class ConvertScreen extends Screen {
 			return;
 		}
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.screen != null || mc.getOverlay() != null || !lingeringScreen.openProgress.isMoving()) {
+		if (mc.screen != null || mc.getOverlay() != null || lingeringScreen.openProgress.settled()) {
 			lingeringScreen = null;
 			return;
 		}
 		lingeringScreen.render(pGuiGraphics, Integer.MAX_VALUE, Integer.MAX_VALUE, mc.getDeltaFrameTime());
+	}
+
+	public static void tickLingering() {
+		if (lingeringScreen != null) {
+			lingeringScreen.tick();
+		}
 	}
 }
