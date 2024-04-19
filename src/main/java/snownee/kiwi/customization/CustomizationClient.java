@@ -72,7 +72,9 @@ public final class CustomizationClient {
 			}
 		});
 		forgeEventBus.addListener((RegisterCommandsEvent event) -> {
-			LiteralArgumentBuilder<CommandSourceStack> kiwic = Commands.literal("kiwic").requires(source -> source.hasPermission(2));
+			LiteralArgumentBuilder<CommandSourceStack> kiwi = Commands.literal("kiwi");
+			LiteralArgumentBuilder<CommandSourceStack> customization = Commands.literal("customization")
+					.requires(source -> source.hasPermission(2));
 			LiteralArgumentBuilder<CommandSourceStack> export = Commands.literal("export");
 			ExportBlocksCommand.register(export);
 			ExportShapesCommand.register(export);
@@ -81,7 +83,7 @@ public final class CustomizationClient {
 			ReloadSlotsCommand.register(reload);
 			ReloadBlockSettingsCommand.register(reload);
 			ReloadFamiliesAndRulesCommand.register(reload);
-			event.getDispatcher().register(kiwic.then(export).then(reload));
+			event.getDispatcher().register(kiwi.then(customization.then(export).then(reload)));
 		});
 		forgeEventBus.addListener((CustomizeGuiOverlayEvent.DebugText event) -> {
 			BuildersButton.renderDebugText(event.getLeft(), event.getRight());
