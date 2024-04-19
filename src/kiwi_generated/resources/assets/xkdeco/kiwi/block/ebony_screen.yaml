@@ -1,4 +1,4 @@
-render_type: translucent
+template:
+  kiwi:type: xkdeco:wooden_screen
+  block_set_type: oak
 material: xkdeco:ebony
-components:
-- water_loggable

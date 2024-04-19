@@ -1,0 +1,5 @@
+from: '*xkdeco.wooden_screen:no_hinge'
+to: '*xkdeco.wooden_screen:no_hinge'
+interest: 100
+test_tag:
+  - facing

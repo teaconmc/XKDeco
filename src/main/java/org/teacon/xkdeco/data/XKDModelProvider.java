@@ -825,6 +825,10 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createWoodenFenceHead(id);
 		createHangingFascia(id);
+		Block columnHead = block(id + "_column_head");
+		XKDModelTemplates.WOODEN_COLUMN_HEAD.create(columnHead, TextureMapping.particle(columnHead), generators.modelOutput);
+		createDirectional(id + "_column_head", "");
+		generators.createSimpleFlatItemModel(block(id + "_screen").asItem());
 	}
 
 	private void createHorizontalAxis(String id, TexturedModel.Provider provider) {

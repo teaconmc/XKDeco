@@ -1,0 +1,18 @@
+target: '@xkdeco:wooden_screen'
+limit:
+  - type: has_tags
+    tags:
+      - '@facing'
+interests:
+  - when:
+      open: '@open'
+    bonus: 1000
+  - when:
+      powered: '@powered'
+    bonus: 1000
+  - when:
+      hinge: '@hinge'
+    bonus: 1000
+  - when:
+      half: '@half'
+    bonus: 1000

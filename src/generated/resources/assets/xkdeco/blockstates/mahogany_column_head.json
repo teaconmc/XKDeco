@@ -1,7 +1,27 @@
 {
   "variants": {
-    "": {
-      "model": "xkdeco:block/furniture/mahogany_column_head"
+    "facing=down": {
+      "model": "xkdeco:block/mahogany_column_head",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "xkdeco:block/mahogany_column_head",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/mahogany_column_head"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/mahogany_column_head",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "xkdeco:block/mahogany_column_head",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "xkdeco:block/mahogany_column_head",
+      "y": 270
     }
   }
 }

@@ -1,0 +1,7 @@
+type: simple
+properties:
+  components:
+  - water_loggable
+  - directional
+  shape: xkdeco:wooden_column_head
+  no_occlusion: true

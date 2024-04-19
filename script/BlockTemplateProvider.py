@@ -18,6 +18,15 @@ class BlockTemplateProvider(TableDataProvider):
             if field.lower() == field and field not in self.ignoredFields and field != '' and row[field] != '':
                 data[field] = row[field]
 
+        if 'Class/Codec' in row and row['Class/Codec'] != '':
+            templateType = data['type']
+            if templateType == 'built_in':
+                data['codec'] = row['Class/Codec']
+            elif templateType == 'simple':
+                data['class'] = row['Class/Codec']
+            else:
+                raise ValueError('Unknown template type: ' + templateType)
+
         properties = BlockPropertiesReader.read(row, self.pack)
         if len(properties) > 0:
             self.properties[templateId] = properties
