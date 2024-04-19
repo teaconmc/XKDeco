@@ -1,7 +1,10 @@
 {
   "values": [
     "xkdeco:ebony_door",
+    "xkdeco:ebony_screen",
     "xkdeco:mahogany_door",
-    "xkdeco:varnished_door"
+    "xkdeco:mahogany_screen",
+    "xkdeco:varnished_door",
+    "xkdeco:varnished_screen"
   ]
 }

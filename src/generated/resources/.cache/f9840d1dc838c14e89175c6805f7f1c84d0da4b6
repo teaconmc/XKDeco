@@ -1,4 +1,4 @@
-// 1.20.1	2024-04-18T19:43:30.8135746	XeKr's Decoration/Block Loot Tables
+// 1.20.1	2024-04-20T04:49:00.6918098	XeKr's Decoration/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_tables/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_tables/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_tables/blocks/aztec_chiseled_stonebricks.json
@@ -161,7 +161,7 @@ dd9a5e368cee0582afb0d2d236dcb85a8e3db9db data/xkdeco/loot_tables/blocks/ebony_me
 b6a8c6e2f5d12203db05bf4e03ec382c1cba555a data/xkdeco/loot_tables/blocks/ebony_narrow_doors.json
 e248ced189eb757dd56f6a4b54fb3e6647859d95 data/xkdeco/loot_tables/blocks/ebony_oblique_brace.json
 46caf8e7eed673ab7e1ef78cb1ab218c9eb9ce5c data/xkdeco/loot_tables/blocks/ebony_planks.json
-b13280aa2316062ff731b2376bc3c25e3c81ace3 data/xkdeco/loot_tables/blocks/ebony_screen.json
+87e2aa4deee3ec25597c453ee31d63e029edc778 data/xkdeco/loot_tables/blocks/ebony_screen.json
 8c9f1af6854f0e8c64cad6fcdbcefa214f2076ec data/xkdeco/loot_tables/blocks/ebony_shelf.json
 5bfba6d425863f7c2f77077570d1f53dd8b88e4a data/xkdeco/loot_tables/blocks/ebony_slab.json
 1b1112907410f1263b23e67836d6ca76aefe0ffa data/xkdeco/loot_tables/blocks/ebony_stairs.json
@@ -353,7 +353,7 @@ d72b3c7062ba46d9b400fed0ecc156634e32d905 data/xkdeco/loot_tables/blocks/mahogany
 850786bc8f8eefe08595b1d7434b906061e1170e data/xkdeco/loot_tables/blocks/mahogany_narrow_doors.json
 d7cbb46c3adaeaa8dbcd3ffce3d9413fe6a6276d data/xkdeco/loot_tables/blocks/mahogany_oblique_brace.json
 0a0716d08828b15df21a034ebf02e5352ee4a066 data/xkdeco/loot_tables/blocks/mahogany_planks.json
-3b997fb546ccbc9c39753b5ae4823f3f66a85e55 data/xkdeco/loot_tables/blocks/mahogany_screen.json
+691ad74a941a906065d9b1c01c5ab8a35ebc34d5 data/xkdeco/loot_tables/blocks/mahogany_screen.json
 0f48d0634644992c21e1435f5122220b0fa57298 data/xkdeco/loot_tables/blocks/mahogany_shelf.json
 d5b79c27a4814bb3b7cacc49e41d3c21f92932bc data/xkdeco/loot_tables/blocks/mahogany_slab.json
 00602c23cba8685fb6054d6849922e02a5addb2d data/xkdeco/loot_tables/blocks/mahogany_stairs.json
@@ -612,7 +612,7 @@ cceedfda0e6cc299da054db22a07ca0c58c99f71 data/xkdeco/loot_tables/blocks/varnishe
 d7a58ab65beace364c31f23f1e11a533d06d6bd2 data/xkdeco/loot_tables/blocks/varnished_narrow_doors.json
 4d1567cc0013cf7b9105ee790432d910fefeaab6 data/xkdeco/loot_tables/blocks/varnished_oblique_brace.json
 f57592d09dfcf37770b1c867375c1ffac7ae40b4 data/xkdeco/loot_tables/blocks/varnished_planks.json
-1f6c958efb05f994486851d512ec7bb21d95e005 data/xkdeco/loot_tables/blocks/varnished_screen.json
+9f807327313f5c4fb942d2a07a5ac06892ad9877 data/xkdeco/loot_tables/blocks/varnished_screen.json
 3f196621343f9c8c4f1acd94059ad0d2c00d2b96 data/xkdeco/loot_tables/blocks/varnished_shelf.json
 15a70a350c8344af97098e4ed3dd87918588f682 data/xkdeco/loot_tables/blocks/varnished_slab.json
 399ee5912933b80dd9daa37d125cabfa4364bea2 data/xkdeco/loot_tables/blocks/varnished_stairs.json

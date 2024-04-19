@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_column_head",
+  "textures": {
+    "particle": "xkdeco:block/mahogany_column_head"
+  }
+}

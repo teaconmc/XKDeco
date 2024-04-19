@@ -1,0 +1,29 @@
+target: '@xkdeco:wooden_screen'
+transform_with: facing
+slots:
+  - when:
+      facing: north
+      half: lower
+      hinge: left
+    sides:
+      east:
+        tag:
+          - '@facing'
+          - '*xkdeco.wooden_screen:hinge'
+      west:
+        tag:
+          - '@facing'
+          - '*xkdeco.wooden_screen:no_hinge'
+  - when:
+      facing: north
+      half: lower
+      hinge: right
+    sides:
+      east:
+        tag:
+          - '@facing'
+          - '*xkdeco.wooden_screen:no_hinge'
+      west:
+        tag:
+          - '@facing'
+          - '*xkdeco.wooden_screen:hinge'

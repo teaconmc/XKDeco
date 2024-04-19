@@ -1,4 +1,9 @@
 type: simple
 class: org.teacon.xkdeco.block.HangingFasciaBlock
 properties:
+  render_type: cutout
+  components:
+  - water_loggable
+  - horizontal_axis
+  shape: xkdeco:hanging_fascia
   no_occlusion: true
