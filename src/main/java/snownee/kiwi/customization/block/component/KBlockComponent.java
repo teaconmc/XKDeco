@@ -2,10 +2,6 @@ package snownee.kiwi.customization.block.component;
 
 import org.jetbrains.annotations.Nullable;
 
-import snownee.kiwi.customization.block.KBlockSettings;
-import snownee.kiwi.customization.block.behavior.BlockBehaviorRegistry;
-import snownee.kiwi.customization.CustomizationRegistries;
-
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
@@ -18,6 +14,9 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import snownee.kiwi.customization.CustomizationRegistries;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.behavior.BlockBehaviorRegistry;
 
 public interface KBlockComponent {
 	Codec<KBlockComponent> DIRECT_CODEC = ExtraCodecs.lazyInitializedCodec(() -> CustomizationRegistries.BLOCK_COMPONENT.byNameCodec()
@@ -71,10 +70,15 @@ public interface KBlockComponent {
 		return null;
 	}
 
+	@Nullable
+	default Direction getHorizontalFacing(BlockState blockState) {
+		return null;
+	}
+
 	record Type<T extends KBlockComponent>(Codec<T> codec) {
 		@Override
 		public String toString() {
-			return "XKBlockComponent.Type[" + CustomizationRegistries.BLOCK_COMPONENT.getKey(this) + "]";
+			return "KBlockComponent.Type[" + CustomizationRegistries.BLOCK_COMPONENT.getKey(this) + "]";
 		}
 	}
 }

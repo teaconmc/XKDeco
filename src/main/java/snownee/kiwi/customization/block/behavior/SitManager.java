@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -24,6 +25,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import snownee.kiwi.customization.CustomFeatureTags;
+import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.KBlockUtils;
+import snownee.kiwi.customization.block.component.KBlockComponent;
 
 public class SitManager {
 	public static final Component ENTITY_NAME = Component.literal("Seat from Kiwi");
@@ -101,8 +105,27 @@ public class SitManager {
 
 	@Nullable
 	public static Direction guessBlockFacing(BlockState blockState, @Nullable Player player) {
+		KBlockSettings settings = KBlockSettings.of(blockState.getBlock());
+		if (settings != null) {
+			for (KBlockComponent component : settings.components.values()) {
+				Direction facing = component.getHorizontalFacing(blockState);
+				if (facing != null) {
+					return facing;
+				}
+			}
+		}
+		boolean oppose = false;
+		try {
+			String shape = KBlockUtils.getValueString(blockState, "shape");
+			if (!"straight".equals(shape)) {
+				return null;
+			}
+			oppose = blockState.getBlock() instanceof StairBlock;
+		} catch (Throwable ignored) {
+		}
 		if (blockState.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-			return blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+			Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+			return oppose ? direction.getOpposite() : direction;
 		}
 		if (player != null && blockState.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
 			Direction.Axis axis = blockState.getValue(BlockStateProperties.HORIZONTAL_AXIS);

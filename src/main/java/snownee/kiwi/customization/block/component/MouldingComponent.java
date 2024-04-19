@@ -1,6 +1,6 @@
 package snownee.kiwi.customization.block.component;
 
-import snownee.kiwi.customization.block.loader.KBlockComponents;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
 
 public record MouldingComponent() implements KBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -113,6 +114,14 @@ public record MouldingComponent() implements KBlockComponent {
 	}
 
 	@Override
+	public @Nullable Direction getHorizontalFacing(BlockState blockState) {
+		if (blockState.getValue(SHAPE) == StairsShape.STRAIGHT) {
+			return blockState.getValue(FACING).getOpposite();
+		}
+		return null;
+	}
+
+	@Override
 	public BlockState rotate(BlockState pState, Rotation pRotation) {
 		return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
 	}
@@ -124,34 +133,24 @@ public record MouldingComponent() implements KBlockComponent {
 		switch (pMirror) {
 			case LEFT_RIGHT:
 				if (direction.getAxis() == Direction.Axis.Z) {
-					switch (stairsshape) {
-						case INNER_LEFT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
-						case INNER_RIGHT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
-						case OUTER_LEFT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
-						case OUTER_RIGHT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
-						default:
-							return pState.rotate(Rotation.CLOCKWISE_180);
-					}
+					return switch (stairsshape) {
+						case INNER_LEFT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
+						case INNER_RIGHT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
+						case OUTER_LEFT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
+						case OUTER_RIGHT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
+						case STRAIGHT -> pState.rotate(Rotation.CLOCKWISE_180);
+					};
 				}
 				break;
 			case FRONT_BACK:
 				if (direction.getAxis() == Direction.Axis.X) {
-					switch (stairsshape) {
-						case INNER_LEFT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
-						case INNER_RIGHT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
-						case OUTER_LEFT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
-						case OUTER_RIGHT:
-							return pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
-						case STRAIGHT:
-							return pState.rotate(Rotation.CLOCKWISE_180);
-					}
+					return switch (stairsshape) {
+						case INNER_LEFT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
+						case INNER_RIGHT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
+						case OUTER_LEFT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
+						case OUTER_RIGHT -> pState.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
+						case STRAIGHT -> pState.rotate(Rotation.CLOCKWISE_180);
+					};
 				}
 		}
 		return pState;

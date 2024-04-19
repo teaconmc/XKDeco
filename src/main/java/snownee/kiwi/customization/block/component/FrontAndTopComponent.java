@@ -1,7 +1,6 @@
 package snownee.kiwi.customization.block.component;
 
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.customization.block.loader.KBlockComponents;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
 
 public record FrontAndTopComponent() implements KBlockComponent {
 	public static final EnumProperty<FrontAndTop> ORIENTATION = BlockStateProperties.ORIENTATION;
@@ -51,6 +51,16 @@ public record FrontAndTopComponent() implements KBlockComponent {
 			top = Direction.UP;
 		}
 		return state.setValue(ORIENTATION, FrontAndTop.fromFrontAndTop(front, top));
+	}
+
+	@Override
+	public Direction getHorizontalFacing(BlockState blockState) {
+		FrontAndTop frontAndTop = blockState.getValue(ORIENTATION);
+		if (frontAndTop.front().getAxis().isHorizontal()) {
+			return frontAndTop.front();
+		} else {
+			return frontAndTop.top();
+		}
 	}
 
 	@Override
