@@ -25,6 +25,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.KiwiGO;
 import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
 import snownee.kiwi.customization.block.component.DirectionalComponent;
 import snownee.kiwi.customization.block.component.HorizontalComponent;
@@ -102,6 +103,11 @@ public class KBlockSettings {
 
 	public boolean hasComponent(KBlockComponent.Type<?> type) {
 		return components.containsKey(type);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends KBlockComponent> T getComponent(KBlockComponent.Type<T> type) {
+		return (T) components.get(type);
 	}
 
 	public void injectProperties(Block block, StateDefinition.Builder<Block, BlockState> builder) {

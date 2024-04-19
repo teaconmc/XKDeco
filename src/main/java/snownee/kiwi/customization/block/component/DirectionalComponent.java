@@ -1,7 +1,6 @@
 package snownee.kiwi.customization.block.component;
 
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.customization.block.loader.KBlockComponents;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
 
 public record DirectionalComponent(boolean oppose) implements KBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -54,6 +54,15 @@ public record DirectionalComponent(boolean oppose) implements KBlockComponent {
 			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
 				return blockstate;
 			}
+		}
+		return null;
+	}
+
+	@Override
+	public @Nullable Direction getHorizontalFacing(BlockState blockState) {
+		Direction direction = blockState.getValue(FACING);
+		if (direction.getAxis().isHorizontal()) {
+			return oppose ? direction.getOpposite() : direction;
 		}
 		return null;
 	}

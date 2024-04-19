@@ -2,8 +2,6 @@ package snownee.kiwi.customization.block.component;
 
 import java.util.List;
 
-import snownee.kiwi.customization.block.loader.KBlockComponents;
-
 import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,6 +16,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import snownee.kiwi.customization.block.KBlockSettings;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
 
 public record HorizontalComponent(boolean oppose) implements KBlockComponent {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -68,6 +67,12 @@ public record HorizontalComponent(boolean oppose) implements KBlockComponent {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Direction getHorizontalFacing(BlockState blockState) {
+		Direction direction = blockState.getValue(FACING);
+		return oppose ? direction.getOpposite() : direction;
 	}
 
 	@Override
