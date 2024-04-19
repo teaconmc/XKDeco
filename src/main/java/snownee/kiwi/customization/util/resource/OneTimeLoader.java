@@ -3,8 +3,6 @@ package snownee.kiwi.customization.util.resource;
 import java.io.BufferedReader;
 import java.util.Map;
 
-import snownee.kiwi.customization.util.codec.JavaOps;
-
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,11 +15,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import snownee.kiwi.Kiwi;
-import snownee.kiwi.shadowed.org.yaml.snakeyaml.Yaml;
+import snownee.kiwi.customization.util.codec.JavaOps;
+import snownee.kiwi.util.Util;
 
 public class OneTimeLoader {
-	private static final Gson GSON = new GsonBuilder().create();
-	private static final Yaml YAML = new Yaml();
+	private static final Gson GSON = new GsonBuilder().setLenient().create();
 
 	public static <T> Map<ResourceLocation, T> load(ResourceManager resourceManager, String directory, Codec<T> codec) {
 		var fileToIdConverter = AlternativesFileToIdConverter.yamlOrJson(directory);
@@ -35,11 +33,11 @@ public class OneTimeLoader {
 				if (ext.equals(".json")) {
 					result = codec.parse(JsonOps.INSTANCE, GSON.fromJson(reader, JsonElement.class));
 				} else if (ext.equals(".yaml")) {
-					result = codec.parse(JavaOps.INSTANCE, YAML.load(reader));
+					result = codec.parse(JavaOps.INSTANCE, Util.loadYaml(reader, Object.class));
 				} else {
 					throw new IllegalStateException("Unknown extension: " + ext);
 				}
-//				XKDeco.LOGGER.info(entry.getKey() + " " + json);
+//				Kiwi.LOGGER.info(entry.getKey() + " " + json);
 				if (result.error().isPresent()) {
 					Kiwi.LOGGER.error("Failed to parse " + entry.getKey() + ": " + result.error().get());
 					continue;

@@ -1,12 +1,14 @@
 modLoader="javafml"
 loaderVersion="[40,)"
-license="BSD-3-Clause"
+license="ARR"
+issueTrackerURL="https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
 
 [[mods]]
 modId="xkdeco"
 authors="XeKr, Snownee, TeaConMC"
 version="${file.jarVersion}"
 displayName="XeKr's Decoration"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/xks-decoration"
 description='''
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
@@ -28,6 +30,6 @@ side="BOTH"
 [[dependencies.xkdeco]]
 modId="kiwi"
 mandatory=true
-versionRange="[11.5.5,11.7)"
+versionRange="[11.6.2,11.7)"
 ordering="NONE"
 side="BOTH"
