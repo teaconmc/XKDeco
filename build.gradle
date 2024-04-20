@@ -234,6 +234,7 @@ jar {
     }
 
     exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
+    exclude("/assets/test")
 
     preserveFileTimestamps = false
     reproducibleFileOrder = true

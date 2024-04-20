@@ -29,10 +29,14 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import snownee.kiwi.KiwiModule;
@@ -91,6 +95,16 @@ public class CustomizationCodecs {
 			return ExtraCodecs.JSON.encodeStart(ops, input.serializeToJson());
 		}
 	};
+	public static final Codec<BlockSetType> BLOCK_SET_TYPE = ExtraCodecs.stringResolverCodec(
+			BlockSetType::name,
+			s -> BlockSetType.values().filter(e -> e.name().equals(s)).findFirst().orElseThrow());
+	public static final Codec<WoodType> WOOD_TYPE = ExtraCodecs.stringResolverCodec(
+			WoodType::name,
+			s -> WoodType.values().filter(e -> e.name().equals(s)).findFirst().orElseThrow());
+	public static final BiMap<String, PressurePlateBlock.Sensitivity> SENSITIVITIES = HashBiMap.create();
+	public static final Codec<PressurePlateBlock.Sensitivity> SENSITIVITY_CODEC = simpleByNameCodec(SENSITIVITIES);
+	public static final BiMap<String, WeatheringCopper.WeatherState> WEATHER_STATES = HashBiMap.create();
+	public static final Codec<WeatheringCopper.WeatherState> WEATHER_STATE_CODEC = simpleByNameCodec(WEATHER_STATES);
 
 	static {
 		// https://regex101.com/:
@@ -283,6 +297,14 @@ public class CustomizationCodecs {
 
 		OFFSET_TYPES.put("xyz", BlockBehaviour.OffsetType.XYZ);
 		OFFSET_TYPES.put("xz", BlockBehaviour.OffsetType.XZ);
+
+		SENSITIVITIES.put("everything", PressurePlateBlock.Sensitivity.EVERYTHING);
+		SENSITIVITIES.put("mobs", PressurePlateBlock.Sensitivity.MOBS);
+
+		WEATHER_STATES.put("unaffected", WeatheringCopper.WeatherState.UNAFFECTED);
+		WEATHER_STATES.put("exposed", WeatheringCopper.WeatherState.EXPOSED);
+		WEATHER_STATES.put("weathered", WeatheringCopper.WeatherState.WEATHERED);
+		WEATHER_STATES.put("oxidized", WeatheringCopper.WeatherState.OXIDIZED);
 	}
 
 	public static <T> Codec<T> simpleByNameCodec(Map<ResourceLocation, T> map) {

@@ -88,6 +88,7 @@ import snownee.kiwi.loader.Platform;
 public final class CustomizationHooks {
 	public static final Path PACK_DIRECTORY = FMLPaths.GAMEDIR.get().resolve("kiwipacks");
 	public static final List<Direction> DIRECTIONS = Direction.stream().toList();
+	private static boolean enabled = true;
 
 	private CustomizationHooks() {
 	}
@@ -105,6 +106,10 @@ public final class CustomizationHooks {
 		object2bytelinkedopenhashmap.defaultReturnValue((byte) 127);
 		return object2bytelinkedopenhashmap;
 	});
+
+	public static boolean isEnabled() {
+		return enabled;
+	}
 
 	public static boolean skipGlassRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
 		if (KBlockSettings.of(pState.getBlock()) == null && KBlockSettings.of(pAdjacentBlockState.getBlock()) == null) {

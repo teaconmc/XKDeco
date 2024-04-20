@@ -4,7 +4,9 @@
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
+		"AbstractContainerMenuMixin",
 		"BlockBehaviourMixin",
+		"BlockEntityTypeMixin",
 		"BlockMixin",
 		"BlockPropertiesMixin",
 		"BlockStateMixin",
