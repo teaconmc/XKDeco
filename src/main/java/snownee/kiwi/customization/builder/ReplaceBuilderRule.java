@@ -48,7 +48,7 @@ public record ReplaceBuilderRule(Map<BlockFamily, Object> families, BlockSpread 
 		boolean success = false;
 		for (BlockPos pos : positions) {
 			BlockState oldBlock = level.getBlockState(pos);
-			level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_INVISIBLE);
+			level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_INVISIBLE); //FIXME water
 			placeContext = BlockPlaceContext.at(placeContext, pos, context.getClickedFace());
 			if (item.place(placeContext) == InteractionResult.FAIL) {
 				level.setBlock(pos, oldBlock, Block.UPDATE_INVISIBLE);
