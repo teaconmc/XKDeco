@@ -78,3 +78,21 @@ slots:
       north:
         tag:
           - '*roof_small_eave:back'
+  - when:
+      shape: left_end
+      facing: north
+      half: lower
+    sides:
+      north:
+        tag:
+          - '*roof_small_flat_end:slow_end_base'
+          - '@facing:east'
+  - when:
+      shape: right_end
+      facing: north
+      half: lower
+    sides:
+      north:
+        tag:
+          - '*roof_small_flat_end:slow_end_base'
+          - '@facing:west'
