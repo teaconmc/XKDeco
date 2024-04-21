@@ -2,6 +2,7 @@ package snownee.kiwi.customization.util.resource;
 
 import java.io.BufferedReader;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -25,28 +26,46 @@ public class OneTimeLoader {
 		var fileToIdConverter = AlternativesFileToIdConverter.yamlOrJson(directory);
 		Map<ResourceLocation, T> results = Maps.newHashMap();
 		for (Map.Entry<ResourceLocation, Resource> entry : fileToIdConverter.listMatchingResources(resourceManager).entrySet()) {
-			String path = entry.getKey().getPath();
-			String ext = path.substring(path.length() - 5);
-			ResourceLocation id = fileToIdConverter.fileToId(entry.getKey());
-			try (BufferedReader reader = entry.getValue().openAsReader()) {
-				DataResult<T> result;
-				if (ext.equals(".json")) {
-					result = codec.parse(JsonOps.INSTANCE, GSON.fromJson(reader, JsonElement.class));
-				} else if (ext.equals(".yaml")) {
-					result = codec.parse(JavaOps.INSTANCE, Util.loadYaml(reader, Object.class));
-				} else {
-					throw new IllegalStateException("Unknown extension: " + ext);
-				}
-//				Kiwi.LOGGER.info(entry.getKey() + " " + json);
-				if (result.error().isPresent()) {
-					Kiwi.LOGGER.error("Failed to parse " + entry.getKey() + ": " + result.error().get());
-					continue;
-				}
-				results.put(id, result.result().orElseThrow());
-			} catch (Exception e) {
-				Kiwi.LOGGER.error("Failed to load " + entry.getKey(), e);
+			DataResult<T> result = parseFile(entry.getKey(), entry.getValue(), codec);
+			if (result.error().isPresent()) {
+				Kiwi.LOGGER.error("Failed to parse " + entry.getKey() + ": " + result.error().get());
+				continue;
 			}
+			ResourceLocation id = fileToIdConverter.fileToId(entry.getKey());
+			results.put(id, result.result().orElseThrow());
 		}
 		return results;
+	}
+
+	public static <T> T loadFile(ResourceManager resourceManager, String directory, ResourceLocation id, Codec<T> codec) {
+		var fileToIdConverter = AlternativesFileToIdConverter.yamlOrJson(directory);
+		ResourceLocation file = fileToIdConverter.idToFile(id);
+		Optional<Resource> resource = resourceManager.getResource(file);
+		if (resource.isEmpty()) {
+			return null;
+		}
+		DataResult<T> result = parseFile(file, resource.get(), codec);
+		if (result.error().isPresent()) {
+			Kiwi.LOGGER.error("Failed to parse " + file + ": " + result.error().get());
+			return null;
+		}
+		return result.result().orElseThrow();
+	}
+
+	public static <T> DataResult<T> parseFile(ResourceLocation file, Resource resource, Codec<T> codec) {
+		String ext = file.getPath().substring(file.getPath().length() - 5);
+		try (BufferedReader reader = resource.openAsReader()) {
+			DataResult<T> result;
+			if (ext.equals(".json")) {
+				result = codec.parse(JsonOps.INSTANCE, GSON.fromJson(reader, JsonElement.class));
+			} else if (ext.equals(".yaml")) {
+				result = codec.parse(JavaOps.INSTANCE, Util.loadYaml(reader, Object.class));
+			} else {
+				return DataResult.error(() -> "Unknown extension: " + ext);
+			}
+			return result;
+		} catch (Exception e) {
+			return DataResult.error(() -> "Failed to load " + file + ": " + e);
+		}
 	}
 }

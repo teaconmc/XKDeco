@@ -33,7 +33,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.util.NotNullByDefault;
 
@@ -105,7 +104,7 @@ public class BuilderModePreview implements DebugRenderer.SimpleDebugRenderer {
 						(a, b) -> Shapes.joinUnoptimized(a, b, BooleanOp.OR));
 				fullShape = fullShape.optimize();
 				List<AABB> aabbs = fullShape.toAabbs();
-				for (Direction direction : CustomizationHooks.DIRECTIONS) {
+				for (Direction direction : snownee.kiwi.util.Util.DIRECTIONS) {
 					for (AABB aabb : aabbs) {
 						VoxelShape faceShape = getFaceShape(aabb, direction);
 						faceShape = Shapes.join(faceShape, fullShape, BooleanOp.ONLY_FIRST);

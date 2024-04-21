@@ -29,10 +29,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import snownee.kiwi.Kiwi;
-import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.duck.KPlayer;
 import snownee.kiwi.customization.network.SSyncPlaceCountPacket;
+import snownee.kiwi.util.Util;
 
 public class PlacementSystem {
 	private static final Cache<BlockPlaceContext, PlaceMatchResult> RESULT_CONTEXT = CacheBuilder.newBuilder().weakKeys().expireAfterWrite(
@@ -165,7 +165,7 @@ public class PlacementSystem {
 		int interest = 0;
 		List<SlotLink.MatchResult> results = null;
 		List<Vec3i> offsets = null;
-		for (Direction side : CustomizationHooks.DIRECTIONS) {
+		for (Direction side : Util.DIRECTIONS) {
 			Collection<PlaceSlot> theirSlots = theirSlotsMap.get(side);
 			if (theirSlots == null) {
 				continue;
@@ -217,7 +217,7 @@ public class PlacementSystem {
 			return;
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
-		for (Direction direction : CustomizationHooks.DIRECTIONS) {
+		for (Direction direction : Util.DIRECTIONS) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
 			if (PlaceSlot.hasNoSlots(neighborState.getBlock())) {
 				continue;

@@ -6,10 +6,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.placement.PlaceSlot;
-import snownee.kiwi.customization.util.NotNullByDefault;
-
 import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
@@ -29,6 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import snownee.kiwi.customization.placement.PlaceSlot;
+import snownee.kiwi.customization.util.NotNullByDefault;
+import snownee.kiwi.util.Util;
 
 @SuppressWarnings("deprecation")
 @NotNullByDefault
@@ -97,7 +96,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 		BlockPos pos = pContext.getClickedPos();
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayList();
-		for (Direction direction : CustomizationHooks.DIRECTIONS) {
+		for (Direction direction : Util.DIRECTIONS) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
 			if (isAirDuctSlot(neighborState, direction.getOpposite())) {
 				neighbors.add(direction);
@@ -129,7 +128,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayListWithExpectedSize(2);
-		for (Direction direction : CustomizationHooks.DIRECTIONS) {
+		for (Direction direction : Util.DIRECTIONS) {
 			if (direction == pDirection) {
 				continue;
 			}
@@ -142,7 +141,7 @@ public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
 			}
 		}
 		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.get(0);
-		for (Direction direction : CustomizationHooks.DIRECTIONS) {
+		for (Direction direction : Util.DIRECTIONS) {
 			blockState = blockState.setValue(
 					DIRECTION_PROPERTIES.get(direction.get3DDataValue()),
 					direction == pDirection || direction == theOtherDirection);

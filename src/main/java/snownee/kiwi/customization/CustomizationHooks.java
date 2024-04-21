@@ -6,14 +6,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.data.XKDDataGen;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -87,7 +93,6 @@ import snownee.kiwi.loader.Platform;
 
 public final class CustomizationHooks {
 	public static final Path PACK_DIRECTORY = FMLPaths.GAMEDIR.get().resolve("kiwipacks");
-	public static final List<Direction> DIRECTIONS = Direction.stream().toList();
 	private static boolean enabled = true;
 
 	private CustomizationHooks() {
@@ -251,7 +256,19 @@ public final class CustomizationHooks {
 		ResourceManager resourceManager = collectKiwiPacks();
 		BlockFundamentals blockFundamentals = BlockFundamentals.reload(resourceManager, true);
 		ItemFundamentals itemFundamentals = ItemFundamentals.reload(resourceManager, true);
-		blockFundamentals.blocks().forEach((id, definition) -> {
+		Set<String> namespaces = Sets.newLinkedHashSet();
+		blockFundamentals.blocks().keySet().stream().map(ResourceLocation::getNamespace).forEach(namespaces::add);
+		itemFundamentals.items().keySet().stream().map(ResourceLocation::getNamespace).forEach(namespaces::add);
+		CustomizationMetadata emptyMetadata = new CustomizationMetadata(ImmutableListMultimap.of());
+		Map<String, CustomizationMetadata> metadataMap = namespaces.stream().collect(Collectors.toUnmodifiableMap(
+				Function.identity(),
+				$ -> Optional.ofNullable(OneTimeLoader.loadFile(
+						resourceManager,
+						"kiwi/metadata",
+						new ResourceLocation($, "customization"),
+						CustomizationMetadata.CODEC)).orElse(emptyMetadata)
+		));
+		CustomizationMetadata.sortedForEach(metadataMap, "block", blockFundamentals.blocks(), (id, definition) -> {
 			try {
 				Block block = definition.createBlock(id, blockFundamentals.shapes());
 				if (block == null) {
@@ -269,7 +286,7 @@ public final class CustomizationHooks {
 		});
 		KItemTemplate none = itemFundamentals.templates().get(new ResourceLocation("none"));
 		Preconditions.checkNotNull(none, "Missing 'none' item definition");
-		itemFundamentals.items().forEach((id, definition) -> {
+		CustomizationMetadata.sortedForEach(metadataMap, "item", itemFundamentals.items(), (id, definition) -> {
 			try {
 				if (definition.template().template() == none) {
 					return;
