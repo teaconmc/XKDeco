@@ -42,7 +42,6 @@ import snownee.kiwi.customization.block.KBlockUtils;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
 import snownee.kiwi.customization.util.KHolder;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
 import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.Util;
@@ -61,7 +60,7 @@ public record PlaceSlotProvider(
 		}
 	});
 	public static final Codec<PlaceSlotProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceSlotProvider::target),
+			CustomizationCodecs.compactList(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceSlotProvider::target),
 			CustomizationCodecs.strictOptionalField(Codec.STRING, "transform_with").forGetter(PlaceSlotProvider::transformWith),
 			CustomizationCodecs.strictOptionalField(TAG_CODEC.listOf(), "tag", List.of()).forGetter(PlaceSlotProvider::tag),
 			Slot.CODEC.listOf().fieldOf("slots").forGetter(PlaceSlotProvider::slots)
@@ -74,7 +73,7 @@ public record PlaceSlotProvider(
 			Map<Direction, Side> sides) {
 		public static final Codec<Slot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 				CustomizationCodecs.strictOptionalField(
-								new CompactListCodec<>(StatePropertiesPredicate.CODEC).nonEmpty(),
+								ExtraCodecs.nonEmptyList(CustomizationCodecs.compactList(StatePropertiesPredicate.CODEC)),
 								"when",
 								List.of())
 						.forGetter(Slot::when),

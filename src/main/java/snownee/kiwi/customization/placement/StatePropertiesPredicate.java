@@ -5,10 +5,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import snownee.kiwi.customization.util.codec.CustomizationCodecs;
-import snownee.kiwi.customization.block.KBlockUtils;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
-
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -16,19 +12,19 @@ import com.mojang.serialization.Codec;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import snownee.kiwi.customization.block.KBlockUtils;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 public record StatePropertiesPredicate(List<PropertyMatcher> properties) implements Predicate<BlockState> {
 
 	public static final Codec<StatePropertiesPredicate> CODEC = Codec.compoundList(Codec.STRING, Codec.either(
-			new CompactListCodec<>(Codec.STRING),
+			CustomizationCodecs.compactList(Codec.STRING),
 			CustomizationCodecs.INT_BOUNDS)
 	).xmap($ -> new StatePropertiesPredicate($.stream().map(pair -> {
 		Optional<List<String>> strValues = pair.getSecond().left();
 		return strValues.map(strings -> new PropertyMatcher(pair.getFirst(), Either.left(Set.copyOf(strings))))
 				.orElseGet(() -> new PropertyMatcher(pair.getFirst(), Either.right(pair.getSecond().right().orElseThrow())));
-	}).toList()), $ -> $.properties.stream().map(matcher -> {
-		return Pair.of(matcher.key, matcher.value.mapLeft(List::copyOf));
-	}).toList());
+	}).toList()), $ -> $.properties.stream().map(matcher -> Pair.of(matcher.key, matcher.value.mapLeft(List::copyOf))).toList());
 
 	@Override
 	public boolean test(BlockState blockState) {

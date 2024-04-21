@@ -39,6 +39,8 @@ public record KItemDefinition(ConfiguredItemTemplate template, ItemDefinitionPro
 			vanilla.maxStackSize().ifPresent($::stacksTo);
 			vanilla.maxDamage().ifPresent($::durability);
 			vanilla.craftingRemainingItem().map(BuiltInRegistries.ITEM::get).ifPresent($::craftRemainder);
+			vanilla.food().ifPresent($::food);
+			vanilla.rarity().ifPresent($::rarity);
 		});
 		return builder;
 	}

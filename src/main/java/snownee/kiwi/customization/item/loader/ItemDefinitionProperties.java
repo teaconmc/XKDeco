@@ -9,7 +9,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.customization.util.codec.JavaOps;
 
 public record ItemDefinitionProperties(
@@ -52,21 +55,27 @@ public record ItemDefinitionProperties(
 	public record PartialVanillaProperties(
 			Optional<Integer> maxStackSize,
 			Optional<Integer> maxDamage,
-			Optional<ResourceKey<Item>> craftingRemainingItem
+			Optional<ResourceKey<Item>> craftingRemainingItem,
+			Optional<FoodProperties> food,
+			Optional<Rarity> rarity
 	) {
 		public static final MapCodec<PartialVanillaProperties> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				Codec.intRange(1, 64).optionalFieldOf("stacks_to").forGetter(PartialVanillaProperties::maxStackSize),
 				Codec.intRange(1, Integer.MAX_VALUE).optionalFieldOf("max_damage").forGetter(PartialVanillaProperties::maxDamage),
 				ResourceKey.codec(Registries.ITEM)
 						.optionalFieldOf("crafting_remaining_item")
-						.forGetter(PartialVanillaProperties::craftingRemainingItem)
+						.forGetter(PartialVanillaProperties::craftingRemainingItem),
+				CustomizationCodecs.FOOD.optionalFieldOf("food").forGetter(PartialVanillaProperties::food),
+				CustomizationCodecs.RARITY_CODEC.optionalFieldOf("rarity").forGetter(PartialVanillaProperties::rarity)
 		).apply(instance, PartialVanillaProperties::new));
 
 		public PartialVanillaProperties merge(PartialVanillaProperties templateProps) {
-			Optional<Integer> maxStackSize = or(this.maxStackSize, templateProps.maxStackSize);
-			Optional<Integer> maxDamage = or(this.maxDamage, templateProps.maxDamage);
-			Optional<ResourceKey<Item>> craftingRemainingItem = or(this.craftingRemainingItem, templateProps.craftingRemainingItem);
-			return new PartialVanillaProperties(maxStackSize, maxDamage, craftingRemainingItem);
+			return new PartialVanillaProperties(
+					or(this.maxStackSize, templateProps.maxStackSize),
+					or(this.maxDamage, templateProps.maxDamage),
+					or(this.craftingRemainingItem, templateProps.craftingRemainingItem),
+					or(this.food, templateProps.food),
+					or(this.rarity, templateProps.rarity));
 		}
 	}
 }
