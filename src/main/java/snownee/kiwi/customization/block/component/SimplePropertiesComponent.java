@@ -6,12 +6,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.customization.block.KBlockUtils;
-import snownee.kiwi.customization.block.StringProperty;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
-import snownee.kiwi.customization.util.codec.JavaOps;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Interner;
 import com.google.common.collect.Interners;
@@ -25,6 +19,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,6 +29,11 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import snownee.kiwi.customization.block.KBlockUtils;
+import snownee.kiwi.customization.block.StringProperty;
+import snownee.kiwi.customization.block.loader.KBlockComponents;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
+import snownee.kiwi.customization.util.codec.JavaOps;
 
 public record SimplePropertiesComponent(
 		boolean useShapeForLightOcclusion,
@@ -160,7 +160,9 @@ public record SimplePropertiesComponent(
 	public static final Codec<SimplePropertiesComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.BOOL.optionalFieldOf("shape_for_light_occlusion", false)
 					.forGetter(SimplePropertiesComponent::useShapeForLightOcclusion),
-			new CompactListCodec<>(SINGLE_CODEC).nonEmpty().fieldOf("properties").forGetter(SimplePropertiesComponent::properties)
+			ExtraCodecs.nonEmptyList(CustomizationCodecs.compactList(SINGLE_CODEC))
+					.fieldOf("properties")
+					.forGetter(SimplePropertiesComponent::properties)
 	).apply(instance, ($1, $2) -> INTERNER.intern(new SimplePropertiesComponent($1, $2))));
 
 	@Override

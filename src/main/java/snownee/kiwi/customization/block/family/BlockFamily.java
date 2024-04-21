@@ -18,7 +18,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 public class BlockFamily {
 	public static final Codec<BlockFamily> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -28,7 +28,7 @@ public class BlockFamily {
 			BuiltInRegistries.ITEM.holderByNameCodec().listOf()
 					.optionalFieldOf("items", List.of())
 					.forGetter(BlockFamily::itemHolders),
-			new CompactListCodec<>(BuiltInRegistries.ITEM.holderByNameCodec())
+			CustomizationCodecs.compactList(BuiltInRegistries.ITEM.holderByNameCodec())
 					.optionalFieldOf("exchange_inputs_in_viewer", List.of())
 					.forGetter(BlockFamily::exchangeInputsInViewer),
 			Codec.BOOL.optionalFieldOf("stonecutter_exchange", false).forGetter(BlockFamily::stonecutterExchange),

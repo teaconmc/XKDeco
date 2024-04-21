@@ -3,11 +3,6 @@ package snownee.kiwi.customization.block.loader;
 import java.util.List;
 import java.util.Optional;
 
-import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
-import snownee.kiwi.customization.block.behavior.CanSurviveHandlerCodec;
-import snownee.kiwi.customization.block.GlassType;
-import snownee.kiwi.customization.block.component.KBlockComponent;
-
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -19,6 +14,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
 import snownee.kiwi.KiwiModule;
+import snownee.kiwi.customization.block.GlassType;
+import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
+import snownee.kiwi.customization.block.behavior.CanSurviveHandlerCodec;
+import snownee.kiwi.customization.block.component.KBlockComponent;
 import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 
 public record BlockDefinitionProperties(
@@ -111,8 +110,8 @@ public record BlockDefinitionProperties(
 				Codec.INT.optionalFieldOf("light_emission").forGetter(PartialVanillaProperties::lightEmission),
 				Codec.BOOL.optionalFieldOf("dynamic_shape").forGetter(PartialVanillaProperties::dynamicShape),
 				Codec.BOOL.optionalFieldOf("no_occlusion").forGetter(PartialVanillaProperties::noOcclusion),
-				CustomizationCodecs.PUSH_REACTION_CODEC.optionalFieldOf("push_reaction").forGetter(PartialVanillaProperties::pushReaction),
-				CustomizationCodecs.OFFSET_TYPE_CODEC.optionalFieldOf("offset_function")
+				CustomizationCodecs.PUSH_REACTION.optionalFieldOf("push_reaction").forGetter(PartialVanillaProperties::pushReaction),
+				CustomizationCodecs.OFFSET_TYPE.optionalFieldOf("offset_function")
 						.forGetter(PartialVanillaProperties::offsetType),
 				Codec.BOOL.optionalFieldOf("replaceable").forGetter(PartialVanillaProperties::replaceable),
 				CustomizationCodecs.<EntityType<?>>stateArgumentPredicate().optionalFieldOf("is_valid_spawn")
@@ -127,35 +126,21 @@ public record BlockDefinitionProperties(
 		).apply(instance, PartialVanillaProperties::new));
 
 		public PartialVanillaProperties merge(PartialVanillaProperties templateProps) {
-			Optional<Boolean> noCollision = or(this.noCollision, templateProps.noCollision);
-			Optional<Boolean> isRandomlyTicking = or(this.isRandomlyTicking, templateProps.isRandomlyTicking);
-			Optional<Integer> lightEmission = or(this.lightEmission, templateProps.lightEmission);
-			Optional<Boolean> dynamicShape = or(this.dynamicShape, templateProps.dynamicShape);
-			Optional<Boolean> noOcclusion = or(this.noOcclusion, templateProps.noOcclusion);
-			Optional<PushReaction> pushReaction = or(this.pushReaction, templateProps.pushReaction);
-			Optional<BlockBehaviour.OffsetType> offsetType = or(this.offsetType, templateProps.offsetType);
-			Optional<Boolean> replaceable = or(this.replaceable, templateProps.replaceable);
-			Optional<BlockBehaviour.StateArgumentPredicate<EntityType<?>>> isValidSpawn = or(this.isValidSpawn, templateProps.isValidSpawn);
-			Optional<BlockBehaviour.StatePredicate> isRedstoneConductor = or(this.isRedstoneConductor, templateProps.isRedstoneConductor);
-			Optional<BlockBehaviour.StatePredicate> isSuffocating = or(this.isSuffocating, templateProps.isSuffocating);
-			Optional<BlockBehaviour.StatePredicate> isViewBlocking = or(this.isViewBlocking, templateProps.isViewBlocking);
-			Optional<BlockBehaviour.StatePredicate> hasPostProcess = or(this.hasPostProcess, templateProps.hasPostProcess);
-			Optional<BlockBehaviour.StatePredicate> emissiveRendering = or(this.emissiveRendering, templateProps.emissiveRendering);
 			return new PartialVanillaProperties(
-					noCollision,
-					isRandomlyTicking,
-					lightEmission,
-					dynamicShape,
-					noOcclusion,
-					pushReaction,
-					offsetType,
-					replaceable,
-					isValidSpawn,
-					isRedstoneConductor,
-					isSuffocating,
-					isViewBlocking,
-					hasPostProcess,
-					emissiveRendering);
+					or(this.noCollision, templateProps.noCollision),
+					or(this.isRandomlyTicking, templateProps.isRandomlyTicking),
+					or(this.lightEmission, templateProps.lightEmission),
+					or(this.dynamicShape, templateProps.dynamicShape),
+					or(this.noOcclusion, templateProps.noOcclusion),
+					or(this.pushReaction, templateProps.pushReaction),
+					or(this.offsetType, templateProps.offsetType),
+					or(this.replaceable, templateProps.replaceable),
+					or(this.isValidSpawn, templateProps.isValidSpawn),
+					or(this.isRedstoneConductor, templateProps.isRedstoneConductor),
+					or(this.isSuffocating, templateProps.isSuffocating),
+					or(this.isViewBlocking, templateProps.isViewBlocking),
+					or(this.hasPostProcess, templateProps.hasPostProcess),
+					or(this.emissiveRendering, templateProps.emissiveRendering));
 		}
 	}
 }

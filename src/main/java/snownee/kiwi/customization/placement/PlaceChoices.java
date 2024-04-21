@@ -21,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -36,7 +37,6 @@ import snownee.kiwi.customization.duck.KBlockProperties;
 import snownee.kiwi.customization.item.MultipleBlockItem;
 import snownee.kiwi.customization.util.BlockPredicateHelper;
 import snownee.kiwi.customization.util.KHolder;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
 import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.loader.Platform;
 import snownee.kiwi.util.Util;
@@ -60,10 +60,12 @@ public record PlaceChoices(
 	}
 
 	public static final Codec<PlaceChoices> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			new CompactListCodec<>(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
-			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Alter.CODEC), "alter", List.of()).forGetter(PlaceChoices::alter),
-			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Limit.CODEC), "limit", List.of()).forGetter(PlaceChoices::limit),
-			CustomizationCodecs.strictOptionalField(new CompactListCodec<>(Interests.CODEC), "interests", List.of())
+			CustomizationCodecs.compactList(PlaceTarget.CODEC).fieldOf("target").forGetter(PlaceChoices::target),
+			CustomizationCodecs.strictOptionalField(CustomizationCodecs.compactList(Alter.CODEC), "alter", List.of())
+					.forGetter(PlaceChoices::alter),
+			CustomizationCodecs.strictOptionalField(CustomizationCodecs.compactList(Limit.CODEC), "limit", List.of())
+					.forGetter(PlaceChoices::limit),
+			CustomizationCodecs.strictOptionalField(CustomizationCodecs.compactList(Interests.CODEC), "interests", List.of())
 					.forGetter(PlaceChoices::interests),
 			Codec.BOOL.optionalFieldOf("skippable", true).forGetter(PlaceChoices::skippable)
 	).apply(instance, PlaceChoices::new));
@@ -154,7 +156,7 @@ public record PlaceChoices(
 	public record Limit(String type, List<ParsedProtoTag> tags) {
 		public static final Codec<Limit> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 				Codec.STRING.fieldOf("type").forGetter(Limit::type),
-				new CompactListCodec<>(ParsedProtoTag.CODEC).fieldOf("tags").forGetter(Limit::tags)
+				CustomizationCodecs.compactList(ParsedProtoTag.CODEC).fieldOf("tags").forGetter(Limit::tags)
 		).apply(instance, Limit::new));
 
 		public boolean test(BlockState baseState, BlockState targetState) {
@@ -193,7 +195,7 @@ public record PlaceChoices(
 	//TODO check if `use` exists when attaching choices
 	public record Alter(List<AlterCondition> when, String use) {
 		public static final Codec<Alter> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				new CompactListCodec<>(AlterCondition.CODEC).nonEmpty().fieldOf("when").forGetter(Alter::when),
+				ExtraCodecs.nonEmptyList(CustomizationCodecs.compactList(AlterCondition.CODEC)).fieldOf("when").forGetter(Alter::when),
 				Codec.STRING.fieldOf("use").forGetter(Alter::use)
 		).apply(instance, Alter::new));
 
@@ -231,7 +233,7 @@ public record PlaceChoices(
 						.forGetter(AlterCondition::faces),
 				CustomizationCodecs.strictOptionalField(CustomizationCodecs.BLOCK_PREDICATE, "block", BlockPredicate.ANY)
 						.forGetter(AlterCondition::block),
-				CustomizationCodecs.strictOptionalField(new CompactListCodec<>(ParsedProtoTag.CODEC), "tags", List.of())
+				CustomizationCodecs.strictOptionalField(CustomizationCodecs.compactList(ParsedProtoTag.CODEC), "tags", List.of())
 						.forGetter(AlterCondition::tags)
 		).apply(instance, AlterCondition::new));
 

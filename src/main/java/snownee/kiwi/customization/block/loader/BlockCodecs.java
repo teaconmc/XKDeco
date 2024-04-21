@@ -154,17 +154,17 @@ public class BlockCodecs {
 			})));
 
 	public static final MapCodec<WeatheringCopperFullBlock> WEATHERING_COPPER_FULL = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			CustomizationCodecs.WEATHER_STATE_CODEC.fieldOf("weather_state").forGetter(ChangeOverTimeBlock::getAge),
+			CustomizationCodecs.WEATHER_STATE.fieldOf("weather_state").forGetter(ChangeOverTimeBlock::getAge),
 			propertiesCodec()
 	).apply(instance, WeatheringCopperFullBlock::new));
 
 	public static final MapCodec<WeatheringCopperSlabBlock> WEATHERING_COPPER_SLAB = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			CustomizationCodecs.WEATHER_STATE_CODEC.fieldOf("weather_state").forGetter(ChangeOverTimeBlock::getAge),
+			CustomizationCodecs.WEATHER_STATE.fieldOf("weather_state").forGetter(ChangeOverTimeBlock::getAge),
 			propertiesCodec()
 	).apply(instance, WeatheringCopperSlabBlock::new));
 
 	public static final MapCodec<WeatheringCopperStairBlock> WEATHERING_COPPER_STAIR = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			CustomizationCodecs.WEATHER_STATE_CODEC.fieldOf("weather_state").forGetter(ChangeOverTimeBlock::getAge),
+			CustomizationCodecs.WEATHER_STATE.fieldOf("weather_state").forGetter(ChangeOverTimeBlock::getAge),
 			BlockState.CODEC.fieldOf("base_state").forGetter($ -> $.baseState),
 			propertiesCodec()
 	).apply(instance, WeatheringCopperStairBlock::new));
