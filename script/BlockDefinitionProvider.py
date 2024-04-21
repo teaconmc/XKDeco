@@ -12,6 +12,7 @@ class BlockDefinitionProvider(TableDataProvider):
         self.templateTags = None
         self.templateProperties = None
         self.tagTransformers = None
+        self.order = []
 
     def generate(self):
         self.templateTags = self.pack.providers['block_templates'].tags
@@ -20,8 +21,10 @@ class BlockDefinitionProvider(TableDataProvider):
         # for key, value in self.templateTags.items():
         #     print(str(key), value)
         super().generate()
+        self.pack.providers['metadata'].putRegistryOrder('block', self.order)
 
     def generateRow(self, row, csvConfig):
+        self.order.append(row['ID'])
         blockId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         tags = set()

@@ -13,14 +13,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.mutable.MutableObject;
 
-import snownee.kiwi.customization.CustomizationHooks;
-import snownee.kiwi.customization.util.KHolder;
-import snownee.kiwi.customization.block.loader.KBlockDefinition;
-import snownee.kiwi.customization.block.loader.KBlockTemplate;
-import snownee.kiwi.customization.util.codec.CustomizationCodecs;
-import snownee.kiwi.customization.block.KBlockUtils;
-import snownee.kiwi.customization.util.codec.CompactListCodec;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Interner;
@@ -46,7 +38,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.customization.block.KBlockUtils;
+import snownee.kiwi.customization.block.loader.KBlockDefinition;
+import snownee.kiwi.customization.block.loader.KBlockTemplate;
+import snownee.kiwi.customization.util.KHolder;
+import snownee.kiwi.customization.util.codec.CompactListCodec;
+import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.loader.Platform;
+import snownee.kiwi.util.Util;
 
 public record PlaceSlotProvider(
 		List<PlaceTarget> target,
@@ -74,7 +73,10 @@ public record PlaceSlotProvider(
 			List<String> tag,
 			Map<Direction, Side> sides) {
 		public static final Codec<Slot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				CustomizationCodecs.strictOptionalField(new CompactListCodec<>(StatePropertiesPredicate.CODEC).nonEmpty(), "when", List.of())
+				CustomizationCodecs.strictOptionalField(
+								new CompactListCodec<>(StatePropertiesPredicate.CODEC).nonEmpty(),
+								"when",
+								List.of())
 						.forGetter(Slot::when),
 				CustomizationCodecs.strictOptionalField(Codec.STRING, "transform_with").forGetter(Slot::transformWith),
 				CustomizationCodecs.strictOptionalField(TAG_CODEC.listOf(), "tag", List.of()).forGetter(Slot::tag),
@@ -191,7 +193,7 @@ public record PlaceSlotProvider(
 				if (!slot.when.isEmpty() && slot.when.stream().noneMatch(predicate -> predicate.test(blockState))) {
 					continue;
 				}
-				for (Direction direction : CustomizationHooks.DIRECTIONS) {
+				for (Direction direction : Util.DIRECTIONS) {
 					Side side = slot.sides.get(direction);
 					if (side == null) {
 						continue;
@@ -229,7 +231,7 @@ public record PlaceSlotProvider(
 			if (rotation == null) {
 				throw new IllegalStateException("Invalid direction: " + newDirection);
 			}
-			for (Direction direction : CustomizationHooks.DIRECTIONS) {
+			for (Direction direction : Util.DIRECTIONS) {
 				Side side = slot.sides.get(direction);
 				if (side == null) {
 					continue;

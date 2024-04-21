@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.Kiwi;
-import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.loader.KBlockDefinition;
 import snownee.kiwi.customization.block.loader.KBlockTemplate;
@@ -40,6 +39,7 @@ import snownee.kiwi.customization.util.KHolder;
 import snownee.kiwi.customization.util.codec.CompactListCodec;
 import snownee.kiwi.customization.util.codec.CustomizationCodecs;
 import snownee.kiwi.loader.Platform;
+import snownee.kiwi.util.Util;
 
 public record PlaceChoices(
 		List<PlaceTarget> target,
@@ -54,7 +54,7 @@ public record PlaceChoices(
 		BLOCK_FACE_TYPES.put("horizontal", BlockFaceType.HORIZONTAL);
 		BLOCK_FACE_TYPES.put("vertical", BlockFaceType.VERTICAL);
 		BLOCK_FACE_TYPES.put("clicked_face", (context, direction) -> context.getClickedFace() == direction.getOpposite());
-		for (Direction direction : CustomizationHooks.DIRECTIONS) {
+		for (Direction direction : Util.DIRECTIONS) {
 			BLOCK_FACE_TYPES.put(direction.getSerializedName(), (context, dir) -> dir == direction);
 		}
 	}
@@ -163,7 +163,7 @@ public record PlaceChoices(
 				//noinspection SwitchStatementWithTooFewBranches
 				boolean pass = switch (this.type) {
 					case "has_tags" -> {
-						for (Direction direction : CustomizationHooks.DIRECTIONS) {
+						for (Direction direction : Util.DIRECTIONS) {
 							Collection<PlaceSlot> slots = PlaceSlot.find(targetState, direction);
 							for (PlaceSlot slot : slots) {
 								if (slot.hasTag(resolvedTag)) {
@@ -238,7 +238,7 @@ public record PlaceChoices(
 		public boolean test(BlockPlaceContext context) {
 			List<Direction> directions = switch (target) {
 				case "clicked_face" -> List.of(context.getClickedFace().getOpposite());
-				case "neighbor" -> CustomizationHooks.DIRECTIONS;
+				case "neighbor" -> Util.DIRECTIONS;
 				default -> throw new IllegalStateException("Unexpected value: " + target);
 			};
 			BlockPos pos = context.getClickedPos();

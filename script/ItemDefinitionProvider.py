@@ -12,13 +12,16 @@ class ItemDefinitionProvider(TableDataProvider):
         super().__init__(pack, 'assets/{}/kiwi/item', 'items')
         self.templateTags = None
         self.templateProperties = None
+        self.order = []
 
     def generate(self):
         self.templateTags = self.pack.providers['item_templates'].tags
         self.templateProperties = self.pack.providers['item_templates'].properties
         super().generate()
+        self.pack.providers['metadata'].putRegistryOrder('item', self.order)
 
     def generateRow(self, row, csvConfig):
+        self.order.append(row['ID'])
         itemId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         tags = set()

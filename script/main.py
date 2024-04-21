@@ -11,6 +11,7 @@ from ItemDefinitionProvider import ItemDefinitionProvider
 from ItemTemplateProvider import ItemTemplateProvider
 from MaterialProvider import MaterialProvider
 from BlockFamilyProvider import BlockFamilyProvider
+from MetadataProvider import MetadataProvider
 from Pack import Pack
 from ShapeProvider import ShapeProvider
 from TagsProvider import TagsProvider
@@ -63,6 +64,11 @@ def main():
 
     pack.addProvider(BlockFamilyProvider(pack))
     pack.addProvider(CreativeTabProvider(pack))
+    generateMetadata = True
+    if 'generate_metadata' in config:
+        generateMetadata = config['generate_metadata']
+    if generateMetadata:
+        pack.addProvider(MetadataProvider(pack))
     pack.addProvider(TranslationProvider(pack))
 
     pack.finish()
