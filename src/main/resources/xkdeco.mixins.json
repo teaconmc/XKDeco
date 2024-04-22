@@ -24,7 +24,8 @@
 		"property_inject.BlockMixin",
 		"property_inject.StateDefinitionBuilderMixin",
 		"sit.DisplayMixin",
-		"sit.EntityMixin"
+		"sit.EntityMixin",
+		"xkdeco.ReloadableServerResourcesMixin"
 	],
 	"client": [
 		"client.DebugRendererMixin",
