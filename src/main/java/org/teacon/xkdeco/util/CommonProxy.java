@@ -3,7 +3,7 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
-import org.teacon.xkdeco.init.XKDecoObjects;
+import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -27,13 +27,9 @@ public class CommonProxy {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		var forgeEventBus = MinecraftForge.EVENT_BUS;
 
-		XKDecoObjects.BLOCKS.register(modEventBus);
-		XKDecoObjects.ITEMS.register(modEventBus);
-
-		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallBlocks);
-		modEventBus.addListener(EventPriority.LOWEST, XKDecoObjects::addMimicWallItems);
-		modEventBus.addListener(XKDecoObjects::addMimicWallsToTab);
-		forgeEventBus.addListener(XKDecoObjects::addMimicWallTags);
+		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
+		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
+		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
 
 		CustomizationHooks.init();
 
