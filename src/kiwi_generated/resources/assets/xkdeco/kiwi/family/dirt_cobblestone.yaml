@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:dirt_cobblestone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:dirt_cobblestone
 - xkdeco:dirt_cobblestone_path

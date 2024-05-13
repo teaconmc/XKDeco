@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.customization.placement.PlaceSlot;
-import snownee.kiwi.customization.util.NotNullByDefault;
+import snownee.kiwi.util.NotNullByDefault;
 import snownee.kiwi.util.Util;
 
 @SuppressWarnings("deprecation")

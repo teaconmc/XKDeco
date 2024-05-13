@@ -1,6 +1,6 @@
 stonecutter_from: gilded_blackstone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:chiseled_gilded_blackstone
 - xkdeco:gilded_blackstone_brick_pillar

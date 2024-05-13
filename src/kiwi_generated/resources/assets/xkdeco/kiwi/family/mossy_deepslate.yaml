@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:mossy_deepslate_bricks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:mossy_deepslate_brick_slab
 - xkdeco:mossy_deepslate_brick_stairs

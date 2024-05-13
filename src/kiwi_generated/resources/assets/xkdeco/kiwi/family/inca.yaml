@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:inca_stone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:inca_brick_slab
 - xkdeco:inca_brick_stairs

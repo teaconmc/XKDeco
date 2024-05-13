@@ -1,6 +1,6 @@
 stonecutter_from: blackstone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:blackstone_pavement
 - xkdeco:blackstone_pavement_slab

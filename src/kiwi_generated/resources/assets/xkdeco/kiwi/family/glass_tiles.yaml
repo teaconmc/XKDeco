@@ -1,6 +1,6 @@
 stonecutter_from: glass
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:glass_tile_slab
 - xkdeco:glass_tile_stairs

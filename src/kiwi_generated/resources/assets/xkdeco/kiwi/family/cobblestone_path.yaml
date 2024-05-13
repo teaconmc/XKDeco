@@ -1,6 +1,6 @@
 stonecutter_from: cobblestone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:cobblestone_path
 - xkdeco:cobblestone_path_slab

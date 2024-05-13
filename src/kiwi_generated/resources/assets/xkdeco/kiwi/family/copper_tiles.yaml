@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:copper_tiles
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:copper_tile_slab
 - xkdeco:copper_tile_stairs

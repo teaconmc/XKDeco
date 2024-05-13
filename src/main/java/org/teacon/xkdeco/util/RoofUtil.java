@@ -7,7 +7,7 @@ import org.teacon.xkdeco.block.RoofBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import snownee.kiwi.customization.util.NotNullByDefault;
+import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
 public class RoofUtil {

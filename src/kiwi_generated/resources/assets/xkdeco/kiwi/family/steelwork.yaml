@@ -1,7 +1,7 @@
 stonecutter_from: steel_block
 stonecutter_from_multiplier: 4
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:air_duct
 - xkdeco:air_duct_oblique

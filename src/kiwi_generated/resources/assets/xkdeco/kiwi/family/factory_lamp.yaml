@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:factory_lamp
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:factory_ceiling_lamp
 - xkdeco:factory_lamp

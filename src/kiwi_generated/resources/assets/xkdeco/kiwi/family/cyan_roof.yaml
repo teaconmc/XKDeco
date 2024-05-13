@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:cyan_tiles
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:cyan_roof
 - xkdeco:cyan_roof_deco

@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:black_tiles
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:black_roof
 - xkdeco:black_roof_deco

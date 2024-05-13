@@ -1,6 +1,6 @@
 stonecutter_from: oak_leaves
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:hanging_willow_leaves
 - xkdeco:willow_leaves

@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:blue_tiles
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:blue_roof
 - xkdeco:blue_roof_flat

@@ -1,5 +1,5 @@
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:yellow_tile_slab
 - xkdeco:yellow_tile_stairs

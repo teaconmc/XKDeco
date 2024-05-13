@@ -1,5 +1,5 @@
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:black_brick_slab
 - xkdeco:black_brick_stairs

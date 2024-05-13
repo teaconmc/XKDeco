@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:bronze_block
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:bronze_block
 - xkdeco:bronze_pillar

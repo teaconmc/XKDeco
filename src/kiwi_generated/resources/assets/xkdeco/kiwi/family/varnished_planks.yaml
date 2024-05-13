@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:varnished_planks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:hollow_varnished_column_wall
 - xkdeco:varnished_awning_window

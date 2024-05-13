@@ -1,5 +1,5 @@
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:varnished_log
 - xkdeco:varnished_log_slab

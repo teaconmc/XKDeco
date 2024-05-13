@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:maya_stone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:maya_brick_slab
 - xkdeco:maya_brick_stairs
