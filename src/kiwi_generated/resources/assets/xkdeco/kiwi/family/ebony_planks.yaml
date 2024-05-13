@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:ebony_planks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:ebony_awning_window
 - xkdeco:ebony_big_table

@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:stone_brick_pillar
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:roman_column
 - xkdeco:roman_column_base

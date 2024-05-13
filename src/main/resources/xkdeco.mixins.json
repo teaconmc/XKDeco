@@ -1,39 +1,12 @@
 {
 	"required": true,
-	"package": "snownee.kiwi.customization.mixin",
+	"package": "org.teacon.xkdeco.mixin",
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
-		"AbstractContainerMenuMixin",
-		"BlockBehaviourMixin",
-		"BlockEntityTypeMixin",
-		"BlockMixin",
-		"BlockPropertiesMixin",
-		"BlockStateMixin",
-		"BushBlockMixin",
-		"HalfTransparentBlockMixin",
-		"client.GameRendererMixin",
-		"data.BlockFamilyProviderMixin",
-		"data.RecipeProviderMixin",
-		"family.RecipeManagerMixin",
-		"forge.BlockMixin",
-		"forge.GameDataMixin",
-		"placement.BlockItemGetPlacementStateMixin",
-		"placement.BlockItemPlaceBlockMixin",
-		"placement.PlayerMixin",
-		"property_inject.BlockMixin",
-		"property_inject.StateDefinitionBuilderMixin",
-		"sit.DisplayMixin",
-		"sit.EntityMixin",
-		"xkdeco.ReloadableServerResourcesMixin"
+		"ReloadableServerResourcesMixin"
 	],
 	"client": [
-		"client.DebugRendererMixin",
-		"client.MultiPlayerGameModeMixin",
-		"forge.BlockColorsAccess",
-		"forge.ItemColorsAccess",
-		"sit.ClientPacketListenerMixin",
-		"sit.LocalPlayerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

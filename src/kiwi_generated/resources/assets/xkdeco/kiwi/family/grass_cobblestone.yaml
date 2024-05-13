@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:grass_cobblestone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:grass_cobblestone
 - xkdeco:grass_cobblestone_path

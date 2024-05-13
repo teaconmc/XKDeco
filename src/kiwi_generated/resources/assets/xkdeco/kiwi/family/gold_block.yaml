@@ -1,7 +1,7 @@
 stonecutter_from: gold_block
 stonecutter_from_multiplier: 4
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:chiseled_gold_block
 - xkdeco:cut_gold_block

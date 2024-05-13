@@ -1,4 +1,4 @@
-package snownee.kiwi.customization.mixin.xkdeco;
+package org.teacon.xkdeco.mixin;
 
 import java.util.Collection;
 import java.util.Map;

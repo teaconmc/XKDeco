@@ -1,6 +1,6 @@
 stonecutter_from: birch_leaves
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:big_book_stack
 - xkdeco:big_candlestick

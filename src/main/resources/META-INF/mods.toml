@@ -13,6 +13,9 @@ description='''
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
 
+[modproperties.xkdeco]
+kiwiCustomization=true
+
 [[dependencies.xkdeco]]
 modId="forge"
 mandatory=true
@@ -30,6 +33,6 @@ side="BOTH"
 [[dependencies.xkdeco]]
 modId="kiwi"
 mandatory=true
-versionRange="[11.6.2,11.7)"
+versionRange="[11.8.2,12)"
 ordering="NONE"
 side="BOTH"

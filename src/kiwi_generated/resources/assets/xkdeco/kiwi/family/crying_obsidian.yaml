@@ -1,6 +1,6 @@
 stonecutter_from: crying_obsidian
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:crying_obsidian_brick_slab
 - xkdeco:crying_obsidian_brick_stairs

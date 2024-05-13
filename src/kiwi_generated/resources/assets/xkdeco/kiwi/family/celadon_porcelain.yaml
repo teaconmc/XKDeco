@@ -1,6 +1,6 @@
 stonecutter_from: lime_glazed_terracotta
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:celadon_porcelain
 - xkdeco:celadon_porcelain_small

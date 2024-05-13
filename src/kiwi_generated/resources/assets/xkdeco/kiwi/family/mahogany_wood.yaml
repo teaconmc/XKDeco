@@ -1,5 +1,5 @@
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:mahogany_log
 - xkdeco:mahogany_log_slab

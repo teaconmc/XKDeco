@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:mahogany_planks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:hollow_mahogany_column_wall
 - xkdeco:mahogany_awning_window

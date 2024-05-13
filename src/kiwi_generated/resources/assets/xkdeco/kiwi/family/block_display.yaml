@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:plain_block_display
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:gorgeous_block_display
 - xkdeco:mechanical_block_display

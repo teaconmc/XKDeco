@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:tech_lamp_block
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:tech_lamp_block
 - xkdeco:tech_lamp_slab

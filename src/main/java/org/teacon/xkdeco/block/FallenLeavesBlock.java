@@ -1,8 +1,6 @@
 package org.teacon.xkdeco.block;
 
 import org.jetbrains.annotations.NotNull;
-import snownee.kiwi.customization.util.NotNullByDefault;
-import snownee.kiwi.customization.block.StringProperty;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +11,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import snownee.kiwi.customization.block.StringProperty;
+import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class FallenLeavesBlock extends Block {

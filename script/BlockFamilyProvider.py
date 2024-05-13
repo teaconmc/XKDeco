@@ -48,7 +48,7 @@ class BlockFamilyProvider(TableDataProvider):
                 singleData.update(self.stonecutterFrom[key])
             singleData.update({
                 'stonecutter_exchange': True,
-                'quick_switch': True
+                'switch': {}
             })
             if key in self.blocks:
                 singleData['blocks'] = sorted(list(self.blocks[key]))

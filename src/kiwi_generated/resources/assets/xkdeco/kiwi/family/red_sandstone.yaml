@@ -1,6 +1,6 @@
 stonecutter_from: red_sandstone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:polished_red_sandstone
 - xkdeco:polished_red_sandstone_slab

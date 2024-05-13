@@ -1,6 +1,6 @@
 stonecutter_from: polished_diorite
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:light_column_base
 - xkdeco:light_stone_handrail

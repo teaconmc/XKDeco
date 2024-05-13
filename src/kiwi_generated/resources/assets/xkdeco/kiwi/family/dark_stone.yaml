@@ -1,6 +1,6 @@
 stonecutter_from: stone_bricks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:dark_column_base
 - xkdeco:dark_stone_handrail

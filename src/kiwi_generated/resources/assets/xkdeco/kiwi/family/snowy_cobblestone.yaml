@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:snowy_cobblestone
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:snowy_cobblestone
 - xkdeco:snowy_cobblestone_path

@@ -1,8 +1,5 @@
 package org.teacon.xkdeco.block;
 
-import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
-import snownee.kiwi.customization.util.NotNullByDefault;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
@@ -11,6 +8,8 @@ import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
+import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
 public class HollowSteelHalfBeamBlock extends FaceAttachedHorizontalDirectionalBlock implements CheckedWaterloggedBlock {

@@ -59,8 +59,8 @@ import net.minecraft.world.level.block.state.properties.WallSide;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.customization.util.NotNullByDefault;
 import snownee.kiwi.datagen.GameObjectLookup;
+import snownee.kiwi.util.NotNullByDefault;
 
 @SuppressWarnings({"deprecation", "SameParameterValue"})
 @NotNullByDefault

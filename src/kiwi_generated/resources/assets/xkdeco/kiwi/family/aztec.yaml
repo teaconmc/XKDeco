@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:aztec_stonebricks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:aztec_chiseled_stonebricks
 - xkdeco:aztec_cut_stonebricks

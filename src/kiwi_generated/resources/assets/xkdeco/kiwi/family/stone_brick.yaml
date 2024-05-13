@@ -1,6 +1,6 @@
 stonecutter_from: stone_bricks
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:stone_brick_pavement
 - xkdeco:stone_brick_pavement_slab

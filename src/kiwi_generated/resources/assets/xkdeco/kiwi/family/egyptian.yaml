@@ -1,6 +1,6 @@
 stonecutter_from: xkdeco:sandstone_pillar
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:egyptian_brick_column
 - xkdeco:egyptian_brick_column_base

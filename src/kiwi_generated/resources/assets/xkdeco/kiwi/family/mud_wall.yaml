@@ -1,6 +1,6 @@
 exchange_inputs_in_viewer: xkdeco:mud_wall_block
 stonecutter_exchange: true
-quick_switch: true
+switch: {}
 blocks:
 - xkdeco:crossed_mud_wall_slab
 - xkdeco:crossed_mud_wall_stairs

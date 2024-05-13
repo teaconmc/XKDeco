@@ -1,6 +1,6 @@
 {
-  "pack": {
-    "description": "Things related to XeKr's Decorations",
-    "pack_format": 8
-  }
+	"pack": {
+		"description": "Things related to XeKr's Decorations",
+		"pack_format": 15
+	}
 }
