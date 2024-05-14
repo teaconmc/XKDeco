@@ -192,8 +192,8 @@ dependencies {
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
 
-    implementation(annotationProcessor(fg.deobf("maven.modrinth:kiwi:${project.kiwi_version}-forge")))
-    jarJar("maven.modrinth:kiwi:${project.kiwi_version}-forge") {
+    implementation(annotationProcessor(fg.deobf("maven.modrinth:kiwi:${project.kiwi_version}+forge")))
+    jarJar("maven.modrinth:kiwi:${project.kiwi_version}+forge") {
         jarJar.ranged(it, "[${project.kiwi_version},)")
     }
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))

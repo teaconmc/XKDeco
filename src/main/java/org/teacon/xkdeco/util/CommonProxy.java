@@ -14,7 +14,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import snownee.kiwi.customization.CustomizationHooks;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.loader.Platform;
 
@@ -30,8 +29,6 @@ public class CommonProxy {
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
 		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
-
-		CustomizationHooks.init();
 
 		if (Platform.isPhysicalClient()) {
 			ClientProxy.init();
