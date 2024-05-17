@@ -24,8 +24,6 @@ public class CommonProxy {
 
 	public CommonProxy() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		var forgeEventBus = MinecraftForge.EVENT_BUS;
-
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
 		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
