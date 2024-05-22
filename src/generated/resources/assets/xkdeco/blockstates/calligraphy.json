@@ -1,19 +1,42 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "xkdeco:block/furniture/calligraphy",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "xkdeco:block/furniture/calligraphy"
-    },
-    "facing=south": {
-      "model": "xkdeco:block/furniture/calligraphy",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/calligraphy",
-      "y": 270
-    }
+    "facing=east": [
+      {
+        "model": "xkdeco:block/furniture/calligraphy",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/furniture/calligraphy_2",
+        "y": 90
+      }
+    ],
+    "facing=north": [
+      {
+        "model": "xkdeco:block/furniture/calligraphy"
+      },
+      {
+        "model": "xkdeco:block/furniture/calligraphy_2"
+      }
+    ],
+    "facing=south": [
+      {
+        "model": "xkdeco:block/furniture/calligraphy",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/furniture/calligraphy_2",
+        "y": 180
+      }
+    ],
+    "facing=west": [
+      {
+        "model": "xkdeco:block/furniture/calligraphy",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/furniture/calligraphy_2",
+        "y": 270
+      }
+    ]
   }
 }
