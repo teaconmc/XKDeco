@@ -27,4 +27,5 @@ class ItemTemplateProvider(TableDataProvider):
             tags = [ResourceLocation(tag) for tag in row['Tags'].split(',')]
             self.tags[templateId] = tags
 
-        self.writeFile(templateId, data)
+        if templateId.namespace != 'minecraft':
+            self.writeFile(templateId, data)

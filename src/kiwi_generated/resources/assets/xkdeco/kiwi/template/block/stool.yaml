@@ -3,5 +3,5 @@ properties:
   render_type: cutout
   components:
   - water_loggable
-  - horizontal
+  - horizontal_axis
   shape: xkdeco:long_stool

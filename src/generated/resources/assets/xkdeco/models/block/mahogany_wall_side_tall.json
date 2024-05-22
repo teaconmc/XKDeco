@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_wall_side_tall",
+  "textures": {
+    "planks": "xkdeco:block/mahogany_planks"
+  }
+}

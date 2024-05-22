@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/wooden_stool",
+  "textures": {
+    "end": "xkdeco:block/mahogany_table",
+    "side": "xkdeco:block/mahogany_table_side"
+  }
+}

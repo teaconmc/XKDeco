@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "xkdeco:block/light_column_base_top",
+    "side": "xkdeco:block/light_column_base_side"
+  }
+}

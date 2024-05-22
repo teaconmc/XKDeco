@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_wall_side",
+  "textures": {
+    "planks": "xkdeco:block/varnished_planks"
+  }
+}

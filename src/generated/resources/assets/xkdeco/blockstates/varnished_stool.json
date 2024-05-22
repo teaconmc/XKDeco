@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "xkdeco:block/varnished_stool"
+    },
+    "axis=z": {
+      "model": "xkdeco:block/varnished_stool",
+      "y": 90
+    }
+  }
+}
