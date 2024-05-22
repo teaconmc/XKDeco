@@ -36,4 +36,5 @@ class BlockTemplateProvider(TableDataProvider):
             tags = [ResourceLocation(tag.strip()) for tag in row['Tags'].split(',')]
             self.tags[templateId] = tags
 
-        self.writeFile(templateId, data)
+        if templateId.namespace != 'minecraft':
+            self.writeFile(templateId, data)

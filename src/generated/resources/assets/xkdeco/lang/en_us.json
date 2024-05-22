@@ -1,8 +1,4 @@
 {
   "block.xkdeco.mimic_wall": "Mimic %s",
-  "gui.kiwi.builder.convert": "Convert items",
-  "key.kiwi.builders_button": "Builder's Button",
-  "pack.xkdeco.mimic_walls": "XKDeco: Mimic Walls",
-  "xkdeco.config.exportBlocksMore": "Export Blocks More",
-  "xkdeco.config.exportBlocksMore.desc": ""
+  "pack.xkdeco.mimic_walls": "XKDeco: Mimic Walls"
 }

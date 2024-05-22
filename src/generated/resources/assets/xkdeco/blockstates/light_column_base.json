@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/furniture/light_column_base"
+      "model": "xkdeco:block/light_column_base"
     }
   }
 }

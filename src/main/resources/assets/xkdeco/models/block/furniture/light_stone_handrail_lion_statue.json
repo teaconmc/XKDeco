@@ -1,0 +1,9 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "xkdeco:block/furniture/dark_stone_handrail_lion_statue",
+	"textures": {
+		"particle": "xkdeco:block/light_stone_handrail_lion",
+		"lion": "xkdeco:block/light_stone_handrail_lion",
+		"post": "xkdeco:block/light_stone_handrail_post"
+	}
+}

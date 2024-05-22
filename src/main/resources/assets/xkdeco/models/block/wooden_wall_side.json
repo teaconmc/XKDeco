@@ -1,0 +1,21 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/template_wall_side_tall",
+	"textures": {
+		"particle": "xkdeco:block/ebony_planks",
+		"planks": "xkdeco:block/ebony_planks"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 0],
+			"to": [10, 16, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 16], "texture": "#planks"},
+				"east": {"uv": [8, 0, 16, 16], "texture": "#planks"},
+				"west": {"uv": [0, 0, 8, 16], "texture": "#planks"},
+				"up": {"uv": [6, 0, 10, 8], "texture": "#planks"},
+				"down": {"uv": [6, 0, 10, 8], "texture": "#planks"}
+			}
+		}
+	]
+}

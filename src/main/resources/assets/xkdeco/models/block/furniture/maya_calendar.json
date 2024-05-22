@@ -1,0 +1,29 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/maya_calendar",
+		"down": "xkdeco:block/maya_calendar"
+	},
+	"elements": [
+		{
+			"from": [-4, -4, 13],
+			"to": [20, 20, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 12, 12], "texture": "#down"},
+				"east": {"uv": [0, 12, 12, 13.5], "rotation": 90, "texture": "#down"},
+				"south": {"uv": [0, 0, 12, 12], "texture": "#down"},
+				"west": {"uv": [0, 12, 12, 13.5], "rotation": 90, "texture": "#down"},
+				"up": {"uv": [0, 12, 12, 13.5], "texture": "#down"},
+				"down": {"uv": [0, 12, 12, 13.5], "texture": "#down"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [30, 45, 0],
+			"translation": [-2.25, 1.25, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
+}

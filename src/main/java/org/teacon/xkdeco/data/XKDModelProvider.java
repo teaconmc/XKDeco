@@ -447,6 +447,11 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createWall("quartz_wall", "quartz_wall_side");
 
+		createNonRotatedPillar("dark_column_base");
+		createNonRotatedPillar("light_column_base");
+
+		generators.delegateItemModel(block("empty_candlestick"), XKDeco.id("block/furniture/empty_candlestick"));
+
 		generators.skipAutoItemBlock(block("item_projector"));
 		outer:
 		for (Item item : GameObjectLookup.all(Registries.ITEM, XKDeco.ID).toList()) {
@@ -474,6 +479,13 @@ public class XKDModelProvider extends FabricModelProvider {
 			}
 			createGadget(block);
 		}
+	}
+
+	private void createNonRotatedPillar(String id) {
+		Block block = block(id);
+		TextureMapping mapping = TextureMapping.column(block);
+		ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(block, mapping, generators.modelOutput);
+		createBlockStateOnly(id, true);
 	}
 
 	private void createWall(String id, String texture) {
@@ -810,10 +822,13 @@ public class XKDModelProvider extends FabricModelProvider {
 		createHorizontalAxis(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
 //		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
 		createGadget(block(id + "_chair"));
+		createHorizontalAxis(id + "_stool", XKDModelTemplates.WOODEN_STOOL);
 
 		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
+		textureMapping.put(XKDModelTemplates.PLANKS, XKDeco.id("block/" + id + "_planks"));
 		createWoodenWall(id + "_column_wall", "wooden_column_wall", textureMapping);
 		createWoodenWall("hollow_" + id + "_column_wall", "hollow_wooden_column_wall", textureMapping);
+		createWoodenWall(id + "_wall", "wooden_wall", textureMapping);
 
 		createMoulding(id + "_meiren_kao", "furniture/" + id + "_meiren_kao", false, true);
 		createMoulding(id + "_meiren_kao_with_column", "furniture/" + id + "_meiren_kao_with_column", false, true);

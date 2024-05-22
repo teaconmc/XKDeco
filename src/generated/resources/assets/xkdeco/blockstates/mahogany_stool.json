@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "xkdeco:block/mahogany_stool"
+    },
+    "axis=z": {
+      "model": "xkdeco:block/mahogany_stool",
+      "y": 90
+    }
+  }
+}

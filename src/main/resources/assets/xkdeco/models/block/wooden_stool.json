@@ -2,9 +2,9 @@
   "credit": "Made by XeKr with Blockbench",
   "parent": "block/cube",
   "textures": {
-    "particle": "xkdeco:block/furniture/ebony_table",
-    "down": "xkdeco:block/furniture/ebony_table",
-    "side": "xkdeco:block/furniture/ebony_table_side"
+    "particle": "#end",
+    "end": "xkdeco:block/ebony_table",
+    "side": "xkdeco:block/ebony_table_side"
   },
   "elements": [
     {
@@ -62,7 +62,7 @@
             16,
             13
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "down": {
           "uv": [
@@ -71,7 +71,7 @@
             16,
             13
           ],
-          "texture": "#down"
+          "texture": "#end"
         }
       }
     },
@@ -94,7 +94,7 @@
             15,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "east": {
           "uv": [
@@ -103,7 +103,7 @@
             12,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "south": {
           "uv": [
@@ -112,7 +112,7 @@
             2,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "west": {
           "uv": [
@@ -121,7 +121,7 @@
             12,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "down": {
           "uv": [
@@ -130,7 +130,7 @@
             2,
             12
           ],
-          "texture": "#down"
+          "texture": "#end"
         }
       }
     },
@@ -153,7 +153,7 @@
             2,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "east": {
           "uv": [
@@ -162,7 +162,7 @@
             12,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "south": {
           "uv": [
@@ -171,7 +171,7 @@
             15,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "west": {
           "uv": [
@@ -180,7 +180,7 @@
             12,
             16
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "down": {
           "uv": [
@@ -189,7 +189,7 @@
             15,
             12
           ],
-          "texture": "#down"
+          "texture": "#end"
         }
       }
     },
@@ -212,7 +212,7 @@
             14,
             13
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "east": {
           "uv": [
@@ -221,7 +221,7 @@
             8,
             13
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "south": {
           "uv": [
@@ -230,7 +230,7 @@
             14,
             13
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "west": {
           "uv": [
@@ -239,7 +239,7 @@
             9,
             13
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "up": {
           "uv": [
@@ -248,7 +248,7 @@
             14,
             8
           ],
-          "texture": "#down"
+          "texture": "#end"
         },
         "down": {
           "uv": [
@@ -257,7 +257,7 @@
             14,
             8
           ],
-          "texture": "#down"
+          "texture": "#end"
         }
       }
     }
@@ -280,6 +280,5 @@
         0.45
       ]
     }
-  },
-  "render_type": "cutout"
+  }
 }

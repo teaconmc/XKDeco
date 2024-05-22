@@ -21,6 +21,7 @@ public class XKDModelTemplates {
 	public static final TextureSlot SLOT_RIDGE = TextureSlot.create("ridge");
 	public static final TextureSlot SLOT_RIDGE2 = TextureSlot.create("ridge2");
 	public static final TextureSlot SLOT_INNER = TextureSlot.create("inner");
+	public static final TextureSlot PLANKS = TextureSlot.create("planks");
 	public static final Map<String, ModelTemplate> MAP = Maps.newHashMap();
 	public static final ModelTemplate ROOF_RIDGE = create("template_roof_ridge", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
 	public static final ModelTemplate ROOF_RIDGE_ASIAN = create(
@@ -84,6 +85,18 @@ public class XKDModelTemplates {
 						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("desk", "tall_table_side")));
 			},
 			create("wooden_desk", TextureSlot.ALL, TextureSlot.SIDE));
+	public static final TexturedModel.Provider WOODEN_STOOL = createDefault(
+			block -> {
+				TextureMapping mapping = new TextureMapping();
+				mapping.put(
+						TextureSlot.END,
+						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("stool", "table")));
+				mapping.put(
+						TextureSlot.SIDE,
+						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("stool", "table_side")));
+				return mapping;
+			},
+			create("wooden_stool", TextureSlot.END, TextureSlot.SIDE));
 	public static final ModelTemplate THIN_TRAPDOOR_TOP = create("thin_trapdoor_top", "_top", TextureSlot.TEXTURE);
 	public static final ModelTemplate THIN_TRAPDOOR_BOTTOM = create("thin_trapdoor_bottom", "_bottom", TextureSlot.TEXTURE);
 	public static final ModelTemplate THIN_TRAPDOOR_OPEN = create("thin_trapdoor_open", "_open", TextureSlot.TEXTURE);
@@ -192,8 +205,10 @@ public class XKDModelTemplates {
 			TextureSlot[] slots;
 			if (s.startsWith("_side")) {
 				slots = new TextureSlot[]{TextureSlot.WALL};
+				create("wooden_wall" + s, s, PLANKS);
 			} else {
 				slots = new TextureSlot[]{TextureSlot.WALL, TextureSlot.SIDE, TextureSlot.END};
+				create("wooden_wall" + s, s, PLANKS, TextureSlot.SIDE, TextureSlot.END);
 			}
 			create("wooden_column_wall" + s, s, slots);
 			create("hollow_wooden_column_wall" + s, s, slots);

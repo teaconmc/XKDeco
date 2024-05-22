@@ -1,5 +1,5 @@
 {
-  "parent": "xkdeco:block/oil_lamp",
+  "parent": "xkdeco:block/furniture/oil_lamp",
   "display": {
     "thirdperson": {
       "rotation": [
