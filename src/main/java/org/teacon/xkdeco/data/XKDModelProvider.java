@@ -23,6 +23,7 @@ import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 
@@ -453,6 +454,12 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.delegateItemModel(block("empty_candlestick"), XKDeco.id("block/furniture/empty_candlestick"));
 
 		generators.skipAutoItemBlock(block("item_projector"));
+
+		createBlockStateOnly("calligraphy", 2);
+		createBlockStateOnly("ink_painting", 2);
+		createBlockStateOnly("weiqi_board", 2);
+		createBlockStateOnly("xiangqi_board", 2);
+
 		outer:
 		for (Item item : GameObjectLookup.all(Registries.ITEM, XKDeco.ID).toList()) {
 			Block block = Block.byItem(item);
@@ -1040,17 +1047,29 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly(id, "", delegateItem);
 	}
 
+	private void createBlockStateOnly(String id, int randomVariants) {
+		createBlockStateOnly(id, "furniture/", true, randomVariants);
+	}
+
 	private void createBlockStateOnly(String id, String prefix, boolean delegateItem) {
+		createBlockStateOnly(id, prefix, delegateItem, 1);
+	}
+
+	private void createBlockStateOnly(String id, String prefix, boolean delegateItem, int randomVariants) {
 		Block block = block(id);
 		KBlockSettings settings = KBlockSettings.of(block);
 		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" + prefix);
+		List<Variant> variants = Lists.newArrayList(Variant.variant().with(VariantProperties.MODEL, modelLocation));
+		if (randomVariants > 1) {
+			for (int i = 1; i < randomVariants; i++) {
+				variants.add(Variant.variant().with(VariantProperties.MODEL, modelLocation.withSuffix("_" + (i + 1))));
+			}
+		}
 		if (settings != null && settings.hasComponent(KBlockComponents.HORIZONTAL.get())) {
-			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
-							block,
-							Variant.variant().with(VariantProperties.MODEL, modelLocation))
+			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, variants.toArray(Variant[]::new))
 					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
 		} else {
-			generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, modelLocation));
+			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, variants.toArray(Variant[]::new)));
 		}
 		if (delegateItem) {
 			generators.delegateItemModel(block, modelLocation);

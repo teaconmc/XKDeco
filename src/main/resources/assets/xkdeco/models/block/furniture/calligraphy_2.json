@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/furniture/calligraphy",
+  "textures": {
+    "0": "xkdeco:block/calligraphy2"
+  }
+}
