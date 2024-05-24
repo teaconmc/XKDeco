@@ -1,5 +1,2 @@
-template:
-  kiwi:type: trapdoor
-  block_set_type: oak
-render_type: cutout
+template: xkdeco:wooden_window
 material: xkdeco:varnished_wood

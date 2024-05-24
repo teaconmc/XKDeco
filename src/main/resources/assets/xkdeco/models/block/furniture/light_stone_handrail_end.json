@@ -1,0 +1,9 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "xkdeco:block/furniture/dark_stone_handrail_end",
+	"textures": {
+		"particle": "xkdeco:block/light_stone_handrail_end",
+		"end": "xkdeco:block/light_stone_handrail_end",
+		"top": "xkdeco:block/light_wall_base_top"
+	}
+}

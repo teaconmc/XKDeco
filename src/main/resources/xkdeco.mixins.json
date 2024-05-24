@@ -6,7 +6,8 @@
 	"mixins": [
 		"ReloadableServerResourcesMixin",
 		"data.BlockFamilyProviderMixin",
-		"data.RecipeProviderMixin"
+		"data.RecipeProviderMixin",
+		"forge.FenceGateBlockAccess"
 	],
 	"client": [
 	],

@@ -1,0 +1,49 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "#texture",
+		"texture": "xkdeco:block/ebony_trapdoor"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 7],
+			"to": [16, 16, 9],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 16, 8]},
+			"faces": {
+				"north": {"uv": [16, 0, 0, 16], "texture": "#texture"},
+				"east": {"uv": [2, 0, 0, 16], "texture": "#texture"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#texture"},
+				"west": {"uv": [2, 0, 0, 16], "texture": "#texture"},
+				"up": {"uv": [0, 2, 16, 0], "texture": "#texture"},
+				"down": {"uv": [0, 2, 16, 0], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [14.5, 0, -3],
+			"to": [15.5, 1, 8],
+			"rotation": {"angle": 45, "axis": "x", "origin": [14.5, 0, 8]},
+			"faces": {
+				"north": {"uv": [1, 0, 0, 1], "texture": "#texture"},
+				"east": {"uv": [11, 0, 0, 1], "texture": "#texture"},
+				"south": {"uv": [1, 0, 0, 1], "texture": "#texture"},
+				"west": {"uv": [11, 0, 0, 1], "texture": "#texture"},
+				"up": {"uv": [0, 11, 1, 0], "texture": "#texture"},
+				"down": {"uv": [0, 11, 1, 0], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [0.5, 0, -3],
+			"to": [1.5, 1, 8],
+			"rotation": {"angle": 45, "axis": "x", "origin": [0.5, 0, 8]},
+			"faces": {
+				"north": {"uv": [1, 0, 0, 1], "texture": "#texture"},
+				"east": {"uv": [11, 0, 0, 1], "texture": "#texture"},
+				"south": {"uv": [1, 0, 0, 1], "texture": "#texture"},
+				"west": {"uv": [11, 0, 0, 1], "texture": "#texture"},
+				"up": {"uv": [0, 11, 1, 0], "texture": "#texture"},
+				"down": {"uv": [0, 11, 1, 0], "texture": "#texture"}
+			}
+		}
+	]
+}
