@@ -847,10 +847,28 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		createWoodenFenceHead(id);
 		createHangingFascia(id);
+		createHorizontallyRotatedBlock(id + "_oblique_brace", XKDModelTemplates.WOODEN_OBLIQUE_BRACE_PROVIDER);
+
+		textureMapping = TextureMapping.defaultTexture(block(id + "_trapdoor"));
+		textureMapping.put(TextureSlot.PARTICLE, getBlockTexture(block(id + "_window")));
+		textureMapping.put(TextureSlot.TOP, getBlockTexture(block(id + "_narrow_doors"), "_top"));
+		textureMapping.put(TextureSlot.BOTTOM, getBlockTexture(block(id + "_narrow_doors"), "_bottom"));
+		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
+		generators.createSimpleFlatItemModel(block(id + "_narrow_doors").asItem());
+		createWoodenFenceGate(id + "_window", "wooden_window", textureMapping);
+		createWoodenFenceGate(id + "_awning_window", "wooden_awning_window", textureMapping);
+
 		Block columnHead = block(id + "_column_head");
 		XKDModelTemplates.WOODEN_COLUMN_HEAD.create(columnHead, TextureMapping.particle(columnHead), generators.modelOutput);
 		createDirectional(id + "_column_head", "");
 		generators.createSimpleFlatItemModel(block(id + "_screen").asItem());
+	}
+
+	private void createWoodenFenceGate(String id, String template, TextureMapping mapping) {
+		Block block = block(id);
+		ResourceLocation open = XKDModelTemplates.MAP.get(template + "_open").create(block, mapping, generators.modelOutput);
+		ResourceLocation closed = XKDModelTemplates.MAP.get(template).create(block, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, open, closed, open, closed, false));
 	}
 
 	private void createHorizontalAxis(String id, TexturedModel.Provider provider) {

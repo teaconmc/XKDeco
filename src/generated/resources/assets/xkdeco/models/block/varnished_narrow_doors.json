@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/wooden_narrow_doors",
+  "textures": {
+    "bottom": "xkdeco:block/varnished_narrow_doors_bottom",
+    "top": "xkdeco:block/varnished_narrow_doors_top"
+  }
+}

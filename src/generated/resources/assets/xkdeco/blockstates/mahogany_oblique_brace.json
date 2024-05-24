@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/mahogany_oblique_brace",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/mahogany_oblique_brace"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/mahogany_oblique_brace",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/mahogany_oblique_brace",
+      "y": 270
+    }
+  }
+}

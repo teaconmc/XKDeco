@@ -97,6 +97,9 @@ public class XKDModelTemplates {
 				return mapping;
 			},
 			create("wooden_stool", TextureSlot.END, TextureSlot.SIDE));
+	public static final TexturedModel.Provider WOODEN_OBLIQUE_BRACE_PROVIDER = createDefault(
+			TextureMapping::particle,
+			create("wooden_oblique_brace", TextureSlot.PARTICLE));
 	public static final ModelTemplate THIN_TRAPDOOR_TOP = create("thin_trapdoor_top", "_top", TextureSlot.TEXTURE);
 	public static final ModelTemplate THIN_TRAPDOOR_BOTTOM = create("thin_trapdoor_bottom", "_bottom", TextureSlot.TEXTURE);
 	public static final ModelTemplate THIN_TRAPDOOR_OPEN = create("thin_trapdoor_open", "_open", TextureSlot.TEXTURE);
@@ -112,6 +115,16 @@ public class XKDModelTemplates {
 			TextureSlot.SIDE);
 	public static final ModelTemplate WOODEN_FENCE_GATE_OPEN = create("wooden_fence_gate_open", "_open", TextureSlot.TEXTURE);
 	public static final ModelTemplate WOODEN_FENCE_GATE_CLOSED = create("wooden_fence_gate", TextureSlot.TEXTURE);
+	public static final ModelTemplate WOODEN_NARROW_DOORS_OPEN = create(
+			"wooden_narrow_doors_open",
+			"_open",
+			TextureSlot.TOP,
+			TextureSlot.BOTTOM);
+	public static final ModelTemplate WOODEN_NARROW_DOORS_CLOSED = create("wooden_narrow_doors", TextureSlot.TOP, TextureSlot.BOTTOM);
+	public static final ModelTemplate WOODEN_WINDOW_OPEN = create("wooden_window_open", "_open", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_WINDOW_CLOSED = create("wooden_window", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_AWNING_WINDOW_OPEN = create("wooden_awning_window_open", "_open", TextureSlot.TEXTURE);
+	public static final ModelTemplate WOODEN_AWNING_WINDOW_CLOSED = create("wooden_awning_window", TextureSlot.TEXTURE);
 	public static final ModelTemplate GLASS_STAIRS = create("glass_stairs", TextureSlot.SIDE);
 	public static final ModelTemplate GLASS_STAIRS_INNER = create("glass_stairs_inner", "_inner", TextureSlot.SIDE);
 	public static final ModelTemplate GLASS_STAIRS_OUTER = create("glass_stairs_outer", "_outer", TextureSlot.SIDE);

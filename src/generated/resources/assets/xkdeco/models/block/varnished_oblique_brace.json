@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_oblique_brace",
+  "textures": {
+    "particle": "xkdeco:block/varnished_oblique_brace"
+  }
+}

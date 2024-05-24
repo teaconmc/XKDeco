@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_awning_window_open",
+  "textures": {
+    "texture": "xkdeco:block/mahogany_trapdoor"
+  }
+}

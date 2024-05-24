@@ -1,0 +1,6 @@
+type: built_in
+codec: fence_gate
+properties:
+  render_type: cutout
+  shape: xkdeco:wooden_narrow_doors
+  no_occlusion: true
