@@ -12,7 +12,7 @@
       "y": 180
     },
     "facing=west": {
-      "model": "xkdeco:blockscrew_thread_bronze_block_w",
+      "model": "xkdeco:block/screw_thread_bronze_block_w",
       "y": 270
     }
   }

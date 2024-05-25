@@ -1,2 +1,3 @@
 template: fence_gate
+render_type: cutout
 material: xkdeco:varnished_wood

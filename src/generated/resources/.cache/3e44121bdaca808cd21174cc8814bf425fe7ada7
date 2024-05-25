@@ -1,4 +1,4 @@
-// 1.20.1	2024-05-24T19:53:57.691678	XeKr's Decoration/Model Definitions
+// 1.20.1	2024-05-25T11:42:07.6250133	XeKr's Decoration/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -370,7 +370,7 @@ f7dd182ae19bc792bb488612e66040c32fae4429 assets/xkdeco/blockstates/maya_pictogra
 5a6d5f0db589706a78034964441b05ac3c3b3537 assets/xkdeco/blockstates/maya_polished_stonebrick_slab.json
 9f2bd4ae55d26d3a5bce769747c44d5c454f3974 assets/xkdeco/blockstates/maya_polished_stonebrick_stairs.json
 9512f1c40379228656197f20a467e67a0b9d1902 assets/xkdeco/blockstates/maya_quad_screw_thread_stone.json
-2f7bdc91d54fa17a84c38033acec23f1e00ab9c3 assets/xkdeco/blockstates/maya_single_screw_thread_stone.json
+e8bd34a52447a30cdc9e74207a68c4de07e94e57 assets/xkdeco/blockstates/maya_single_screw_thread_stone.json
 1bbd0218a2c4515344a5678e48cfba21677faf0e assets/xkdeco/blockstates/maya_skull_stone.json
 0fa16cc1ac1aec36e4b96fc958189d8f33d8ae2e assets/xkdeco/blockstates/maya_stone.json
 90763dbc28dc42161841f90939a0187c0a3bf469 assets/xkdeco/blockstates/maya_stonebricks.json
@@ -487,7 +487,7 @@ fae5078466f6cc48b6c0c69e18af0dccd20a2fd2 assets/xkdeco/blockstates/screen_off.js
 e3bb12bf2de058ce086ebf4d05f82a7327a7ee0b assets/xkdeco/blockstates/screen_three_bodies.json
 935a2fd765989b2980711bfa16bb8de667c17a72 assets/xkdeco/blockstates/screen_transport.json
 96d22bf8d29b40c7c876c1ef3daed8e44f1d840f assets/xkdeco/blockstates/screen_wave.json
-fc5ab334d3b8c9d393a82c7cfc64cd8266ef9eab assets/xkdeco/blockstates/screw_thread_bronze_block.json
+47f3b7e9f116e7389d8af57eccc0ced32c85ba33 assets/xkdeco/blockstates/screw_thread_bronze_block.json
 8781d4890ee8c5c89b554d8d73b05195207d2418 assets/xkdeco/blockstates/sign_entrance.json
 aa81a7c1e070f2544f7757f2c47ea59d51db3aec assets/xkdeco/blockstates/sign_exit.json
 92b2b309c5cdc6dc7009f695a75f6b29fb2ce4f5 assets/xkdeco/blockstates/sign_left.json

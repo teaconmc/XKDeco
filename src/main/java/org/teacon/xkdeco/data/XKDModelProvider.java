@@ -544,7 +544,7 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(
 								Direction.WEST,
 								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block" + id + "_w"))
+										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_w"))
 										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
 						.select(
 								Direction.EAST,

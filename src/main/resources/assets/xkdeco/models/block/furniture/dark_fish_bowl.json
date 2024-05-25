@@ -7,6 +7,5 @@
     "fish": "xkdeco:block/fish_bowl_fish",
     "inner": "xkdeco:block/fish_bowl_inner",
     "side": "xkdeco:block/dark_fish_bowl_side"
-  },
-  "render_type": "cutout"
+  }
 }

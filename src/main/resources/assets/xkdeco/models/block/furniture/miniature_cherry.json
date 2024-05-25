@@ -8,6 +8,5 @@
     "side": "xkdeco:block/miniature_tree_side2",
     "tree": "xkdeco:block/miniature_tree",
     "base": "xkdeco:block/miniature_tree_base2"
-  },
-  "render_type": "cutout"
+  }
 }

@@ -1,5 +1,2 @@
+template: xkdeco:wooden_table
 material: xkdeco:ebony
-components:
-- water_loggable
-shape: xkdeco:table
-no_occlusion: true

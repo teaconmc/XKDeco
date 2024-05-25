@@ -1,3 +1,4 @@
+render_type: cutout
 material: xkdeco:wood
 components:
 - water_loggable
