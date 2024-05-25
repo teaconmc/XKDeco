@@ -3,6 +3,5 @@
   "textures": {
     "particle": "xkdeco:block/sign_exit",
     "down": "xkdeco:block/sign_exit"
-  },
-  "render_type": "cutout"
+  }
 }

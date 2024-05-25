@@ -1,0 +1,7 @@
+type: simple
+properties:
+  render_type: cutout
+  components:
+  - water_loggable
+  shape: xkdeco:wooden_tall_table
+  no_occlusion: true

@@ -27,6 +27,7 @@ apply plugin: 'maven-publish'
 
 version = "${minecraft_version}-Forge-${mod_version}"
 group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+//noinspection GroovyUnusedAssignment
 archivesBaseName = mod_name
 var realVersion = mod_version + '+forge'
 
@@ -212,10 +213,32 @@ processResources {
     from('src/main/java') {
         include '**/*.json'
     }
+
+    doLast {
+        def jsonMinifyStart = System.currentTimeMillis()
+        def jsonMinified = 0
+        def jsonBytesSaved = 0
+
+        fileTree(dir: outputs.files.asPath, include: '**/*.json').each {
+            jsonMinified++
+            def oldLength = it.length()
+            //noinspection UnnecessaryQualifiedReference
+            it.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(it))
+            jsonBytesSaved += oldLength - it.length()
+        }
+
+        jsonBytesSaved = Math.round(jsonBytesSaved / 1024)
+        println('Minified ' + jsonMinified + ' json files. Saved ' + jsonBytesSaved + 'KB. Took ' + (System.currentTimeMillis() - jsonMinifyStart) + 'ms.')
+    }
 }
 
 tasks.jarJar.configure {
     archiveClassifier = ''
+
+    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
+    exclude("/assets/test")
+    exclude("/org/teacon/xkdeco/data")
+    exclude("/.cache")
 
     finalizedBy('reobfJarJar')
 }
@@ -230,9 +253,6 @@ jar {
                     "Implementation-Version"  : realVersion,
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
-
-    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
-    exclude("/assets/test")
 
     preserveFileTimestamps = false
     reproducibleFileOrder = true

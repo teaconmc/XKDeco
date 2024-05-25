@@ -7,6 +7,5 @@
     "side": "xkdeco:block/miniature_tree_side1",
     "tree": "xkdeco:block/miniature_red_coral",
     "base": "xkdeco:block/miniature_tree_base1"
-  },
-  "render_type": "cutout"
+  }
 }

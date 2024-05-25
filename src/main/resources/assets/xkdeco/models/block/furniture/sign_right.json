@@ -3,6 +3,5 @@
   "textures": {
     "particle": "xkdeco:block/sign_right",
     "down": "xkdeco:block/sign_right"
-  },
-  "render_type": "cutout"
+  }
 }

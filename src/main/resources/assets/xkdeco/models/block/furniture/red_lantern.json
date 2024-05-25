@@ -4,6 +4,5 @@
     "particle": "xkdeco:block/red_lantern_side",
     "side": "xkdeco:block/red_lantern_side",
     "top": "xkdeco:block/red_lantern_top"
-  },
-  "render_type": "cutout"
+  }
 }

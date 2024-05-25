@@ -1,5 +1,2 @@
+template: xkdeco:wooden_tall_table
 material: xkdeco:varnished_wood
-components:
-- water_loggable
-shape: xkdeco:big_table
-no_occlusion: true

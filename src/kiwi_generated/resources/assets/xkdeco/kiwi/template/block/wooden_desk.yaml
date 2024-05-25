@@ -1,0 +1,8 @@
+type: simple
+properties:
+  render_type: cutout
+  components:
+  - water_loggable
+  - horizontal_axis
+  shape: xkdeco:wooden_desk
+  no_occlusion: true

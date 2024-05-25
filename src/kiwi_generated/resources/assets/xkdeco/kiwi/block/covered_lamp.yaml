@@ -1,3 +1,4 @@
+render_type: cutout
 material: xkdeco:wood
 light_emission: 15
 components:
