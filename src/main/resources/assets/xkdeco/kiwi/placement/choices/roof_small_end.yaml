@@ -1,10 +1,16 @@
-target: '@xkdeco:roof_end'
+target: '@xkdeco:roof_small_end'
 alter:
   - when:
       target: clicked_face
       faces: horizontal
       block: '#xkdeco:roof_ridge'
     use: ridge
+  - when:
+      target: clicked_face
+      faces: clicked_face
+      block: '#xkdeco:roof_flat'
+      tags: '*roof_flat:side'
+    use: flat
 interests:
   - when:
       facing: '@facing'
