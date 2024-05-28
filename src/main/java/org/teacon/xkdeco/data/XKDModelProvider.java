@@ -824,12 +824,12 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, $$2, $$3, ModelLocationUtils.getModelLocation(log)));
 
 		createTrivialBlock(id + "_table", XKDModelTemplates.WOODEN_TABLE_PROVIDER);
-//		createTrivialBlock(id + "_big_table", XKDModelTemplates.BIG_TABLE_PROVIDER);
-//		createTrivialBlock(id + "_tall_table", XKDModelTemplates.TALL_TABLE_PROVIDER);
+		createTrivialBlock(id + "_big_table", XKDModelTemplates.WOODEN_BIG_TABLE_PROVIDER);
+		createTrivialBlock(id + "_tall_table", XKDModelTemplates.WOODEN_TALL_TABLE_PROVIDER);
 		createHorizontalAxis(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
 //		createHorizontallyRotatedBlock(id + "_desk", XKDModelTemplates.WOODEN_DESK_PROVIDER);
 		createGadget(block(id + "_chair"));
-		createHorizontalAxis(id + "_stool", XKDModelTemplates.WOODEN_STOOL);
+		createHorizontalAxis(id + "_stool", XKDModelTemplates.WOODEN_STOOL_PROVIDER);
 
 		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
 		textureMapping.put(XKDModelTemplates.PLANKS, XKDeco.id("block/" + id + "_planks"));
