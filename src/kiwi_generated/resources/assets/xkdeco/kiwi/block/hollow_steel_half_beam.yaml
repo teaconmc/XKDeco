@@ -1,6 +1,4 @@
 template: xkdeco:hollow_steel_half_beam
 render_type: cutout
 material: xkdeco:stone
-components:
-- water_loggable
 glass_type: hollow_steel

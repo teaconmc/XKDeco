@@ -3,24 +3,14 @@ package org.teacon.xkdeco.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.AttachFace;
-import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
+import snownee.kiwi.customization.block.component.FrontAndTopComponent;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
-public class HollowSteelHalfBeamBlock extends FaceAttachedHorizontalDirectionalBlock implements CheckedWaterloggedBlock {
+public class HollowSteelHalfBeamBlock extends XKDBlock {
 	public HollowSteelHalfBeamBlock(Properties pProperties) {
 		super(pProperties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(FACE, AttachFace.WALL));
-	}
-
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(FACING, FACE);
 	}
 
 	@Override
@@ -34,9 +24,14 @@ public class HollowSteelHalfBeamBlock extends FaceAttachedHorizontalDirectionalB
 			return true;
 		}
 		if (connectedDirection.getAxis().isVertical()) {
-			return pState.getValue(FACING).getAxis() != connectedState.getValue(FACING).getAxis();
+			return pState.getValue(FrontAndTopComponent.ORIENTATION).top().getAxis() !=
+					connectedState.getValue(FrontAndTopComponent.ORIENTATION).top().getAxis();
 		} else {
 			return false;
 		}
+	}
+
+	private Direction getConnectedDirection(BlockState blockState) {
+		return blockState.getValue(FrontAndTopComponent.ORIENTATION).front();
 	}
 }
