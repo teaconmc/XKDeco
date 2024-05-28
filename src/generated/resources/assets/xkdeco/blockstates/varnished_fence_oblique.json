@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/varnished_fence_oblique",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/varnished_fence_oblique"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/varnished_fence_oblique",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/varnished_fence_oblique",
+      "y": 270
+    }
+  }
+}

@@ -1,4 +1,2 @@
+template: xkdeco:stone_handrail_oblique
 material: xkdeco:stone
-components:
-- water_loggable
-- horizontal

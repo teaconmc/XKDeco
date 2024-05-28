@@ -22,6 +22,7 @@ public class XKDModelTemplates {
 	public static final TextureSlot SLOT_RIDGE2 = TextureSlot.create("ridge2");
 	public static final TextureSlot SLOT_INNER = TextureSlot.create("inner");
 	public static final TextureSlot PLANKS = TextureSlot.create("planks");
+	public static final TextureSlot POST = TextureSlot.create("post");
 	public static final Map<String, ModelTemplate> MAP = Maps.newHashMap();
 	public static final ModelTemplate ROOF_RIDGE = create("template_roof_ridge", TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
 	public static final ModelTemplate ROOF_RIDGE_ASIAN = create(
@@ -107,6 +108,8 @@ public class XKDModelTemplates {
 	public static final ModelTemplate WOODEN_FENCE_SIDE = create("wooden_fence_side", "_side", TextureSlot.TEXTURE);
 	public static final ModelTemplate WOODEN_FENCE_HEAD = create("wooden_fence_head", TextureSlot.PARTICLE);
 	public static final ModelTemplate WOODEN_FENCE_HEAD_FLIP = create("wooden_fence_head_flip", "_flip", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_FENCE_OBLIQUE = create("wooden_fence_oblique", TextureSlot.PARTICLE, POST);
+	public static final ModelTemplate WOODEN_FENCE_OBLIQUE_STEEP = create("wooden_fence_oblique_steep", TextureSlot.PARTICLE, POST);
 	public static final ModelTemplate WOODEN_COLUMN_HEAD = create("wooden_column_head", TextureSlot.PARTICLE);
 	public static final ModelTemplate WOODEN_FENCE_INVENTORY = create(
 			"wooden_fence_inventory",

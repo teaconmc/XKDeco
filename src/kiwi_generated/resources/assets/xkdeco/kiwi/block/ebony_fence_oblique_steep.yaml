@@ -1,4 +1,2 @@
+template: xkdeco:fence_oblique_steep
 material: xkdeco:ebony
-components:
-- water_loggable
-- horizontal
