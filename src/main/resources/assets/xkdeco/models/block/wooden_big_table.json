@@ -2,9 +2,6 @@
   "credit": "Made by XeKr with Blockbench",
   "parent": "block/cube",
   "textures": {
-    "top": "xkdeco:block/furniture/ebony_big_table",
-    "particle": "xkdeco:block/furniture/ebony_big_table_side",
-    "side": "xkdeco:block/furniture/ebony_big_table_side"
   },
   "elements": [
     {
@@ -465,7 +462,7 @@
             12,
             13
           ],
-          "texture": "#top"
+          "texture": "#down"
         },
         "east": {
           "uv": [
@@ -474,7 +471,7 @@
             12,
             13
           ],
-          "texture": "#top"
+          "texture": "#down"
         },
         "south": {
           "uv": [
@@ -483,7 +480,7 @@
             12,
             13
           ],
-          "texture": "#top"
+          "texture": "#down"
         },
         "west": {
           "uv": [
@@ -492,7 +489,7 @@
             12,
             13
           ],
-          "texture": "#top"
+          "texture": "#down"
         },
         "up": {
           "uv": [
@@ -501,7 +498,7 @@
             12,
             12
           ],
-          "texture": "#top"
+          "texture": "#down"
         },
         "down": {
           "uv": [
@@ -510,7 +507,7 @@
             12,
             12
           ],
-          "texture": "#top"
+          "texture": "#down"
         }
       }
     }
