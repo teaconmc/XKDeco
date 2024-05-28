@@ -78,6 +78,12 @@ public class XKDModelTemplates {
 	public static final TexturedModel.Provider WOODEN_TABLE_PROVIDER = createDefault(
 			XKDModelTemplates::allAndSide,
 			create("wooden_table", TextureSlot.ALL, TextureSlot.SIDE));
+	public static final TexturedModel.Provider WOODEN_BIG_TABLE_PROVIDER = createDefault(
+			XKDModelTemplates::allAndSide,
+			create("wooden_big_table", TextureSlot.ALL, TextureSlot.SIDE));
+	public static final TexturedModel.Provider WOODEN_TALL_TABLE_PROVIDER = createDefault(
+			XKDModelTemplates::allAndSide,
+			create("wooden_tall_table", TextureSlot.ALL, TextureSlot.SIDE));
 	public static final TexturedModel.Provider WOODEN_DESK_PROVIDER = createDefault(
 			block -> {
 				return TextureMapping.cube(block).put(
@@ -85,7 +91,7 @@ public class XKDModelTemplates {
 						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("desk", "tall_table_side")));
 			},
 			create("wooden_desk", TextureSlot.ALL, TextureSlot.SIDE));
-	public static final TexturedModel.Provider WOODEN_STOOL = createDefault(
+	public static final TexturedModel.Provider WOODEN_STOOL_PROVIDER = createDefault(
 			block -> {
 				TextureMapping mapping = new TextureMapping();
 				mapping.put(
