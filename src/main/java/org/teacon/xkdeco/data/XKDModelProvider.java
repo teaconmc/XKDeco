@@ -862,6 +862,15 @@ public class XKDModelProvider extends FabricModelProvider {
 		XKDModelTemplates.WOODEN_COLUMN_HEAD.create(columnHead, TextureMapping.particle(columnHead), generators.modelOutput);
 		createDirectional(id + "_column_head", "");
 		generators.createSimpleFlatItemModel(block(id + "_screen").asItem());
+
+		Block fenceOblique = block(id + "_fence_oblique");
+		textureMapping = TextureMapping.particle(fenceOblique).put(XKDModelTemplates.POST, XKDeco.id("block/" + id + "_fence_post"));
+		XKDModelTemplates.WOODEN_FENCE_OBLIQUE.create(fenceOblique, textureMapping, generators.modelOutput);
+		createHorizontal(id + "_fence_oblique", "");
+
+		Block fenceObliqueSteep = block(id + "_fence_oblique_steep");
+		XKDModelTemplates.WOODEN_FENCE_OBLIQUE_STEEP.create(fenceObliqueSteep, textureMapping, generators.modelOutput);
+		createHorizontal(id + "_fence_oblique_steep", "");
 	}
 
 	private void createWoodenFenceGate(String id, String template, TextureMapping mapping) {
@@ -1029,6 +1038,16 @@ public class XKDModelProvider extends FabricModelProvider {
 						block,
 						Variant.variant().with(VariantProperties.MODEL, model))
 				.with(BlockModelGenerators.createFacingDispatch()));
+		generators.delegateItemModel(block, model);
+	}
+
+	private void createHorizontal(String id, String prefix) {
+		Block block = block(id);
+		ResourceLocation model = XKDeco.id(id).withPrefix("block/" + prefix);
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+						block,
+						Variant.variant().with(VariantProperties.MODEL, model))
+				.with(BlockModelGenerators.createHorizontalFacingDispatch()));
 		generators.delegateItemModel(block, model);
 	}
 

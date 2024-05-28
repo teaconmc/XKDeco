@@ -1,0 +1,10 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "xkdeco:block/furniture/dark_stone_handrail_oblique_steep",
+	"textures": {
+		"particle": "xkdeco:block/light_stone_handrail_wall_oblique",
+		"wall": "xkdeco:block/light_stone_handrail_wall_oblique",
+		"top": "xkdeco:block/light_wall_base_top",
+		"post": "xkdeco:block/light_stone_handrail_post"
+	}
+}

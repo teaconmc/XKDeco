@@ -1,0 +1,7 @@
+{
+  "parent": "xkdeco:block/wooden_fence_oblique_steep",
+  "textures": {
+    "particle": "xkdeco:block/mahogany_fence_oblique",
+    "post": "xkdeco:block/mahogany_fence_post"
+  }
+}

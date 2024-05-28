@@ -1,0 +1,7 @@
+type: simple
+properties:
+  components:
+  - water_loggable
+  - horizontal
+  shape: xkdeco:fence_oblique
+  no_occlusion: true

@@ -1,4 +1,2 @@
+template: xkdeco:fence_oblique_steep
 material: xkdeco:varnished_wood
-components:
-- water_loggable
-- horizontal
