@@ -1,56 +1,56 @@
 {
   "variants": {
-    "face=ceiling,facing=east": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "x": 180,
-      "y": 270
-    },
-    "face=ceiling,facing=north": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "x": 180,
-      "y": 180
-    },
-    "face=ceiling,facing=south": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "x": 180
-    },
-    "face=ceiling,facing=west": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "x": 180,
-      "y": 90
-    },
-    "face=floor,facing=east": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "y": 90
-    },
-    "face=floor,facing=north": {
-      "model": "xkdeco:block/hollow_steel_half_beam"
-    },
-    "face=floor,facing=south": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "y": 180
-    },
-    "face=floor,facing=west": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
-      "y": 270
-    },
-    "face=wall,facing=east": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
+    "orientation=down_east": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
       "x": 90,
       "y": 90
     },
-    "face=wall,facing=north": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
+    "orientation=down_north": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
       "x": 90
     },
-    "face=wall,facing=south": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
+    "orientation=down_south": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
       "x": 90,
       "y": 180
     },
-    "face=wall,facing=west": {
-      "model": "xkdeco:block/hollow_steel_half_beam",
+    "orientation=down_west": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
       "x": 90,
+      "y": 270
+    },
+    "orientation=east_up": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
+      "y": 90
+    },
+    "orientation=north_up": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam"
+    },
+    "orientation=south_up": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
+      "y": 180
+    },
+    "orientation=up_east": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
+      "x": 270,
+      "y": 270
+    },
+    "orientation=up_north": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
+      "x": 270,
+      "y": 180
+    },
+    "orientation=up_south": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
+      "x": 270
+    },
+    "orientation=up_west": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
+      "x": 270,
+      "y": 90
+    },
+    "orientation=west_up": {
+      "model": "xkdeco:block/furniture/hollow_steel_half_beam",
       "y": 270
     }
   }

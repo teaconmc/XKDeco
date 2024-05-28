@@ -1,2 +1,7 @@
 type: simple
 class: org.teacon.xkdeco.block.HollowSteelHalfBeamBlock
+properties:
+  components:
+  - water_loggable
+  - front_and_top
+  shape: xkdeco:hollow_steel_half_beam

@@ -52,7 +52,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
@@ -390,7 +389,6 @@ public class XKDModelProvider extends FabricModelProvider {
 				ModelLocationUtils.getModelLocation(block("steel_ladder").asItem()),
 				TextureMapping.layer0(getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
-		createFaceAttached("hollow_steel_half_beam");
 
 		createBlockStateOnly("factory_ceiling_lamp", "furniture/", true);
 		createBlockStateOnly("factory_pendant", "furniture/", true);
@@ -775,46 +773,6 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createFaceAttached(String id) {
-		Block block = block(id);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
-						block,
-						Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(block)))
-				.with(PropertyDispatch.properties(
-								BlockStateProperties.ATTACH_FACE,
-								BlockStateProperties.HORIZONTAL_FACING)
-						.select(AttachFace.FLOOR, Direction.EAST, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-						.select(AttachFace.FLOOR, Direction.WEST, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-						.select(AttachFace.FLOOR, Direction.SOUTH, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-						.select(AttachFace.FLOOR, Direction.NORTH, Variant.variant())
-						.select(AttachFace.WALL, Direction.EAST, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-						.select(AttachFace.WALL, Direction.WEST, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-						.select(AttachFace.WALL, Direction.SOUTH, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-						.select(AttachFace.WALL, Direction.NORTH, Variant.variant()
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-						.select(AttachFace.CEILING, Direction.EAST, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
-						.select(AttachFace.CEILING, Direction.WEST, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
-						.select(AttachFace.CEILING, Direction.SOUTH, Variant.variant()
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
-						.select(AttachFace.CEILING, Direction.NORTH, Variant.variant()
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R180)));
-		generators.blockStateOutput.accept(generator);
-	}
-
 	private void createTreatedWood(String id) {
 		Block log = block(id + "_log");
 		TextureMapping logMapping = generators.woodProvider(log).log(log).wood(block(id + "_wood")).logMapping;
@@ -1011,7 +969,6 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping mapping = TextureMapping.particle(block);
 				model = XKDModelTemplates.SCREEN.create(block, mapping, generators.modelOutput);
 			} else {
-//				throw new IllegalStateException("Unknown block type: " + id);
 				model = id.withPrefix("block/furniture/");
 			}
 			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
@@ -1020,6 +977,7 @@ public class XKDModelProvider extends FabricModelProvider {
 					.with(PropertyDispatch.property(BlockStateProperties.ORIENTATION).generate(frontAndTop -> {
 						return generators.applyRotation(frontAndTop, Variant.variant());
 					}));
+			generators.delegateItemModel(block, model);
 			generators.blockStateOutput.accept(generator);
 		} else if (layered != null) {
 			ResourceLocation model = id.withPrefix("block/furniture/");
