@@ -107,6 +107,8 @@ public class XKDModelTemplates {
 	public static final TexturedModel.Provider WOODEN_OBLIQUE_BRACE_PROVIDER = createDefault(
 			TextureMapping::particle,
 			create("wooden_oblique_brace", TextureSlot.PARTICLE));
+	public static final ModelTemplate WOODEN_EMPTY_SHELF = create("wooden_empty_shelf", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_DIVIDED_SHELF = create("wooden_divided_shelf", TextureSlot.PARTICLE);
 	public static final ModelTemplate THIN_TRAPDOOR_TOP = create("thin_trapdoor_top", "_top", TextureSlot.TEXTURE);
 	public static final ModelTemplate THIN_TRAPDOOR_BOTTOM = create("thin_trapdoor_bottom", "_bottom", TextureSlot.TEXTURE);
 	public static final ModelTemplate THIN_TRAPDOOR_OPEN = create("thin_trapdoor_open", "_open", TextureSlot.TEXTURE);
