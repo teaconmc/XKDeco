@@ -11,4 +11,5 @@ properties:
       values:
       - upper
       - lower
+  shape: xkdeco:roof_flat
   no_occlusion: true

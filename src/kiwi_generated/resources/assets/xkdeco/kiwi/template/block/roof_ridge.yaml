@@ -1,2 +1,4 @@
 type: simple
 class: net.minecraft.world.level.block.WallBlock
+properties:
+  shape: xkdeco:roof_ridge

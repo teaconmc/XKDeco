@@ -1,0 +1,23 @@
+type: choices
+keys:
+  - variant
+  - half
+choices:
+  normal,upper:
+    type: horizontal
+    north: xkdeco:roof_normal_upper
+  normal,lower:
+    type: horizontal
+    north: xkdeco:roof_normal_lower
+  slow,upper:
+    type: horizontal
+    north: xkdeco:roof_slow_upper
+  slow,lower:
+    type: horizontal
+    north: xkdeco:roof_slow_lower
+  steep,upper:
+    type: horizontal
+    north: xkdeco:roof_steep_upper
+  steep,lower:
+    type: horizontal
+    north: xkdeco:roof_steep_lower

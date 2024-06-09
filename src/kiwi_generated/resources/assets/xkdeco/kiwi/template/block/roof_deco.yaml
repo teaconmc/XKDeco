@@ -10,4 +10,5 @@ properties:
       values:
       - upper
       - lower
+  shape: xkdeco:roof_deco
   no_occlusion: true

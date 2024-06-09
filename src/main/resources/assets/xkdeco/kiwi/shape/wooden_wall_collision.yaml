@@ -1,0 +1,7 @@
+type: configure_wall
+post_width: 8
+post_max_y: 24
+side_width: 4
+side_min_y: 0
+low_side_max_y: 24
+tall_side_max_y: 24

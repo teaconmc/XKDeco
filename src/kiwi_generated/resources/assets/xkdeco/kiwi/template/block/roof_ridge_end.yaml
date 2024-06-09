@@ -15,4 +15,5 @@ properties:
       values:
       - lower
       - upper
+  shape: xkdeco:roof_ridge_end
   no_occlusion: true

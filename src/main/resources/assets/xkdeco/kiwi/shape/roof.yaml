@@ -1,0 +1,60 @@
+type: choices
+keys:
+  - variant
+  - shape
+  - half
+choices:
+  normal,straight,upper:
+    type: horizontal
+    north: xkdeco:roof_normal_upper
+  normal,straight,lower:
+    type: horizontal
+    north: xkdeco:roof_normal_lower
+  normal,inner,upper:
+    type: horizontal
+    north: (0, 8, 0, 16, 12, 16),(0, 12, 0, 16, 16, 13),(0, 16, 0, 16, 20, 10),(0, 20, 0, 16, 24, 7),(3, 12, 0, 16, 16, 16),(6, 16, 0, 16, 20, 16),(9, 20, 0, 16, 24, 16)
+  normal,inner,lower:
+    type: horizontal
+    north: (0, 0, 0, 16, 4, 16),(0, 4, 0, 16, 8, 13),(0, 8, 0, 16, 12, 10),(0, 12, 0, 16, 16, 7),(3, 4, 0, 16, 8, 16),(6, 8, 0, 16, 12, 16),(9, 12, 0, 16, 16, 16)
+  normal,outer,upper:
+    type: horizontal
+    north: (0, 8, 0, 16, 12, 16),(3, 12, 0, 16, 16, 13),(6, 16, 0, 16, 20, 10),(9, 20, 0, 16, 24, 7)
+  normal,outer,lower:
+    type: horizontal
+    north: (0, 0, 0, 16, 4, 16),(3, 4, 0, 16, 8, 13),(6, 8, 0, 16, 12, 10),(9, 12, 0, 16, 16, 7)
+  slow,straight,upper:
+    type: horizontal
+    north: xkdeco:roof_slow_upper
+  slow,straight,lower:
+    type: horizontal
+    north: xkdeco:roof_slow_lower
+  slow,inner,upper:
+    type: horizontal
+    north: (0, 0, 0, 16, 12, 16),(0, 12, 0, 16, 16, 9),(7, 12, 0, 16, 16, 16)
+  slow,inner,lower:
+    type: horizontal
+    north: (0, 0, 0, 16, 4, 16),(0, 4, 0, 16, 8, 9),(7, 4, 0, 16, 8, 16)
+  slow,outer,upper:
+    type: horizontal
+    north: (0, 0, 0, 16, 12, 16),(7, 12, 0, 16, 16, 9)
+  slow,outer,lower:
+    type: horizontal
+    north: (0, 0, 0, 16, 4, 16),(7, 4, 0, 16, 8, 9)
+  steep,straight,upper:
+    type: horizontal
+    north: xkdeco:roof_steep_upper
+  steep,straight,lower:
+    type: horizontal
+    north: xkdeco:roof_steep_lower
+  steep,inner,upper:
+    type: horizontal
+    north: (0, 4, 0, 16, 8, 8),(0, 0, 0, 16, 4, 10),(0, 8, 0, 16, 12, 6),(0, 12, 0, 16, 16, 4),(8, 4, 0, 16, 8, 16),(6, 0, 0, 16, 4, 16),(10, 8, 0, 16, 12, 16),(12, 12, 0, 16, 16, 16)
+  steep,inner,lower:
+    type: horizontal
+    north: (0, 8, 0, 16, 12, 14),(0, 12, 0, 16, 16, 12),(0, 0, 0, 16, 8, 16),(2, 8, 0, 16, 12, 16),(4, 12, 0, 16, 16, 16)
+  steep,outer,upper:
+    type: horizontal
+    north: (8, 4, 0, 16, 8, 8),(6, 0, 0, 16, 4, 10),(10, 8, 0, 16, 12, 6),(12, 12, 0, 16, 16, 4)
+  steep,outer,lower:
+    type: horizontal
+    north: (0, 0, 0, 16, 8, 16),(2, 8, 0, 16, 12, 14),(4, 12, 0, 16, 16, 12)

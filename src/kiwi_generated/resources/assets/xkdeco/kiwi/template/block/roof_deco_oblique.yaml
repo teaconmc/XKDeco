@@ -10,5 +10,6 @@ properties:
       values:
       - upper
       - lower
+  shape: xkdeco:roof_deco_oblique
   no_collision: true
   no_occlusion: true

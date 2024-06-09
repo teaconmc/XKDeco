@@ -1,0 +1,6 @@
+type: choices
+keys:
+  - half
+choices:
+  upper: (3, 4, 3, 13, 11, 13)
+  lower: (3, -4, 3, 13, 3, 13)
