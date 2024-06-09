@@ -1,0 +1,35 @@
+type: choices
+keys:
+  - shape
+  - half
+choices:
+  inner,upper:
+    type: horizontal
+    north: (0, 11, 0, 16, 19, 12),(4, 11, 0, 16, 19, 16)
+  inner,lower:
+    type: horizontal
+    north: (0, 3, 0, 16, 11, 12),(4, 3, 0, 16, 11, 16)
+  outer,upper:
+    type: horizontal
+    north: (2, 10, 4, 12, 18, 14),(-2, 13, 11.5, 4.5, 21, 18),(4, 11, 0, 16, 19, 12)
+  outer,lower:
+    type: horizontal
+    north: (2, 2, 4, 12, 10, 14),(-2, 5, 11.5, 4.5, 13, 18),(4, 3, 0, 16, 11, 12)
+  left_end,upper:
+    type: horizontal
+    north: (0, 11, 0, 4, 19, 12),(12, 11, 0, 16, 19, 12),(4, 9, 0, 12, 17, 10)
+  left_end,lower:
+    type: horizontal
+    north: (0, 3, 0, 4, 11, 12),(12, 3, 0, 16, 11, 12),(4, 1, 0, 12, 9, 10)
+  right_end,upper:
+    type: horizontal
+    north: (0, 11, 0, 4, 19, 12),(12, 11, 0, 16, 19, 12),(4, 9, 0, 12, 17, 10)
+  right_end,lower:
+    type: horizontal
+    north: (0, 3, 0, 4, 11, 12),(12, 3, 0, 16, 11, 12),(4, 1, 0, 12, 9, 10)
+  straight,upper:
+    type: horizontal
+    north: (0, 11, 0, 4, 19, 12),(12, 11, 0, 16, 19, 12),(4, 9, 0, 12, 17, 10)
+  straight,lower:
+    type: horizontal
+    north: (0, 3, 0, 4, 11, 12),(12, 3, 0, 16, 11, 12),(4, 1, 0, 12, 9, 10)

@@ -2,4 +2,5 @@ material: xkdeco:stone
 components:
 - water_loggable
 - directional
+shape: xkdeco:stone_handrail_head
 no_occlusion: true

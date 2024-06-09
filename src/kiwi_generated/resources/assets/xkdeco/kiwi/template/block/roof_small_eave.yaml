@@ -18,4 +18,5 @@ properties:
       - outer
       - left_end
       - right_end
+  shape: xkdeco:roof_small_eave
   no_occlusion: true

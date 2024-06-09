@@ -2,3 +2,4 @@ material: xkdeco:stone
 components:
 - water_loggable
 - horizontal
+shape: xkdeco:stone_handrail_lion_statue

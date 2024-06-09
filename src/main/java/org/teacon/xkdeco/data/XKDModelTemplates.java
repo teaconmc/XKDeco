@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.util.RoofUtil;
+import org.teacon.xkdeco.block.XKDStateProperties;
 
 import com.google.common.collect.Maps;
 
@@ -153,20 +153,20 @@ public class XKDModelTemplates {
 		createShift("template_roof_tip", TextureSlot.ALL);
 		createShift("air_duct_oblique", TextureSlot.ALL);
 
-		for (RoofUtil.RoofVariant variant : RoofUtil.RoofVariant.values()) {
-			for (RoofUtil.RoofShape shape : RoofUtil.RoofShape.values()) {
-				for (RoofUtil.RoofHalf half : RoofUtil.RoofHalf.values()) {
+		for (XKDStateProperties.RoofVariant variant : XKDStateProperties.RoofVariant.values()) {
+			for (XKDStateProperties.RoofShape shape : XKDStateProperties.RoofShape.values()) {
+				for (XKDStateProperties.RoofHalf half : XKDStateProperties.RoofHalf.values()) {
 					String suffix = "";
-					if (variant != RoofUtil.RoofVariant.NORMAL) {
+					if (variant != XKDStateProperties.RoofVariant.NORMAL) {
 						suffix += "_" + variant;
 					}
-					if (shape != RoofUtil.RoofShape.STRAIGHT) {
+					if (shape != XKDStateProperties.RoofShape.STRAIGHT) {
 						suffix += "_" + shape;
 					}
-					if (half == RoofUtil.RoofHalf.UPPER) {
+					if (half == XKDStateProperties.RoofHalf.UPPER) {
 						suffix += "_top";
 					}
-					if (shape != RoofUtil.RoofShape.STRAIGHT) {
+					if (shape != XKDStateProperties.RoofShape.STRAIGHT) {
 						create("template_roof" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
 					} else {
 						create("template_roof" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER);
@@ -174,28 +174,28 @@ public class XKDModelTemplates {
 				}
 			}
 		}
-		for (RoofUtil.RoofEaveShape shape : RoofUtil.RoofEaveShape.values()) {
-			for (RoofUtil.RoofHalf half : RoofUtil.RoofHalf.values()) {
+		for (XKDStateProperties.RoofEaveShape shape : XKDStateProperties.RoofEaveShape.values()) {
+			for (XKDStateProperties.RoofHalf half : XKDStateProperties.RoofHalf.values()) {
 				String suffix = "";
-				if (shape != RoofUtil.RoofEaveShape.STRAIGHT) {
+				if (shape != XKDStateProperties.RoofEaveShape.STRAIGHT) {
 					suffix += "_" + shape;
 				}
-				if (half == RoofUtil.RoofHalf.UPPER) {
+				if (half == XKDStateProperties.RoofHalf.UPPER) {
 					suffix += "_top";
 				}
 				create("template_roof_small_eave" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE);
 				create("template_roof_eave" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
 			}
 		}
-		for (RoofUtil.RoofVariant variant : RoofUtil.RoofVariant.values()) {
-			for (RoofUtil.RoofEndShape shape : RoofUtil.RoofEndShape.values()) {
-				for (RoofUtil.RoofHalf half : RoofUtil.RoofHalf.values()) {
+		for (XKDStateProperties.RoofVariant variant : XKDStateProperties.RoofVariant.values()) {
+			for (XKDStateProperties.RoofEndShape shape : XKDStateProperties.RoofEndShape.values()) {
+				for (XKDStateProperties.RoofHalf half : XKDStateProperties.RoofHalf.values()) {
 					String suffix = "";
-					if (variant != RoofUtil.RoofVariant.NORMAL) {
+					if (variant != XKDStateProperties.RoofVariant.NORMAL) {
 						suffix += "_" + variant;
 					}
 					suffix += "_" + shape;
-					if (half == RoofUtil.RoofHalf.UPPER) {
+					if (half == XKDStateProperties.RoofHalf.UPPER) {
 						suffix += "_top";
 					}
 					create("template_roof_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_INNER, SLOT_RIDGE);
@@ -204,21 +204,21 @@ public class XKDModelTemplates {
 				}
 			}
 		}
-		for (RoofUtil.RoofVariant variant : RoofUtil.RoofVariant.values()) {
-			if (variant == RoofUtil.RoofVariant.SLOW) {
+		for (XKDStateProperties.RoofVariant variant : XKDStateProperties.RoofVariant.values()) {
+			if (variant == XKDStateProperties.RoofVariant.SLOW) {
 				continue;
 			}
-			for (RoofUtil.RoofHalf half : RoofUtil.RoofHalf.values()) {
+			for (XKDStateProperties.RoofHalf half : XKDStateProperties.RoofHalf.values()) {
 				String suffix = "";
-				if (variant != RoofUtil.RoofVariant.NORMAL) {
+				if (variant != XKDStateProperties.RoofVariant.NORMAL) {
 					suffix += "_" + variant;
 				}
-				if (half == RoofUtil.RoofHalf.UPPER) {
+				if (half == XKDStateProperties.RoofHalf.UPPER) {
 					suffix += "_top";
 				}
 				create("template_roof_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_INNER);
 				create("template_roof_small_ridge_end_asian" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_RIDGE2);
-				if (variant == RoofUtil.RoofVariant.NORMAL) {
+				if (variant == XKDStateProperties.RoofVariant.NORMAL) {
 					create("template_roof_small_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE2);
 				}
 			}

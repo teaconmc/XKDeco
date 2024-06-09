@@ -9,4 +9,5 @@ properties:
       values:
       - upper
       - lower
+  shape: xkdeco:roof_tip
   no_occlusion: true
