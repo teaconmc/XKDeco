@@ -1,9 +1,7 @@
 {
   "credit": "Made by XeKr with Blockbench",
-  "parent": "block/cube",
+  "parent": "block/cube_all",
   "textures": {
-    "0": "xkdeco:block/furniture/ebony_shelf",
-    "particle": "xkdeco:block/furniture/ebony_shelf"
   },
   "elements": [
     {
@@ -25,7 +23,7 @@
             16,
             1
           ],
-          "texture": "#0"
+          "texture": "#particle"
         },
         "east": {
           "uv": [
@@ -35,7 +33,7 @@
             8
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "south": {
           "uv": [
@@ -44,7 +42,7 @@
             16,
             1
           ],
-          "texture": "#0"
+          "texture": "#particle"
         },
         "west": {
           "uv": [
@@ -54,7 +52,7 @@
             8
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "up": {
           "uv": [
@@ -63,7 +61,7 @@
             16,
             8
           ],
-          "texture": "#0"
+          "texture": "#particle"
         },
         "down": {
           "uv": [
@@ -72,7 +70,7 @@
             16,
             8
           ],
-          "texture": "#0"
+          "texture": "#particle"
         }
       }
     },
@@ -95,7 +93,7 @@
             16,
             1
           ],
-          "texture": "#0"
+          "texture": "#particle"
         },
         "east": {
           "uv": [
@@ -105,7 +103,7 @@
             8
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "south": {
           "uv": [
@@ -114,7 +112,7 @@
             16,
             1
           ],
-          "texture": "#0"
+          "texture": "#particle"
         },
         "west": {
           "uv": [
@@ -124,7 +122,7 @@
             8
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "up": {
           "uv": [
@@ -133,7 +131,7 @@
             16,
             8
           ],
-          "texture": "#0"
+          "texture": "#particle"
         },
         "down": {
           "uv": [
@@ -142,7 +140,7 @@
             16,
             8
           ],
-          "texture": "#0"
+          "texture": "#particle"
         }
       }
     },
@@ -166,7 +164,7 @@
             1
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "east": {
           "uv": [
@@ -176,7 +174,7 @@
             8
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "south": {
           "uv": [
@@ -186,7 +184,7 @@
             1
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "west": {
           "uv": [
@@ -196,7 +194,7 @@
             8
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         }
       }
     },
@@ -229,7 +227,7 @@
             14
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "east": {
           "uv": [
@@ -239,7 +237,7 @@
             13
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "south": {
           "uv": [
@@ -249,7 +247,7 @@
             14
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "west": {
           "uv": [
@@ -259,7 +257,7 @@
             13
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         }
       }
     },
@@ -292,7 +290,7 @@
             14
           ],
           "rotation": 180,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "south": {
           "uv": [
@@ -302,7 +300,7 @@
             14
           ],
           "rotation": 180,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "up": {
           "uv": [
@@ -312,7 +310,7 @@
             13
           ],
           "rotation": 180,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "down": {
           "uv": [
@@ -322,7 +320,7 @@
             13
           ],
           "rotation": 180,
-          "texture": "#0"
+          "texture": "#particle"
         }
       }
     },
@@ -346,7 +344,7 @@
             1
           ],
           "rotation": 90,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "east": {
           "uv": [
@@ -356,7 +354,7 @@
             8
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "south": {
           "uv": [
@@ -366,7 +364,7 @@
             1
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         },
         "west": {
           "uv": [
@@ -376,7 +374,7 @@
             8
           ],
           "rotation": 270,
-          "texture": "#0"
+          "texture": "#particle"
         }
       }
     }
