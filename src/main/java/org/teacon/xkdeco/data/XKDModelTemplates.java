@@ -76,6 +76,12 @@ public class XKDModelTemplates {
 	public static final ModelTemplate FALLEN_LEAVES = create("template_fallen_leaves", TextureSlot.ALL);
 	public static final ModelTemplate FALLEN_LEAVES_SLAB = create("template_fallen_leaves_slab", "_slab", TextureSlot.ALL);
 	public static final ModelTemplate NATURAL_SLAB = create("template_natural_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
+	public static final ModelTemplate WOODEN_SHELF = create("wooden_shelf", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_SHELF_2 = create("wooden_shelf_2", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_SHELF_3 = create("wooden_shelf_3", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_SHELF_4 = create("wooden_shelf_4", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_SHELF_5 = create("wooden_shelf_5", TextureSlot.PARTICLE);
+	public static final ModelTemplate WOODEN_SHELF_6 = create("wooden_shelf_6", TextureSlot.PARTICLE);
 	public static final TexturedModel.Provider WOODEN_TABLE_PROVIDER = createDefault(
 			XKDModelTemplates::allAndSide,
 			create("wooden_table", TextureSlot.ALL, TextureSlot.SIDE));
