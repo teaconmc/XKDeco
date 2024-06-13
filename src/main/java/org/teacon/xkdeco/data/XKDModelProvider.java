@@ -16,6 +16,8 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
@@ -831,8 +833,10 @@ public class XKDModelProvider extends FabricModelProvider {
 		XKDModelTemplates.WOODEN_FENCE_OBLIQUE_STEEP.create(fenceObliqueSteep, textureMapping, generators.modelOutput);
 		createHorizontal(id + "_fence_oblique_steep", "");
 
-//		Block shelf = block(id + "_shelf");
-//		createBlockStateOnly(id + "_shelf", "", true, 6);
+		Block shelf = block(id + "_shelf");
+//		XKDModelTemplates.WOODEN_SHELF.create(shelf, TextureMapping.particle(shelf), generators.modelOutput);
+//		createBlockStateOnly(id + "_shelf","", true, 6);
+		createWoodenShelf(id, 6);
 
 		Block emptyShelf = block(id + "_empty_shelf");
 		XKDModelTemplates.WOODEN_EMPTY_SHELF.create(emptyShelf, TextureMapping.particle(block(id + "_shelf")), generators.modelOutput);
@@ -844,9 +848,30 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	}
 
-	private void createWoodenShelf(String id) {
+	private void createWoodenShelf(String id, int randomVariants) {
 		Block block = block(id + "_shelf");
-		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block, "_shelf"));
+		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block));
+		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" );
+		List<Variant> variants = Lists.newArrayList(Variant.variant().with(VariantProperties.MODEL, modelLocation));
+		List<ModelTemplate> templates = Lists.newArrayList(
+				XKDModelTemplates.WOODEN_SHELF,
+				XKDModelTemplates.WOODEN_SHELF_2,
+				XKDModelTemplates.WOODEN_SHELF_3,
+				XKDModelTemplates.WOODEN_SHELF_4,
+				XKDModelTemplates.WOODEN_SHELF_5,
+				XKDModelTemplates.WOODEN_SHELF_6);
+		if (randomVariants > 1) {
+			for (int i = 0; i < templates.size(); i++) {
+				String suffix = i == 0 ? "" : "_" + (i + 1);
+				templates.get(i).create(modelLocation.withSuffix(suffix), mapping, generators.modelOutput);
+				variants.add(Variant.variant().with(VariantProperties.MODEL, modelLocation.withSuffix(suffix)));
+			}
+		}
+		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+						block,
+						variants.toArray(Variant[]::new))
+				.with(BlockModelGenerators.createHorizontalFacingDispatch()));
+		generators.delegateItemModel(block, modelLocation);
 	}
 
 	private void createWoodenFenceGate(String id, String template, TextureMapping mapping) {
