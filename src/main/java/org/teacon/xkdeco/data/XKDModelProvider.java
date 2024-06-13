@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.data;
 
 import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
+import static net.minecraft.data.models.model.TextureMapping.particle;
 import static org.teacon.xkdeco.block.XKDStateProperties.HALF;
 import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_EAVE_SHAPE;
 import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_END_SHAPE;
@@ -829,6 +830,23 @@ public class XKDModelProvider extends FabricModelProvider {
 		Block fenceObliqueSteep = block(id + "_fence_oblique_steep");
 		XKDModelTemplates.WOODEN_FENCE_OBLIQUE_STEEP.create(fenceObliqueSteep, textureMapping, generators.modelOutput);
 		createHorizontal(id + "_fence_oblique_steep", "");
+
+//		Block shelf = block(id + "_shelf");
+//		createBlockStateOnly(id + "_shelf", "", true, 6);
+
+		Block emptyShelf = block(id + "_empty_shelf");
+		XKDModelTemplates.WOODEN_EMPTY_SHELF.create(emptyShelf, TextureMapping.particle(block(id + "_shelf")), generators.modelOutput);
+		createHorizontal(id + "_empty_shelf", "");
+
+		Block dividedShelf = block(id + "_divided_shelf");
+		XKDModelTemplates.WOODEN_DIVIDED_SHELF.create(dividedShelf, TextureMapping.particle(block(id + "_shelf")), generators.modelOutput);
+		createHorizontal(id + "_divided_shelf", "");
+
+	}
+
+	private void createWoodenShelf(String id) {
+		Block block = block(id + "_shelf");
+		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block, "_shelf"));
 	}
 
 	private void createWoodenFenceGate(String id, String template, TextureMapping mapping) {
