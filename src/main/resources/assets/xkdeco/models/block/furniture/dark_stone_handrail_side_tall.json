@@ -1,0 +1,42 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/template_wall_side",
+	"textures": {
+		"particle": "xkdeco:block/dark_stone_handrail_wall",
+		"wall": "xkdeco:block/dark_stone_handrail_wall",
+		"top": "xkdeco:block/dark_wall_base_top"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 0],
+			"to": [10, 9, 8],
+			"faces": {
+				"north": {"uv": [6, 7, 10, 16], "texture": "#wall"},
+				"east": {"uv": [8, 7, 16, 16], "texture": "#wall"},
+				"west": {"uv": [0, 7, 8, 16], "texture": "#wall"},
+				"up": {"uv": [0, 0, 8, 4], "rotation": 90, "texture": "#top"},
+				"down": {"uv": [0, 0, 8, 4], "rotation": 90, "texture": "#top"}
+			}
+		},
+		{
+			"from": [6, 12, 0],
+			"to": [10, 16, 8],
+			"faces": {
+				"north": {"uv": [6, 0, 10, 4], "texture": "#wall"},
+				"east": {"uv": [8, 0, 16, 4], "texture": "#wall"},
+				"west": {"uv": [0, 0, 8, 4], "texture": "#wall"},
+				"up": {"uv": [0, 0, 8, 4], "rotation": 90, "texture": "#top"},
+				"down": {"uv": [0, 0, 8, 4], "rotation": 90, "texture": "#top"}
+			}
+		},
+		{
+			"from": [7, 9, 5],
+			"to": [9, 12, 8],
+			"faces": {
+				"north": {"uv": [7, 4, 9, 7], "texture": "#wall"},
+				"east": {"uv": [8, 4, 11, 7], "texture": "#wall"},
+				"west": {"uv": [5, 4, 8, 7], "texture": "#wall"}
+			}
+		}
+	]
+}

@@ -1,7 +1,6 @@
 package org.teacon.xkdeco.data;
 
 import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
-import static net.minecraft.data.models.model.TextureMapping.particle;
 import static org.teacon.xkdeco.block.XKDStateProperties.HALF;
 import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_EAVE_SHAPE;
 import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_END_SHAPE;
@@ -15,8 +14,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -392,6 +389,19 @@ public class XKDModelProvider extends FabricModelProvider {
 				ModelLocationUtils.getModelLocation(block("steel_ladder").asItem()),
 				TextureMapping.layer0(getBlockTexture(block("steel_safety_ladder"), "_side")),
 				generators.modelOutput);
+
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
+				block("dark_stone_handrail"),
+				XKDeco.id("block/furniture/dark_stone_handrail_post"),
+				XKDeco.id("block/furniture/dark_stone_handrail"),
+				XKDeco.id("block/furniture/dark_stone_handrail_side_tall")));
+		generators.delegateItemModel(block("dark_stone_handrail"), XKDeco.id("block/furniture/dark_stone_handrail_inventory"));
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
+				block("light_stone_handrail"),
+				XKDeco.id("block/furniture/light_stone_handrail_post"),
+				XKDeco.id("block/furniture/light_stone_handrail"),
+				XKDeco.id("block/furniture/light_stone_handrail_side_tall")));
+		generators.delegateItemModel(block("light_stone_handrail"), XKDeco.id("block/furniture/light_stone_handrail_inventory"));
 
 		createBlockStateOnly("factory_ceiling_lamp", "furniture/", true);
 		createBlockStateOnly("factory_pendant", "furniture/", true);
@@ -833,9 +843,6 @@ public class XKDModelProvider extends FabricModelProvider {
 		XKDModelTemplates.WOODEN_FENCE_OBLIQUE_STEEP.create(fenceObliqueSteep, textureMapping, generators.modelOutput);
 		createHorizontal(id + "_fence_oblique_steep", "");
 
-		Block shelf = block(id + "_shelf");
-//		XKDModelTemplates.WOODEN_SHELF.create(shelf, TextureMapping.particle(shelf), generators.modelOutput);
-//		createBlockStateOnly(id + "_shelf","", true, 6);
 		createWoodenShelf(id, 6);
 
 		Block emptyShelf = block(id + "_empty_shelf");

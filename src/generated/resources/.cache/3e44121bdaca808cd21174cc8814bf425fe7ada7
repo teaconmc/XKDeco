@@ -1,4 +1,4 @@
-// 1.20.1	2024-06-14T01:25:05.6647909	XeKr's Decoration/Model Definitions
+// 1.20.1	2024-06-17T02:32:03.14989	XeKr's Decoration/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -113,6 +113,7 @@ e95a7e960da87491fa1fa376a592697003e2f0c7 assets/xkdeco/blockstates/cyan_roof_sma
 125a2253ca834e3a9ff2bb6c91b1a7a0b38c8fa0 assets/xkdeco/blockstates/cyan_tile_stairs.json
 4bb5fee3ba19b39b03a30246440ca8664b17e5bf assets/xkdeco/blockstates/dark_column_base.json
 701effe5e26f2e5d2be3a3d3f45cac8b3a3b027e assets/xkdeco/blockstates/dark_fish_bowl.json
+88fe7d5c6489850ae16bc0a47a63631d8d4b331b assets/xkdeco/blockstates/dark_stone_handrail.json
 618a4bbb26f555a3fb22e1669188ead426815049 assets/xkdeco/blockstates/dark_stone_handrail_end.json
 c07f0019f435bdfef8c33e0a4f3af55c5f8b3d0c assets/xkdeco/blockstates/dark_stone_handrail_head.json
 aa36a0cca296614b5d9a1f643740127ee291d1c3 assets/xkdeco/blockstates/dark_stone_handrail_lion_statue.json
@@ -314,6 +315,7 @@ dcd1da100ea9e915523ecec3087da4400a4f3687 assets/xkdeco/blockstates/inscription_b
 2c7c2ba6111a4dc0cb29c93d173768b38e521e61 assets/xkdeco/blockstates/item_frame_cover.json
 72f48f47e6f0f871fa4d515acbd2b63538d78394 assets/xkdeco/blockstates/item_projector.json
 d6ac83b83d6d2e7264ff4cea1e4f2da374dd3780 assets/xkdeco/blockstates/light_column_base.json
+ce60c98fbc06f226a29a5edeff7ae3ad1d9a71d7 assets/xkdeco/blockstates/light_stone_handrail.json
 2ccef6a721971a0440b9039ab3f974f60636c7f0 assets/xkdeco/blockstates/light_stone_handrail_end.json
 d5216833da2dfb70fd751d42b48d22411d8f9505 assets/xkdeco/blockstates/light_stone_handrail_head.json
 7cd1f6d45422f1c15774930c789720fac243cf3b assets/xkdeco/blockstates/light_stone_handrail_lion_statue.json
@@ -1859,6 +1861,7 @@ ec8089f387a641f9338f69a3d0cf4967f177d5e3 assets/xkdeco/models/item/cyan_tile_sla
 555c43aa59f688924efe2d88626ead8e3f1c84c7 assets/xkdeco/models/item/cyan_tile_stairs.json
 b1dd2a94b2e74a53798f8e2392720c4ee699b704 assets/xkdeco/models/item/dark_column_base.json
 14c5af78fef8a68b39f8e1e9369dfe56eae5be90 assets/xkdeco/models/item/dark_fish_bowl.json
+f5cd44ce480dc30482599b63b39ce53be0f86fbe assets/xkdeco/models/item/dark_stone_handrail.json
 2d68842b388eeed1d9165a1c1635964f0449ce6f assets/xkdeco/models/item/dark_stone_handrail_end.json
 1f98f8a096261106a60c178958ea1289e4bd9297 assets/xkdeco/models/item/dark_stone_handrail_head.json
 4830d0c37a0c72f633b78773796ed313a0aea048 assets/xkdeco/models/item/dark_stone_handrail_lion_statue.json
@@ -2059,6 +2062,7 @@ b543a095e4a00319ee8c9fa45b3b4cf3908d72c9 assets/xkdeco/models/item/ink_painting.
 321a130e8597f29ab1d62cf302e2a94c6a8c319c assets/xkdeco/models/item/iron_windmill.json
 e45606b67719234d1a14cf1d5955c8b86aa91583 assets/xkdeco/models/item/item_frame_cover.json
 13db9599d5dcc44cdc0ead8b2d9fb0fb6e868f25 assets/xkdeco/models/item/light_column_base.json
+d9b94de85972006ee468c8d04b9de63093ed50bc assets/xkdeco/models/item/light_stone_handrail.json
 510ea6887efbb7b9834a6d6d301e9693bd2fdbc3 assets/xkdeco/models/item/light_stone_handrail_end.json
 3830c8403ff3ee8e655bd7b8f188dc8af4e3036f assets/xkdeco/models/item/light_stone_handrail_head.json
 0708ecf860fd4fded22cc0221f7bdce6a5420aeb assets/xkdeco/models/item/light_stone_handrail_lion_statue.json
