@@ -1,4 +1,4 @@
-render_type: cutout
+render_type: translucent
 material: xkdeco:stone
 no_occlusion: true
 glass_type: clear

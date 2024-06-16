@@ -1,5 +1,6 @@
 render_type: translucent
 material: xkdeco:stone
 light_emission: 15
+no_collision: true
 no_occlusion: true
 glass_type: translucent
