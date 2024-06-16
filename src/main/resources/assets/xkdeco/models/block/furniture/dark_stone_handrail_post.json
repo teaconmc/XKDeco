@@ -1,0 +1,22 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/template_wall_post",
+	"textures": {
+		"particle": "xkdeco:block/dark_stone_handrail_post",
+		"wall": "xkdeco:block/dark_stone_handrail_post"
+	},
+	"elements": [
+		{
+			"from": [4, -0.05, 4],
+			"to": [12, 16.05, 12],
+			"faces": {
+				"north": {"uv": [8, 0, 16, 16], "texture": "#wall"},
+				"east": {"uv": [8, 0, 16, 16], "texture": "#wall"},
+				"south": {"uv": [8, 0, 16, 16], "texture": "#wall"},
+				"west": {"uv": [8, 0, 16, 16], "texture": "#wall"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#wall"},
+				"down": {"uv": [0, 0, 8, 8], "texture": "#wall"}
+			}
+		}
+	]
+}
