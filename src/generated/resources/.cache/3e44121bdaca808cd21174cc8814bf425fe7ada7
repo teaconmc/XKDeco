@@ -1,4 +1,4 @@
-// 1.20.1	2024-06-17T02:32:03.14989	XeKr's Decoration/Model Definitions
+// 1.20.1	2024-06-17T17:01:37.6567552	XeKr's Decoration/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -295,6 +295,9 @@ f8a59642e35ab08edb24b66a0ae495b4c5eaf142 assets/xkdeco/blockstates/green_tile_st
 9fbbcdcfb614d648aebc6733d2171690437498f1 assets/xkdeco/blockstates/hollow_mahogany_column_wall.json
 2d96063cd3dcf7615c6682ea2a314e83b69a7197 assets/xkdeco/blockstates/hollow_steel_bars.json
 3d0dc756eaf42f102b755133c195958a7a0cba2e assets/xkdeco/blockstates/hollow_steel_beam.json
+e5f0c4d309ec1a80655e87b711c060ef4943aaab assets/xkdeco/blockstates/hollow_steel_beam_oblique.json
+c1258b8728e17c05bb507d6ee38d2da9c470edd4 assets/xkdeco/blockstates/hollow_steel_beam_oblique_slow.json
+e6a821951e46894c60b38d44535656bc23719ef3 assets/xkdeco/blockstates/hollow_steel_beam_oblique_steep.json
 6cd1bb39afa6792802a1dedfc5e7359a5d40eed1 assets/xkdeco/blockstates/hollow_steel_block.json
 9ae8ee0fbd3df54554e86938fce4b71c511f6c16 assets/xkdeco/blockstates/hollow_steel_half_beam.json
 39bb61030a1f8b572b3fd0756bad4294450b140e assets/xkdeco/blockstates/hollow_steel_trapdoor.json
@@ -2043,6 +2046,9 @@ ec119506257eb1b88887a12fe4f793c7c5aba280 assets/xkdeco/models/item/hanging_willo
 0988f23172f1e39c4aa21070f72ae7df1c02a5ec assets/xkdeco/models/item/hollow_mahogany_column_wall.json
 df015332245364f724b494d5ae7ba998ff4dcfbe assets/xkdeco/models/item/hollow_steel_bars.json
 6a64522d3510894df17eab64b4c29ba66f1b9f77 assets/xkdeco/models/item/hollow_steel_beam.json
+25a47d0e8c0b639182e1d8afa13fa284a7b27aa9 assets/xkdeco/models/item/hollow_steel_beam_oblique.json
+fb4bbafed8071ed974b4933ef58c4d2bd2b855d6 assets/xkdeco/models/item/hollow_steel_beam_oblique_slow.json
+638e220a7f59050e51fdd0abe572c0edecd9b13b assets/xkdeco/models/item/hollow_steel_beam_oblique_steep.json
 ededb74a9398615bea34d00e83637d143be76062 assets/xkdeco/models/item/hollow_steel_block.json
 45b7b66caae746866e3757d3945ef92f36ac4d1b assets/xkdeco/models/item/hollow_steel_half_beam.json
 11fb3b038a4e9c2dc878afc7fe30b4cf119620a4 assets/xkdeco/models/item/hollow_steel_trapdoor.json

@@ -1,4 +1,4 @@
-// 1.20.1	2024-05-27T00:49:31.8513933	XeKr's Decoration/Block Loot Tables
+// 1.20.1	2024-06-17T17:01:37.6926577	XeKr's Decoration/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_tables/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_tables/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_tables/blocks/aztec_chiseled_stonebricks.json
@@ -297,6 +297,9 @@ cc68af42528f115c3042870668505da2fe947b2f data/xkdeco/loot_tables/blocks/green_ti
 fada271a24124b1b457b28b29bfa37ebe3a421c1 data/xkdeco/loot_tables/blocks/hollow_mahogany_column_wall.json
 652ef1fc2293e56c17454790b8243e7acdba5e4f data/xkdeco/loot_tables/blocks/hollow_steel_bars.json
 ecfbc9fe3af7c6cc5caed84067e55ea6ed6d27c5 data/xkdeco/loot_tables/blocks/hollow_steel_beam.json
+c83016833b6826504054d3dd8f4eca5fab22230c data/xkdeco/loot_tables/blocks/hollow_steel_beam_oblique.json
+963b4f1851611c2821ca29f8a4319dc55088d284 data/xkdeco/loot_tables/blocks/hollow_steel_beam_oblique_slow.json
+513d7d36d7187c39b00e3c9d98be9656bdd8fb95 data/xkdeco/loot_tables/blocks/hollow_steel_beam_oblique_steep.json
 90e4c20b34eff77b0837911c62acf359a3b0544f data/xkdeco/loot_tables/blocks/hollow_steel_block.json
 e93dcb7b040143db4a66ba59ee834ddda07b96c0 data/xkdeco/loot_tables/blocks/hollow_steel_half_beam.json
 f623523834a9d67c02e47c42e8a21a883c2428af data/xkdeco/loot_tables/blocks/hollow_steel_trapdoor.json
