@@ -520,6 +520,9 @@ registry_order:
   - air_duct_oblique
   - hollow_steel_beam
   - hollow_steel_half_beam
+  - hollow_steel_beam_oblique
+  - hollow_steel_beam_oblique_slow
+  - hollow_steel_beam_oblique_steep
   - dark_wall_base
   - dark_column_base
   - light_wall_base

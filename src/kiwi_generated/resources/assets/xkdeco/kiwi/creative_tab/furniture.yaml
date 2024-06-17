@@ -102,6 +102,9 @@ contents:
 - xkdeco:air_duct_oblique
 - xkdeco:hollow_steel_beam
 - xkdeco:hollow_steel_half_beam
+- xkdeco:hollow_steel_beam_oblique
+- xkdeco:hollow_steel_beam_oblique_slow
+- xkdeco:hollow_steel_beam_oblique_steep
 - xkdeco:varnished_fence_head
 - xkdeco:varnished_window
 - xkdeco:varnished_awning_window
