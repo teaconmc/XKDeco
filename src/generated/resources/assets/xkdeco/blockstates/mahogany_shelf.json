@@ -1,0 +1,117 @@
+{
+  "variants": {
+    "facing=east": [
+      {
+        "model": "xkdeco:block/mahogany_shelf",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_2",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_3",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_4",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_5",
+        "y": 90
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_6",
+        "y": 90
+      }
+    ],
+    "facing=north": [
+      {
+        "model": "xkdeco:block/mahogany_shelf"
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf"
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_2"
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_3"
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_4"
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_5"
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_6"
+      }
+    ],
+    "facing=south": [
+      {
+        "model": "xkdeco:block/mahogany_shelf",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_2",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_3",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_4",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_5",
+        "y": 180
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_6",
+        "y": 180
+      }
+    ],
+    "facing=west": [
+      {
+        "model": "xkdeco:block/mahogany_shelf",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_2",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_3",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_4",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_5",
+        "y": 270
+      },
+      {
+        "model": "xkdeco:block/mahogany_shelf_6",
+        "y": 270
+      }
+    ]
+  }
+}

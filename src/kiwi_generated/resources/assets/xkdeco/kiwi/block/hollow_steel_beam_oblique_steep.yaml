@@ -1,0 +1,4 @@
+template: xkdeco:hollow_steel_beam_oblique_steep
+render_type: cutout
+material: xkdeco:stone
+glass_type: hollow_steel

@@ -1,0 +1,14 @@
+type: simple
+properties:
+  render_type: cutout
+  components:
+  - water_loggable
+  - horizontal
+  - type: simple
+    properties:
+    - name: half
+      values:
+      - lower
+      - upper
+  shape: xkdeco:hollow_steel_beam_oblique_steep
+  no_occlusion: true

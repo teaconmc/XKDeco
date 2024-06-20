@@ -4,4 +4,5 @@ properties:
   - water_loggable
   - horizontal
   shape: xkdeco:fence_oblique_steep
+  collision_shape: xkdeco:fence_oblique_steep_collision
   no_occlusion: true
