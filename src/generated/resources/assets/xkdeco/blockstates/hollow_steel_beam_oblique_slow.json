@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_slow",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_slow"
+    },
+    "facing=south": {
+      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_slow",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_slow",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "xkdeco:block/wooden_shelf_4",
+  "textures": {
+    "particle": "xkdeco:block/mahogany_shelf"
+  }
+}

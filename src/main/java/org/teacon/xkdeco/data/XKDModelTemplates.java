@@ -160,6 +160,9 @@ public class XKDModelTemplates {
 		createShift("template_roof_deco_oblique", TextureSlot.ALL);
 		createShift("template_roof_tip", TextureSlot.ALL);
 		createShift("air_duct_oblique", TextureSlot.ALL);
+		createShift("furniture/hollow_steel_beam_oblique", TextureSlot.BOTTOM);
+		createShift("furniture/hollow_steel_beam_oblique_slow", TextureSlot.BOTTOM);
+		createShift("furniture/hollow_steel_beam_oblique_steep", TextureSlot.BOTTOM);
 
 		for (XKDStateProperties.RoofVariant variant : XKDStateProperties.RoofVariant.values()) {
 			for (XKDStateProperties.RoofShape shape : XKDStateProperties.RoofShape.values()) {

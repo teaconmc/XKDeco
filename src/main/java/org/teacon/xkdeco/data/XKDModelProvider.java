@@ -83,6 +83,12 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/grass_block_slab_top",
 			"block/air_duct_oblique",
 			"block/air_duct_oblique_top",
+			"block/furniture/hollow_steel_beam_oblique",
+			"block/furniture/hollow_steel_beam_oblique_top",
+			"block/furniture/hollow_steel_beam_oblique_slow",
+			"block/furniture/hollow_steel_beam_oblique_slow_top",
+			"block/furniture/hollow_steel_beam_oblique_steep",
+			"block/furniture/hollow_steel_beam_oblique_steep_top",
 			"block/quartz_wall_post");
 	private static final Set<Block> SKIPPED_TRAPDOORS = Set.of(
 			block("glass_trapdoor"),
@@ -383,6 +389,9 @@ public class XKDModelProvider extends FabricModelProvider {
 				XKDeco.id("block/furniture/hollow_steel_beam_side"),
 				XKDeco.id("block/furniture/hollow_steel_beam_side_tall")));
 		generators.delegateItemModel(block("hollow_steel_beam"), XKDeco.id("block/furniture/hollow_steel_beam_inventory"));
+//		createHorizontalShift("hollow_steel_beam_oblique", "hollow_steel_beam_oblique", null, false);
+//		createHorizontalShift("hollow_steel_beam_oblique_slow", "hollow_steel_beam_oblique_slow", null, false);
+//		createHorizontalShift("hollow_steel_beam_oblique_steep", "hollow_steel_beam_oblique_steep", null, false);
 		createBlockStateOnly("steel_safety_ladder", true);
 		createBlockStateOnly("steel_ladder", false);
 		ModelTemplates.FLAT_ITEM.create(
