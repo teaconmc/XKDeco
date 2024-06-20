@@ -1,0 +1,12 @@
+{
+	"LightBlock": [
+		{
+			"block": "xkdeco:factory_warning_lamp",
+			"r": 191,
+			"g": 30,
+			"b": 12,
+			"a": 255,
+			"radius": 10
+		}
+	]
+}

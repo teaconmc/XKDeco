@@ -199,7 +199,7 @@ dependencies {
     }
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     implementation fg.deobf("maven.modrinth:jade:11.8.0")
-    implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
+//    implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
     implementation fg.deobf("maven.modrinth:modernfix:u5R7SNlj")
