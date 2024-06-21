@@ -3,4 +3,5 @@ components:
 - water_loggable
 - horizontal
 shape: xkdeco:shelf
+collision_shape: xkdeco:empty_shelf
 no_occlusion: true
