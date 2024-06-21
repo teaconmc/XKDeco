@@ -20,18 +20,18 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import snownee.kiwi.customization.block.BasicBlock;
 import snownee.kiwi.customization.placement.PlaceSlot;
 import snownee.kiwi.util.NotNullByDefault;
 import snownee.kiwi.util.Util;
 
 @SuppressWarnings("deprecation")
 @NotNullByDefault
-public class AirDuctBlock extends Block implements SimpleWaterloggedBlock {
+public class AirDuctBlock extends BasicBlock {
 
 	public AirDuctBlock(Properties pProperties) {
 		super(pProperties);

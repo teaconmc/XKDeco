@@ -1,4 +1,5 @@
 type: simple
+class: org.teacon.xkdeco.block.ObliqueAirDuctBlock
 properties:
   render_type: cutout
   components:
