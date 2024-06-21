@@ -1,5 +1,4 @@
 template: slab
-render_type: translucent
+render_type: cutout
 material: xkdeco:stone
-no_occlusion: true
 glass_type: clear

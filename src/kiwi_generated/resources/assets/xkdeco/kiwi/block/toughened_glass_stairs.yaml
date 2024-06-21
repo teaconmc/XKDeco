@@ -1,5 +1,4 @@
 template: stair
 render_type: translucent
 material: xkdeco:toughened_glass
-no_occlusion: true
 glass_type: toughened
