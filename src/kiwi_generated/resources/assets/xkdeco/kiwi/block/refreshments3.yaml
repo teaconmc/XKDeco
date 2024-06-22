@@ -4,4 +4,5 @@ components:
 - min: 1
   max: 7
   type: consumable
+shape: xkdeco:refreshments
 no_occlusion: true

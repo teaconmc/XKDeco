@@ -2,3 +2,4 @@ render_type: translucent
 material: xkdeco:stone
 components:
 - front_and_top
+shape: xkdeco:maya_calendar

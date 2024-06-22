@@ -2,5 +2,5 @@ material: xkdeco:wood
 components:
 - water_loggable
 - horizontal
-shape: xkdeco:screen
+shape: xkdeco:sign
 no_occlusion: true

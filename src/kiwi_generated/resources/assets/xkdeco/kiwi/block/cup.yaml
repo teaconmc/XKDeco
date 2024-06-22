@@ -1,7 +1,9 @@
+render_type: translucent
 material: xkdeco:wood
 components:
 - water_loggable
 - horizontal
 - max: 4
   type: stackable
+shape: xkdeco:teapot
 no_occlusion: true
