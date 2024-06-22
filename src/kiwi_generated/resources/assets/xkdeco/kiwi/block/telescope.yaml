@@ -1,6 +1,7 @@
-render_type: cutout
+render_type: translucent
 material: xkdeco:wood
 components:
 - water_loggable
 - horizontal
+shape: xkdeco:telescope
 no_occlusion: true

@@ -2,5 +2,5 @@ material: xkdeco:wood
 components:
 - water_loggable
 - horizontal
-shape: xkdeco:porcelain
+shape: xkdeco:porcelain_tall
 no_occlusion: true
