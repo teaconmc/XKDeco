@@ -3,4 +3,5 @@ material: xkdeco:stone
 components:
 - directional
 shape: xkdeco:item_frame_cover
+no_collision: true
 no_occlusion: true
