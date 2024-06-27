@@ -54,7 +54,7 @@ public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 			}
 			KBlockSettings settings = KBlockSettings.of(block);
 			if (settings != null) {
-				if (settings.hasComponent(KBlockComponents.CONSUMABLE.get()) || settings.hasComponent(KBlockComponents.STACKABLE.get())) {
+				if (settings.hasComponent(KBlockComponents.STACKABLE.get())) {
 					LayeredComponent layered = (LayeredComponent) settings.components.values()
 							.stream()
 							.filter($ -> $ instanceof LayeredComponent)
@@ -69,6 +69,30 @@ public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 											.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties($)
 													.setProperties(StatePropertiesPredicate.Builder.properties()
 															.hasProperty(property, i))))))));
+					continue;
+				}
+				if (settings.hasComponent(KBlockComponents.CONSUMABLE.get())) {
+					LayeredComponent layered = (LayeredComponent) settings.components.values()
+							.stream()
+							.filter($ -> $ instanceof LayeredComponent)
+							.findAny()
+							.orElseThrow();
+					IntegerProperty property = layered.getLayerProperty();
+					add(block, $ -> LootTable.lootTable().withPool(LootPool.lootPool()
+							.setRolls(ConstantValue.exactly(1))
+							.add(LootItem.lootTableItem(block)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties($)
+									.setProperties(StatePropertiesPredicate.Builder.properties()
+											.hasProperty(property, property.max)))));
+
+
+//					add(block, $ -> LootTable.lootTable().withPool(LootPool.lootPool()
+//							.setRolls(ConstantValue.exactly(1))
+//							.add(applyExplosionDecay($, LootItem.lootTableItem($).apply(
+//									IntStream.rangeClosed(property.min, property.max).boxed().toList(),
+//									i -> SetItemCountFunction.setCount(ConstantValue.exactly(i))
+//											.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties($)
+//													.setProperties(StatePropertiesPredicate.Builder.properties()
+//															.hasProperty(property, i))))))));
 					continue;
 				}
 			}
