@@ -1,5 +1,4 @@
 type: simple
-class: org.teacon.xkdeco.block.TallTableBlock
 properties:
   render_type: cutout
   components:

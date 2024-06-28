@@ -3,4 +3,5 @@ components:
 - water_loggable
 - directional
 shape: xkdeco:hologram_base
+no_collision: true
 no_occlusion: true
