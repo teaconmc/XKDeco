@@ -46,7 +46,7 @@ class ItemDefinitionProvider(TableDataProvider):
                 self.writeFile(itemId, data)
                 self.pack.providers['creative_tabs'].removeContent(itemId)
                 return
-            if templateString == 'minecraft:block':
+            if itemId in self.pack.providers['blocks'].blocks:
                 hasTranslation = False
             if templateId in self.templateTags:
                 tags.update(self.templateTags[templateId])

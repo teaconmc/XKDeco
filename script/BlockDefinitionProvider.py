@@ -13,6 +13,7 @@ class BlockDefinitionProvider(TableDataProvider):
         self.templateProperties = None
         self.tagTransformers = None
         self.order = []
+        self.blocks = set()
 
     def generate(self):
         self.templateTags = self.pack.providers['block_templates'].tags
@@ -26,6 +27,7 @@ class BlockDefinitionProvider(TableDataProvider):
     def generateRow(self, row, csvConfig):
         self.order.append(row['ID'])
         blockId = self.pack.defaultResourceLocation(row['ID'])
+        self.blocks.add(blockId)
         data = {}
         tags = set()
         templateId = None
