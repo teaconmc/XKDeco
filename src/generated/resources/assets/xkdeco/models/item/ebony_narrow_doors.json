@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "xkdeco:item/ebony_narrow_doors"
-  }
+  "parent": "xkdeco:block/ebony_narrow_doors"
 }

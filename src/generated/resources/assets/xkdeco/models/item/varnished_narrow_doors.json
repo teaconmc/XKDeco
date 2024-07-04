@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "xkdeco:item/varnished_narrow_doors"
-  }
+  "parent": "xkdeco:block/varnished_narrow_doors"
 }
