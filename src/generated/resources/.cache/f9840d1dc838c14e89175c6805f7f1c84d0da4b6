@@ -1,4 +1,4 @@
-// 1.20.1	2024-06-17T17:01:37.6926577	XeKr's Decoration/Block Loot Tables
+// 1.20.1	2024-07-04T14:55:56.9285905	XeKr's Decoration/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_tables/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_tables/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_tables/blocks/aztec_chiseled_stonebricks.json
@@ -247,7 +247,7 @@ d9e0713ce754cb2f27d7638452f5d4ade04ad2b7 data/xkdeco/loot_tables/blocks/fallen_w
 09f21a6036e533a850e65c9c96a2afa914ff6803 data/xkdeco/loot_tables/blocks/fish_tank.json
 174cec631c1e74433d6ce5c52a112752c3efbe25 data/xkdeco/loot_tables/blocks/framed_mud_wall_block.json
 ce9ff4be792e3c50bec2b571f977581662245a87 data/xkdeco/loot_tables/blocks/framed_steel_block.json
-34b0a30a91734865dc0f7d81bdfdc86714e0cb8e data/xkdeco/loot_tables/blocks/fruit_platter.json
+dc949c2457b1257485e1344119a9650969a9c93b data/xkdeco/loot_tables/blocks/fruit_platter.json
 b8b2e24c63ffbf7762467a4377e2e3884737e938 data/xkdeco/loot_tables/blocks/gilded_blackstone_bricks.json
 3354a3acd7e033ff0af85010015abd5c0d1d5035 data/xkdeco/loot_tables/blocks/gilded_blackstone_brick_pillar.json
 ca1fc4f801bb8116f1a29ba757c3e23e84ccc321 data/xkdeco/loot_tables/blocks/gilded_blackstone_brick_slab.json
@@ -464,12 +464,12 @@ a4a91a2130d0997d89c7c0f404e893f9cc7579eb data/xkdeco/loot_tables/blocks/red_sand
 f7d8659f35b48126aae978041036c1919c49de4b data/xkdeco/loot_tables/blocks/red_tiles.json
 ae56df83d646e06782c689b78079d1707a2bc4a3 data/xkdeco/loot_tables/blocks/red_tile_slab.json
 a1259446476dc59a28a6d2e9fe5bc41dbaab6cd1 data/xkdeco/loot_tables/blocks/red_tile_stairs.json
-f6e2ba3de365cab4411e14ab90aca9fa4ec672dc data/xkdeco/loot_tables/blocks/refreshments.json
-5348f5af64577ea52168f0d9d8ea71eb16306aeb data/xkdeco/loot_tables/blocks/refreshments2.json
-e9c2a263680d0492a90b9db86b4b411c4c445953 data/xkdeco/loot_tables/blocks/refreshments3.json
-a3dcaaaa9ef9c97e20ba26d9829d9d49fd29e5bc data/xkdeco/loot_tables/blocks/refreshments4.json
-5859de92ce4ae5041d1ce3490e9718de43acc5ae data/xkdeco/loot_tables/blocks/refreshments5.json
-eb1b4520bacdc02e981041e5aca278d670b5eaab data/xkdeco/loot_tables/blocks/refreshments6.json
+ff856d956ecd0e43cd0b312d81aa8663f0bc4899 data/xkdeco/loot_tables/blocks/refreshments.json
+b8fdde10d29c29fc26b3063f839ca10547ecfa4a data/xkdeco/loot_tables/blocks/refreshments2.json
+f00973ed8c598fa73ce6e234d758bce89e2bc173 data/xkdeco/loot_tables/blocks/refreshments3.json
+cca215c5040983b05099a2ddd5937bf092782547 data/xkdeco/loot_tables/blocks/refreshments4.json
+e172059b886300e218bf8b287b6e575cd024c6ff data/xkdeco/loot_tables/blocks/refreshments5.json
+2465223ed991b9eee463f8fc6e311ff8d8f9e08d data/xkdeco/loot_tables/blocks/refreshments6.json
 405c10eb3ba1a8b1c45248713afcc8ab794ded0c data/xkdeco/loot_tables/blocks/roman_column.json
 9278bc1d1caf1c5e16159baf5598ced9ce6a30a6 data/xkdeco/loot_tables/blocks/roman_column_base.json
 fd66288c49e1330947f0ceeae24b6b9e370fbd22 data/xkdeco/loot_tables/blocks/roman_composite_column_base.json

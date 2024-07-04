@@ -56,6 +56,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
+
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
@@ -83,12 +84,12 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/grass_block_slab_top",
 			"block/air_duct_oblique",
 			"block/air_duct_oblique_top",
-			"block/furniture/hollow_steel_beam_oblique",
-			"block/furniture/hollow_steel_beam_oblique_top",
-			"block/furniture/hollow_steel_beam_oblique_slow",
-			"block/furniture/hollow_steel_beam_oblique_slow_top",
-			"block/furniture/hollow_steel_beam_oblique_steep",
-			"block/furniture/hollow_steel_beam_oblique_steep_top",
+			"block/hollow_steel_beam_oblique",
+			"block/hollow_steel_beam_oblique_top",
+			"block/hollow_steel_beam_oblique_slow",
+			"block/hollow_steel_beam_oblique_slow_top",
+			"block/hollow_steel_beam_oblique_steep",
+			"block/hollow_steel_beam_oblique_steep_top",
 			"block/quartz_wall_post");
 	private static final Set<Block> SKIPPED_TRAPDOORS = Set.of(
 			block("glass_trapdoor"),
@@ -389,9 +390,9 @@ public class XKDModelProvider extends FabricModelProvider {
 				XKDeco.id("block/furniture/hollow_steel_beam_side"),
 				XKDeco.id("block/furniture/hollow_steel_beam_side_tall")));
 		generators.delegateItemModel(block("hollow_steel_beam"), XKDeco.id("block/furniture/hollow_steel_beam_inventory"));
-//		createHorizontalShift("hollow_steel_beam_oblique", "hollow_steel_beam_oblique", null, false);
-//		createHorizontalShift("hollow_steel_beam_oblique_slow", "hollow_steel_beam_oblique_slow", null, false);
-//		createHorizontalShift("hollow_steel_beam_oblique_steep", "hollow_steel_beam_oblique_steep", null, false);
+		createHorizontalShift("hollow_steel_beam_oblique", "hollow_steel_beam_oblique", null, false);
+		createHorizontalShift("hollow_steel_beam_oblique_slow", "hollow_steel_beam_oblique_slow", null, false);
+		createHorizontalShift("hollow_steel_beam_oblique_steep", "hollow_steel_beam_oblique_steep", null, false);
 		createBlockStateOnly("steel_safety_ladder", true);
 		createBlockStateOnly("steel_ladder", false);
 		ModelTemplates.FLAT_ITEM.create(
@@ -831,12 +832,11 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		textureMapping = TextureMapping.defaultTexture(block(id + "_trapdoor"));
 		textureMapping.put(TextureSlot.PARTICLE, getBlockTexture(block(id + "_window")));
-		textureMapping.put(TextureSlot.TOP, getBlockTexture(block(id + "_narrow_doors"), "_top"));
-		textureMapping.put(TextureSlot.BOTTOM, getBlockTexture(block(id + "_narrow_doors"), "_bottom"));
-		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
-		generators.createSimpleFlatItemModel(block(id + "_narrow_doors").asItem());
+		textureMapping.put(TextureSlot.TOP, XKDeco.id("block/" + id + "_narrow_doors_top"));
+		textureMapping.put(TextureSlot.BOTTOM, XKDeco.id("block/"+ id + "_narrow_doors_bottom"));
 		createWoodenFenceGate(id + "_window", "wooden_window", textureMapping);
 		createWoodenFenceGate(id + "_awning_window", "wooden_awning_window", textureMapping);
+		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
 
 		Block columnHead = block(id + "_column_head");
 		XKDModelTemplates.WOODEN_COLUMN_HEAD.create(columnHead, TextureMapping.particle(columnHead), generators.modelOutput);

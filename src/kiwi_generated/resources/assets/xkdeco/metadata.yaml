@@ -666,3 +666,6 @@ registry_order:
   - varnished_tall_table
   - ebony_tall_table
   - mahogany_tall_table
+  - varnished_narrow_doors
+  - ebony_narrow_doors
+  - mahogany_narrow_doors

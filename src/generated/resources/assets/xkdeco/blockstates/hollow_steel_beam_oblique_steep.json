@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_steep",
+    "facing=east,half=lower": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep",
       "y": 90
     },
-    "facing=north": {
-      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_steep"
+    "facing=east,half=upper": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep_top",
+      "y": 90
     },
-    "facing=south": {
-      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_steep",
+    "facing=north,half=lower": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep"
+    },
+    "facing=north,half=upper": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep_top"
+    },
+    "facing=south,half=lower": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep",
       "y": 180
     },
-    "facing=west": {
-      "model": "xkdeco:block/furniture/hollow_steel_beam_oblique_steep",
+    "facing=south,half=upper": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep_top",
+      "y": 180
+    },
+    "facing=west,half=lower": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep",
+      "y": 270
+    },
+    "facing=west,half=upper": {
+      "model": "xkdeco:block/hollow_steel_beam_oblique_steep_top",
       "y": 270
     }
   }
