@@ -1,0 +1,10 @@
+type: choices
+keys:
+  - half
+choices:
+  lower:
+    type: horizontal
+    north: xkdeco:hollow_steel_beam_oblique_lower
+  upper:
+    type: horizontal
+    north: xkdeco:hollow_steel_beam_oblique_upper
