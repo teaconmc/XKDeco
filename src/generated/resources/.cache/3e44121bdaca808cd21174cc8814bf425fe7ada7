@@ -1,4 +1,4 @@
-// 1.20.1	2024-07-04T16:35:21.3758988	XeKr's Decoration/Model Definitions
+// 1.20.1	2024-07-11T23:39:00.3124382	XeKr's Decoration/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -1909,7 +1909,7 @@ ebab64abc83ced5d196ba7caa8979377e6d9fc90 assets/xkdeco/models/item/ebony_fence.j
 c5c07b6490dbeff0ff2e7cb4d0dbf4e8e897a5f8 assets/xkdeco/models/item/ebony_log_slab.json
 3aaea8f3535e9b39667040039e1d1026fb704b9d assets/xkdeco/models/item/ebony_meiren_kao.json
 1fc46de09bf40db9667c3e4c749d67b89a2b9e3b assets/xkdeco/models/item/ebony_meiren_kao_with_column.json
-e28528d1be148fe43175135d4371de04e9c173ef assets/xkdeco/models/item/ebony_narrow_doors.json
+766b1dd5e1f19830c3ad7546dbb5e310ec3f48e6 assets/xkdeco/models/item/ebony_narrow_doors.json
 c58d065639f768f92d57544e12010effefdcd04e assets/xkdeco/models/item/ebony_oblique_brace.json
 87f27e17915fa74f3d493a3fba9a17ab63f40fd3 assets/xkdeco/models/item/ebony_planks.json
 22166af5d2cc0408e68cb8be1459fcb15f02b4cb assets/xkdeco/models/item/ebony_screen.json
@@ -2101,7 +2101,7 @@ e74d4c0ab0afc3b5bcb65852f4687223af966f6b assets/xkdeco/models/item/mahogany_log.
 c54794af6bb34d072db1830012d440d9f5d9fb04 assets/xkdeco/models/item/mahogany_log_slab.json
 0d1088dfafabc54433ad1269ce85bf0049107dfb assets/xkdeco/models/item/mahogany_meiren_kao.json
 cdbd10e297374dab3e6349ef0bb8ef2d20461304 assets/xkdeco/models/item/mahogany_meiren_kao_with_column.json
-8b65f4efe06c05d72a966690f96180bf91862b02 assets/xkdeco/models/item/mahogany_narrow_doors.json
+ad5a45d28474f2058e1aa3bf772af381b55ed34a assets/xkdeco/models/item/mahogany_narrow_doors.json
 d2513931042feafc42e1827ae7f04de6bff043ee assets/xkdeco/models/item/mahogany_oblique_brace.json
 c8aa4e5fdc59c5e6177183a705b20cc0096c5100 assets/xkdeco/models/item/mahogany_planks.json
 ce1e9074ca13c19fdb55cf1b85e61be17f267631 assets/xkdeco/models/item/mahogany_screen.json
@@ -2335,7 +2335,7 @@ aea0d9ec18dbd4e6cf8f3616106ee9c8c193f1f3 assets/xkdeco/models/item/varnished_log
 d55214f0fd948f84af9a81b25fa6eccd06c974dc assets/xkdeco/models/item/varnished_log_slab.json
 56ea8aacfcbf3c473c55558b449ccee4e80aa11a assets/xkdeco/models/item/varnished_meiren_kao.json
 867e7c175c5c1b5c6cfa6d279a82397e54559c38 assets/xkdeco/models/item/varnished_meiren_kao_with_column.json
-3a88cd3bacb0aa53725a65f416c91da1c9f6fc2d assets/xkdeco/models/item/varnished_narrow_doors.json
+452384191533561def3ce19b4984022d59e6c9db assets/xkdeco/models/item/varnished_narrow_doors.json
 3ce08d6d6a8278d2ac114dd30831f0e645f1d207 assets/xkdeco/models/item/varnished_oblique_brace.json
 06e751573fa0c575b2209f35abaf8b0e46435558 assets/xkdeco/models/item/varnished_planks.json
 6397497ebbc9ee2032d08a2da020b1cb1eeef6b0 assets/xkdeco/models/item/varnished_screen.json
