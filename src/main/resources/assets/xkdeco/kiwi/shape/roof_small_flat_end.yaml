@@ -1,0 +1,10 @@
+type: choices
+keys:
+  - half
+choices:
+  lower:
+    type: horizontal
+    north: (0, 0, 10, 16, 5, 16),(0, 8, 8, 16, 13, 16)
+  upper:
+    type: horizontal
+    north: (0, 0, 0, 16, 16, 6),(0, 16, 0, 16, 21, 8)

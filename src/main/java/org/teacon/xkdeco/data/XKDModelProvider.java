@@ -837,6 +837,11 @@ public class XKDModelProvider extends FabricModelProvider {
 		createWoodenFenceGate(id + "_window", "wooden_window", textureMapping);
 		createWoodenFenceGate(id + "_awning_window", "wooden_awning_window", textureMapping);
 		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
+		ResourceLocation narrowDoors = ModelLocationUtils.getModelLocation(block(id + "_narrow_doors").asItem());
+		ModelTemplates.FLAT_ITEM.create(
+				narrowDoors,
+				TextureMapping.layer0(narrowDoors),
+				generators.modelOutput);
 
 		Block columnHead = block(id + "_column_head");
 		XKDModelTemplates.WOODEN_COLUMN_HEAD.create(columnHead, TextureMapping.particle(columnHead), generators.modelOutput);
