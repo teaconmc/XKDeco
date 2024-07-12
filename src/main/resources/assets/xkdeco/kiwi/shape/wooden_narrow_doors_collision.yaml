@@ -1,0 +1,10 @@
+type: choices
+keys:
+  - open
+choices:
+  "true":
+    type: horizontal
+    north: empty
+  "false":
+    type: horizontal
+    north: (0, -16, 7, 16, 16, 9)
