@@ -4,7 +4,7 @@ keys:
 choices:
   lower:
     type: horizontal
-    north: (0, 0, 10, 16, 5, 16),(0, 8, 8, 16, 13, 16)
+    north: (0, 0, 0, 16, 12, 6),(0, 8, 4, 16, 13, 8)
   upper:
     type: horizontal
-    north: (0, 0, 0, 16, 16, 6),(0, 16, 0, 16, 21, 8)
+    north: (0, 0, 0, 16, 20, 6),(0, 16, 4, 16, 21, 8)
