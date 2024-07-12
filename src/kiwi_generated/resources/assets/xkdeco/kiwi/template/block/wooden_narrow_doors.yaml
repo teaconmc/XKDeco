@@ -3,4 +3,5 @@ codec: xkdeco:narrow_doors
 properties:
   render_type: cutout
   shape: xkdeco:wooden_narrow_doors
+  collision_shape: xkdeco:wooden_narrow_doors_collision
   no_occlusion: true
