@@ -1,2 +1,9 @@
-type: simple
-class: org.teacon.xkdeco.block.ItemDisplayBlock
+type: built_in
+properties:
+  components:
+  - water_loggable
+  - type: simple
+    properties:
+    - common: powered
+      default: false
+  shape: xkdeco:item_display

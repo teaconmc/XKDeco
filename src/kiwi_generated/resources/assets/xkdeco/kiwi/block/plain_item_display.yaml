@@ -1,4 +1,2 @@
 template: xkdeco:item_display
 material: xkdeco:wood
-components:
-- water_loggable

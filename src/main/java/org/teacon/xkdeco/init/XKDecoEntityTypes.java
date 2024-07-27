@@ -17,7 +17,11 @@ import snownee.kiwi.KiwiModule;
 @KiwiModule("entity_types")
 public class XKDecoEntityTypes extends AbstractModule {
 	public static final KiwiGO<BlockEntityType<ItemDisplayBlockEntity>> ITEM_DISPLAY = blockEntity(
-			ItemDisplayBlockEntity::new,
+			(blockPos, blockState) -> new ItemDisplayBlockEntity(blockPos, blockState, false),
+			null,
+			ItemDisplayBlock.class);
+	public static final KiwiGO<BlockEntityType<ItemDisplayBlockEntity>> ITEM_PROJECTOR = blockEntity(
+			(blockPos, blockState) -> new ItemDisplayBlockEntity(blockPos, blockState, true),
 			null,
 			ItemDisplayBlock.class);
 	public static final KiwiGO<BlockEntityType<BlockDisplayBlockEntity>> BLOCK_DISPLAY = blockEntity(

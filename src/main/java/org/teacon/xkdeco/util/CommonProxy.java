@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
@@ -45,6 +46,7 @@ public class CommonProxy {
 		BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));
 		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
 		BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
+		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
 	}
 
 	public static boolean isLadder(BlockState blockState, LevelReader world, BlockPos pos) {

@@ -1,2 +1,6 @@
 type: simple
 class: org.teacon.xkdeco.block.BlockDisplayBlock
+properties:
+  components:
+  - water_loggable
+  shape: xkdeco:block_display
