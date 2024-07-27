@@ -11,6 +11,7 @@
 		"forge.FenceGateBlockAccess"
 	],
 	"client": [
+		"client.MinecraftMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

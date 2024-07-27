@@ -1,17 +1,12 @@
 package org.teacon.xkdeco.client.renderer;
 
 import java.util.Objects;
-import java.util.Random;
 
-import org.jetbrains.annotations.NotNull;
-import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,17 +14,19 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity> {
 	private final ItemRenderer itemRenderer;
-	private final Random random = new Random();
+	private final RandomSource random = RandomSource.create();
 
 	public ItemDisplayRenderer(BlockEntityRendererProvider.Context context) {
 		this.itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -48,13 +45,13 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 	public void render(
 			ItemDisplayBlockEntity pBlockEntity,
 			float pPartialTick,
-			@NotNull PoseStack pPoseStack,
-			@NotNull MultiBufferSource pBufferSource,
+			PoseStack pPoseStack,
+			MultiBufferSource pBufferSource,
 			int pPackedLight,
 			int pPackedOverlay) {
 		// borrowed from ItemEntityRenderer
 
-		var itemstack = pBlockEntity.getItem();
+		var itemstack = pBlockEntity.getFirstItem();
 		if (itemstack.isEmpty()) {
 			return;
 		}
@@ -62,9 +59,10 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 		var speed = 1;
 		var pos = pBlockEntity.getBlockPos();
 		var spin = pBlockEntity.getSpin();
-		if (!pBlockEntity.getBlockState().getValue(ItemDisplayBlock.POWERED)) {
-			spin += pPartialTick / 20;
+		if (!pBlockEntity.hasFixedSpin()) {
+			spin += pPartialTick;
 		}
+		spin *= 0.05F;
 
 		this.random.setSeed(itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue());
 
@@ -106,9 +104,10 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 			}
 
 			var level = Objects.requireNonNull(pBlockEntity.getLevel());
+			BlockPos above = pos.above();
 			var packedLight = LightTexture.pack(
-					level.getBrightness(LightLayer.BLOCK, pos.above()),
-					level.getBrightness(LightLayer.SKY, pos.above()));
+					level.getBrightness(LightLayer.BLOCK, above),
+					level.getBrightness(LightLayer.SKY, above));
 			this.itemRenderer.render(
 					itemstack,
 					ItemDisplayContext.GROUND,

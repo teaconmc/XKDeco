@@ -183,10 +183,11 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
     implementation("io.github.llamalad7:mixinextras-forge:0.3.2")
 
+    // LbcAKalz
     // compile against the JEI API but do not include it at runtime
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-    //// at runtime, use the full JEI jar for Forge
+    // at runtime, use the full JEI jar for Forge
     implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
@@ -198,16 +199,21 @@ dependencies {
         jarJar.ranged(it, "[${project.kiwi_version},)")
     }
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
-    implementation fg.deobf("maven.modrinth:jade:11.8.0")
-//    implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
+    // https://modrinth.com/mod/jade/versions
+    implementation fg.deobf("maven.modrinth:jade:11.9.4+forge")
+    // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
-    implementation fg.deobf("maven.modrinth:modernfix:u5R7SNlj")
+    // https://modrinth.com/mod/modernfix/versions
+    implementation fg.deobf("maven.modrinth:modernfix:j5VhGcov")
+    // https://modrinth.com/mod/ferrite-core/versions
+    implementation fg.deobf("maven.modrinth:ferrite-core:DG5Fn9Sz")
     implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
 
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.0+1.11.3+1.20.1")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
-    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.6.0+0.15.0+1.20.1")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.5")
+    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
 }
 
 processResources {

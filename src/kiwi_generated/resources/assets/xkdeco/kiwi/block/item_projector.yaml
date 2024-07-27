@@ -1,5 +1,5 @@
-template: xkdeco:item_display
+template:
+  kiwi:type: xkdeco:item_display
+  projector: true
 render_type: cutout
 material: xkdeco:wood
-components:
-- water_loggable

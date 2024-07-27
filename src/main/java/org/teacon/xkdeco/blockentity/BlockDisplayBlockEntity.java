@@ -4,45 +4,30 @@
  */
 package org.teacon.xkdeco.blockentity;
 
-import java.util.Objects;
-import java.util.Optional;
-
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Clearable;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import snownee.kiwi.customization.block.KBlockUtils;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-public final class BlockDisplayBlockEntity extends BlockEntity implements Clearable {
-	public static final String ITEMSTACK_NBT_KEY = "Display";
-	private static final String BLOCKSTATE_NBT_KEY = "State";
-	private static final String SELECTED_PROPERTY_NBT_KEY = "Selected";
+@NotNullByDefault
+public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntity {
+	private static final String BLOCK_STATE_KEY = "BlockState";
+	private static final String SELECTED_PROPERTY_KEY = "SelectedProperty";
 	private static final BlockState EMPTY = Blocks.AIR.defaultBlockState();
 
-	@NotNull
-	private ItemStack item = ItemStack.EMPTY;
-	@NotNull
 	private BlockState blockState = EMPTY;
 	@Nullable
 	private Property<?> selectedProperty = null;
@@ -56,38 +41,43 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
 		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
 	}
 
-	public @NotNull ItemStack getItem() {
-		return item;
+	@Override
+	public int getMaxStackSize() {
+		return 1;
 	}
 
-	public void setItem(@NotNull ItemStack itemStack) {
-		this.item = itemStack;
-		var i = itemStack.getItem();
-		if (i instanceof BlockItem blockItem) {
-			blockState = blockItem.getBlock().defaultBlockState();
+	@Override
+	public boolean canPlaceItem(int pIndex, ItemStack pStack) {
+		return pStack.getItem() instanceof BlockItem;
+	}
+
+	@Override
+	public void setItem(int pSlot, ItemStack pStack) {
+		if (pStack.getItem() instanceof BlockItem blockItem) {
+			setStoredBlockState(blockItem.getBlock().defaultBlockState());
 		} else {
-			blockState = EMPTY;
+			setStoredBlockState(EMPTY);
 		}
-		var properties = blockState.getProperties();
-		selectedProperty = properties.isEmpty() ? null : properties.iterator().next();
-		var blockState = this.getBlockState();
-		this.setChanged();
-		Objects.requireNonNull(this.level).sendBlockUpdated(this.getBlockPos(), blockState, blockState, 0);
+		super.setItem(pSlot, pStack);
 	}
 
-	@NotNull
 	public BlockState getStoredBlockState() {
 		return blockState;
 	}
 
-	public void setStoredBlockState(@NotNull BlockState blockState) {
+	public void setStoredBlockState(BlockState blockState) {
 		this.blockState = blockState;
-		this.setChanged();
-		Objects.requireNonNull(this.level).sendBlockUpdated(this.getBlockPos(), blockState, blockState, 0);
+		getSelectedProperty();
+		refresh();
 	}
 
-	public Optional<Property<?>> getSelectedProperty() {
-		return Optional.ofNullable(selectedProperty);
+	@Nullable
+	public Property<?> getSelectedProperty() {
+		if (blockState != EMPTY && selectedProperty == null) {
+			var properties = blockState.getProperties();
+			selectedProperty = properties.isEmpty() ? null : properties.iterator().next();
+		}
+		return selectedProperty;
 	}
 
 	public void setSelectedProperty(@Nullable Property<?> selectedProperty) {
@@ -96,76 +86,37 @@ public final class BlockDisplayBlockEntity extends BlockEntity implements Cleara
 	}
 
 	@Override
-	public @NotNull Packet<ClientGamePacketListener> getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(
-				this,
-				be -> ((BlockDisplayBlockEntity) be).writeNbtPacket(null));
-	}
-
-	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		readNbtPacket(pkt.getTag());
-	}
-
-	@Override
-	public @NotNull CompoundTag getUpdateTag() {
-		return writeNbtPacket(null);
-	}
-
-	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		readNbtPacket(tag);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void load(@NotNull CompoundTag pTag) {
+	public void load(CompoundTag pTag) {
 		super.load(pTag);
-		if (pTag.contains(ITEMSTACK_NBT_KEY)) {
-			this.item = ItemStack.of(pTag.getCompound(ITEMSTACK_NBT_KEY));
-		}
-		if (pTag.contains(BLOCKSTATE_NBT_KEY)) {
-			var level = this.level;
-			var lookup = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
-			this.blockState = NbtUtils.readBlockState(lookup, pTag.getCompound(BLOCKSTATE_NBT_KEY));
-		}
-		if (pTag.contains(SELECTED_PROPERTY_NBT_KEY)) {
-			var propertyName = pTag.getString(SELECTED_PROPERTY_NBT_KEY);
-			this.selectedProperty = this.blockState.getProperties()
-					.stream().filter(p -> p.getName().equals(propertyName)).findFirst()
-					.orElse(blockState.getProperties().stream().findFirst().orElse(null));
+		super.readPacketData(pTag);
+		readPacketData(pTag);
+		if (pTag.contains(SELECTED_PROPERTY_KEY)) {
+			try {
+				selectedProperty = KBlockUtils.getProperty(blockState, pTag.getString(SELECTED_PROPERTY_KEY));
+			} catch (Exception e) {
+				XKDeco.LOGGER.error("", e);
+			}
 		}
 	}
 
 	@Override
-	public void clearContent() {
-		this.setItem(ItemStack.EMPTY);
-	}
-
-	@Override
-	protected void saveAdditional(@NotNull CompoundTag pTag) {
+	protected void saveAdditional(CompoundTag pTag) {
 		super.saveAdditional(pTag);
-		pTag.put(ITEMSTACK_NBT_KEY, item.save(new CompoundTag()));
-		pTag.put(BLOCKSTATE_NBT_KEY, NbtUtils.writeBlockState(blockState));
-		pTag.putString(SELECTED_PROPERTY_NBT_KEY, selectedProperty == null ? "" : selectedProperty.getName());
-	}
-
-	@SuppressWarnings("deprecation")
-	private void readNbtPacket(@Nullable CompoundTag tag) {
-		if (tag == null) {
-			return;
-		}
-		if (tag.contains(BLOCKSTATE_NBT_KEY)) {
-			var lookup = this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
-			this.blockState = NbtUtils.readBlockState(lookup, tag.getCompound(BLOCKSTATE_NBT_KEY));
+		super.writePacketData(pTag);
+		writePacketData(pTag);
+		if (selectedProperty != null) {
+			pTag.putString(SELECTED_PROPERTY_KEY, selectedProperty.getName());
 		}
 	}
 
-	private CompoundTag writeNbtPacket(@Nullable CompoundTag tag) {
-		if (tag == null) {
-			tag = new CompoundTag();
-		}
-		tag.put(BLOCKSTATE_NBT_KEY, NbtUtils.writeBlockState(blockState));
-		return tag;
+	@Override
+	protected void readPacketData(CompoundTag pTag) {
+		blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), pTag.getCompound(BLOCK_STATE_KEY));
+	}
+
+	@Override
+	protected CompoundTag writePacketData(CompoundTag pTag) {
+		pTag.put(BLOCK_STATE_KEY, NbtUtils.writeBlockState(blockState));
+		return pTag;
 	}
 }
