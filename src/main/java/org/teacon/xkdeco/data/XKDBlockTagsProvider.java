@@ -18,7 +18,9 @@ public class XKDBlockTagsProvider extends FabricTagProvider.BlockTagProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(XKDeco.id("steel_ladder"));
-		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(XKDeco.id("steel_safety_ladder"));
+		getOrCreateTagBuilder(BlockTags.CLIMBABLE)
+				.add(XKDeco.id("steel_ladder"))
+				.add(XKDeco.id("steel_safety_ladder"))
+				.add(XKDeco.id("air_duct"));
 	}
 }
