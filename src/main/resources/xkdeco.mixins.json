@@ -6,11 +6,15 @@
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
 		"ReloadableServerResourcesMixin",
+		"air_duct.EntityMixin",
+		"air_duct.LivingEntityMixin",
+		"air_duct.PlayerMixin",
 		"data.BlockFamilyProviderMixin",
 		"data.RecipeProviderMixin",
 		"forge.FenceGateBlockAccess"
 	],
 	"client": [
+		"air_duct.PlayerRendererMixin",
 		"client.MinecraftMixin"
 	],
 	"injectors": {

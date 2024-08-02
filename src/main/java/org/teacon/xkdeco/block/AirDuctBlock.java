@@ -149,7 +149,7 @@ public class AirDuctBlock extends BasicBlock {
 		return blockState;
 	}
 
-	public boolean isAirDuctSlot(BlockState blockState, Direction side) {
+	public static boolean isAirDuctSlot(BlockState blockState, Direction side) {
 		return PlaceSlot.find(blockState, side, "*xkdeco.air_duct").isPresent();
 	}
 }
