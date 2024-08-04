@@ -1,0 +1,22 @@
+{
+  "KiwiModule": [
+    {
+      "target": "org.teacon.xkdeco.init.CoreModule"
+    },
+    {
+      "target": "org.teacon.xkdeco.init.XKDecoEntityTypes",
+      "data": {
+        "value": "entity_types"
+      }
+    }
+  ],
+  "KiwiPacket": [
+    {
+      "target": "org.teacon.xkdeco.network.CClickDisplayPacket",
+      "data": {
+        "dir": "PLAY_TO_SERVER",
+        "value": "click_display"
+      }
+    }
+  ]
+}

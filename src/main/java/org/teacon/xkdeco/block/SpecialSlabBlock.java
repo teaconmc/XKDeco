@@ -9,8 +9,6 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,9 +27,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public class SpecialSlabBlock extends SlabBlock {
 	public static final MapCodec<SpecialSlabBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BlockCodecs.propertiesCodec(),

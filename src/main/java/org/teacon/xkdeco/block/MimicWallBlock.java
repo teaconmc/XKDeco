@@ -1,11 +1,10 @@
+/*
 package org.teacon.xkdeco.block;
 
 import java.util.Optional;
 
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -27,9 +26,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class MimicWallBlock extends WallBlock implements EntityBlock {
 	private static final VoxelShape NORTH_TEST = Block.box(7, 0, 0, 9, 16, 9);
 	private static final VoxelShape SOUTH_TEST = Block.box(7, 0, 7, 9, 16, 16);
@@ -149,3 +148,4 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 		return RenderShape.ENTITYBLOCK_ANIMATED;
 	}
 }
+*/

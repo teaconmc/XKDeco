@@ -1,3 +1,4 @@
+/*
 package org.teacon.xkdeco.init;
 
 import java.util.Collection;
@@ -11,8 +12,6 @@ import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.google.common.collect.Lists;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -27,9 +26,9 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import snownee.kiwi.datagen.GameObjectLookup;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class MimicWallsLoader {
 	public static final String WALL_BLOCK_ENTITY = "mimic_wall";
 
@@ -100,3 +99,4 @@ public final class MimicWallsLoader {
 		}
 	}
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package org.teacon.xkdeco.client.model;
 
 import java.util.Collection;
@@ -98,3 +99,4 @@ public class AirDuctModel implements UnbakedModel {
 		return new AirDuctBakedModel(straightModels.build(), cornerModels.build(), coverModels.build(), frameModel);
 	}
 }
+*/

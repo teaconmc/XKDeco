@@ -1,3 +1,4 @@
+/*
 package org.teacon.xkdeco.resource;
 
 import java.io.ByteArrayInputStream;
@@ -15,8 +16,6 @@ import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import com.google.gson.JsonParser;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
@@ -29,9 +28,9 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class MimicWallResources implements PackResources {
 	private static final String BLOCK_MODEL_LOCATION = XKDeco.ID + ":block/" + MimicWallsLoader.WALL_BLOCK_ENTITY;
 	private static final String ITEM_MODEL_LOCATION = XKDeco.ID + ":item/" + MimicWallsLoader.WALL_BLOCK_ENTITY;
@@ -149,3 +148,4 @@ public final class MimicWallResources implements PackResources {
 		return true;
 	}
 }
+*/

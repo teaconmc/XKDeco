@@ -1,12 +1,10 @@
+/*
 package org.teacon.xkdeco.client.renderer;
 
-import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,9 +13,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class XKDecoWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer {
 	public static final XKDecoWithoutLevelRenderer INSTANCE = new XKDecoWithoutLevelRenderer(Minecraft.getInstance());
 
@@ -40,3 +38,4 @@ public final class XKDecoWithoutLevelRenderer extends BlockEntityWithoutLevelRen
 		}
 	}
 }
+*/

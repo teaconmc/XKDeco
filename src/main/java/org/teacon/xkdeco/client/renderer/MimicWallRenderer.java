@@ -1,3 +1,4 @@
+/*
 package org.teacon.xkdeco.client.renderer;
 
 import org.teacon.xkdeco.block.MimicWallBlock;
@@ -5,8 +6,6 @@ import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -18,10 +17,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.data.ModelData;
+import snownee.kiwi.util.NotNullByDefault;
 
 @Deprecated
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlockEntity> {
 	private final BlockRenderDispatcher blockRenderer;
 
@@ -51,7 +50,8 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 		if (state.getBlock() instanceof MimicWallBlock wall) {
 			var wallState = this.withState(state, wall.getWallDelegate(), BlockStateProperties.UP);
 			if (level == null) {
-				this.blockRenderer.renderSingleBlock(wallState,
+				this.blockRenderer.renderSingleBlock(
+						wallState,
 						pPoseStack,
 						pBufferSource,
 						pPackedLight,
@@ -64,7 +64,8 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 				//var oldRenderType = MinecraftForgeClient.getRenderType();
 				for (var renderType : renderTypes) {
 					//ForgeHooksClient.setRenderType(renderType);
-					this.blockRenderer.renderBatched(wallState,
+					this.blockRenderer.renderBatched(
+							wallState,
 							pos,
 							level,
 							pPoseStack,
@@ -76,7 +77,8 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 					var eastWall = wall.connectsTo(level.getBlockState(pos.east()));
 					if (eastWall.isPresent()) {
 						var eastWallState = this.withState(state, eastWall.get(), BlockStateProperties.EAST_WALL);
-						this.blockRenderer.renderBatched(eastWallState,
+						this.blockRenderer.renderBatched(
+								eastWallState,
 								pos,
 								level,
 								pPoseStack,
@@ -89,7 +91,8 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 					var northWall = wall.connectsTo(level.getBlockState(pos.north()));
 					if (northWall.isPresent()) {
 						var northWallState = this.withState(state, northWall.get(), BlockStateProperties.NORTH_WALL);
-						this.blockRenderer.renderBatched(northWallState,
+						this.blockRenderer.renderBatched(
+								northWallState,
 								pos,
 								level,
 								pPoseStack,
@@ -102,7 +105,8 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 					var southWall = wall.connectsTo(level.getBlockState(pos.south()));
 					if (southWall.isPresent()) {
 						var southWallState = this.withState(state, southWall.get(), BlockStateProperties.SOUTH_WALL);
-						this.blockRenderer.renderBatched(southWallState,
+						this.blockRenderer.renderBatched(
+								southWallState,
 								pos,
 								level,
 								pPoseStack,
@@ -115,7 +119,8 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 					var westWall = wall.connectsTo(level.getBlockState(pos.west()));
 					if (westWall.isPresent()) {
 						var westWallState = this.withState(state, westWall.get(), BlockStateProperties.WEST_WALL);
-						this.blockRenderer.renderBatched(westWallState,
+						this.blockRenderer.renderBatched(
+								westWallState,
 								pos,
 								level,
 								pPoseStack,
@@ -142,3 +147,4 @@ public final class MimicWallRenderer implements BlockEntityRenderer<MimicWallBlo
 		return state;
 	}
 }
+*/

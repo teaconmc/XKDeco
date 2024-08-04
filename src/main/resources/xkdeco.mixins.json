@@ -11,11 +11,12 @@
 		"air_duct.PlayerMixin",
 		"data.BlockFamilyProviderMixin",
 		"data.RecipeProviderMixin",
-		"forge.FenceGateBlockAccess"
+		"fabric.LivingEntityMixin"
 	],
 	"client": [
 		"air_duct.PlayerRendererMixin",
-		"client.MinecraftMixin"
+		"client.MinecraftMixin",
+		"fabric.ClientPacketListenerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

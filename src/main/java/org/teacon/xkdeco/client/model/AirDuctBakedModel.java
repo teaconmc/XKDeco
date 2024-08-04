@@ -1,3 +1,4 @@
+/*
 package org.teacon.xkdeco.client.model;
 
 import java.util.List;
@@ -117,3 +118,4 @@ public class AirDuctBakedModel implements BakedModel {
 		return ItemOverrides.EMPTY;
 	}
 }
+*/

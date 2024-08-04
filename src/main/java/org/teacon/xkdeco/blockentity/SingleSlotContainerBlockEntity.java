@@ -123,7 +123,6 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
-	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		CompoundTag compoundtag = pkt.getTag();
 		if (compoundtag != null) {

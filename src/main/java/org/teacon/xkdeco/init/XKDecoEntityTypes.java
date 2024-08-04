@@ -2,11 +2,9 @@ package org.teacon.xkdeco.init;
 
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
-import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.WardrobeBlock;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
-import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,9 +30,9 @@ public class XKDecoEntityTypes extends AbstractModule {
 			WardrobeBlockEntity::new,
 			null,
 			WardrobeBlock.class);
-	@SuppressWarnings("deprecation")
-	public static final KiwiGO<BlockEntityType<MimicWallBlockEntity>> MIMIC_WALL = blockEntity(
-			MimicWallBlockEntity::new,
-			null,
-			MimicWallBlock.class);
+//	@SuppressWarnings("deprecation")
+//	public static final KiwiGO<BlockEntityType<MimicWallBlockEntity>> MIMIC_WALL = blockEntity(
+//			MimicWallBlockEntity::new,
+//			null,
+//			MimicWallBlock.class);
 }

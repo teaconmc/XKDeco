@@ -3,7 +3,6 @@ package org.teacon.xkdeco.data;
 import java.util.stream.IntStream;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.MimicWallBlock;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
@@ -34,9 +33,9 @@ public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 	@Override
 	public void generate() {
 		for (Block block : GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).toList()) {
-			if (block instanceof MimicWallBlock) {
-				continue;
-			}
+//			if (block instanceof MimicWallBlock) {
+//				continue;
+//			}
 			if (map.containsKey(BuiltInRegistries.BLOCK.getKey(block))) {
 				continue;
 			}

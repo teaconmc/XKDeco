@@ -1,0 +1,24 @@
+accessWidener v1 named
+
+mutable field net/minecraft/data/models/BlockModelGenerators blockStateOutput Ljava/util/function/Consumer;
+mutable field net/minecraft/data/models/BlockModelGenerators modelOutput Ljava/util/function/BiConsumer;
+accessible field net/minecraft/data/models/BlockModelGenerators texturedModels Ljava/util/Map;
+mutable field net/minecraft/data/models/BlockModelGenerators texturedModels Ljava/util/Map;
+accessible field net/minecraft/data/models/BlockModelGenerators SHAPE_CONSUMERS Ljava/util/Map;
+mutable field net/minecraft/data/models/BlockModelGenerators SHAPE_CONSUMERS Ljava/util/Map;
+
+accessible field net/minecraft/data/models/BlockModelGenerators$WoodProvider logMapping Lnet/minecraft/data/models/model/TextureMapping;
+
+accessible field net/minecraft/data/models/BlockModelGenerators$BlockFamilyProvider fullBlock Lnet/minecraft/resources/ResourceLocation;
+accessible method net/minecraft/data/models/BlockModelGenerators$BlockFamilyProvider fullBlockVariant (Lnet/minecraft/world/level/block/Block;)Lnet/minecraft/data/models/BlockModelGenerators$BlockFamilyProvider;
+
+accessible method net/minecraft/data/models/model/TexturedModel <init> (Lnet/minecraft/data/models/model/TextureMapping;Lnet/minecraft/data/models/model/ModelTemplate;)V
+
+accessible method net/minecraft/world/level/block/NyliumBlock canBeNylium (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z
+accessible method net/minecraft/world/level/block/SpreadingSnowyDirtBlock canBeGrass (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z
+accessible method net/minecraft/world/level/block/SnowyDirtBlock isSnowySetting (Lnet/minecraft/world/level/block/state/BlockState;)Z
+
+accessible field net/minecraft/world/level/block/state/properties/IntegerProperty min I
+accessible field net/minecraft/world/level/block/state/properties/IntegerProperty max I
+
+accessible field net/minecraft/world/level/block/FenceGateBlock type Lnet/minecraft/world/level/block/state/properties/WoodType;

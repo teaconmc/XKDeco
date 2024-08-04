@@ -27,7 +27,7 @@ public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 				blockState);
 	}
 
-	@Override
+//	@Override
 	public AABB getRenderBoundingBox() {
 		if (isProjector()) {
 			return AABB.ofSize(Vec3.atBottomCenterOf(this.getBlockPos().above(9)), 16, 16, 16);

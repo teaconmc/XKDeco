@@ -36,7 +36,7 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 		super(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), pWorldPosition, pBlockState);
 	}
 
-	@Override
+//	@Override
 	public AABB getRenderBoundingBox() {
 		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
 	}

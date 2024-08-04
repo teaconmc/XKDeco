@@ -1,3 +1,4 @@
+/*
 package org.teacon.xkdeco.blockentity;
 
 import java.util.Objects;
@@ -5,8 +6,6 @@ import java.util.Objects;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -16,10 +15,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import snownee.kiwi.util.NotNullByDefault;
 
 @Deprecated
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class MimicWallBlockEntity extends BlockEntity {
 	private Block eastBlock = Blocks.AIR;
 	private Block westBlock = Blocks.AIR;
@@ -97,3 +96,4 @@ public final class MimicWallBlockEntity extends BlockEntity {
 						.toString());
 	}
 }
+*/
