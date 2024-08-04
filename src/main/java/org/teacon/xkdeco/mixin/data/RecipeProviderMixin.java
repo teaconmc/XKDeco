@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Block;
 
 @Mixin(RecipeProvider.class)
 public class RecipeProviderMixin {
-	@Inject(method = {"lambda$generateRecipes$23", "m_176526_"}, at = @At("HEAD"), cancellable = true)
+	@Inject(method = {"lambda$generateRecipes$23", "m_176526_", "method_33534"}, at = @At("HEAD"), cancellable = true)
 	private static void xkdeco$generateRecipes(
 			BlockFamily pFamily,
 			Consumer<FinishedRecipe> pFinishedRecipeConsumer,
