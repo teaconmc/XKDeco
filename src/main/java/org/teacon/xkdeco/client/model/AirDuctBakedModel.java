@@ -1,4 +1,3 @@
-/*
 package org.teacon.xkdeco.client.model;
 
 import java.util.List;
@@ -16,6 +15,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -114,8 +114,12 @@ public class AirDuctBakedModel implements BakedModel {
 	}
 
 	@Override
+	public ItemTransforms getTransforms() {
+		return ItemTransforms.NO_TRANSFORMS;
+	}
+
+	@Override
 	public ItemOverrides getOverrides() {
 		return ItemOverrides.EMPTY;
 	}
 }
-*/
