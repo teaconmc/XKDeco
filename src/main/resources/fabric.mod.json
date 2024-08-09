@@ -29,6 +29,7 @@
 		]
 	},
 	"mixins": [
+		"xkdeco.data.mixins.json",
 		"xkdeco.mixins.json"
 	],
 	"accessWidener": "xkdeco.accesswidener",

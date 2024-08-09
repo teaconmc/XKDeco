@@ -9,8 +9,6 @@
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
 		"air_duct.PlayerMixin",
-		"data.BlockFamilyProviderMixin",
-		"data.RecipeProviderMixin",
 		"fabric.LivingEntityMixin"
 	],
 	"client": [
