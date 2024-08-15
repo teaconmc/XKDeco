@@ -213,7 +213,7 @@ unifiedPublishing {
 
                 relations { // Optional, Inferred from the relations above by default
                     depends "kiwi-fabric"
-                    depends "fabric-screen-layers"
+                    includes "fabric-screen-layers"
                 }
             }
         }
@@ -225,7 +225,7 @@ unifiedPublishing {
 
                 relations { // Optional, Inferred from the relations above by default
                     depends "kiwi"
-                    depends "fabric-screen-layers"
+                    includes "fabric-screen-layers"
                 }
             }
         }
