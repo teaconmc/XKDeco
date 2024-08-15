@@ -56,7 +56,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
-
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
@@ -430,6 +429,11 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("big_candlestick", "furniture/", true);
 		createBlockStateOnly("tech_table", "furniture/", true);
 		createBlockStateOnly("tech_table_circle", "furniture/", true);
+//		createBlockStateOnly("hologram_planet", "furniture/", true);
+//		createBlockStateOnly("hologram_dna", "furniture/", true);
+//		createBlockStateOnly("hologram_pictures", "furniture/", true);
+//		createBlockStateOnly("hologram_message", "furniture/", true);
+//		createBlockStateOnly("hologram_xekr_logo", "furniture/", true);
 
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
 		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
@@ -833,7 +837,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		textureMapping = TextureMapping.defaultTexture(block(id + "_trapdoor"));
 		textureMapping.put(TextureSlot.PARTICLE, getBlockTexture(block(id + "_window")));
 		textureMapping.put(TextureSlot.TOP, XKDeco.id("block/" + id + "_narrow_doors_top"));
-		textureMapping.put(TextureSlot.BOTTOM, XKDeco.id("block/"+ id + "_narrow_doors_bottom"));
+		textureMapping.put(TextureSlot.BOTTOM, XKDeco.id("block/" + id + "_narrow_doors_bottom"));
 		createWoodenFenceGate(id + "_window", "wooden_window", textureMapping);
 		createWoodenFenceGate(id + "_awning_window", "wooden_awning_window", textureMapping);
 		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
@@ -872,7 +876,7 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createWoodenShelf(String id, int randomVariants) {
 		Block block = block(id + "_shelf");
 		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block));
-		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" );
+		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/");
 		List<Variant> variants = Lists.newArrayList(Variant.variant().with(VariantProperties.MODEL, modelLocation));
 		List<ModelTemplate> templates = Lists.newArrayList(
 				XKDModelTemplates.WOODEN_SHELF,

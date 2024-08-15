@@ -94,7 +94,7 @@ dependencies {
 //    modImplementation(annotationProcessor("libs:Kiwi-1.20.1-Fabric-11.8.15"))
 
     modImplementation "maven.modrinth:jade:11.10.0+fabric"
-    modImplementation "maven.modrinth:fabric-screen-layers:1.0.1+1.20"
+    modImplementation include("maven.modrinth:fabric-screen-layers:1.0.1+1.20")
 }
 
 loom {
@@ -154,7 +154,7 @@ java {
 
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    exclude "/assets/${project.mod_id}/lang/en_us.existing.json"
+    exclude "/assets/${project.mod_id}/lang/en_us.existing.yaml"
     exclude '/assets/test'
     exclude '/org/teacon/xkdeco/data'
     exclude '/org/teacon/xkdeco/mixin/data'
