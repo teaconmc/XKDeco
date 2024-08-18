@@ -1,130 +1,140 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id "me.shedaniel.unified-publishing" version "0.1.+"
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.16-beta'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
+}
 
+abstract class TeaConDumpPathToGitHub extends DefaultTask {
+    @Input
+    abstract Property<String> getPublishName()
+    @InputFile
+    abstract RegularFileProperty getTargetFile()
+    @TaskAction
+    void dump() {
+        if (System.env.GITHUB_ACTIONS) {
+            File theFile = targetFile.getAsFile().get()
+
+            def outputFile = new File(System.env.GITHUB_OUTPUT)
+            // Use the env-specific line separator for maximally possible compatibility
+            def newLine = System.getProperty('line.separator')
+
+            // Write out new env variable for later usage
+            outputFile << newLine << "artifact_name=${theFile.getName()}"
+            outputFile << newLine << "artifact_publish_name=${publishName.get()}"
+            outputFile << newLine << "artifact_path=${theFile.absolutePath}"
+        }
+    }
+}
+
+base {
+    archivesName = 'AreaControl-NeoForge-1.21'
+}
 version = "${minecraft_version}-Forge-${mod_version}"
 group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-//noinspection GroovyUnusedAssignment
-archivesBaseName = mod_name
+
 var realVersion = mod_version + '+forge'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    mappings channel: mappings_channel, version: mappings_version
+neoForge {
+    // Specify the version of NeoForge to use.
+    version = project.neo_version
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    // Currently, this location cannot be changed from the default.
+    // Enable access transformers
+    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+    mods {
+        // define mod <-> source bindings
+        // these are used to tell the game which sources are for which mod
+        // mostly optional in a single mod project
+        // but multi mod projects should define one per mod
+        xkdeco {
+            sourceSet(sourceSets.main)
+        }
+    }
     runs {
         client {
-            workingDirectory project.file('run_client')
+            client()
+            gameDirectory = project.file('run_client')
 //            property 'production', 'true'
-            property 'forge.logging.console.level', 'debug'
+            systemProperty 'forge.logging.console.level', 'debug'
 
             // Export mixin-changed classes
-            property 'mixin.debug.export', 'true'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            systemProperty 'mixin.debug.export', 'true'
+            systemProperty 'mixin.env.remapRefMap', 'true'
+            systemProperty 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             // These arguments allow for optional authentication with Mojang servers.
             // If you want to authenticate, put these properties in GRADLE_HOME/gradle.properties.
             // By default, this is C:\Users\<your username>\.gradle\gradle.properties on Windows or ~/.gradle/gradle.properties on Linux/MacOS.
             if (project.hasProperty('mc_uuid')) {
                 // Your UUID, trimmed / without the dashes
-                args '--uuid', project.getProperty('mc_uuid')
+                programArguments.addAll('--uuid', project.getProperty('mc_uuid'))
             }
             if (project.hasProperty('mc_username')) {
                 // Your Minecraft in-game username, not email
-                args '--username', project.getProperty('mc_username')
+                programArguments.addAll('--username', project.getProperty('mc_username'))
             }
             if (project.hasProperty('mc_accessToken')) {
                 // Your current access token. When it expires, you need to retrieve a new one and regenerate your run configurations.
                 // You may be able to find it in your .minecraft folder in launcher_accounts.json or launcher_profiles.json.
-                args '--accessToken', project.getProperty('mc_accessToken')
+                programArguments.addAll('--accessToken', project.getProperty('mc_accessToken'))
             }
 
             // Add mixin config to runtime
-            args '-mixin.config=' + project.getProperty('mod_id') + '.mixins.json'
-            args '-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json'
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
         }
 
         server {
-            workingDirectory project.file('run_server')
+            server()
+            gameDirectory = project.file('run_server')
 //            property 'production', 'true'
-            property 'forge.logging.console.level', 'debug'
+            systemProperty 'forge.logging.console.level', 'debug'
 
             // Export mixin-changed classes
-            property 'mixin.debug.export', 'true'
+            systemProperty 'mixin.debug.export', 'true'
 
             // Add mixin config to runtime
-            args '-mixin.config=' + project.getProperty('mod_id') + '.mixins.json'
-            args '-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json'
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
         }
 
         data {
-            workingDirectory project.file('run_data')
+            data()
+            gameDirectory = project.file('run_data')
 //            property 'production', 'true'
-            property 'forge.logging.console.level', 'debug'
+            systemProperty 'forge.logging.console.level', 'debug'
 
             // Export mixin-changed classes
-            property 'mixin.debug.export', 'true'
+            systemProperty 'mixin.debug.export', 'true'
 
             // Add mixin config to runtime
-            args '-mixin.config=' + project.getProperty('mod_id') + '.mixins.json'
-            args '-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json'
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+            programArguments.addAll('--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
         }
     }
 }
@@ -168,25 +178,8 @@ repositories {
     }
 }
 
-mixin {
-    add sourceSets.main, "${mod_id}.refmap.json"
-    // Sets up the mixin config; this gets added to run configurations and the manifest in the final jar
-    config "${mod_id}.mixins.json"
-//    config "${mod_id}.data.mixins.json"
-
-    // Enables exporting mixin-changed classes to .mixin.out in the run folder
-    debug.export = true
-}
-
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
-    implementation("io.github.llamalad7:mixinextras-forge:0.3.2")
-
+    /*
     // https://modrinth.com/mod/jei/versions
     // compile against the JEI API but do not include it at runtime
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
@@ -218,6 +211,7 @@ dependencies {
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.5")
     implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
+     */
 }
 
 processResources {
@@ -244,54 +238,73 @@ processResources {
 }
 
 tasks.jarJar.configure {
-    archiveClassifier = ''
-
-    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
-    exclude("/assets/test")
-    exclude("/org/teacon/xkdeco/data")
-    exclude("/org/teacon/xkdeco/mixin/data")
-    exclude("/.cache")
-    exclude("/xkdeco.data.mixins.json")
-
-    finalizedBy('reobfJarJar')
+    // TODO[3TUSK]: I don't know if it is possible to exclude these?
+    //exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
+    //exclude("/assets/test")
+    //exclude("/org/teacon/xkdeco/data")
+    //exclude("/org/teacon/xkdeco/mixin/data")
+    //exclude("/.cache")
+    //exclude("/xkdeco.data.mixins.json")
 }
 
 jar {
     archiveClassifier = 'slim'
 
-    manifest {
-        attributes(["Specification-Title"     : mod_id,
-                    "Specification-Version"   : "1", // We are version 1 of ourselves
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : realVersion,
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
-    }
-
     preserveFileTimestamps = false
     reproducibleFileOrder = true
-
-    finalizedBy('reobfJar')
 }
-
-// Example configuration to allow publishing using the maven-publish plugin
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar')
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-// publish.dependsOn('reobfJar')
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        release(MavenPublication) {
+            groupId = "org.teacon"
+            artifactId = "XKDeco-NeoForge-1.21"
+
             artifact jar
+            pom {
+                name = 'XKDeco for Minecraft 1.21 and NeoForge'
+                description = "XeKr's decoration blocks"
+                url = 'https://github.com/teaconmc/XKDeco'
+                issueManagement {
+                    system = 'GitHub Issues'
+                    url = 'https://github.com/teaconmc/XKDeco/issues'
+                }
+                scm {
+                    url = 'https://github.com/teaconmc/XKDeco'
+                    connection = 'scm:git:git://github.com/teaconmc/XKDeco.git'
+                    developerConnection = 'scm:git:git@github.com:teaconmc/XKDeco.git'
+                }
+            }
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            name = "teacon"
+            url = "s3://maven/"
+            credentials(AwsCredentials) {
+                accessKey = System.env.ARCHIVE_ACCESS_KEY
+                secretKey = System.env.ARCHIVE_SECRET_KEY
+            }
         }
     }
 }
 
+tasks.withType(PublishToMavenRepository) {
+    onlyIf {
+        System.env.ARCHIVE_ACCESS_KEY && System.env.ARCHIVE_SECRET_KEY
+    }
+}
+
+tasks.register("githubActionOutput", TeaConDumpPathToGitHub) { task ->
+    task.onlyIf {
+        System.env.GITHUB_ACTIONS
+    }
+    task.getPublishName().set("${jar.archiveBaseName.get()}-${version}.jar")
+    task.getTargetFile().set(jar.archiveFile)
+}
+
+// TODO We will come back later for publication on CurseForge / Modrinth.
+/*
 unifiedPublishing {
     project {
         displayName = "[Forge $project.supported_version] $project.mod_version"
@@ -326,3 +339,4 @@ unifiedPublishing {
         }
     }
 }
+ */
