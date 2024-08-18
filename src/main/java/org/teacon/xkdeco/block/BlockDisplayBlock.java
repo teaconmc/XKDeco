@@ -2,6 +2,8 @@ package org.teacon.xkdeco.block;
 
 import java.util.Objects;
 
+import net.minecraft.world.ItemInteractionResult;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
@@ -42,7 +44,8 @@ public final class BlockDisplayBlock extends DisplayBlock {
 	}
 
 	@Override
-	protected InteractionResult useTop(
+	protected ItemInteractionResult useTop(
+			ItemStack held,
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
@@ -50,11 +53,10 @@ public final class BlockDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!(pLevel.getBlockEntity(pPos) instanceof BlockDisplayBlockEntity be)) {
-			return InteractionResult.FAIL;
+			return ItemInteractionResult.FAIL;
 		}
 		boolean empty = be.getStoredBlockState().isAir();
-		ItemStack held = pPlayer.getItemInHand(pHand).copy();
-		InteractionResult result = super.useTop(pState, pLevel, pPos, pPlayer, pHand, pHit);
+		ItemInteractionResult result = super.useTop(held, pState, pLevel, pPos, pPlayer, pHand, pHit);
 		if (!pLevel.isClientSide && empty && !be.getStoredBlockState().isAir()) {
 			Block block = be.getStoredBlockState().getBlock();
 			BlockState blockState = block.getStateForPlacement(new BlockPlaceContext(pPlayer, pHand, held, pHit));
@@ -66,7 +68,8 @@ public final class BlockDisplayBlock extends DisplayBlock {
 	}
 
 	@Override
-	protected InteractionResult useSide(
+	protected ItemInteractionResult useSide(
+			ItemStack held,
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
@@ -74,20 +77,20 @@ public final class BlockDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!(pLevel.getBlockEntity(pPos) instanceof BlockDisplayBlockEntity be)) {
-			return InteractionResult.FAIL;
+			return ItemInteractionResult.FAIL;
 		}
 		if (pLevel.isClientSide) {
-			return InteractionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		}
 		if (checkEmptyProperties(pPlayer, be)) {
-			return InteractionResult.CONSUME;
+			return ItemInteractionResult.CONSUME;
 		}
 		var property = Objects.requireNonNull(be.getSelectedProperty());
 		be.setStoredBlockState(cycleState(be.getStoredBlockState(), property, pPlayer.isSecondaryUseActive()));
 		message(pPlayer, Component.translatable(
 				Items.DEBUG_STICK.getDescriptionId() + ".update",
 				property.getName(), getValueName(be.getStoredBlockState(), property)));
-		return InteractionResult.CONSUME;
+		return ItemInteractionResult.CONSUME;
 	}
 
 	@Override

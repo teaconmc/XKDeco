@@ -4,6 +4,8 @@
  */
 package org.teacon.xkdeco.blockentity;
 
+import net.minecraft.core.HolderLookup;
+
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
@@ -17,9 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import snownee.kiwi.customization.block.KBlockUtils;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
@@ -33,13 +32,10 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 	private Property<?> selectedProperty = null;
 
 	public BlockDisplayBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-		super(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), pWorldPosition, pBlockState);
+		super(XKDecoEntityTypes.BLOCK_DISPLAY.get(), pWorldPosition, pBlockState);
 	}
 
-	@Override
-	public AABB getRenderBoundingBox() {
-		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
-	}
+	// getRenderBoundingBox moved to BlockDisplayRenderer. See there for more info.
 
 	@Override
 	public int getMaxStackSize() {
@@ -86,13 +82,13 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 	}
 
 	@Override
-	public void load(CompoundTag pTag) {
-		super.load(pTag);
-		super.readPacketData(pTag);
-		readPacketData(pTag);
+	public void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.loadAdditional(pTag, registries);
+		super.readPacketData(pTag, registries);
+		readPacketData(pTag, registries);
 		if (pTag.contains(SELECTED_PROPERTY_KEY)) {
 			try {
-				selectedProperty = KBlockUtils.getProperty(blockState, pTag.getString(SELECTED_PROPERTY_KEY));
+				selectedProperty = blockState.getBlock().getStateDefinition().getProperty(SELECTED_PROPERTY_KEY);
 			} catch (Exception e) {
 				XKDeco.LOGGER.error("", e);
 			}
@@ -100,22 +96,22 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag pTag) {
-		super.saveAdditional(pTag);
-		super.writePacketData(pTag);
-		writePacketData(pTag);
+	protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.saveAdditional(pTag, registries);
+		super.writePacketData(pTag, registries);
+		writePacketData(pTag, registries);
 		if (selectedProperty != null) {
 			pTag.putString(SELECTED_PROPERTY_KEY, selectedProperty.getName());
 		}
 	}
 
 	@Override
-	protected void readPacketData(CompoundTag pTag) {
+	protected void readPacketData(CompoundTag pTag, HolderLookup.Provider registries) {
 		blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), pTag.getCompound(BLOCK_STATE_KEY));
 	}
 
 	@Override
-	protected CompoundTag writePacketData(CompoundTag pTag) {
+	protected CompoundTag writePacketData(CompoundTag pTag, HolderLookup.Provider registries) {
 		pTag.put(BLOCK_STATE_KEY, NbtUtils.writeBlockState(blockState));
 		return pTag;
 	}

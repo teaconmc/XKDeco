@@ -2,6 +2,8 @@ package org.teacon.xkdeco.blockentity;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -19,9 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import snownee.kiwi.util.NotNullByDefault;
 
-@NotNullByDefault
+//@NotNullByDefault
 public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	public static final String ITEM_STACK_KEY = "Display";
 	protected ItemStack item = ItemStack.EMPTY;
@@ -46,6 +47,16 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	@Override
 	public int getContainerSize() {
 		return 1;
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return NonNullList.of(this.item);
+	}
+
+	@Override
+	protected void setItems(NonNullList<ItemStack> items) {
+		this.item = items.getFirst();
 	}
 
 	@Override
@@ -107,15 +118,15 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag pTag) {
-		super.load(pTag);
-		readPacketData(pTag);
+	public void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.loadAdditional(pTag, registries);
+		readPacketData(pTag, registries);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag pTag) {
-		super.saveAdditional(pTag);
-		writePacketData(pTag);
+	protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.saveAdditional(pTag, registries);
+		writePacketData(pTag, registries);
 	}
 
 	@Override
@@ -124,28 +135,28 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
 		CompoundTag compoundtag = pkt.getTag();
 		if (compoundtag != null) {
-			this.readPacketData(compoundtag);
+			this.readPacketData(compoundtag, registries);
 		}
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return this.writePacketData(new CompoundTag());
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.writePacketData(new CompoundTag(), registries);
 	}
 
-	protected void readPacketData(CompoundTag pTag) {
+	protected void readPacketData(CompoundTag pTag, HolderLookup.Provider registries) {
 		item = ItemStack.EMPTY;
 		if (pTag.contains(ITEM_STACK_KEY)) {
-			item = ItemStack.of(pTag.getCompound(ITEM_STACK_KEY));
+			item = ItemStack.parseOptional(registries, pTag.getCompound(ITEM_STACK_KEY));
 		}
 	}
 
-	protected CompoundTag writePacketData(CompoundTag pTag) {
+	protected CompoundTag writePacketData(CompoundTag pTag, HolderLookup.Provider registries) {
 		if (!item.isEmpty()) {
-			pTag.put(ITEM_STACK_KEY, item.save(new CompoundTag()));
+			pTag.put(ITEM_STACK_KEY, item.save(registries, new CompoundTag()));
 		}
 		return pTag;
 	}

@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block;
 
+import net.minecraft.world.ItemInteractionResult;
+
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
@@ -23,7 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
@@ -31,7 +32,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 	private static final SegmentedAnglePrecision SEGMENTED_ANGLE8 = new SegmentedAnglePrecision(3);
 	private static final float angleStep = Mth.PI / 4 * 20;
 	public static final MapCodec<ItemDisplayBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			BlockCodecs.propertiesCodec(),
+			propertiesCodec(),
 			Codec.BOOL.optionalFieldOf("projector", false).forGetter(block -> block.projector)
 	).apply(instance, ItemDisplayBlock::new));
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -67,7 +68,8 @@ public class ItemDisplayBlock extends DisplayBlock {
 	}
 
 	@Override
-	protected InteractionResult useSide(
+	protected ItemInteractionResult useSide(
+			ItemStack held,
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
@@ -75,17 +77,18 @@ public class ItemDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!pState.getValue(POWERED)) {
-			return InteractionResult.PASS;
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		}
 		if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof ItemDisplayBlockEntity blockEntity) {
 			blockEntity.setFixedSpin(blockEntity.getSpin() + angleStep);
 			blockEntity.refresh();
 		}
-		return InteractionResult.sidedSuccess(pLevel.isClientSide);
+		return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
 	}
 
 	@Override
-	protected InteractionResult useTop(
+	protected ItemInteractionResult useTop(
+			ItemStack held,
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
@@ -93,7 +96,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		setSpin(pLevel, pPos, pPlayer);
-		return super.useTop(pState, pLevel, pPos, pPlayer, pHand, pHit);
+		return super.useTop(held, pState, pLevel, pPos, pPlayer, pHand, pHit);
 	}
 
 	private void setSpin(Level level, BlockPos pos, @Nullable LivingEntity placer) {

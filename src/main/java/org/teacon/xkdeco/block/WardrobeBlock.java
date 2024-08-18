@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block;
 
+import com.mojang.serialization.MapCodec;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
@@ -50,8 +52,15 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	public static final VoxelShape SHAPE_WEST_OPEN = Block.box(1, 0, 0, 16, 16, 16);
 	public static final VoxelShape SHAPE_EAST_OPEN = Block.box(0, 0, 0, 15, 16, 16);
 
+	public static final MapCodec<WardrobeBlock> CODEC = simpleCodec(WardrobeBlock::new);
+
 	public WardrobeBlock(Properties pProperties) {
-		super(pProperties.pushReaction(PushReaction.BLOCK), XKDecoEntityTypes.WARDROBE::getOrCreate);
+		super(pProperties.pushReaction(PushReaction.BLOCK), XKDecoEntityTypes.WARDROBE::get);
+	}
+
+	@Override
+	protected MapCodec<WardrobeBlock> codec() {
+		return CODEC;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -117,11 +126,11 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	}
 
 	@Override
-	public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+	public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
 		if (!pLevel.isClientSide && pPlayer.isCreative()) {
 			preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
 		}
-		super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+		return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
 	}
 
 	/**

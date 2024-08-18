@@ -1,26 +1,22 @@
 package org.teacon.xkdeco.block;
 
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.block.ModBlock;
-import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
@@ -30,31 +26,34 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 	}
 
 	@Override
-	public InteractionResult use(
-			BlockState pState,
-			Level pLevel,
-			BlockPos pPos,
-			Player pPlayer,
-			InteractionHand pHand,
-			BlockHitResult pHit) {
-		if (doesHitTop(pHit)) {
-			return useTop(pState, pLevel, pPos, pPlayer, pHand, pHit);
+	protected ItemInteractionResult useItemOn(
+			ItemStack stack,
+			BlockState state,
+			Level level,
+			BlockPos pos,
+			Player player,
+			InteractionHand hand,
+			BlockHitResult hitResult) {
+		if (doesHitTop(hitResult)) {
+			return useTop(stack, state, level, pos, player, hand, hitResult);
 		} else {
-			return useSide(pState, pLevel, pPos, pPlayer, pHand, pHit);
+			return useSide(stack, state, level, pos, player, hand, hitResult);
 		}
 	}
 
-	protected InteractionResult useSide(
+	protected ItemInteractionResult useSide(
+			ItemStack held,
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
 			Player pPlayer,
 			InteractionHand pHand,
 			BlockHitResult pHit) {
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
-	protected InteractionResult useTop(
+	protected ItemInteractionResult useTop(
+			ItemStack held,
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
@@ -62,18 +61,17 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!(pLevel.getBlockEntity(pPos) instanceof Container container)) {
-			return InteractionResult.FAIL;
+			return ItemInteractionResult.FAIL;
 		}
 		if (pLevel.isClientSide) {
-			return InteractionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		}
-		ItemStack held = pPlayer.getItemInHand(pHand);
 		if (held.isEmpty()) {
 			grab(pState, pLevel, pPos, pPlayer);
-			return InteractionResult.CONSUME;
+			return ItemInteractionResult.CONSUME;
 		}
 		insertItem(container, pPlayer.getAbilities().instabuild ? held.copy() : held);
-		return InteractionResult.CONSUME;
+		return ItemInteractionResult.CONSUME;
 	}
 
 	public void click(BlockState blockState, Level level, BlockPos pos, ServerPlayer player, BlockHitResult hit) {
@@ -95,7 +93,7 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 			return false;
 		}
 		ItemStack displayed = container.getItem(0);
-		if (displayed.isEmpty() || ItemStack.isSameItemSameTags(displayed, itemStack)) {
+		if (displayed.isEmpty() || ItemStack.isSameItemSameComponents(displayed, itemStack)) {
 			int maxSize = Math.min(itemStack.getMaxStackSize(), container.getMaxStackSize());
 			int transferAmount = Math.min(itemStack.getCount(), maxSize - displayed.getCount());
 			if (transferAmount > 0) {
@@ -141,12 +139,8 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 		return pHit.getDirection() == Direction.UP && pHit.getLocation().y - pHit.getBlockPos().getY() > 0.75;
 	}
 
-	@Override
-	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-		if (pStack.hasCustomHoverName() && pLevel.getBlockEntity(pPos) instanceof BaseContainerBlockEntity be) {
-			be.setCustomName(pStack.getHoverName());
-		}
-	}
+	// BlockItem now automatically handles custom name. setPlacedBy is no longer required.
+	// cf. BlockEntity.applyComponentsFromItemStack
 
 	@Override
 	public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {

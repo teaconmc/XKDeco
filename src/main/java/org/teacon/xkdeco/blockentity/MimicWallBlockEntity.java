@@ -2,6 +2,10 @@ package org.teacon.xkdeco.blockentity;
 
 import java.util.Objects;
 
+import net.minecraft.core.HolderLookup;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
@@ -15,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @Deprecated
 @MethodsReturnNonnullByDefault
@@ -27,7 +30,7 @@ public final class MimicWallBlockEntity extends BlockEntity {
 	private Block northBlock = Blocks.AIR;
 
 	public MimicWallBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-		super(XKDecoEntityTypes.MIMIC_WALL.getOrCreate(), pWorldPosition, pBlockState);
+		super(XKDecoEntityTypes.MIMIC_WALL.get(), pWorldPosition, pBlockState);
 	}
 
 	@Override
@@ -36,8 +39,8 @@ public final class MimicWallBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return this.saveWithoutMetadata();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithoutMetadata(registries);
 	}
 
 	public void updateBlocksFromLevel(MimicWallBlock wall) {
@@ -57,19 +60,19 @@ public final class MimicWallBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag pTag) {
-		super.load(pTag);
+	public void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.loadAdditional(pTag, registries);
 		this.northBlock = Objects.requireNonNullElse(
-				ForgeRegistries.BLOCKS.getValue(new ResourceLocation(pTag.getString("NorthBlockName"))),
+				BuiltInRegistries.BLOCK.get(ResourceLocation.parse(pTag.getString("NorthBlockName"))),
 				Blocks.AIR);
 		this.eastBlock = Objects.requireNonNullElse(
-				ForgeRegistries.BLOCKS.getValue(new ResourceLocation(pTag.getString("EastBlockName"))),
+				BuiltInRegistries.BLOCK.get(ResourceLocation.parse(pTag.getString("EastBlockName"))),
 				Blocks.AIR);
 		this.southBlock = Objects.requireNonNullElse(
-				ForgeRegistries.BLOCKS.getValue(new ResourceLocation(pTag.getString("SouthBlockName"))),
+				BuiltInRegistries.BLOCK.get(ResourceLocation.parse(pTag.getString("SouthBlockName"))),
 				Blocks.AIR);
 		this.westBlock = Objects.requireNonNullElse(
-				ForgeRegistries.BLOCKS.getValue(new ResourceLocation(pTag.getString("WestBlockName"))),
+				BuiltInRegistries.BLOCK.get(ResourceLocation.parse(pTag.getString("WestBlockName"))),
 				Blocks.AIR);
 		if (this.getBlockState().getBlock() instanceof MimicWallBlock wall) {
 			this.updateBlocksFromLevel(wall);
@@ -77,23 +80,23 @@ public final class MimicWallBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag pTag) {
-		super.saveAdditional(pTag);
+	protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.saveAdditional(pTag, registries);
 		pTag.putString(
 				"NorthBlockName",
-				Objects.requireNonNullElse(ForgeRegistries.BLOCKS.getKey(this.northBlock), ForgeRegistries.BLOCKS.getKey(Blocks.AIR))
+				Objects.requireNonNullElse(BuiltInRegistries.BLOCK.getKey(this.northBlock), BuiltInRegistries.BLOCK.getKey(Blocks.AIR))
 						.toString());
 		pTag.putString(
 				"EastBlockName",
-				Objects.requireNonNullElse(ForgeRegistries.BLOCKS.getKey(this.eastBlock), ForgeRegistries.BLOCKS.getKey(Blocks.AIR))
+				Objects.requireNonNullElse(BuiltInRegistries.BLOCK.getKey(this.eastBlock), BuiltInRegistries.BLOCK.getKey(Blocks.AIR))
 						.toString());
 		pTag.putString(
 				"SouthBlockName",
-				Objects.requireNonNullElse(ForgeRegistries.BLOCKS.getKey(this.southBlock), ForgeRegistries.BLOCKS.getKey(Blocks.AIR))
+				Objects.requireNonNullElse(BuiltInRegistries.BLOCK.getKey(this.southBlock), BuiltInRegistries.BLOCK.getKey(Blocks.AIR))
 						.toString());
 		pTag.putString(
 				"WestBlockName",
-				Objects.requireNonNullElse(ForgeRegistries.BLOCKS.getKey(this.westBlock), ForgeRegistries.BLOCKS.getKey(Blocks.AIR))
+				Objects.requireNonNullElse(BuiltInRegistries.BLOCK.getKey(this.westBlock), BuiltInRegistries.BLOCK.getKey(Blocks.AIR))
 						.toString());
 	}
 }

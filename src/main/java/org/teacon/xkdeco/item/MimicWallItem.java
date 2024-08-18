@@ -2,6 +2,8 @@ package org.teacon.xkdeco.item;
 
 import java.util.function.Consumer;
 
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
 
@@ -11,7 +13,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 @Deprecated
 @MethodsReturnNonnullByDefault

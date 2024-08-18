@@ -2,6 +2,8 @@ package org.teacon.xkdeco.client.renderer;
 
 import java.util.Objects;
 
+import net.minecraft.world.phys.AABB;
+
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,9 +23,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
-import snownee.kiwi.util.NotNullByDefault;
 
-@NotNullByDefault
+//@NotNullByDefault
 public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity> {
 	private final ItemRenderer itemRenderer;
 	private final RandomSource random = RandomSource.create();
@@ -39,6 +40,15 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 				pCameraPos,
 				Minecraft.getInstance().options.getEffectiveRenderDistance() * 16)
 				: BlockEntityRenderer.super.shouldRender(pBlockEntity, pCameraPos);
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(ItemDisplayBlockEntity be) {
+		if (be.isProjector()) {
+			return AABB.ofSize(Vec3.atBottomCenterOf(be.getBlockPos().above(9)), 16, 16, 16);
+		} else {
+			return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
+		}
 	}
 
 	@Override

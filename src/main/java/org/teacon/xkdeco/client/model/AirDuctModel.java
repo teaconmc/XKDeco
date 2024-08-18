@@ -48,8 +48,7 @@ public class AirDuctModel implements UnbakedModel {
 	public BakedModel bake(
 			ModelBaker pBaker,
 			Function<Material, TextureAtlasSprite> pSpriteGetter,
-			ModelState pState,
-			ResourceLocation pLocation) {
+			ModelState pState) {
 		var straightModels = ImmutableList.<BakedModel>builder();
 		for (BlockModelRotation rotation : List.of(
 				BlockModelRotation.X90_Y90,

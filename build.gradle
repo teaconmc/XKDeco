@@ -145,7 +145,7 @@ sourceSets.main.resources { srcDir 'src/kiwi_generated/resources' }
 
 repositories {
     maven { url = 'https://maven.neoforged.net/releases' }
-    maven { url "https://maven.su5ed.dev/releases" }
+    maven { url = "https://maven.su5ed.dev/releases" }
     maven { url "https://api.modrinth.com/maven" }
     maven {
         // saps.dev Maven (KubeJS and Rhino)
@@ -173,9 +173,7 @@ repositories {
     }
     maven { url 'https://maven.blamejared.com' }
     maven { url = "https://maven.theillusivec4.top/" }
-    flatDir {
-        dir 'libs'
-    }
+    mavenLocal() // YES
 }
 
 dependencies {
@@ -190,11 +188,11 @@ dependencies {
     implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
-
-    implementation(annotationProcessor(fg.deobf("maven.modrinth:kiwi:${project.kiwi_version}+forge")))
-    jarJar("maven.modrinth:kiwi:${project.kiwi_version}+forge") {
-        jarJar.ranged(it, "[${project.kiwi_version},)")
-    }
+     */
+    // TODO[3TUSK]: Hardcoded for now.
+    //  This is a abridged yet custom build, published to mavenLocal().
+    implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21-NeoForge-11.8.12"))
+    /*
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     // https://modrinth.com/mod/jade/versions
     implementation fg.deobf("maven.modrinth:jade:11.9.4+forge")
@@ -206,12 +204,13 @@ dependencies {
     // https://modrinth.com/mod/ferrite-core/versions
     implementation fg.deobf("maven.modrinth:ferrite-core:DG5Fn9Sz")
     implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
+    */
 
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.5")
-    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
-     */
+    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.102.0+2.0.12+1.21.1"
+    implementation "org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1:20.2.16+ed29d49bd1"
+    implementation "org.sinytra.forgified-fabric-api:fabric-transfer-api-v1:5.1.16+7f12564fd1"
+    //implementation "dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1"
+
 }
 
 processResources {

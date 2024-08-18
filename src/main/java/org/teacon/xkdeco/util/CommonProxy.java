@@ -1,5 +1,11 @@
 package org.teacon.xkdeco.util;
 
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
@@ -26,36 +32,30 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
-import snownee.kiwi.loader.Platform;
 
 @Mod(XKDeco.ID)
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class CommonProxy {
+public class CommonProxy { // TODO[3TUSK]: We need to stop using the name "CommonProxy" ASAP
 
-	public CommonProxy() {
-		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	public CommonProxy(IEventBus modEventBus) {
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
 		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
-		modEventBus.addListener((GatherDataEvent event) -> {
-			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
-			new XKDDataGen().onInitializeDataGenerator(dataGenerator);
-		});
+		// TODO[3TUSK]: F a b r i c ??? DataGenerator???
+		//modEventBus.addListener((GatherDataEvent event) -> {
+		//	FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
+		//	new XKDDataGen().onInitializeDataGenerator(dataGenerator);
+		//});
 
-		if (Platform.isPhysicalClient()) {
-			ClientProxy.init();
-		}
+		// Physical client check is replaced by NeoForge's sided @Mod entrypoint.
 
-		BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));
-		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
-		BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
-		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
+		// TODO[3TUSK]: I don't think you need to register Codecs,
+		//  and Kiwi 1.21-neoforge does not have BlockCodeces.register either.
+		//BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));
+		//BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
+		//BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
+		//BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
 	}
 
 	public static boolean isLadder(BlockState blockState, LevelReader world, BlockPos pos) {

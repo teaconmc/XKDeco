@@ -8,6 +8,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class WardrobeBlockEntity extends BlockEntity {
 	public WardrobeBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-		super(XKDecoEntityTypes.WARDROBE.getOrCreate(), pWorldPosition, pBlockState);
+		super(XKDecoEntityTypes.WARDROBE.get(), pWorldPosition, pBlockState);
 	}
 }

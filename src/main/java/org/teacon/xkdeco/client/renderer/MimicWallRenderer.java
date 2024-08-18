@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.client.renderer;
 
+import net.neoforged.neoforge.client.model.data.ModelData;
+
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
 
@@ -17,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraftforge.client.model.data.ModelData;
 
 @Deprecated
 @MethodsReturnNonnullByDefault
