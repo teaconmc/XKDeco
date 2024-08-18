@@ -4,14 +4,18 @@ import static net.minecraft.data.recipes.RecipeCategory.BUILDING_BLOCKS;
 import static net.minecraft.data.recipes.RecipeCategory.DECORATIONS;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
+
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.recipes.RecipeOutput;
+
+import net.minecraft.world.flag.FeatureFlagSet;
 
 import org.teacon.xkdeco.XKDeco;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -32,17 +36,17 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	private static final TagKey<Item> MAHOGANY_LOGS = AbstractModule.itemTag(XKDeco.ID, "mahogany_logs");
 	private static final TagKey<Item> VARNISHED_LOGS = AbstractModule.itemTag(XKDeco.ID, "varnished_logs");
 
-	public XKDRecipeProvider(FabricDataOutput output) {
-		super(output);
+	public XKDRecipeProvider(FabricDataOutput output, CompletableFuture<Provider> registriesFuture) {
+		super(output, registriesFuture);
 	}
 
 	@Override
-	public void buildRecipes(Consumer<FinishedRecipe> consumer) {
+	public void buildRecipes(RecipeOutput consumer) {
 		XKDBlockFamilies.getAllFamilies().forEach(family -> {
 			if (family.getBaseBlock().asItem() == Items.AIR) {
 				return;
 			}
-			generateRecipes(consumer, family);
+			generateRecipes(consumer, family, FeatureFlagSet.of());
 		});
 
 		coloredTiles(consumer, "black", Items.BLACK_TERRACOTTA);
@@ -245,7 +249,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.save(consumer);
 	}
 
-	private static void fallenLeaves(Consumer<FinishedRecipe> consumer, ItemLike pCarpet, ItemLike pMaterial) {
+	private static void fallenLeaves(RecipeOutput consumer, ItemLike pCarpet, ItemLike pMaterial) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, pCarpet, 3)
 				.define('#', pMaterial)
 				.pattern("##")
@@ -255,7 +259,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	}
 
 	private static void shapedSurroundedBy(
-			Consumer<FinishedRecipe> consumer,
+			RecipeOutput consumer,
 			RecipeCategory category,
 			ItemLike result,
 			Item middle,
@@ -272,7 +276,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	}
 
 	private static void shapelessTwoToOne(
-			Consumer<FinishedRecipe> consumer,
+			RecipeOutput consumer,
 			RecipeCategory category,
 			ItemLike result,
 			ItemLike input1,
@@ -290,13 +294,13 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.save(consumer, name);
 	}
 
-	private static void smokingRecipe(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike material) {
+	private static void smokingRecipe(RecipeOutput consumer, ItemLike result, ItemLike material) {
 		SimpleCookingRecipeBuilder.smoking(Ingredient.of(material), BUILDING_BLOCKS, result, 0.1f, 100)
 				.unlockedBy("has_item", has(material))
 				.save(consumer, BuiltInRegistries.ITEM.getKey(result.asItem()).getPath() + "_from_smoking");
 	}
 
-	private static void coloredTiles(Consumer<FinishedRecipe> consumer, String color, ItemLike terracotta) {
+	private static void coloredTiles(RecipeOutput consumer, String color, ItemLike terracotta) {
 		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i(color + "_tiles"), 8)
 				.pattern("TTT")
 				.pattern("WWW")
@@ -309,7 +313,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 	private static Item i(String id) {
 		ResourceLocation resourceLocation;
 		if (id.contains(":")) {
-			resourceLocation = new ResourceLocation(id);
+			resourceLocation = ResourceLocation.parse(id);
 		} else {
 			resourceLocation = XKDeco.id(id);
 		}

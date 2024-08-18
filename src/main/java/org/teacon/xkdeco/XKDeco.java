@@ -11,6 +11,6 @@ public final class XKDeco {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public static ResourceLocation id(String path) {
-		return new ResourceLocation(ID, path);
+		return ResourceLocation.fromNamespaceAndPath(ID, path);
 	}
 }

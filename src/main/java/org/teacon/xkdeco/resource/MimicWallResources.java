@@ -6,7 +6,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.repository.PackCompatibility;
 
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
@@ -28,7 +35,6 @@ import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -41,16 +47,22 @@ public final class MimicWallResources implements PackResources {
 	private static final String NAME_KEY = "pack.xkdeco.mimic_walls";
 	private static final String ID = XKDeco.ID + "_" + MimicWallsLoader.WALL_BLOCK_ENTITY;
 
-	private static final Pack.Info PACK_INFO = new Pack.Info(Component.translatable(NAME_KEY), 13, 13, FeatureFlagSet.of(), true);
+	private static final Pack.Metadata PACK_INFO = new Pack.Metadata(Component.translatable(NAME_KEY), PackCompatibility.COMPATIBLE, FeatureFlagSet.of(), List.of(), true);
 
-	private final String packId;
+	//private final String packId;
 
-	public MimicWallResources(String packId) {
-		this.packId = packId;
+	private final PackLocationInfo location;
+
+	public MimicWallResources(PackLocationInfo location) {
+		this.location = location;
+	}
+
+	public PackLocationInfo location() {
+		return this.location;
 	}
 
 	public static Pack create() {
-		return Pack.create(
+		/*return Pack.create(
 				ID,
 				Component.translatable(NAME_KEY),
 				true,
@@ -59,7 +71,21 @@ public final class MimicWallResources implements PackResources {
 				PackType.CLIENT_RESOURCES,
 				Pack.Position.TOP,
 				false,
-				PackSource.DEFAULT);
+				PackSource.DEFAULT);*/
+		var location = new PackLocationInfo(ID, Component.translatable(NAME_KEY), PackSource.BUILT_IN, Optional.empty());
+		var resourceSupplier = new Pack.ResourcesSupplier() {
+
+			@Override
+			public PackResources openPrimary(PackLocationInfo location) {
+				return new MimicWallResources(location);
+			}
+
+			@Override
+			public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+				return new MimicWallResources(location);
+			}
+		};
+		return new Pack(location, resourceSupplier, PACK_INFO, new PackSelectionConfig(true, Pack.Position.TOP, false));
 	}
 
 	@Override
@@ -73,10 +99,10 @@ public final class MimicWallResources implements PackResources {
 	}
 
 	@Override
-	public void listResources(PackType pType, String pNamespace, String pPath, PackResources.ResourceOutput output) {
+	public void listResources(PackType pType, String pNamespace, String pPath, ResourceOutput output) {
 		if (pPath.equals("blockstates")) {
 			for (var block : walls()) {
-				var registryName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
+				var registryName = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block));
 				var name = MimicWallBlock.toMimicId(registryName);
 				output.accept(
 						XKDeco.id("blockstates/" + name + ".json"),
@@ -84,7 +110,7 @@ public final class MimicWallResources implements PackResources {
 			}
 		} else if (pPath.equals("models")) {
 			for (var block : walls()) {
-				var registryName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
+				var registryName = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block));
 				var name = MimicWallBlock.toMimicId(registryName);
 				output.accept(
 						XKDeco.id("models/item/" + name + ".json"),
@@ -136,7 +162,7 @@ public final class MimicWallResources implements PackResources {
 
 	@Override
 	public String packId() {
-		return this.packId;
+		return ID;
 	}
 
 	@Override

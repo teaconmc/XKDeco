@@ -4,6 +4,8 @@
  */
 package org.teacon.xkdeco.blockentity;
 
+import net.minecraft.core.HolderLookup;
+
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
@@ -11,33 +13,23 @@ import org.teacon.xkdeco.init.XKDecoEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import snownee.kiwi.util.NotNullByDefault;
 
-@NotNullByDefault
+//@NotNullByDefault
 public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 	public static final String SPIN_KEY = "FixedSpin";
 	private float fixedSpin;
 
 	public ItemDisplayBlockEntity(BlockPos blockPos, BlockState blockState, boolean projector) {
 		super(
-				projector ? XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate() : XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(),
+				projector ? XKDecoEntityTypes.ITEM_PROJECTOR.get() : XKDecoEntityTypes.ITEM_DISPLAY.get(),
 				blockPos,
 				blockState);
 	}
 
-	@Override
-	public AABB getRenderBoundingBox() {
-		if (isProjector()) {
-			return AABB.ofSize(Vec3.atBottomCenterOf(this.getBlockPos().above(9)), 16, 16, 16);
-		} else {
-			return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(this.getBlockPos().above()));
-		}
-	}
+	// getRenderBoundingBox moved to ItemDisplayRenderer. See there for more info.
 
 	public boolean isProjector() {
-		return XKDecoEntityTypes.ITEM_PROJECTOR.is(getType());
+		return XKDecoEntityTypes.ITEM_PROJECTOR.get() == this.getType();
 	}
 
 	public float getSpin() {
@@ -56,15 +48,15 @@ public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 	}
 
 	@Override
-	protected void readPacketData(CompoundTag pTag) {
-		super.readPacketData(pTag);
+	protected void readPacketData(CompoundTag pTag, HolderLookup.Provider registries) {
+		super.readPacketData(pTag, registries);
 		this.fixedSpin = pTag.getFloat(SPIN_KEY);
 	}
 
 	@NotNull
 	@Override
-	protected CompoundTag writePacketData(CompoundTag pTag) {
+	protected CompoundTag writePacketData(CompoundTag pTag, HolderLookup.Provider registries) {
 		pTag.putFloat(SPIN_KEY, fixedSpin);
-		return super.writePacketData(pTag);
+		return super.writePacketData(pTag, registries);
 	}
 }

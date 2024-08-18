@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
+
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.item.MimicWallItem;
@@ -24,9 +27,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.registries.RegisterEvent;
-import snownee.kiwi.datagen.GameObjectLookup;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -92,9 +92,10 @@ public final class MimicWallsLoader {
 
 	public static void addMimicWallsToTab(BuildCreativeModeTabContentsEvent event) {
 		if (STRUCTURE_TAB_KEY.equals(event.getTabKey())) {
-			GameObjectLookup.all(Registries.BLOCK, XKDeco.ID).forEach(block -> {
-				if (block instanceof MimicWallBlock) {
-					event.accept(block);
+			BuiltInRegistries.BLOCK.entrySet().forEach(blockEntry -> {
+				if (blockEntry.getKey().location().getNamespace().equals(XKDeco.ID)
+						&& blockEntry.getValue() instanceof MimicWallBlock wall) {
+					event.accept(wall);
 				}
 			});
 		}

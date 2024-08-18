@@ -8,7 +8,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -17,26 +16,32 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
-import snownee.kiwi.util.codec.CustomizationCodecs;
 
 public class OneDirectionFenceGateBlock extends FenceGateBlock {
-	public static final MapCodec<OneDirectionFenceGateBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-			BlockCodecs.propertiesCodec(),
-			CustomizationCodecs.WOOD_TYPE.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK)
+	// If you declare a specific type, that means your type is invariant.
+	// No ? extends nor ? super for you.
+	// To comply this constraint, we have to make this a MapCodec<FenceGateBlock>,
+	// instead of the more proper MapCodec<OneDirectionFenceGateBlock>.
+	public static final MapCodec<FenceGateBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+			propertiesCodec(),
+			WoodType.CODEC.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK)
 	).apply(instance, OneDirectionFenceGateBlock::new));
 
 	public OneDirectionFenceGateBlock(Properties pProperties, WoodType pType) {
-		super(pProperties, pType);
+		super(pType, pProperties);
 	}
 
 	@Override
-	public InteractionResult use(
+	public MapCodec<FenceGateBlock> codec() {
+		return CODEC;
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
 			Player pPlayer,
-			InteractionHand pHand,
 			BlockHitResult pHit) {
 		pLevel.setBlock(pPos, pState.cycle(OPEN), 10);
 		boolean flag = pState.getValue(OPEN);

@@ -18,11 +18,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import snownee.kiwi.customization.block.BasicBlock;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
-public class HangingFasciaBlock extends BasicBlock {
+public class HangingFasciaBlock extends Block implements CheckedWaterloggedBlock {
 	public static final EnumProperty<Side> SIDE = EnumProperty.create("side", Side.class);
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 

@@ -24,14 +24,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.customization.block.BasicBlock;
 import snownee.kiwi.customization.placement.PlaceSlot;
 import snownee.kiwi.util.NotNullByDefault;
-import snownee.kiwi.util.Util;
 
 @SuppressWarnings("deprecation")
 @NotNullByDefault
-public class AirDuctBlock extends BasicBlock {
+public class AirDuctBlock extends Block implements CheckedWaterloggedBlock {
+
+	private static final Direction[] DIRECTIONS = Direction.values();
 
 	public AirDuctBlock(Properties pProperties) {
 		super(pProperties);
@@ -68,12 +68,11 @@ public class AirDuctBlock extends BasicBlock {
 	}
 
 	@Override
-	public InteractionResult use(
+	public InteractionResult useWithoutItem(
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
 			Player pPlayer,
-			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!pPlayer.getOffhandItem().is(Items.CHAINMAIL_HELMET)) {
 			return InteractionResult.PASS;
@@ -96,7 +95,7 @@ public class AirDuctBlock extends BasicBlock {
 		BlockPos pos = pContext.getClickedPos();
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayList();
-		for (Direction direction : Util.DIRECTIONS) {
+		for (Direction direction : DIRECTIONS) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
 			if (isAirDuctSlot(neighborState, direction.getOpposite())) {
 				neighbors.add(direction);
@@ -128,7 +127,7 @@ public class AirDuctBlock extends BasicBlock {
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayListWithExpectedSize(2);
-		for (Direction direction : Util.DIRECTIONS) {
+		for (Direction direction : DIRECTIONS) {
 			if (direction == pDirection) {
 				continue;
 			}
@@ -141,7 +140,7 @@ public class AirDuctBlock extends BasicBlock {
 			}
 		}
 		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.get(0);
-		for (Direction direction : Util.DIRECTIONS) {
+		for (Direction direction : DIRECTIONS) {
 			blockState = blockState.setValue(
 					DIRECTION_PROPERTIES.get(direction.get3DDataValue()),
 					direction == pDirection || direction == theOtherDirection);

@@ -57,6 +57,8 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
 
+import org.teacon.xkdeco.block.XKDStateProperties;
+
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
@@ -583,8 +585,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
 				.with(PropertyDispatch.property(HALF)
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1205,8 +1207,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(altRotation ? createHorizontalFacingDispatchAlt() : BlockModelGenerators.createHorizontalFacingDispatch())
 				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1313,8 +1315,8 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(Direction.Axis.Z, Variant.variant())
 						.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
 				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1477,8 +1479,8 @@ public class XKDModelProvider extends FabricModelProvider {
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1487,7 +1489,7 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	private static Block block(String id) {
-		ResourceLocation resourceLocation = new ResourceLocation(XKDeco.ID, id);
+		ResourceLocation resourceLocation = XKDeco.id(id);
 		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> new IllegalStateException(
 				"Missing block: " + resourceLocation));
 	}

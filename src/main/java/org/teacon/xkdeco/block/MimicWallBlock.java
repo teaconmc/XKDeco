@@ -44,7 +44,7 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 	private final WallBlock wall;
 
 	public MimicWallBlock(WallBlock wallDelegate) {
-		super(Properties.copy(wallDelegate));
+		super(Properties.ofFullCopy(wallDelegate));
 		this.wall = wallDelegate;
 	}
 

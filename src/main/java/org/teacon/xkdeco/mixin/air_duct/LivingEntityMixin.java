@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends Entity {
 			value = "FIELD",
 			target = "Lnet/minecraft/world/entity/LivingEntity;horizontalCollision:Z"))
 	private boolean xkdeco$suppressClimbing(boolean original) {
-		if (original && getFeetBlockState().getBlock() instanceof AirDuctBlock) {
+		if (original && getInBlockState().getBlock() instanceof AirDuctBlock) {
 			return false;
 		}
 		return original;
