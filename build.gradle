@@ -38,12 +38,12 @@ abstract class TeaConDumpPathToGitHub extends DefaultTask {
 }
 
 base {
-    archivesName = 'AreaControl-NeoForge-1.21'
+    archivesName = 'XKDeco-NeoForge-1.21'
 }
-version = "${minecraft_version}-Forge-${mod_version}"
+version = "${minecraft_version}-NeoForge-${mod_version}"
 group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
-var realVersion = mod_version + '+forge'
+var realVersion = mod_version + '+neoforge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 compileJava.options.encoding = 'UTF-8'
