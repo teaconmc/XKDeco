@@ -1,7 +1,5 @@
 package org.teacon.xkdeco.util;
 
-import java.util.List;
-
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -26,21 +24,14 @@ import org.teacon.xkdeco.resource.MimicWallResources;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.datafixers.util.Pair;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 
 @Mod(value = XKDeco.ID, dist = Dist.CLIENT)
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class ClientProxy { // TODO[3TUSK]: We need to stop using the name "CommonProxy" ASAP
+public final class ClientProxy { // TODO[3TUSK]: We need to stop using the name "ClientProxy" ASAP
 
 	public static void setItemRenderers(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(XKDecoWithoutLevelRenderer.INSTANCE);
@@ -78,21 +69,4 @@ public final class ClientProxy { // TODO[3TUSK]: We need to stop using the name 
 		});
 	}
 
-	public static void registerColors(List<Pair<Block, BlockColor>> blocksToAdd, List<Pair<Item, ItemColor>> itemsToAdd) {
-		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		if (!blocksToAdd.isEmpty()) {
-			modEventBus.addListener((RegisterColorHandlersEvent.Block event) -> {
-				for (var pair : blocksToAdd) {
-					event.register(pair.getSecond(), pair.getFirst());
-				}
-			});
-		}
-		if (!itemsToAdd.isEmpty()) {
-			modEventBus.addListener((RegisterColorHandlersEvent.Item event) -> {
-				for (var pair : itemsToAdd) {
-					event.register(pair.getSecond(), pair.getFirst());
-				}
-			});
-		}
-	}
 }

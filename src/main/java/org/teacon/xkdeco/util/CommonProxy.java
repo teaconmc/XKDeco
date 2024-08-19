@@ -42,11 +42,10 @@ public class CommonProxy { // TODO[3TUSK]: We need to stop using the name "Commo
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
 		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
-		// TODO[3TUSK]: F a b r i c ??? DataGenerator???
-		//modEventBus.addListener((GatherDataEvent event) -> {
-		//	FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
-		//	new XKDDataGen().onInitializeDataGenerator(dataGenerator);
-		//});
+		modEventBus.addListener((GatherDataEvent event) -> {
+			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
+			new XKDDataGen().onInitializeDataGenerator(dataGenerator);
+		});
 
 		// Physical client check is replaced by NeoForge's sided @Mod entrypoint.
 
