@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 public class OneDirectionFenceGateBlock extends FenceGateBlock {
 	// If you declare a specific type, that means your type is invariant.
@@ -23,7 +24,7 @@ public class OneDirectionFenceGateBlock extends FenceGateBlock {
 	// To comply this constraint, we have to make this a MapCodec<FenceGateBlock>,
 	// instead of the more proper MapCodec<OneDirectionFenceGateBlock>.
 	public static final MapCodec<FenceGateBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-			propertiesCodec(),
+			BlockCodecs.propertiesCodec(),
 			WoodType.CODEC.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK)
 	).apply(instance, OneDirectionFenceGateBlock::new));
 

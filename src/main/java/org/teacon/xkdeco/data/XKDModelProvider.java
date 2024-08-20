@@ -110,7 +110,7 @@ public class XKDModelProvider extends FabricModelProvider {
 			block("oil_lamp"));
 	private BlockModelGenerators generators;
 	private static final Set<Block> generated = Sets.newHashSet();
-	private final ResourceLocation snowySlabDouble = new ResourceLocation("block/grass_block_snow");
+	private final ResourceLocation snowySlabDouble = ResourceLocation.withDefaultNamespace("block/grass_block_snow");
 	private final ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
 	public XKDModelProvider(FabricDataOutput output) {

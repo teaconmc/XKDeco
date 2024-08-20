@@ -28,12 +28,13 @@ import net.minecraft.world.level.block.SpreadingSnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class SpecialSlabBlock extends SlabBlock {
 	public static final MapCodec<SpecialSlabBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			propertiesCodec(),
+			BlockCodecs.propertiesCodec(),
 			StringRepresentable.fromEnum(Type::values).fieldOf("type").forGetter(block -> block.type)
 	).apply(instance, SpecialSlabBlock::new));
 	private static final Supplier<Block> DIRT_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.get(XKDeco.id("dirt_slab")));

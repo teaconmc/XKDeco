@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 @Mod(XKDeco.ID)
 @MethodsReturnNonnullByDefault
@@ -42,19 +43,17 @@ public class CommonProxy { // TODO[3TUSK]: We need to stop using the name "Commo
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
 		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
-		modEventBus.addListener((GatherDataEvent event) -> {
-			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
-			new XKDDataGen().onInitializeDataGenerator(dataGenerator);
-		});
+		//modEventBus.addListener((GatherDataEvent event) -> {
+		//	FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
+		//	new XKDDataGen().onInitializeDataGenerator(dataGenerator);
+		//});
 
 		// Physical client check is replaced by NeoForge's sided @Mod entrypoint.
 
-		// TODO[3TUSK]: I don't think you need to register Codecs,
-		//  and Kiwi 1.21-neoforge does not have BlockCodeces.register either.
-		//BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));
-		//BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
-		//BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
-		//BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
+		BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));
+		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
+		BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
+		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
 	}
 
 	public static boolean isLadder(BlockState blockState, LevelReader world, BlockPos pos) {

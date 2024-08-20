@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
@@ -32,7 +33,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 	private static final SegmentedAnglePrecision SEGMENTED_ANGLE8 = new SegmentedAnglePrecision(3);
 	private static final float angleStep = Mth.PI / 4 * 20;
 	public static final MapCodec<ItemDisplayBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			propertiesCodec(),
+			BlockCodecs.propertiesCodec(),
 			Codec.BOOL.optionalFieldOf("projector", false).forGetter(block -> block.projector)
 	).apply(instance, ItemDisplayBlock::new));
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
