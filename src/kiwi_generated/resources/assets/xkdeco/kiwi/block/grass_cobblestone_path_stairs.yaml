@@ -1,4 +1,4 @@
 template: stair
 render_type: cutout_mipped
 material: xkdeco:stone
-color_provider: grass
+color_provider: short_grass
