@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[40,)"
+loaderVersion="[1,)"
 license="ARR"
 issueTrackerURL="https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
 
@@ -13,26 +13,29 @@ description='''
 Models and textures are created by XeKr: https://github.com/XeKr
 '''
 
+[[mixin]]
+config="xkdeco.mixins.json"
+
 [modproperties.xkdeco]
 kiwiCustomization=true
 
 [[dependencies.xkdeco]]
-modId="forge"
-mandatory=true
-versionRange="[45,)"
+modId="neoforge"
+type="required"
+versionRange="[21,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.xkdeco]]
 modId="minecraft"
-mandatory=true
-versionRange="1.20.1"
+type="required"
+versionRange="[1.21,1.22)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.xkdeco]]
 modId="kiwi"
-mandatory=true
-versionRange="[11.8.3,12)"
+type="required"
+versionRange="[11,)"
 ordering="NONE"
 side="BOTH"

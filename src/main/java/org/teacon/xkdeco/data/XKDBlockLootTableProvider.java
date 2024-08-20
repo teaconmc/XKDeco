@@ -1,6 +1,9 @@
 package org.teacon.xkdeco.data;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
+
+import net.minecraft.core.HolderLookup;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
@@ -27,8 +30,8 @@ import snownee.kiwi.customization.block.loader.KBlockComponents;
 import snownee.kiwi.datagen.GameObjectLookup;
 
 public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
-	protected XKDBlockLootTableProvider(FabricDataOutput dataOutput) {
-		super(dataOutput);
+	protected XKDBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+		super(dataOutput, registryLookup);
 	}
 
 	@Override
