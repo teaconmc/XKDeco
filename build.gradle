@@ -38,7 +38,7 @@ abstract class TeaConDumpPathToGitHub extends DefaultTask {
 }
 
 base {
-    archivesName = 'XKDeco-NeoForge-1.21'
+    archivesName = 'XKDeco-NeoForge'
 }
 version = "${minecraft_version}-NeoForge-${mod_version}"
 group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -191,7 +191,7 @@ dependencies {
      */
     // TODO[3TUSK]: Hardcoded for now.
     //  This is a custom build, published to mavenLocal().
-    implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21-NeoForge-15.2.0-alpha"))
+    jarJar(implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21.1-NeoForge-15.2.0-alpha")))
     /*
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     // https://modrinth.com/mod/jade/versions
@@ -247,8 +247,6 @@ tasks.jarJar.configure {
 }
 
 jar {
-    archiveClassifier = 'slim'
-
     preserveFileTimestamps = false
     reproducibleFileOrder = true
 }
