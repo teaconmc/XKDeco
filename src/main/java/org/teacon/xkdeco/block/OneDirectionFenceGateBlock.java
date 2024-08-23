@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block;
 
+import net.minecraft.world.level.block.Block;
+
 import org.teacon.xkdeco.util.CommonProxy;
 
 import com.mojang.serialization.MapCodec;
@@ -24,7 +26,7 @@ public class OneDirectionFenceGateBlock extends FenceGateBlock {
 	// To comply this constraint, we have to make this a MapCodec<FenceGateBlock>,
 	// instead of the more proper MapCodec<OneDirectionFenceGateBlock>.
 	public static final MapCodec<FenceGateBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-			BlockCodecs.propertiesCodec(),
+			Block.propertiesCodec(),
 			WoodType.CODEC.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK)
 	).apply(instance, OneDirectionFenceGateBlock::new));
 

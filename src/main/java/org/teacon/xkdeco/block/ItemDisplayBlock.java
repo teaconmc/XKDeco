@@ -33,7 +33,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 	private static final SegmentedAnglePrecision SEGMENTED_ANGLE8 = new SegmentedAnglePrecision(3);
 	private static final float angleStep = Mth.PI / 4 * 20;
 	public static final MapCodec<ItemDisplayBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			BlockCodecs.propertiesCodec(),
+			Block.propertiesCodec(),
 			Codec.BOOL.optionalFieldOf("projector", false).forGetter(block -> block.projector)
 	).apply(instance, ItemDisplayBlock::new));
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
