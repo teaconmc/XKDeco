@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -24,12 +23,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import snownee.kiwi.customization.block.BasicBlock;
 import snownee.kiwi.customization.placement.PlaceSlot;
 import snownee.kiwi.util.NotNullByDefault;
 
 @SuppressWarnings("deprecation")
 @NotNullByDefault
-public class AirDuctBlock extends Block implements CheckedWaterloggedBlock {
+public class AirDuctBlock extends BasicBlock {
 
 	private static final Direction[] DIRECTIONS = Direction.values();
 

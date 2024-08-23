@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "minecraft:bone_meal"
+    },
+    "C": {
+      "item": "minecraft:clay"
+    }
+  },
+  "pattern": [
+    " B ",
+    "BCB",
+    " B "
+  ],
+  "result": {
+    "count": 4,
+    "id": "xkdeco:mud_wall_block"
+  },
+  "show_notification": true
+}

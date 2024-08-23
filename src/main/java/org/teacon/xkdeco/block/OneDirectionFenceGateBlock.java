@@ -16,25 +16,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 public class OneDirectionFenceGateBlock extends FenceGateBlock {
 	// If you declare a specific type, that means your type is invariant.
 	// No ? extends nor ? super for you.
 	// To comply this constraint, we have to make this a MapCodec<FenceGateBlock>,
 	// instead of the more proper MapCodec<OneDirectionFenceGateBlock>.
-	public static final MapCodec<FenceGateBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-			BlockCodecs.propertiesCodec(),
-			WoodType.CODEC.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK)
+	public static final MapCodec<OneDirectionFenceGateBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+			WoodType.CODEC.optionalFieldOf("wood_type", WoodType.OAK).forGetter($ -> WoodType.OAK),
+			propertiesCodec()
 	).apply(instance, OneDirectionFenceGateBlock::new));
 
-	public OneDirectionFenceGateBlock(Properties pProperties, WoodType pType) {
+	public OneDirectionFenceGateBlock(WoodType pType, Properties pProperties) {
 		super(pType, pProperties);
 	}
 
 	@Override
 	public MapCodec<FenceGateBlock> codec() {
-		return CODEC;
+		//noinspection unchecked
+		return (MapCodec<FenceGateBlock>) (Object) CODEC;
 	}
 
 	@Override
