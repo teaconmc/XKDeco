@@ -1,7 +1,5 @@
 package org.teacon.xkdeco.block;
 
-import net.minecraft.world.ItemInteractionResult;
-
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
@@ -13,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.SegmentedAnglePrecision;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
@@ -33,7 +30,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 	private static final SegmentedAnglePrecision SEGMENTED_ANGLE8 = new SegmentedAnglePrecision(3);
 	private static final float angleStep = Mth.PI / 4 * 20;
 	public static final MapCodec<ItemDisplayBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			BlockCodecs.propertiesCodec(),
+			propertiesCodec(),
 			Codec.BOOL.optionalFieldOf("projector", false).forGetter(block -> block.projector)
 	).apply(instance, ItemDisplayBlock::new));
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -110,5 +107,10 @@ public class ItemDisplayBlock extends DisplayBlock {
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		setSpin(pLevel, pPos, pPlacer);
+	}
+
+	@Override
+	protected MapCodec<? extends Block> codec() {
+		return CODEC;
 	}
 }

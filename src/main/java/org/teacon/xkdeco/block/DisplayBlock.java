@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.block.ModBlock;
+import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:spyglass"
+    },
+    "B": {
+      "item": "xkdeco:tech_item_display"
+    }
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "id": "xkdeco:item_projector"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "minecraft:bricks"
+    },
+    "T": {
+      "item": "minecraft:black_terracotta"
+    }
+  },
+  "pattern": [
+    "TB",
+    "BT"
+  ],
+  "result": {
+    "count": 6,
+    "id": "xkdeco:black_bricks"
+  },
+  "show_notification": true
+}

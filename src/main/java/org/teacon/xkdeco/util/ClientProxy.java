@@ -1,16 +1,5 @@
 package org.teacon.xkdeco.util;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-
-import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
-
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
@@ -28,20 +17,28 @@ import com.google.gson.JsonParseException;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 
 @Mod(value = XKDeco.ID, dist = Dist.CLIENT)
 @ParametersAreNonnullByDefault
-public final class ClientProxy { // TODO[3TUSK]: We need to stop using the name "ClientProxy" ASAP
+public final class ClientProxy {
 
 	public static void setItemRenderers(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(XKDecoWithoutLevelRenderer.INSTANCE);
 	}
 
 	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.MIMIC_WALL.get(), MimicWallRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.get(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.get(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.get(), BlockDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.MIMIC_WALL.getOrCreate(), MimicWallRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
 	}
 
 	public static void setAdditionalPackFinder(AddPackFindersEvent event) {

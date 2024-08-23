@@ -21,6 +21,7 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
+import org.teacon.xkdeco.block.XKDStateProperties;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -56,13 +57,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
-
-import org.teacon.xkdeco.block.XKDStateProperties;
-
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.datagen.GameObjectLookup;
+import snownee.kiwi.util.GameObjectLookup;
 import snownee.kiwi.util.NotNullByDefault;
 
 @SuppressWarnings({"deprecation", "SameParameterValue"})

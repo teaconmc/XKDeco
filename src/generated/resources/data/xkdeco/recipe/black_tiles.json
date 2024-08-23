@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "T": {
+      "item": "minecraft:black_terracotta"
+    },
+    "W": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "id": "xkdeco:black_tiles"
+  },
+  "show_notification": true
+}

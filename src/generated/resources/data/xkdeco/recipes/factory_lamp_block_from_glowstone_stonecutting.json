@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 4,
-  "ingredient": {
-    "item": "minecraft:glowstone"
-  },
-  "result": "xkdeco:factory_lamp_block"
-}

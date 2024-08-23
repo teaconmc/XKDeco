@@ -75,6 +75,7 @@ neoForge {
     runs {
         client {
             client()
+            ideName = "Run ${project.mod_id} - Client"
             gameDirectory = project.file('run_client')
 //            property 'production', 'true'
             systemProperty 'forge.logging.console.level', 'debug'
@@ -108,6 +109,7 @@ neoForge {
 
         server {
             server()
+            ideName = "Run ${project.mod_id} - Server"
             gameDirectory = project.file('run_server')
 //            property 'production', 'true'
             systemProperty 'forge.logging.console.level', 'debug'
@@ -122,6 +124,7 @@ neoForge {
 
         data {
             data()
+            ideName = "Run ${project.mod_id} - Data"
             gameDirectory = project.file('run_data')
 //            property 'production', 'true'
             systemProperty 'forge.logging.console.level', 'debug'
@@ -174,6 +177,7 @@ repositories {
     maven { url 'https://maven.blamejared.com' }
     maven { url = "https://maven.theillusivec4.top/" }
     mavenLocal() // YES
+    flatDir { dir 'libs' }
 }
 
 dependencies {
@@ -191,7 +195,7 @@ dependencies {
      */
     // TODO[3TUSK]: Hardcoded for now.
     //  This is a custom build, published to mavenLocal().
-    jarJar(implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21.1-NeoForge-15.2.0-alpha")))
+    jarJar(implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21.1-NeoForge-15.2.0-alpha.1")))
     /*
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     // https://modrinth.com/mod/jade/versions
@@ -311,12 +315,12 @@ tasks.register("githubActionOutput", TeaConDumpPathToGitHub) { task ->
 /*
 unifiedPublishing {
     project {
-        displayName = "[Forge $project.supported_version] $project.mod_version"
+        displayName = "[NeoForge $project.supported_version] $project.mod_version"
         version = realVersion // Optional, Inferred from project by default
         changelog = file("CHANGELOG.md").exists() ? file("CHANGELOG.md").text : ""
         releaseType = project.release_type // Optional, use "release", "beta" or "alpha"
         gameVersions = ["1.20.1"]
-        gameLoaders = ["forge", "neoforge"]
+        gameLoaders = ["neoforge"]
 
         mainPublication tasks.jarJar // Declares the publicated jar
 

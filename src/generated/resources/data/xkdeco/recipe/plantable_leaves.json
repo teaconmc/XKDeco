@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "M": {
+      "item": "minecraft:dirt"
+    },
+    "S": {
+      "item": "minecraft:oak_leaves"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SMS",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "xkdeco:plantable_leaves"
+  },
+  "show_notification": true
+}

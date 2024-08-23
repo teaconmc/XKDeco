@@ -4,17 +4,17 @@
  */
 package org.teacon.xkdeco.blockentity;
 
-import net.minecraft.core.HolderLookup;
-
 import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.util.NotNullByDefault;
 
-//@NotNullByDefault
+@NotNullByDefault
 public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 	public static final String SPIN_KEY = "FixedSpin";
 	private float fixedSpin;
