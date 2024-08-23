@@ -27,7 +27,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.datagen.GameObjectLookup;
+import snownee.kiwi.util.GameObjectLookup;
 
 public class XKDBlockLootTableProvider extends FabricBlockLootTableProvider {
 	protected XKDBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {

@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.util;
 
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -50,7 +51,7 @@ public class CommonProxy { // TODO[3TUSK]: We need to stop using the name "Commo
 
 		// Physical client check is replaced by NeoForge's sided @Mod entrypoint.
 
-		BlockCodecs.register(XKDeco.id("block"), BlockCodecs.simpleCodec(XKDBlock::new));
+		BlockCodecs.register(XKDeco.id("block"), Block.simpleCodec(XKDBlock::new));
 		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
 		BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
 		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);

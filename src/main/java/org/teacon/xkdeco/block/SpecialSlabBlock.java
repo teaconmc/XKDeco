@@ -34,7 +34,7 @@ import snownee.kiwi.customization.block.loader.BlockCodecs;
 @ParametersAreNonnullByDefault
 public class SpecialSlabBlock extends SlabBlock {
 	public static final MapCodec<SpecialSlabBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			BlockCodecs.propertiesCodec(),
+			Block.propertiesCodec(),
 			StringRepresentable.fromEnum(Type::values).fieldOf("type").forGetter(block -> block.type)
 	).apply(instance, SpecialSlabBlock::new));
 	private static final Supplier<Block> DIRT_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.get(XKDeco.id("dirt_slab")));

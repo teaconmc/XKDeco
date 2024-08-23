@@ -62,7 +62,8 @@ import org.teacon.xkdeco.block.XKDStateProperties;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
-import snownee.kiwi.datagen.GameObjectLookup;
+
+import snownee.kiwi.util.GameObjectLookup;
 import snownee.kiwi.util.NotNullByDefault;
 
 @SuppressWarnings({"deprecation", "SameParameterValue"})
