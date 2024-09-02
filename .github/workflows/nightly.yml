@@ -1,4 +1,4 @@
-name: test-build
+name: XKDeco 1.21-NeoForge Nightly Build
 on:
   push:
     paths:
