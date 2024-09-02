@@ -28,9 +28,13 @@ jobs:
         run: mkdir libs && cp kiwi-jiachen/build/libs/* ./libs/
       - name: Build
         id: build
-        run: ./gradlew build githubActionOutput # publishReleasePublicationToTeaconRepository
+        env:
+          ARCHIVE_ENDPOINT: ${{ secrets.TEACON_ARCHIVE_ENDPOINT }}
+          ARCHIVE_ACCESS_KEY: ${{ secrets.TEACON_ARCHIVE_ACCESS_KEY }}
+          ARCHIVE_SECRET_KEY: ${{ secrets.TEACON_ARCHIVE_SECRET_KEY }}
+        run: ./gradlew -Dorg.gradle.s3.endpoint=$ARCHIVE_ENDPOINT publishReleasePublicationToTeaconRepository githubActionOutput
       - name: GitHub Action Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build.outputs.artifact_name }}
           path: ${{ steps.build.outputs.artifact_path }}
