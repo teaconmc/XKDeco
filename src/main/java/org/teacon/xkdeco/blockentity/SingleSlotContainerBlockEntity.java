@@ -21,8 +21,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.util.NotNullByDefault;
 
-//@NotNullByDefault
+@NotNullByDefault
 public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	public static final String ITEM_STACK_KEY = "Display";
 	protected ItemStack item = ItemStack.EMPTY;

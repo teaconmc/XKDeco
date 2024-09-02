@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 4,
+  "ingredient": {
+    "item": "minecraft:sea_lantern"
+  },
+  "result": {
+    "id": "xkdeco:tech_lamp_block"
+  }
+}

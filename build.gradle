@@ -4,6 +4,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.16-beta'
+    id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -75,6 +76,7 @@ neoForge {
     runs {
         client {
             client()
+            ideName = "Run ${project.mod_id} - Client"
             gameDirectory = project.file('run_client')
 //            property 'production', 'true'
             systemProperty 'forge.logging.console.level', 'debug'
@@ -108,6 +110,7 @@ neoForge {
 
         server {
             server()
+            ideName = "Run ${project.mod_id} - Server"
             gameDirectory = project.file('run_server')
 //            property 'production', 'true'
             systemProperty 'forge.logging.console.level', 'debug'
@@ -122,6 +125,7 @@ neoForge {
 
         data {
             data()
+            ideName = "Run ${project.mod_id} - Data"
             gameDirectory = project.file('run_data')
 //            property 'production', 'true'
             systemProperty 'forge.logging.console.level', 'debug'
@@ -239,17 +243,22 @@ processResources {
     }
 }
 
-tasks.jarJar.configure {
-    // TODO[3TUSK]: I don't know if it is possible to exclude these?
-    //exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
-    //exclude("/assets/test")
-    //exclude("/org/teacon/xkdeco/data")
-    //exclude("/org/teacon/xkdeco/mixin/data")
-    //exclude("/.cache")
-    //exclude("/xkdeco.data.mixins.json")
-}
-
 jar {
+    exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
+    exclude("/assets/test")
+    exclude("/org/teacon/xkdeco/data")
+    exclude("/org/teacon/xkdeco/mixin/data")
+    exclude("/.cache")
+    exclude("/xkdeco.data.mixins.json")
+
+    manifest {
+        attributes(["Specification-Title"     : mod_id,
+                    "Specification-Version"   : "1", // We are version 1 of ourselves
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : realVersion,
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
+    }
+
     preserveFileTimestamps = false
     reproducibleFileOrder = true
 }
@@ -310,18 +319,16 @@ tasks.register("githubActionOutput", TeaConDumpPathToGitHub) { task ->
     task.getTargetFile().set(jar.archiveFile)
 }
 
-// TODO We will come back later for publication on CurseForge / Modrinth.
-/*
 unifiedPublishing {
     project {
-        displayName = "[Forge $project.supported_version] $project.mod_version"
+        displayName = "[NeoForge $project.supported_version] $project.mod_version"
         version = realVersion // Optional, Inferred from project by default
         changelog = file("CHANGELOG.md").exists() ? file("CHANGELOG.md").text : ""
         releaseType = project.release_type // Optional, use "release", "beta" or "alpha"
-        gameVersions = ["1.20.1"]
-        gameLoaders = ["forge", "neoforge"]
+        gameVersions = [project.minecraft_version]
+        gameLoaders = ["neoforge"]
 
-        mainPublication tasks.jarJar // Declares the publicated jar
+        mainPublication tasks.jar //TODO test
 
         if (System.getenv("CURSE_TOKEN") != null) {
             curseforge {
@@ -334,7 +341,7 @@ unifiedPublishing {
             }
         }
 
-        if (System.getenv("CURSE_TOKEN") != null) {
+        if (System.getenv("MODRINTH_TOKEN") != null) {
             modrinth {
                 token = System.getenv("MODRINTH_TOKEN")
                 id = "XlwMlNhH" // Required, must be a string, ID of Modrinth project
@@ -346,4 +353,3 @@ unifiedPublishing {
         }
     }
 }
- */

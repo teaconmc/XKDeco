@@ -1,26 +1,15 @@
 package org.teacon.xkdeco.util;
 
-import net.minecraft.world.level.block.Block;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-
-import net.neoforged.neoforge.data.event.GatherDataEvent;
-
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
-import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 import org.teacon.xkdeco.mixin.forge.FenceGateBlockAccess;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -29,16 +18,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 @Mod(XKDeco.ID)
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-public class CommonProxy { // TODO[3TUSK]: We need to stop using the name "CommonProxy" ASAP
+public class CommonProxy {
 
 	public CommonProxy(IEventBus modEventBus) {
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
@@ -48,8 +39,6 @@ public class CommonProxy { // TODO[3TUSK]: We need to stop using the name "Commo
 		//	FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
 		//	new XKDDataGen().onInitializeDataGenerator(dataGenerator);
 		//});
-
-		// Physical client check is replaced by NeoForge's sided @Mod entrypoint.
 
 		BlockCodecs.register(XKDeco.id("block"), Block.simpleCodec(XKDBlock::new));
 		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
