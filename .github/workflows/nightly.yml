@@ -2,9 +2,11 @@ name: test-build
 on:
   push:
     paths:
+      - 'kiwi-jiachen'
       - 'kiwi-jiachen/**'
       - 'src/**'
       - 'build.gradle'
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
