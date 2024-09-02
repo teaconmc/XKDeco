@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "xkdeco:maya_stone"
+  },
+  "result": {
+    "id": "xkdeco:aztec_stonebricks"
+  }
+}

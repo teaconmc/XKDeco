@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 9,
-  "ingredient": {
-    "item": "minecraft:iron_block"
-  },
-  "result": "xkdeco:factory_block"
-}

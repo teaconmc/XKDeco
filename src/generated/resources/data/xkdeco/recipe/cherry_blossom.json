@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "M": {
+      "item": "minecraft:pink_dye"
+    },
+    "S": {
+      "item": "minecraft:cherry_leaves"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SMS",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "xkdeco:cherry_blossom"
+  },
+  "show_notification": true
+}

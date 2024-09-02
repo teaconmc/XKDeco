@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "xkdeco:maya_stone"
+    },
+    "T": {
+      "item": "minecraft:granite"
+    }
+  },
+  "pattern": [
+    "TB",
+    "BT"
+  ],
+  "result": {
+    "count": 4,
+    "id": "xkdeco:inca_stone"
+  },
+  "show_notification": true
+}

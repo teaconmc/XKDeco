@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "xkdeco:steel_filings"
+    },
+    {
+      "item": "xkdeco:quartz_sand"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "xkdeco:toughened_sand"
+  }
+}

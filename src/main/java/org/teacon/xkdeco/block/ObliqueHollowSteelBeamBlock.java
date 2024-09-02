@@ -6,11 +6,11 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import snownee.kiwi.customization.block.BasicBlock;
 
-public class ObliqueHollowSteelBeamBlock extends Block implements CheckedWaterloggedBlock {
+public class ObliqueHollowSteelBeamBlock extends BasicBlock {
 	public ObliqueHollowSteelBeamBlock(Properties properties) {
 		super(properties);
 	}
