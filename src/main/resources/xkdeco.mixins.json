@@ -8,8 +8,7 @@
 		"ReloadableServerResourcesMixin",
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
-		"air_duct.PlayerMixin",
-		"forge.FenceGateBlockAccess"
+		"air_duct.PlayerMixin"
 	],
 	"client": [
 		"air_duct.PlayerRendererMixin",
