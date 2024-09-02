@@ -194,7 +194,7 @@ dependencies {
      */
     // TODO[3TUSK]: Hardcoded for now.
     //  This is a custom build, published to mavenLocal().
-    jarJar(implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21.1-NeoForge-15.2.1-all")))
+    jarJar(implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21.1-NeoForge-15.2.1-jiachen-all")))
     /*
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     // https://modrinth.com/mod/jade/versions
