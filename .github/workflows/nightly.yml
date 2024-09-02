@@ -28,4 +28,9 @@ jobs:
         run: mkdir libs && cp kiwi-jiachen/build/libs/* ./libs/
       - name: Build
         id: build
-        run: ./gradlew build # publishReleasePublicationToTeaconRepository
+        run: ./gradlew build githubActionOutput # publishReleasePublicationToTeaconRepository
+      - name: GitHub Action Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.build.outputs.artifact_name }}
+          path: ${{ steps.build.outputs.artifact_path }}
