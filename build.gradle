@@ -32,7 +32,6 @@ abstract class TeaConDumpPathToGitHub extends DefaultTask {
 
             // Write out new env variable for later usage
             outputFile << newLine << "artifact_name=${theFile.getName()}"
-            outputFile << newLine << "artifact_publish_name=${publishName.get()}"
             outputFile << newLine << "artifact_path=${theFile.absolutePath}"
         }
     }
@@ -43,6 +42,10 @@ base {
 }
 version = "${minecraft_version}-NeoForge-${mod_version}"
 group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+
+if (System.env.GITHUB_ACTIONS) {
+    version += "-build.${System.env.GITHUB_RUN_NUMBER}"
+}
 
 var realVersion = mod_version + '+neoforge'
 
