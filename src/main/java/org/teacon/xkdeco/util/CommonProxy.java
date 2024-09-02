@@ -8,7 +8,6 @@ import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
-import org.teacon.xkdeco.mixin.forge.FenceGateBlockAccess;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -51,7 +50,7 @@ public class CommonProxy {
 	}
 
 	public static SoundEvent getFenceGateSound(FenceGateBlock block, boolean open) {
-		return open ? ((FenceGateBlockAccess) block).getOpenSound() : ((FenceGateBlockAccess) block).getCloseSound();
+		return open ? block.openSound : block.closeSound;
 	}
 
 	public static void moveEntity(XKDPlayer player, Entity entity, Vec3 pPos) {
