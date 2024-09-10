@@ -1,10 +1,16 @@
 package org.teacon.xkdeco.mixin.air_duct;
 
+import net.minecraft.world.level.block.state.BlockState;
+
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
 
@@ -51,6 +57,19 @@ public abstract class PlayerMixin extends LivingEntity implements XKDPlayer {
 		xkdeco$isHidingInAirDuct = counts[0] > 0 && counts[0] >= counts[1];
 		if (xkdeco$isHidingInAirDuct && !level().isClientSide) {
 			addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 15, 0, false, false, true));
+		}
+	}
+
+	@Inject(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$canPlayerFitWithinBlocksAndEntitiesWhen(Pose pose, CallbackInfoReturnable<Boolean> cir) {
+		if (pose != Pose.STANDING && pose != Pose.CROUCHING) {
+			return;
+		}
+		if (!(this instanceof XKDPlayer player)) {
+			return;
+		}
+		if (player.xkdeco$forceSwimmingPose() || getInBlockState().getBlock() instanceof AirDuctBlock) {
+			cir.setReturnValue(false);
 		}
 	}
 

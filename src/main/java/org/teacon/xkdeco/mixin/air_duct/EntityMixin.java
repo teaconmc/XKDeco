@@ -1,11 +1,13 @@
 package org.teacon.xkdeco.mixin.air_duct;
 
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.util.CommonProxy;
@@ -37,26 +39,13 @@ public abstract class EntityMixin {
 	private BlockPos blockPosition;
 
 	@Shadow
-	public abstract BlockState getFeetBlockState();
+	public abstract BlockState getInBlockState();
 
 	@Shadow
 	public abstract AABB getBoundingBox();
 
 	@Shadow
 	public abstract boolean hasPose(Pose pPose);
-
-	@Inject(method = "canEnterPose", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$canEnterPose(Pose pPose, CallbackInfoReturnable<Boolean> cir) {
-		if (pPose != Pose.STANDING && pPose != Pose.CROUCHING) {
-			return;
-		}
-		if (!(this instanceof XKDPlayer player)) {
-			return;
-		}
-		if (player.xkdeco$forceSwimmingPose() || getFeetBlockState().getBlock() instanceof AirDuctBlock) {
-			cir.setReturnValue(false);
-		}
-	}
 
 	@Inject(method = "isInvisible", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$isInvisible(CallbackInfoReturnable<Boolean> cir) {
