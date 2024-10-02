@@ -3,4 +3,4 @@ template:
   block_set_type: iron
 render_type: cutout
 material: xkdeco:hollow_steel
-glass_type: hollow_steel
+glass_type: xkdeco:hollow_steel

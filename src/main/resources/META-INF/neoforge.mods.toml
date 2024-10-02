@@ -6,6 +6,7 @@ issueTrackerURL="https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
 [[mods]]
 modId="xkdeco"
 authors="XeKr, Snownee, LittleBai, TeaConMC"
+credits="ustc-zzzz, LucunJi, 3TUSK, TartaricAcid, IzzelAliz, Gu-ZT, SettingDust, a1640727878, xkball"
 version="${file.jarVersion}"
 displayName="XeKr's Decoration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/xks-decoration"

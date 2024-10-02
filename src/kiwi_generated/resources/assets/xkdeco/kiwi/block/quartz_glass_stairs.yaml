@@ -1,4 +1,4 @@
 template: stair
 render_type: translucent
 material: xkdeco:stone
-glass_type: quartz
+glass_type: xkdeco:quartz

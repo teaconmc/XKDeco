@@ -4,5 +4,5 @@ properties:
   - water_loggable
   - type: moulding
     connect_to: '#xkdeco:meiren_kao'
-  shape: xkdeco:meiren_kao
+  shape: xkdeco:meiren_kao_with_column
   no_occlusion: true
