@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.init;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,8 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.item.MimicWallItem;
+
+import com.google.common.collect.Lists;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -80,7 +81,7 @@ public final class MimicWallsLoader {
 	}
 
 	public static void addMimicWallTags(Map<ResourceLocation, Collection<Holder<Block>>> tags) {
-		List<Holder<Block>> walls = new ArrayList<>(tags.getOrDefault(BlockTags.WALLS.location(), List.of()));
+		List<Holder<Block>> walls = Lists.newArrayList(tags.getOrDefault(BlockTags.WALLS.location(), List.of()));
 		for (var holder : BuiltInRegistries.BLOCK.asHolderIdMap()) {
 			if (holder.value() instanceof MimicWallBlock) {
 				walls.add(holder);
