@@ -1,6 +1,6 @@
+import titlecase
 import yaml
 
-import BlockPropertiesReader
 import ItemPropertiesReader
 from Pack import Pack
 from ResourceLocation import ResourceLocation
@@ -76,9 +76,7 @@ class ItemDefinitionProvider(TableDataProvider):
                 return
             self.pack.providers['translations'].putTranslation('en_us', translationKey, row['Name:en_us'])
         else:
-            parts = itemId.path.split('_')
-            translatedName = ' '.join(parts).title()
-            self.pack.providers['translations'].putTranslation('en_us', translationKey, translatedName)
+            self.pack.providers['translations'].putTranslation('en_us', translationKey, titlecase.titlecase(itemId.path.replace('_', ' ')))
         if 'SecondaryName' in csvConfig:
             fieldName = 'Name:' + csvConfig['SecondaryName']
             if fieldName in row and row[fieldName] != '':

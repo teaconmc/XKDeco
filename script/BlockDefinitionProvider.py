@@ -1,3 +1,4 @@
+import titlecase
 import yaml
 
 import BlockPropertiesReader
@@ -12,6 +13,7 @@ class BlockDefinitionProvider(TableDataProvider):
         self.templateTags = None
         self.templateProperties = None
         self.tagTransformers = None
+        self.glassTypes = None
         self.order = []
         self.blocks = set()
 
@@ -19,6 +21,8 @@ class BlockDefinitionProvider(TableDataProvider):
         self.templateTags = self.pack.providers['block_templates'].tags
         self.templateProperties = self.pack.providers['block_templates'].properties
         self.tagTransformers = self.pack.providers['materials'].tagTransformers
+        if 'glass_types' in self.pack.providers:
+            self.glassTypes = self.pack.providers['glass_types'].glassTypes
         # for key, value in self.templateTags.items():
         #     print(str(key), value)
         super().generate()
@@ -73,16 +77,18 @@ class BlockDefinitionProvider(TableDataProvider):
         if 'Name:en_us' in row and row['Name:en_us'] != '':
             self.pack.providers['translations'].putTranslation('en_us', translationKey, row['Name:en_us'])
         else:
-            parts = blockId.path.split('_')
-            translatedName = ' '.join(parts).title()
-            self.pack.providers['translations'].putTranslation('en_us', translationKey, translatedName)
+            self.pack.providers['translations'].putTranslation('en_us', translationKey, titlecase.titlecase(blockId.path.replace('_', ' ')))
         if 'SecondaryName' in csvConfig:
             fieldName = 'Name:' + csvConfig['SecondaryName']
             if fieldName in row and row[fieldName] != '':
                 self.pack.providers['translations'].putTranslation(csvConfig['SecondaryName'], translationKey, row[fieldName])
 
-        if 'glass_type' in properties and properties['glass_type'] != '' and properties['glass_type'] != 'hollow_steel':
-            self.pack.providers['block_tags'].addEntry(ResourceLocation('impermeable'), blockId)
+        if self.glassTypes is not None and 'glass_type' in properties:
+            glassType = None
+            if ResourceLocation(properties['glass_type']) in self.glassTypes:
+                glassType = self.glassTypes[ResourceLocation(properties['glass_type'])]
+            if glassType is None or 'skip_rendering' not in glassType or glassType['skip_rendering']:
+                self.pack.providers['block_tags'].addEntry(ResourceLocation('impermeable'), blockId)
 
         materialId = self.pack.defaultResourceLocation(properties['material']) if 'material' in properties else None
         if materialId in self.tagTransformers:

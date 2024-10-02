@@ -1,7 +1,7 @@
 # Block CSV sorter
 
-import json
 import csv
+import json
 import os
 from pathlib import Path
 

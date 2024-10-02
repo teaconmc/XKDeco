@@ -4,6 +4,9 @@ import tempfile
 from pathlib import Path
 from zipfile import ZipFile
 
+import titlecase
+
+import PackVersion
 from DataProvider import DataProvider
 from ResourceLocation import ResourceLocation
 
@@ -21,6 +24,11 @@ class Pack:
             self.config['export_format'] = 'yaml'
         else:
             self.config['export_format'] = self.config['export_format'].lower()
+        if 'pack_version' not in self.config:
+            packpack_version = '1.20'
+        else:
+            packpack_version = self.config['pack_version']
+        self.packVersion = PackVersion.get(packpack_version)
         if 'translation_dest' in self.config:
             self.config['translation_dest'] = self.config['translation_dest'].replace('%TEMP%', self.tempDir)
         self.includes = []
@@ -31,6 +39,9 @@ class Pack:
             if not path.is_dir():
                 raise ValueError('Include path is not a directory: ' + path.absolute().as_posix())
         print('Temp directory:', self.tempDir)
+        titlecase.set_small_word_list('|'.join(
+            ['of', 'the', 'and', 'in', 'on', 'at', 'for', 'to', 'with', 'as', 'by', 'or', 'an', 'a', 'but', 'nor', 'up', 'so', 'yet', 'if',
+             'via', 'without']))
 
     def addProvider(self, provider: DataProvider):
         self.providers[provider.identifier] = provider
@@ -71,5 +82,7 @@ class Pack:
         else:
             return ResourceLocation(self.config['namespace'], path)
 
-    def toAbsPath(self, data_path: str, file: ResourceLocation, ext: str = '') -> str:
-        return os.path.join(self.tempDir, data_path.format(file.namespace), file.path + ext)
+    def toAbsPath(self, data_provider: DataProvider, file: ResourceLocation, ext: str = None) -> str:
+        if ext is None:
+            ext = '.' + data_provider.exportFormat
+        return os.path.join(self.tempDir, data_provider.dataPath.format(file.namespace, file.path), file.path + ext)

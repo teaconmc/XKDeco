@@ -5,4 +5,4 @@ components:
 - horizontal
 shape: xkdeco:ladder
 no_occlusion: true
-glass_type: hollow_steel
+glass_type: xkdeco:hollow_steel

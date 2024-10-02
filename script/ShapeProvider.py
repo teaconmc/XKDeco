@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-import yaml
-
 from DataProvider import DataProvider
 from ResourceLocation import ResourceLocation
 
@@ -25,7 +23,7 @@ class ShapeProvider(DataProvider):
 
     def writeFile(self, file: ResourceLocation, data: any):
         if self.exportFormat == 'yaml' and isinstance(data, str):
-            file = self.pack.toAbsPath(self.dataPath, file, '.' + self.exportFormat)
+            file = self.pack.toAbsPath(self, file)
             Path(file).parent.mkdir(parents=True, exist_ok=True)
             with open(file, 'w', encoding='utf-8') as f:
                 f.write(data)

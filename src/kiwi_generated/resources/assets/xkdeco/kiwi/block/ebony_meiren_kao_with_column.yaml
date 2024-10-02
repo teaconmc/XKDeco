@@ -1,6 +1,2 @@
+template: xkdeco:meiren_kao_with_column
 material: xkdeco:ebony
-components:
-- water_loggable
-- moulding
-shape: xkdeco:meiren_kao_with_column
-no_occlusion: true

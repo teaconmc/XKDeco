@@ -2,4 +2,4 @@ template: slab
 render_type: translucent
 material: xkdeco:stone
 light_emission: 15
-glass_type: translucent
+glass_type: xkdeco:translucent

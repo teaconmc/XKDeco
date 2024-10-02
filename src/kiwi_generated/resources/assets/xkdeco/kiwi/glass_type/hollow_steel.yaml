@@ -1,0 +1,3 @@
+skip_rendering: false
+shade_brightness: 0.9
+render_type: cutout

@@ -11,12 +11,13 @@ class DataProvider:
         self.pack = pack
         self.identifier = identifier
         self.dataPath = dataPath
+        self.dataPath = pack.packVersion.resolvePath(pack, self)
         self.prettyPrint = pack.config['json_pretty_print']
         self.exportFormat = pack.config['export_format']
         self.count = 0
 
     def writeFile(self, file: ResourceLocation, data: any):
-        file = self.pack.toAbsPath(self.dataPath, file, '.' + self.exportFormat)
+        file = self.pack.toAbsPath(self, file)
         Path(file).parent.mkdir(parents=True, exist_ok=True)
         with open(file, 'w', encoding='utf-8') as f:
             if self.exportFormat == 'json':
