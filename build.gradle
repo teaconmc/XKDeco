@@ -223,15 +223,15 @@ dependencies {
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
      */
-    // TODO[3TUSK]: Hardcoded for now.
-    //  This is a custom build, published to mavenLocal().
-    jarJar(implementation(annotationProcessor("snownee.kiwi:Kiwi:1.21.1-NeoForge-15.2.0")))
-    /*
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
+    // https://modrinth.com/mod/kiwi/versions
+    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.2.1+neoforge")))
+
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
-    implementation fg.deobf("maven.modrinth:jade:11.9.4+forge")
+    implementation "maven.modrinth:jade:15.4.1+neoforge"
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
+    /*
     implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
     // https://modrinth.com/mod/modernfix/versions
     implementation fg.deobf("maven.modrinth:modernfix:j5VhGcov")

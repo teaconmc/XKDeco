@@ -5,17 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
-
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
+import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
 import org.teacon.xkdeco.item.MimicWallItem;
 
 import com.google.common.collect.Lists;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -27,9 +24,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class MimicWallsLoader {
 	public static final String WALL_BLOCK_ENTITY = "mimic_wall";
 
@@ -92,12 +93,23 @@ public final class MimicWallsLoader {
 
 	public static void addMimicWallsToTab(BuildCreativeModeTabContentsEvent event) {
 		if (STRUCTURE_TAB_KEY.equals(event.getTabKey())) {
-			BuiltInRegistries.BLOCK.entrySet().forEach(blockEntry -> {
-				if (blockEntry.getKey().location().getNamespace().equals(XKDeco.ID)
-						&& blockEntry.getValue() instanceof MimicWallBlock wall) {
-					event.accept(wall);
+			for (Block block : BuiltInRegistries.BLOCK) {
+				if (block instanceof MimicWallBlock) {
+					event.accept(block);
 				}
-			});
+			}
 		}
+	}
+
+	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		Item[] walls = BuiltInRegistries.ITEM.stream()
+				.filter(item -> item instanceof MimicWallItem)
+				.toArray(Item[]::new);
+		event.registerItem(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return XKDecoWithoutLevelRenderer.INSTANCE;
+			}
+		}, walls);
 	}
 }
