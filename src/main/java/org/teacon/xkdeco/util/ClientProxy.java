@@ -7,6 +7,7 @@ import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.MimicWallRenderer;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
+import org.teacon.xkdeco.init.MimicWallsLoader;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 import org.teacon.xkdeco.resource.MimicWallResources;
 
@@ -49,6 +50,7 @@ public final class ClientProxy {
 		modEventBus.addListener(ClientProxy::setItemRenderers);
 		modEventBus.addListener(ClientProxy::setEntityRenderers);
 		modEventBus.addListener(ClientProxy::setAdditionalPackFinder);
+		modEventBus.addListener(MimicWallsLoader::registerClientExtensions);
 
 		modEventBus.addListener((ModelEvent.RegisterGeometryLoaders event) -> {
 			event.register(XKDeco.id("air_duct"), new IGeometryLoader<UnbakedGeometryWrapper>() {
