@@ -7,6 +7,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import snownee.kiwi.customization.block.StringProperty;
 
 public interface XKDStateProperties {
 	List<BooleanProperty> DIRECTION_PROPERTIES = List.of(
@@ -16,7 +17,7 @@ public interface XKDStateProperties {
 			BlockStateProperties.SOUTH,
 			BlockStateProperties.WEST,
 			BlockStateProperties.EAST);
-	EnumProperty<RoofHalf> HALF = EnumProperty.create("half", RoofHalf.class);
+	StringProperty HALF = StringProperty.convert(EnumProperty.create("half", RoofHalf.class));
 	EnumProperty<RoofVariant> ROOF_VARIANT = EnumProperty.create("variant", RoofVariant.class);
 	EnumProperty<RoofVariant> ROOF_VARIANT_WITHOUT_SLOW = EnumProperty.create(
 			"variant",

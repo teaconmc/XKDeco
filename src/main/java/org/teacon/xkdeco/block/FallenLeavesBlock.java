@@ -12,11 +12,12 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import snownee.kiwi.customization.block.StringProperty;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class FallenLeavesBlock extends Block {
-	private static final EnumProperty<XKDStateProperties.RoofHalf> HALF = XKDStateProperties.HALF;
+	private static final StringProperty HALF = XKDStateProperties.HALF;
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
@@ -33,7 +34,7 @@ public final class FallenLeavesBlock extends Block {
 		if (pDirection == Direction.DOWN) {
 			pState = pState.setValue(
 					HALF,
-					isBottomSlab(pNeighborState) ? XKDStateProperties.RoofHalf.LOWER : XKDStateProperties.RoofHalf.UPPER);
+					isBottomSlab(pNeighborState) ? XKDStateProperties.RoofHalf.LOWER.getSerializedName() : XKDStateProperties.RoofHalf.UPPER.getSerializedName());
 		}
 		return pState;
 	}
@@ -43,7 +44,7 @@ public final class FallenLeavesBlock extends Block {
 		BlockState blockState = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
 		return defaultBlockState().setValue(
 				HALF,
-				isBottomSlab(blockState) ? XKDStateProperties.RoofHalf.LOWER : XKDStateProperties.RoofHalf.UPPER);
+				isBottomSlab(blockState) ? XKDStateProperties.RoofHalf.LOWER.getSerializedName() : XKDStateProperties.RoofHalf.UPPER.getSerializedName());
 	}
 
 	private static boolean isBottomSlab(BlockState state) {

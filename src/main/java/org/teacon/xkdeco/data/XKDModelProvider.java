@@ -583,8 +583,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.UPPER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.LOWER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1205,8 +1205,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(altRotation ? createHorizontalFacingDispatchAlt() : BlockModelGenerators.createHorizontalFacingDispatch())
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.LOWER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.UPPER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1313,8 +1313,8 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(Direction.Axis.Z, Variant.variant())
 						.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.LOWER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.UPPER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1477,8 +1477,8 @@ public class XKDModelProvider extends FabricModelProvider {
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select(XKDStateProperties.RoofHalf.LOWER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model0))
+						.select(XKDStateProperties.RoofHalf.UPPER.getSerializedName(), Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
