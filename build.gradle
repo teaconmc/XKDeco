@@ -347,6 +347,7 @@ tasks.register("githubActionOutput", TeaConDumpPathToGitHub) { task ->
 }
 
 unifiedPublishing {
+
     project {
         displayName = "[NeoForge $project.supported_version] $project.mod_version"
         version = realVersion // Optional, Inferred from project by default
