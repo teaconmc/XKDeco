@@ -1,0 +1,22 @@
+name: XKDeco 1.21-NeoForge Manual Publish
+on:
+  workflow_dispatch:
+jobs:
+  build:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v4
+         with:
+           submodules: true
+       - name: Setup Java 21
+         uses: actions/setup-java@v4
+         with:
+           distribution: 'temurin'
+           java-version: '21'
+       - name: Run Publish
+         env:
+           ARCHIVE_ENDPOINT: ${{ secrets.TEACON_ARCHIVE_ENDPOINT }}
+           ARCHIVE_ACCESS_KEY: ${{ secrets.TEACON_ARCHIVE_ACCESS_KEY }}
+           ARCHIVE_SECRET_KEY: ${{ secrets.TEACON_ARCHIVE_SECRET_KEY }}
+         run: ./gradlew -Dorg.gradle.s3.endpoint=$ARCHIVE_ENDPOINT publishReleasePublicationToTeaconRepository

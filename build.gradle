@@ -296,7 +296,8 @@ publishing {
             groupId = "org.teacon"
             artifactId = "XKDeco-NeoForge-1.21"
 
-            artifact jar
+            //artifact jar
+            artifact(file("lib/XKDeco-NeoForge-1.21.1-NeoForge-1.0.0.jar"))
             pom {
                 name = 'XKDeco for Minecraft 1.21 and NeoForge'
                 description = "XeKr's decoration blocks"
