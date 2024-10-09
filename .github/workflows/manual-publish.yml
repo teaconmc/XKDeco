@@ -1,6 +1,7 @@
 name: XKDeco 1.21-NeoForge Manual Publish
 on:
   workflow_dispatch:
+  push:
 jobs:
   build:
      runs-on: ubuntu-latest
