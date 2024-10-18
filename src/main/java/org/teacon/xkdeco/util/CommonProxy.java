@@ -6,9 +6,11 @@ import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
+import org.teacon.xkdeco.data.XKDDataGen;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 
+import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -25,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 @Mod(XKDeco.ID)
@@ -34,10 +37,9 @@ public class CommonProxy {
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
 		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
 		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
-		//modEventBus.addListener((GatherDataEvent event) -> {
-		//	FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
-		//	new XKDDataGen().onInitializeDataGenerator(dataGenerator);
-		//});
+		modEventBus.addListener((GatherDataEvent event) -> {
+			FabricDataGenHelper.runDatagenForMod(XKDeco.ID, XKDeco.ID, new XKDDataGen(), event);
+		});
 
 		BlockCodecs.register(XKDeco.id("block"), Block.simpleCodec(XKDBlock::new));
 		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
