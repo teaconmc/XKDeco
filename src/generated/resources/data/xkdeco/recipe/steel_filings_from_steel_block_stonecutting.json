@@ -1,10 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 4,
   "ingredient": {
     "item": "xkdeco:steel_block"
   },
   "result": {
+    "count": 4,
     "id": "xkdeco:steel_filings"
   }
 }

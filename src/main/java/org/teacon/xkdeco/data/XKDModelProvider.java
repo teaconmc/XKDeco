@@ -21,7 +21,6 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
-import org.teacon.xkdeco.block.XKDStateProperties;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -583,8 +582,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -833,7 +832,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		textureMapping = TextureMapping.defaultTexture(block(id + "_trapdoor"));
 		textureMapping.put(TextureSlot.PARTICLE, getBlockTexture(block(id + "_window")));
 		textureMapping.put(TextureSlot.TOP, XKDeco.id("block/" + id + "_narrow_doors_top"));
-		textureMapping.put(TextureSlot.BOTTOM, XKDeco.id("block/"+ id + "_narrow_doors_bottom"));
+		textureMapping.put(TextureSlot.BOTTOM, XKDeco.id("block/" + id + "_narrow_doors_bottom"));
 		createWoodenFenceGate(id + "_window", "wooden_window", textureMapping);
 		createWoodenFenceGate(id + "_awning_window", "wooden_awning_window", textureMapping);
 		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
@@ -872,7 +871,7 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createWoodenShelf(String id, int randomVariants) {
 		Block block = block(id + "_shelf");
 		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block));
-		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" );
+		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/");
 		List<Variant> variants = Lists.newArrayList(Variant.variant().with(VariantProperties.MODEL, modelLocation));
 		List<ModelTemplate> templates = Lists.newArrayList(
 				XKDModelTemplates.WOODEN_SHELF,
@@ -1205,8 +1204,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(altRotation ? createHorizontalFacingDispatchAlt() : BlockModelGenerators.createHorizontalFacingDispatch())
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1313,8 +1312,8 @@ public class XKDModelProvider extends FabricModelProvider {
 						.select(Direction.Axis.Z, Variant.variant())
 						.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1477,8 +1476,8 @@ public class XKDModelProvider extends FabricModelProvider {
 				generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.property(HALF)
-						.select(XKDStateProperties.RoofHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, model0))
-						.select(XKDStateProperties.RoofHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, model1)));
+						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
+						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
