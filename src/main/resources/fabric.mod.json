@@ -35,8 +35,7 @@
 	"accessWidener": "xkdeco.accesswidener",
 	"depends": {
 		"minecraft": "1.20.1",
-		"kiwi": ">=11.8",
-		"fabric-screen-layers": "*"
+		"kiwi": ">=11.8.27"
 	},
 	"custom": {
 		"modmenu": {
