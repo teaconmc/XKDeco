@@ -228,7 +228,7 @@ dependencies {
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
-    implementation "maven.modrinth:jade:15.4.1+neoforge"
+    implementation "maven.modrinth:jade:15.9.1+neoforge"
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     /*

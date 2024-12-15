@@ -2,7 +2,6 @@ package org.teacon.xkdeco.data;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 //import snownee.kiwi.datagen.KiwiLanguageProvider;
 
 public class XKDDataGen implements DataGeneratorEntrypoint {
