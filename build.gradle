@@ -224,11 +224,11 @@ dependencies {
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
      */
     // https://modrinth.com/mod/kiwi/versions
-    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.2.2+neoforge")))
+    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.3.3+neoforge")))
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
-    implementation "maven.modrinth:jade:15.9.1+neoforge"
+    implementation "maven.modrinth:jade:15.9.4+neoforge"
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     /*
@@ -240,9 +240,9 @@ dependencies {
     implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
     */
 
-    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.102.0+2.0.12+1.21.1"
-    implementation "org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1:20.2.16+ed29d49bd1"
-    implementation "org.sinytra.forgified-fabric-api:fabric-transfer-api-v1:5.1.16+7f12564fd1"
+    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.107.0+2.0.23+1.21.1"
+    implementation "org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1:20.2.22+2d91a6db19"
+    implementation "org.sinytra.forgified-fabric-api:fabric-transfer-api-v1:5.4.1+d719f32719"
     //implementation "dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1"
 
 }
