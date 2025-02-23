@@ -45,7 +45,7 @@ abstract class TeaConDumpPathToGitHub extends DefaultTask {
 }
 
 base {
-    archivesName = 'XKDeco-NeoForge'
+    archivesName = 'XeKr\'s Decoration'
 }
 version = "${minecraft_version}-NeoForge-${mod_version}"
 group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
