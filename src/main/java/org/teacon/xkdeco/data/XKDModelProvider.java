@@ -220,7 +220,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		TextureMapping textureMapping = TextureMapping.defaultTexture(block);
 		ResourceLocation $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(block, textureMapping, generators.modelOutput);
 		ResourceLocation $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(block, textureMapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, $$1, $$2, $$1, $$2, true));
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, $$1, $$2, $$1, $$2, false));
 		return true;
 	}
 
