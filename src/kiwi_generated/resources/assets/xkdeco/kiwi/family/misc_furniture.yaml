@@ -25,6 +25,11 @@ blocks:
 - xkdeco:fruit_platter
 - xkdeco:globe
 - xkdeco:hologram_base
+- xkdeco:hologram_dna
+- xkdeco:hologram_message
+- xkdeco:hologram_pictures
+- xkdeco:hologram_planet
+- xkdeco:hologram_xekr_logo
 - xkdeco:ink_painting
 - xkdeco:iron_windmill
 - xkdeco:mechanical_chair
@@ -84,9 +89,3 @@ blocks:
 - xkdeco:wood_globe
 - xkdeco:wooden_windmill
 - xkdeco:xiangqi_board
-items:
-- xkdeco:hologram_dna
-- xkdeco:hologram_message
-- xkdeco:hologram_pictures
-- xkdeco:hologram_planet
-- xkdeco:hologram_xekr_logo

@@ -4,6 +4,7 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.client.forge.UnbakedGeometryWrapper;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
+import org.teacon.xkdeco.client.renderer.HologramRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.MimicWallRenderer;
 import org.teacon.xkdeco.client.renderer.XKDecoWithoutLevelRenderer;
@@ -40,6 +41,7 @@ public final class ClientProxy {
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemDisplayRenderer::new);
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
 	}
 
 	public static void setAdditionalPackFinder(AddPackFindersEvent event) {

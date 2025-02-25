@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-06T07:54:44.4388442	XeKr's Decoration/Block Loot Tables
+// 1.21.1	2025-02-26T02:15:28.1003703	XeKr's Decoration/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_table/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_table/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_table/blocks/aztec_chiseled_stonebricks.json
@@ -305,6 +305,11 @@ e93dcb7b040143db4a66ba59ee834ddda07b96c0 data/xkdeco/loot_table/blocks/hollow_st
 f623523834a9d67c02e47c42e8a21a883c2428af data/xkdeco/loot_table/blocks/hollow_steel_trapdoor.json
 d82302231a487a557c33d19abd3ad527fafafed8 data/xkdeco/loot_table/blocks/hollow_varnished_column_wall.json
 0683ec2d228915c70000b0d0edc785ddcc13b1d9 data/xkdeco/loot_table/blocks/hologram_base.json
+54224f8a1c3afef75489a8a10b726f2f957a8e8e data/xkdeco/loot_table/blocks/hologram_dna.json
+bd581d25f64b8c87ec118d0300d8b2971fa1e9ff data/xkdeco/loot_table/blocks/hologram_message.json
+ed407d5b508fe6a37bfdc23a98cc5f0876599e64 data/xkdeco/loot_table/blocks/hologram_pictures.json
+e4da333722e41934555b440b438f1e55bb615a78 data/xkdeco/loot_table/blocks/hologram_planet.json
+a2422d33847d1084ed5456519c3266411aae4309 data/xkdeco/loot_table/blocks/hologram_xekr_logo.json
 e81bf55bf9a6ef175659a910c629a0c85c2ad991 data/xkdeco/loot_table/blocks/inca_bricks.json
 4e7b28ef5bee62c13e8476bb8883eef36a19cf7e data/xkdeco/loot_table/blocks/inca_brick_slab.json
 8e7e1d5d6f018dcb5f9d53453c3dbd153cbfc4c5 data/xkdeco/loot_table/blocks/inca_brick_stairs.json

@@ -638,12 +638,12 @@ registry_order:
   - mahogany_oblique_brace
   - mahogany_narrow_doors
   - mahogany_hanging_fascia
-  item:
   - hologram_planet
   - hologram_dna
   - hologram_pictures
   - hologram_message
   - hologram_xekr_logo
+  item:
   - black_roof_small_ridge_end
   - black_roof_small_flat_end
   - black_roof_ridge_end
