@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
+import org.teacon.xkdeco.block.HologramBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 
 import com.google.common.collect.ImmutableMap;
@@ -489,6 +490,10 @@ public class XKDModelProvider extends FabricModelProvider {
 			var id = BuiltInRegistries.BLOCK.getKey(block);
 			if (block instanceof ItemDisplayBlock || block instanceof BlockDisplayBlock) {
 				createBlockStateOnly(id.getPath(), "furniture/", true);
+				continue;
+			}
+			if (block instanceof HologramBlock) {
+				generators.blockEntityModels(block, block).createWithoutBlockItem(block);
 				continue;
 			}
 			if (id.getPath().endsWith("column_base") || id.getPath().endsWith("column_head")) {
