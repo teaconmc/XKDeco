@@ -3,6 +3,7 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
+import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
@@ -11,6 +12,8 @@ import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +28,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.loader.Platform;
 
@@ -32,9 +37,24 @@ import snownee.kiwi.loader.Platform;
 public class CommonProxy {
 
 	public CommonProxy(IEventBus modEventBus) {
-		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
-		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
-		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
+		modEventBus.addListener(
+				EventPriority.LOWEST, (RegisterEvent event) -> {
+					if (event.getRegistryKey().equals(Registries.BLOCK)) {
+						MimicWallsLoader.addMimicWallBlocks();
+					}
+					if (event.getRegistryKey().equals(Registries.ITEM)) {
+						MimicWallsLoader.addMimicWallItems();
+					}
+				});
+		modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> {
+			if (MimicWallsLoader.STRUCTURE_TAB_KEY.equals(event.getTabKey())) {
+				for (Block block : BuiltInRegistries.BLOCK) {
+					if (block instanceof MimicWallBlock) {
+						event.accept(block);
+					}
+				}
+			}
+		});
 		if (Platform.isDataGen() && !Platform.isProduction() && Platform.isModLoaded("fabric_data_generation_api_v1")) {
 			ForgeXKDDataGen.init(modEventBus);
 		}

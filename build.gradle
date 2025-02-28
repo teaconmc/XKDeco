@@ -26,8 +26,10 @@ tasks.named('wrapper', Wrapper).configure {
 abstract class TeaConDumpPathToGitHub extends DefaultTask {
     @Input
     abstract Property<String> getPublishName()
+
     @InputFile
     abstract RegularFileProperty getTargetFile()
+
     @TaskAction
     void dump() {
         if (System.env.GITHUB_ACTIONS) {
@@ -131,8 +133,8 @@ neoForge {
             }
 
             // Add mixin config to runtime
-             programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-             programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
+            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
         }
 
         server {
@@ -242,9 +244,10 @@ dependencies {
 
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.107.0+2.0.23+1.21.1"
     implementation "org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1:20.2.22+2d91a6db19"
-    implementation "org.sinytra.forgified-fabric-api:fabric-transfer-api-v1:5.4.1+d719f32719"
+    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-api-v1:3.4.0+9c40919e19"))
+    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-indigo:1.7.0+acb05a3919"))
+    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-model-loading-api-v1:2.0.0+a6e994cd19"))
     //implementation "dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1"
-
 }
 
 processResources {

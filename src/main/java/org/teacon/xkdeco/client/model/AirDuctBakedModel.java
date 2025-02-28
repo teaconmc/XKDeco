@@ -21,7 +21,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import snownee.kiwi.util.NotNullByDefault;
 
+@NotNullByDefault
 @SuppressWarnings("deprecation")
 public class AirDuctBakedModel implements BakedModel {
 	private final Cache<Pair<BlockState, Direction>, List<BakedQuad>> cache = CacheBuilder.newBuilder().expireAfterAccess(
@@ -42,7 +44,7 @@ public class AirDuctBakedModel implements BakedModel {
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState blockState, @Nullable Direction direction, RandomSource randomSource) {
 		if (blockState == null) {
-			return straight.get(0).getQuads(null, direction, randomSource);
+			return straight.getFirst().getQuads(null, direction, randomSource);
 		}
 		try {
 			return cache.get(Pair.of(blockState.setValue(BlockStateProperties.WATERLOGGED, false), direction), () -> {
@@ -89,7 +91,7 @@ public class AirDuctBakedModel implements BakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return straight.get(0).useAmbientOcclusion();
+		return straight.getFirst().useAmbientOcclusion();
 	}
 
 	@Override
@@ -99,7 +101,7 @@ public class AirDuctBakedModel implements BakedModel {
 
 	@Override
 	public boolean usesBlockLight() {
-		return straight.get(0).usesBlockLight();
+		return straight.getFirst().usesBlockLight();
 	}
 
 	@Override
@@ -109,7 +111,7 @@ public class AirDuctBakedModel implements BakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return straight.get(0).getParticleIcon();
+		return straight.getFirst().getParticleIcon();
 	}
 
 	@Override

@@ -2,35 +2,28 @@ package org.teacon.xkdeco.block;
 
 import java.util.Optional;
 
-import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.block.IKiwiBlock;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-public final class MimicWallBlock extends WallBlock implements EntityBlock {
+@NotNullByDefault
+public final class MimicWallBlock extends WallBlock implements IKiwiBlock {
 	private static final VoxelShape NORTH_TEST = Block.box(7, 0, 0, 9, 16, 9);
 	private static final VoxelShape SOUTH_TEST = Block.box(7, 0, 7, 9, 16, 16);
 	private static final VoxelShape WEST_TEST = Block.box(0, 0, 7, 9, 16, 9);
@@ -112,11 +105,6 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 			var abovePos = pCurrentPos.above();
 			var aboveBlockState = pLevel.getBlockState(abovePos);
 			var aboveShape = aboveBlockState.getCollisionShape(pLevel, abovePos).getFaceShape(Direction.DOWN);
-
-			if (pLevel.getBlockEntity(pCurrentPos) instanceof MimicWallBlockEntity blockEntity) {
-				blockEntity.updateBlocksFromLevel(this);
-			}
-
 			return this.updateSides(pCurrentPos, aboveShape, pState, pLevel);
 		}
 
@@ -134,18 +122,7 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-		return new MimicWallBlockEntity(pPos, pState);
-	}
-
-	@Override
-	protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
-		super.spawnDestroyParticles(pLevel, pPlayer, pPos, this.wall.defaultBlockState());
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public RenderShape getRenderShape(BlockState pState) {
-		return RenderShape.ENTITYBLOCK_ANIMATED;
+	public MutableComponent getName(ItemStack stack) {
+		return getName();
 	}
 }

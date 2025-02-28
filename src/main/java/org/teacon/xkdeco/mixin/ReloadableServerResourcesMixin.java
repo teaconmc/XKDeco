@@ -19,6 +19,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.tags.TagManager;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 @Mixin(ReloadableServerResources.class)
@@ -32,8 +33,12 @@ public class ReloadableServerResourcesMixin {
 			@Local(argsOnly = true) LocalRef<TagManager.LoadResult<T>> resultRef) {
 		if (pLoadResult.key().equals(Registries.BLOCK)) {
 			var tags = (Map<ResourceLocation, Collection<Holder<Block>>>) (Object) Maps.newHashMap(pLoadResult.tags());
-			MimicWallsLoader.addMimicWallTags(tags);
+			MimicWallsLoader.addMimicWallBlockTags(tags);
 			resultRef.set((TagManager.LoadResult<T>) new TagManager.LoadResult<>(Registries.BLOCK, tags));
+		} else if (pLoadResult.key().equals(Registries.ITEM)) {
+			var tags = (Map<ResourceLocation, Collection<Holder<Item>>>) (Object) Maps.newHashMap(pLoadResult.tags());
+			MimicWallsLoader.addMimicWallItemTags(tags);
+			resultRef.set((TagManager.LoadResult<T>) new TagManager.LoadResult<>(Registries.ITEM, tags));
 		}
 	}
 }
