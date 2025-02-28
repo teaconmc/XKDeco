@@ -213,18 +213,18 @@ repositories {
 }
 
 dependencies {
-    /*
     // https://modrinth.com/mod/jei/versions
     // compile against the JEI API but do not include it at runtime
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     // at runtime, use the full JEI jar for Forge
-    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
-    implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
+    // https://linkie.shedaniel.dev/dependencies?loader=neoforge&version=1.21.1
+    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
+    implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
-     */
+
     // https://modrinth.com/mod/kiwi/versions
     jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.3.3+neoforge")))
 
@@ -233,14 +233,14 @@ dependencies {
     implementation "maven.modrinth:jade:15.9.4+neoforge"
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
-    /*
-    implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
+    // https://modrinth.com/mod/debugutils/versions
+    implementation "maven.modrinth:debugutils:TvU10aNN"
     // https://modrinth.com/mod/modernfix/versions
-    implementation fg.deobf("maven.modrinth:modernfix:j5VhGcov")
+    implementation "maven.modrinth:modernfix:ZKnJCu6a"
     // https://modrinth.com/mod/ferrite-core/versions
-    implementation fg.deobf("maven.modrinth:ferrite-core:DG5Fn9Sz")
-    implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
-    */
+    implementation "maven.modrinth:ferrite-core:7.0.2-neoforge"
+    // https://modrinth.com/mod/suggestion-tweaker/versions
+    implementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.2+neoforge"
 
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.107.0+2.0.23+1.21.1"
     implementation "org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1:20.2.22+2d91a6db19"
@@ -358,7 +358,7 @@ unifiedPublishing {
         gameVersions = [project.minecraft_version]
         gameLoaders = ["neoforge"]
 
-        mainPublication tasks.jar //TODO test
+        mainPublication tasks.jar
 
         if (System.getenv("CURSE_TOKEN") != null) {
             curseforge {

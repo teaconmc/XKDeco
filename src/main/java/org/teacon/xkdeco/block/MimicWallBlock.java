@@ -35,10 +35,10 @@ public final class MimicWallBlock extends WallBlock implements IKiwiBlock {
 	private static final VoxelShape SOUTH_TEST = Block.box(7, 0, 7, 9, 16, 16);
 	private static final VoxelShape WEST_TEST = Block.box(0, 0, 7, 9, 16, 9);
 	private static final VoxelShape EAST_TEST = Block.box(7, 0, 7, 16, 16, 9);
-	public static final String MIMIC_WALL_PREFIX = "mimic/";
+	public static final String ID_TEMPLATE = "mimic/%s/%s";
 
 	public static String toMimicId(ResourceLocation original) {
-		return MIMIC_WALL_PREFIX + original.getNamespace() + "/" + original.getPath();
+		return ID_TEMPLATE.formatted(original.getNamespace(), original.getPath());
 	}
 
 	private final WallBlock wall;
