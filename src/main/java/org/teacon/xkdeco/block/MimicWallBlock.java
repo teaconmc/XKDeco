@@ -1,6 +1,11 @@
 package org.teacon.xkdeco.block;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallBlock;
@@ -17,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import snownee.kiwi.block.IKiwiBlock;
@@ -35,6 +42,7 @@ public final class MimicWallBlock extends WallBlock implements IKiwiBlock {
 	}
 
 	private final WallBlock wall;
+	private final Cache<BlockState, BlockState> delegateLookup = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES).build();
 
 	public MimicWallBlock(WallBlock wallDelegate) {
 		super(Properties.ofFullCopy(wallDelegate));
@@ -124,5 +132,64 @@ public final class MimicWallBlock extends WallBlock implements IKiwiBlock {
 	@Override
 	public MutableComponent getName(ItemStack stack) {
 		return getName();
+	}
+
+	@Override
+	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		try {
+			return lookupDelegate(state).getShape(level, pos, context);
+		} catch (Exception ignored) {
+		}
+		return super.getShape(state, level, pos, context);
+	}
+
+	@Override
+	protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		try {
+			return lookupDelegate(state).getVisualShape(level, pos, context);
+		} catch (Exception ignored) {
+		}
+		return super.getVisualShape(state, level, pos, context);
+	}
+
+	@Override
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		try {
+			return lookupDelegate(state).getCollisionShape(level, pos, context);
+		} catch (Exception ignored) {
+		}
+		return super.getCollisionShape(state, level, pos, context);
+	}
+
+	@Override
+	protected VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
+		try {
+			return lookupDelegate(state).getInteractionShape(level, pos);
+		} catch (Exception ignored) {
+		}
+		return super.getInteractionShape(state, level, pos);
+	}
+
+	@Override
+	protected VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+		try {
+			return lookupDelegate(state).getOcclusionShape(level, pos);
+		} catch (Exception ignored) {
+		}
+		return super.getOcclusionShape(state, level, pos);
+	}
+
+	private BlockState lookupDelegate(BlockState state) {
+		try {
+			return this.delegateLookup.get(
+					state.setValue(WATERLOGGED, false), () -> wall.defaultBlockState()
+							.setValue(NORTH_WALL, state.getValue(NORTH_WALL))
+							.setValue(EAST_WALL, state.getValue(EAST_WALL))
+							.setValue(SOUTH_WALL, state.getValue(SOUTH_WALL))
+							.setValue(WEST_WALL, state.getValue(WEST_WALL))
+							.setValue(UP, state.getValue(UP)));
+		} catch (ExecutionException e) {
+			return wall.defaultBlockState();
+		}
 	}
 }
