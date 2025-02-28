@@ -18,7 +18,9 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
+import snownee.kiwi.util.NotNullByDefault;
 
+@NotNullByDefault
 public class AirDuctModel implements UnbakedModel {
 	private final ResourceLocation straight;
 	private final ResourceLocation corner;
