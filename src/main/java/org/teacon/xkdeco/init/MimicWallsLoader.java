@@ -28,7 +28,6 @@ import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class MimicWallsLoader {
-	public static final String MIMIC_WALL_ID = "mimic_wall";
 	public static ImmutableList<MimicWallBlock> MIMIC_WALLS = ImmutableList.of();
 
 	public static final ResourceKey<CreativeModeTab> STRUCTURE_TAB_KEY = ResourceKey.create(

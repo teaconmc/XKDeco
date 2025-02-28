@@ -37,7 +37,7 @@ public class MimicWallModel implements UnbakedModel {
 
 	@Override
 	public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState state) {
-		UnbakedModel topLevelModel = baker.getTopLevelModel(BlockModelShaper.stateToModelLocation(base.defaultBlockState()));
+		UnbakedModel topLevelModel = Objects.requireNonNull(baker.getTopLevelModel(BlockModelShaper.stateToModelLocation(base.defaultBlockState())));
 		BakedModel baked = Objects.requireNonNull(topLevelModel.bake(baker, spriteGetter, state));
 		return new MimicWallBakedModel(base, baked);
 	}
