@@ -24,19 +24,20 @@ kiwiCustomization=true
 modId="neoforge"
 type="required"
 versionRange="[21,)"
-ordering="NONE"
-side="BOTH"
 
 [[dependencies.xkdeco]]
 modId="minecraft"
 type="required"
 versionRange="[1.21,1.22)"
-ordering="NONE"
-side="BOTH"
 
 [[dependencies.xkdeco]]
 modId="kiwi"
 type="required"
 versionRange="[15.2.0-alpha,)"
-ordering="NONE"
-side="BOTH"
+
+[[dependencies.xkdeco]]
+modId="fabric_api"
+type="required"
+versionRange="*"
+reason="Forgified Fabric API is required for this mod to work."
+referralUrl="https://www.curseforge.com/minecraft/mc-mods/forgified-fabric-api"
