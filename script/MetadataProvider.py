@@ -5,7 +5,7 @@ from DataProvider import DataProvider
 
 class MetadataProvider(DataProvider):
     def __init__(self, pack):
-        super().__init__(pack, 'metadata', 'assets/{}')
+        super().__init__(pack, 'metadata', 'assets/{}/kiwi')
         self.data = {}
         self.prettyPrint = True
 
