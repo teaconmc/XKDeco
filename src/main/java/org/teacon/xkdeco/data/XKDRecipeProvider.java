@@ -21,7 +21,7 @@ import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -43,7 +43,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 			if (family.getBaseBlock().asItem() == Items.AIR) {
 				return;
 			}
-			generateRecipes(consumer, family, FeatureFlagSet.of());
+			generateRecipes(consumer, family, FeatureFlags.VANILLA_SET);
 		});
 
 		coloredTiles(consumer, "black", Items.BLACK_TERRACOTTA);
