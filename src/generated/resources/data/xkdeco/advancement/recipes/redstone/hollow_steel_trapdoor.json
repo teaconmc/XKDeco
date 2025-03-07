@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_hollow_steel_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "xkdeco:hollow_steel_block"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:hollow_steel_trapdoor"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_hollow_steel_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:hollow_steel_trapdoor"
+    ]
+  }
+}
