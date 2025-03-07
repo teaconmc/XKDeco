@@ -6,17 +6,14 @@ import static net.minecraft.data.recipes.RecipeCategory.DECORATIONS;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.data.recipes.RecipeOutput;
-
-import net.minecraft.world.flag.FeatureFlagSet;
-
 import org.teacon.xkdeco.XKDeco;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
@@ -24,11 +21,11 @@ import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 import snownee.kiwi.AbstractModule;
 
 public class XKDRecipeProvider extends FabricRecipeProvider {
@@ -55,8 +52,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 		coloredTiles(consumer, "blue", Items.BLUE_TERRACOTTA);
 		coloredTiles(consumer, "green", Items.GREEN_TERRACOTTA);
 		coloredTiles(consumer, "red", Items.RED_TERRACOTTA);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("glass_tiles"), Items.GLASS);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("steel_tiles"), i("steel_block"));
+
 		Ingredient copperBlock = Ingredient.of(
 				Items.COPPER_BLOCK,
 				Items.WAXED_COPPER_BLOCK,
@@ -130,7 +126,6 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.unlockedBy(getHasName(Items.ANDESITE), has(Items.ANDESITE))
 				.unlockedBy(getHasName(Items.GRANITE), has(Items.GRANITE))
 				.save(consumer);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("aztec_stonebricks"), mayaStone);
 		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("inca_stone"), 4)
 				.pattern("TB")
 				.pattern("BT")
@@ -151,9 +146,6 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 		SimpleCookingRecipeBuilder.blasting(Ingredient.of(Items.IRON_BLOCK), BUILDING_BLOCKS, i("steel_block"), 0.1f, 100)
 				.unlockedBy("has_item", has(Items.IRON_BLOCK))
 				.save(consumer);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("factory_block"), Blocks.IRON_BLOCK, 9);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("factory_lamp_block"), Items.GLOWSTONE, 4);
-		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("tech_lamp_block"), Items.SEA_LANTERN, 4);
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("translucent_lamp_block"), i("tech_lamp_block"), Items.GLASS, 2, false);
 
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("steel_filings"), i("steel_block"), 4);
