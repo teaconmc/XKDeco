@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": "xkdeco:teapot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:tea_ware"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:tea_ware"
+    ]
+  }
+}

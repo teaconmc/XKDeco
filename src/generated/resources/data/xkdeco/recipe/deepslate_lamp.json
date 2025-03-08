@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "S": {
+      "item": "minecraft:deepslate_bricks"
+    }
+  },
+  "pattern": [
+    "S",
+    "G",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:deepslate_lamp"
+  }
+}

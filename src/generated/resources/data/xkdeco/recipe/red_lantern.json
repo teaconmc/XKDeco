@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "xkdeco:paper_lantern"
+    },
+    {
+      "item": "minecraft:red_dye"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:red_lantern"
+  }
+}

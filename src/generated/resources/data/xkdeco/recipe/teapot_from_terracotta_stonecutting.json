@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:terracotta"
+  },
+  "result": {
+    "count": 1,
+    "id": "xkdeco:teapot"
+  }
+}

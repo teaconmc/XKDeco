@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:birch_button"
+    },
+    "B": {
+      "item": "minecraft:dark_oak_button"
+    },
+    "C": {
+      "item": "minecraft:oak_pressure_plate"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "BBB",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:weiqi_board"
+  }
+}

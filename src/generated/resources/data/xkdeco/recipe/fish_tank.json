@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
+    "F": {
+      "item": "minecraft:tropical_fish_bucket"
+    },
+    "G": {
+      "item": "minecraft:seagrass"
+    },
+    "N": {
+      "item": "minecraft:nautilus_shell"
+    },
+    "P": [
+      {
+        "item": "minecraft:brain_coral"
+      },
+      {
+        "item": "minecraft:bubble_coral"
+      },
+      {
+        "item": "minecraft:fire_coral"
+      },
+      {
+        "item": "minecraft:horn_coral"
+      },
+      {
+        "item": "minecraft:tube_coral"
+      }
+    ],
+    "S": {
+      "item": "minecraft:sand"
+    },
+    "T": {
+      "item": "xkdeco:empty_fish_tank"
+    }
+  },
+  "pattern": [
+    "GFG",
+    "NFP",
+    "STC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:fish_tank"
+  }
+}

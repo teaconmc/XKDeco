@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "xkdeco:screen_off"
+    }
+  },
+  "pattern": [
+    " S ",
+    "III",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:tech_table"
+  }
+}

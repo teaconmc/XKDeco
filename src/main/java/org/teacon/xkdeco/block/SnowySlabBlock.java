@@ -1,7 +1,5 @@
 package org.teacon.xkdeco.block;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -13,9 +11,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import snownee.kiwi.util.NotNullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+@NotNullByDefault
 public final class SnowySlabBlock extends SpecialSlabBlock {
 	public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 

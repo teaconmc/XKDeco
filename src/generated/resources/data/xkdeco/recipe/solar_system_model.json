@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "PBP",
+    "BGB",
+    "PBP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:solar_system_model"
+  }
+}

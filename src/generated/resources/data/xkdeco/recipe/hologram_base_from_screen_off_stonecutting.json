@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "xkdeco:screen_off"
+  },
+  "result": {
+    "count": 4,
+    "id": "xkdeco:hologram_base"
+  }
+}

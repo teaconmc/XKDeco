@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "xkdeco:tech_screen"
+    },
+    "S": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:screen_off"
+  }
+}
