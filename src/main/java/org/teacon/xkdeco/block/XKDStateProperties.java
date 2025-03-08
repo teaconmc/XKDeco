@@ -8,7 +8,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import snownee.kiwi.customization.block.StringProperty;
+import snownee.kiwi.util.NotNullByDefault;
 
+@NotNullByDefault
 public interface XKDStateProperties {
 	List<BooleanProperty> DIRECTION_PROPERTIES = List.of(
 			BlockStateProperties.DOWN,

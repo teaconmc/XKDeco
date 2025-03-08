@@ -10,6 +10,7 @@ import org.teacon.xkdeco.XKDeco;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancements.critereon.ChangeDimensionTrigger;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 import snownee.kiwi.AbstractModule;
 
 public class XKDRecipeProvider extends FabricRecipeProvider {
@@ -66,14 +68,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.unlockedBy("has_item", has(Items.COPPER_INGOT))
 				.save(consumer, "copper_tiles_from_copper_block");
 
-		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("mud_wall_block"), 4)
-				.pattern(" B ")
-				.pattern("BCB")
-				.pattern(" B ")
-				.define('B', Items.BONE_MEAL)
-				.define('C', Items.CLAY)
-				.unlockedBy("has_item", has(Items.CLAY))
-				.save(consumer);
+		shapedSurroundedBy4(consumer, BUILDING_BLOCKS, i("mud_wall_block"), Items.CLAY, Items.BONE_MEAL, 4);
 		ShapedRecipeBuilder.shaped(BUILDING_BLOCKS, i("cyan_bricks"), 6)
 				.pattern("TB")
 				.pattern("BT")
@@ -168,18 +163,18 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 		stonecutterResultFromBase(consumer, BUILDING_BLOCKS, i("end_stone_slab"), Items.END_STONE, 2);
 
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("dirt_cobblestone"), Items.DIRT, Items.COBBLESTONE, 1, false);
-		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("grass_cobblestone"), Items.TALL_GRASS, Items.COBBLESTONE, 1, false);
+		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("grass_cobblestone"), Items.SHORT_GRASS, Items.COBBLESTONE, 1, false);
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("sandy_cobblestone"), Items.SAND, Items.COBBLESTONE, 1, false);
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("snowy_cobblestone"), Items.SNOW_BLOCK, Items.COBBLESTONE, 1, false);
 
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("ginkgo_leaves"), Items.YELLOW_DYE, Items.OAK_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("orange_maple_leaves"), Items.ORANGE_DYE, Items.OAK_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("red_maple_leaves"), Items.RED_DYE, Items.OAK_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("peach_blossom"), Items.RED_DYE, Items.CHERRY_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("cherry_blossom"), Items.PINK_DYE, Items.CHERRY_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("white_cherry_blossom"), Items.WHITE_DYE, Items.CHERRY_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("plantable_leaves"), Items.DIRT, Items.OAK_LEAVES, 8);
-		shapedSurroundedBy(consumer, BUILDING_BLOCKS, i("plantable_leaves_dark"), Items.DIRT, Items.DARK_OAK_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("ginkgo_leaves"), Items.YELLOW_DYE, Items.OAK_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("orange_maple_leaves"), Items.ORANGE_DYE, Items.OAK_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("red_maple_leaves"), Items.RED_DYE, Items.OAK_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("peach_blossom"), Items.RED_DYE, Items.CHERRY_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("cherry_blossom"), Items.PINK_DYE, Items.CHERRY_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("white_cherry_blossom"), Items.WHITE_DYE, Items.CHERRY_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("plantable_leaves"), Items.DIRT, Items.OAK_LEAVES, 8);
+		shapedSurroundedBy8(consumer, BUILDING_BLOCKS, i("plantable_leaves_dark"), Items.DIRT, Items.DARK_OAK_LEAVES, 8);
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("peach_blossom_leaves"), i("peach_blossom"), Items.OAK_LEAVES, 2, false);
 		shapelessTwoToOne(consumer, BUILDING_BLOCKS, i("cherry_blossom_leaves"), i("cherry_blossom"), Items.OAK_LEAVES, 2, false);
 		shapelessTwoToOne(
@@ -239,6 +234,346 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.define('B', i("tech_item_display"))
 				.unlockedBy("has_item", has(Items.ITEM_FRAME))
 				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("maya_crystal_skull"))
+				.pattern(" A ")
+				.pattern("ASA")
+				.pattern(" M ")
+				.define('A', Items.AMETHYST_SHARD)
+				.define('S', Items.SKELETON_SKULL)
+				.define('M', i("maya_stone_slab"))
+				.unlockedBy("has_item", has(Items.SKELETON_SKULL))
+				.save(consumer);
+
+		miniature(consumer, "tree", Items.SPRUCE_SAPLING);
+		miniature(consumer, "cherry", Items.CHERRY_SAPLING);
+		miniature(consumer, "ginkgo", i("ginkgo_leaves"));
+		miniature(consumer, "maple", i("red_maple_leaves"));
+		miniature(consumer, "bamboo", Items.BAMBOO);
+		miniature(consumer, "coral", Items.DEAD_FIRE_CORAL);
+		miniature(consumer, "red_coral", Items.FIRE_CORAL);
+		miniature(consumer, "mount", Items.MOSSY_COBBLESTONE);
+		miniature(consumer, "succulents", Items.CACTUS);
+
+		stonecutterResultFromBase(consumer, DECORATIONS, i("teapot"), Items.TERRACOTTA);
+		stonecutterResultFromBase(consumer, DECORATIONS, i("cup"), Items.TERRACOTTA, 1);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("tea_ware"), i("cup"), i("teapot"), 4);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("refreshments"))
+				.pattern("ABA")
+				.pattern("BCB")
+				.pattern(" _ ")
+				.define('A', Items.COOKIE)
+				.define('B', Items.PUMPKIN_PIE)
+				.define('C', Items.CAKE)
+				.define('_', Items.STONE_PRESSURE_PLATE)
+				.unlockedBy("has_item", has(Items.CAKE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("fruit_platter"))
+				.pattern("ABC")
+				.pattern("DDD")
+				.pattern(" _ ")
+				.define('A', Items.SWEET_BERRIES)
+				.define('B', Items.GLOW_BERRIES)
+				.define('C', Items.APPLE)
+				.define('D', Items.MELON_SLICE)
+				.define('_', Items.STONE_PRESSURE_PLATE)
+				.unlockedBy("has_item", has(Items.MELON_SLICE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("calligraphy"))
+				.pattern(" F ")
+				.pattern(" I ")
+				.pattern("PPP")
+				.define('F', Items.FEATHER)
+				.define('I', Items.INK_SAC)
+				.define('P', Items.PAPER)
+				.unlockedBy("has_item", has(Items.PAPER))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("ink_painting"))
+				.pattern(" F ")
+				.pattern("RIG")
+				.pattern("PPP")
+				.define('F', Items.FEATHER)
+				.define('I', Items.INK_SAC)
+				.define('P', Items.PAPER)
+				.define('R', Items.RED_DYE)
+				.define('G', Items.GREEN_DYE)
+				.unlockedBy("has_item", has(Items.PAPER))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("weiqi_board"))
+				.pattern("AAA")
+				.pattern("BBB")
+				.pattern(" C ")
+				.define('A', Items.BIRCH_BUTTON)
+				.define('B', Items.DARK_OAK_BUTTON)
+				.define('C', Items.OAK_PRESSURE_PLATE)
+				.unlockedBy("has_item", has(ItemTags.WOODEN_BUTTONS))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("xiangqi_board"))
+				.pattern("AAA")
+				.pattern("BBB")
+				.pattern(" C ")
+				.define('A', Items.MANGROVE_BUTTON)
+				.define('B', Items.DARK_OAK_BUTTON)
+				.define('C', Items.SPRUCE_PRESSURE_PLATE)
+				.unlockedBy("has_item", has(ItemTags.WOODEN_BUTTONS))
+				.save(consumer);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("paper_lantern"), Items.PAPER, Items.LANTERN, 1);
+		shapelessTwoToOne(consumer, DECORATIONS, i("red_lantern"), i("paper_lantern"), Items.RED_DYE, 1, false);
+		ShapelessRecipeBuilder.shapeless(DECORATIONS, i("festival_lantern"))
+				.requires(i("paper_lantern"))
+				.requires(Items.RED_DYE)
+				.requires(Items.YELLOW_DYE)
+				.unlockedBy("has_item", has(i("paper_lantern")))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("oil_lamp"))
+				.pattern("NTN")
+				.pattern(" N ")
+				.define('N', Items.IRON_NUGGET)
+				.define('T', Items.TORCH)
+				.unlockedBy("has_item", has(Items.TORCH))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("candlestick"))
+				.pattern("NCN")
+				.pattern(" N ")
+				.define('N', Items.IRON_NUGGET)
+				.define('C', Items.CANDLE)
+				.unlockedBy("has_item", has(Items.CANDLE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("big_candlestick"))
+				.pattern("CCC")
+				.pattern("CIC")
+				.pattern(" N ")
+				.define('N', Items.IRON_NUGGET)
+				.define('C', Items.CANDLE)
+				.define('I', Items.IRON_INGOT)
+				.unlockedBy("has_item", has(Items.CANDLE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("empty_candlestick"), 4)
+				.pattern("I")
+				.pattern("N")
+				.pattern("I")
+				.define('N', Items.IRON_NUGGET)
+				.define('I', Items.IRON_INGOT)
+				.unlockedBy("has_item", has(Items.IRON_INGOT))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("covered_lamp"))
+				.pattern("M")
+				.pattern("C")
+				.define('M', Items.MANGROVE_ROOTS)
+				.define('C', i("candlestick"))
+				.unlockedBy("has_item", has(i("candlestick")))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("roofed_lamp"))
+				.pattern("R")
+				.pattern("L")
+				.pattern("P")
+				.define('R', i("black_roof_ridge"))
+				.define('L', Items.REDSTONE_LAMP)
+				.define('P', Items.STONE_PRESSURE_PLATE)
+				.unlockedBy("has_item", has(Items.REDSTONE_LAMP))
+				.save(consumer);
+		stoneLamp(consumer, i("stone_lamp"), Items.STONE_BRICKS);
+		stoneLamp(consumer, i("deepslate_lamp"), Items.DEEPSLATE_BRICKS);
+		stoneLamp(consumer, i("blackstone_lamp"), Items.POLISHED_BLACKSTONE_BRICKS);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("fish_bowl"))
+				.pattern("L S")
+				.pattern("LFS")
+				.pattern("TTT")
+				.define('L', Items.LILY_PAD)
+				.define('S', Items.STICK)
+				.define('F', Items.TROPICAL_FISH_BUCKET)
+				.define('T', Items.WHITE_TERRACOTTA)
+				.unlockedBy("has_item", has(Items.TROPICAL_FISH_BUCKET))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("dark_fish_bowl"))
+				.pattern("L S")
+				.pattern("LFS")
+				.pattern("TTT")
+				.define('L', Items.LILY_PAD)
+				.define('S', Items.STICK)
+				.define('F', Items.TROPICAL_FISH_BUCKET)
+				.define('T', Items.BLACK_TERRACOTTA)
+				.unlockedBy("has_item", has(Items.TROPICAL_FISH_BUCKET))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("stone_water_bowl"))
+				.pattern("W")
+				.pattern("S")
+				.define('W', Items.WATER_BUCKET)
+				.define('S', Items.STONE)
+				.unlockedBy("has_item", has(Items.WATER_BUCKET))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("stone_water_tank"))
+				.pattern("W")
+				.pattern("S")
+				.pattern("S")
+				.define('W', Items.WATER_BUCKET)
+				.define('S', Items.STONE)
+				.unlockedBy("has_item", has(Items.WATER_BUCKET))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("empty_fish_tank"))
+				.pattern("G G")
+				.pattern("GGG")
+				.define('G', Items.GLASS_PANE)
+				.unlockedBy("has_item", has(Items.GLASS_PANE))
+				.save(consumer);
+		Ingredient coralPlants = Ingredient.of(
+				Items.BRAIN_CORAL,
+				Items.BUBBLE_CORAL,
+				Items.FIRE_CORAL,
+				Items.HORN_CORAL,
+				Items.TUBE_CORAL);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("fish_tank"))
+				.pattern("GFG")
+				.pattern("NFP")
+				.pattern("STC")
+				.define('G', Items.SEAGRASS)
+				.define('F', Items.TROPICAL_FISH_BUCKET)
+				.define('N', Items.NAUTILUS_SHELL)
+				.define('P', coralPlants)
+				.define('S', Items.SAND)
+				.define('T', i("empty_fish_tank"))
+				.define('C', Items.COBBLESTONE)
+				.unlockedBy("has_item", has(i("empty_fish_tank")))
+				.save(consumer);
+		twoByTwoPacker(consumer, DECORATIONS, i("small_book_stack"), Items.BOOK);
+		twoByTwoPacker(consumer, DECORATIONS, i("big_book_stack"), i("small_book_stack"));
+		twoByTwoPacker(consumer, DECORATIONS, i("empty_bottle_stack"), Items.GLASS_BOTTLE);
+		twoByTwoPacker(consumer, DECORATIONS, i("bottle_stack"), Items.POTION);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("wood_globe"))
+				.pattern("  S")
+				.pattern(" PS")
+				.pattern("HHH")
+				.define('S', Items.STICK)
+				.define('P', ItemTags.PLANKS)
+				.define('H', ItemTags.WOODEN_SLABS)
+				.unlockedBy("back_to_overworld", ChangeDimensionTrigger.TriggerInstance.changedDimension(Level.END, Level.OVERWORLD))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("globe"))
+				.pattern(" W ")
+				.pattern("B*G")
+				.pattern(" Y ")
+				.define('W', Items.WHITE_DYE)
+				.define('B', Items.BLUE_DYE)
+				.define('G', Items.GREEN_DYE)
+				.define('Y', Items.YELLOW_DYE)
+				.define('*', i("wood_globe"))
+				.unlockedBy("has_item", has(i("wood_globe")))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("solar_system_model"))
+				.pattern("PBP")
+				.pattern("BGB")
+				.pattern("PBP")
+				.define('P', ItemTags.PLANKS)
+				.define('B', ItemTags.WOODEN_BUTTONS)
+				.define('G', Items.GLOWSTONE)
+				.unlockedBy("has_item", has(Items.GLOWSTONE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("telescope"))
+				.pattern(" S ")
+				.pattern(" P ")
+				.pattern("HHH")
+				.define('S', Items.SPYGLASS)
+				.define('P', ItemTags.PLANKS)
+				.define('H', ItemTags.WOODEN_SLABS)
+				.unlockedBy("has_item", has(Items.SPYGLASS))
+				.save(consumer);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("fan_blade"), Items.LIGHTNING_ROD, Items.HEAVY_WEIGHTED_PRESSURE_PLATE, 1);
+		shapedSurroundedBy8(consumer, DECORATIONS, i("factory_vent_fan"), i("fan_blade"), Items.IRON_BARS, 1);
+		twoByTwoPacker(consumer, DECORATIONS, i("factory_vent_fan_big"), i("factory_vent_fan"));
+		shapedSurroundedBy4(consumer, DECORATIONS, i("steel_windmill"), i("steel_block"), i("steel_trapdoor"), 1);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("iron_windmill"), Items.IRON_BLOCK, Items.IRON_TRAPDOOR, 1);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("wooden_windmill"), Items.STRIPPED_OAK_LOG, Items.OAK_TRAPDOOR, 1);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("screen_off"), i("tech_screen"), Items.IRON_NUGGET, 1);
+		stonecutterResultFromBase(consumer, DECORATIONS, i("hologram_base"), i("screen_off"), 4);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("tech_table"))
+				.pattern(" S ")
+				.pattern("III")
+				.pattern(" I ")
+				.define('S', i("screen_off"))
+				.define('I', Items.IRON_INGOT)
+				.unlockedBy("has_item", has(i("screen_off")))
+				.save(consumer);
+		ShapelessRecipeBuilder.shapeless(DECORATIONS, i("sign_entrance"))
+				.requires(ItemTags.SIGNS)
+				.requires(Items.GLOW_INK_SAC)
+				.unlockedBy("has_item", has(Items.GLOW_INK_SAC))
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("tech_screen"))
+				.pattern("GGG")
+				.pattern("GGG")
+				.define('G', Items.BLUE_STAINED_GLASS_PANE)
+				.unlockedBy("has_item", has(Items.BLUE_STAINED_GLASS_PANE))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("tech_console"))
+				.pattern("NSN")
+				.pattern("III")
+				.define('N', Items.IRON_NUGGET)
+				.define('S', i("tech_screen"))
+				.define('I', Items.IRON_INGOT)
+				.unlockedBy("has_item", has(i("tech_screen")))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("tech_chair"))
+				.pattern("I  ")
+				.pattern("IWI")
+				.pattern("INI")
+				.define('N', Items.IRON_NUGGET)
+				.define('I', Items.IRON_INGOT)
+				.define('W', Items.BLUE_WOOL)
+				.unlockedBy("has_item", has(Items.BLUE_WOOL))
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("mechanical_screen"))
+				.pattern("BGL")
+				.pattern("BGW")
+				.define('B', ItemTags.WOODEN_BUTTONS)
+				.define('G', Items.GLASS_PANE)
+				.define('L', i("factory_lamp"))
+				.define('W', i("factory_warning_lamp"))
+				.unlockedBy("has_item", has(i("factory_lamp")))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("mechanical_console"))
+				.pattern("LLW")
+				.pattern("BBT")
+				.pattern("HHH")
+				.define('L', i("factory_lamp"))
+				.define('W', i("factory_warning_lamp"))
+				.define('B', ItemTags.WOODEN_BUTTONS)
+				.define('T', Items.LEVER)
+				.define('H', ItemTags.WOODEN_SLABS)
+				.unlockedBy("has_item", has(i("factory_lamp")))
+				.save(consumer);
+		ShapedRecipeBuilder.shaped(DECORATIONS, i("mechanical_chair"))
+				.pattern("H  ")
+				.pattern("HWH")
+				.pattern("HBH")
+				.define('B', ItemTags.WOODEN_BUTTONS)
+				.define('H', ItemTags.WOODEN_SLABS)
+				.define('W', Items.RED_WOOL)
+				.unlockedBy("has_item", has(Items.RED_WOOL))
+				.save(consumer);
+	}
+
+	private void stoneLamp(RecipeOutput consumer, ItemLike lamp, ItemLike material) {
+		ShapedRecipeBuilder.shaped(DECORATIONS, lamp)
+				.pattern("S")
+				.pattern("G")
+				.pattern("S")
+				.define('S', material)
+				.define('G', Items.GLOWSTONE)
+				.unlockedBy("has_item", has(Items.GLOWSTONE))
+				.save(consumer);
+	}
+
+	private static void miniature(RecipeOutput consumer, String result, ItemLike material) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, i("miniature_%s".formatted(result)))
+				.pattern("A")
+				.pattern("B")
+				.pattern("C")
+				.define('A', material)
+				.define('B', Items.FLOWER_POT)
+				.define('C', ItemTags.WOODEN_SLABS)
+				.unlockedBy("has_item", has(material))
+				.save(consumer);
 	}
 
 	private static void fallenLeaves(RecipeOutput consumer, ItemLike pCarpet, ItemLike pMaterial) {
@@ -250,7 +585,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.save(consumer);
 	}
 
-	private static void shapedSurroundedBy(
+	private static void shapedSurroundedBy8(
 			RecipeOutput consumer,
 			RecipeCategory category,
 			ItemLike result,
@@ -261,6 +596,23 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.pattern("SSS")
 				.pattern("SMS")
 				.pattern("SSS")
+				.define('S', surround)
+				.define('M', middle)
+				.unlockedBy("has_item", has(surround))
+				.save(consumer);
+	}
+
+	private static void shapedSurroundedBy4(
+			RecipeOutput consumer,
+			RecipeCategory category,
+			ItemLike result,
+			Item middle,
+			ItemLike surround,
+			int count) {
+		ShapedRecipeBuilder.shaped(category, result, count)
+				.pattern(" S ")
+				.pattern("SMS")
+				.pattern(" S ")
 				.define('S', surround)
 				.define('M', middle)
 				.unlockedBy("has_item", has(surround))

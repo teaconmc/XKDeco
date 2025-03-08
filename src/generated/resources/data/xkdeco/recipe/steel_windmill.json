@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "xkdeco:steel_block"
+    },
+    "S": {
+      "item": "xkdeco:steel_trapdoor"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:steel_windmill"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "S": {
+      "item": "xkdeco:tech_screen"
+    }
+  },
+  "pattern": [
+    "NSN",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "xkdeco:tech_console"
+  }
+}

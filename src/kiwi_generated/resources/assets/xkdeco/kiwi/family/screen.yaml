@@ -1,0 +1,13 @@
+exchange_inputs_in_viewer: xkdeco:screen_off
+stonecutter_exchange: true
+switch: {}
+blocks:
+- xkdeco:screen_cube
+- xkdeco:screen_diagram
+- xkdeco:screen_dna
+- xkdeco:screen_list
+- xkdeco:screen_message
+- xkdeco:screen_off
+- xkdeco:screen_three_bodies
+- xkdeco:screen_transport
+- xkdeco:screen_wave

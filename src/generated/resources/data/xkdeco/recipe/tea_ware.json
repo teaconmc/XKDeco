@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "xkdeco:cup"
+    },
+    "S": {
+      "item": "xkdeco:teapot"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "xkdeco:tea_ware"
+  }
+}
