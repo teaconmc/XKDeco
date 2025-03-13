@@ -432,11 +432,11 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("tech_table_circle", "furniture/", true);
 
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
-		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
+		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding2", false, true);
 		createMoulding("greek_moulding", "furniture/greek_moulding", false, true);
-		createMoulding("greek_moulding2", "furniture/greek_moulding", false, true);
+		createMoulding("greek_moulding2", "furniture/greek_moulding2", false, true);
 		createMoulding("roman_moulding", "furniture/roman_moulding", false, true);
-		createMoulding("roman_moulding2", "furniture/roman_moulding", false, true);
+		createMoulding("roman_moulding2", "furniture/roman_moulding2", false, true);
 		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
 		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
 		createMoulding("light_wall_base", "furniture/light_wall_base", true, true);
