@@ -226,11 +226,11 @@ dependencies {
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
 
     // https://modrinth.com/mod/kiwi/versions
-    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.3.5+neoforge")))
+    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.4.0+neoforge")))
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
-    implementation "maven.modrinth:jade:15.9.4+neoforge"
+    implementation "maven.modrinth:jade:15.10.0+neoforge"
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     // https://modrinth.com/mod/debugutils/versions
