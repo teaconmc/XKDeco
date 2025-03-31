@@ -316,7 +316,7 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.define('C', Items.SPRUCE_PRESSURE_PLATE)
 				.unlockedBy("has_item", has(ItemTags.WOODEN_BUTTONS))
 				.save(consumer);
-		shapedSurroundedBy4(consumer, DECORATIONS, i("paper_lantern"), Items.PAPER, Items.LANTERN, 1);
+		shapedSurroundedBy4(consumer, DECORATIONS, i("paper_lantern"), Items.LANTERN, Items.PAPER, 1);
 		shapelessTwoToOne(consumer, DECORATIONS, i("red_lantern"), i("paper_lantern"), Items.RED_DYE, 1, false);
 		ShapelessRecipeBuilder.shapeless(DECORATIONS, i("festival_lantern"))
 				.requires(i("paper_lantern"))

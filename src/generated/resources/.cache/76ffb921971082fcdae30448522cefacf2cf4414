@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-08T21:06:54.8988157	XeKr's Decoration/Recipes
+// 1.21.1	2025-03-31T10:40:49.9340253	XeKr's Decoration/Recipes
 2855de40aabd076d06301da9ad6306c2a374f1e5 data/xkdeco/advancement/recipes/building_blocks/aztec_chiseled_stonebricks.json
 47f9a619df5f611cc98f9cf2d9accbd6d43c1d69 data/xkdeco/advancement/recipes/building_blocks/aztec_cut_stonebricks.json
 3d9986d2438b03015e36dd9677692d02a3f7dec2 data/xkdeco/advancement/recipes/building_blocks/aztec_mossy_stonebrick_slab.json
@@ -248,7 +248,7 @@ fe598324bda9c25652ef4d3e11cbdead003d0c4f data/xkdeco/advancement/recipes/decorat
 d778bba7fb1d7cd4807ec29d796b507681486f29 data/xkdeco/advancement/recipes/decorations/miniature_tree.json
 1c00863092c17321fbaaf43da5424eae99a710ad data/xkdeco/advancement/recipes/decorations/mud_wall_wall.json
 d1d37c4ffee7c73dd92f3bc4e56abac4b697cba1 data/xkdeco/advancement/recipes/decorations/oil_lamp.json
-9a45f0f07dc92cf5f544df7dbffe38a1d3ad0299 data/xkdeco/advancement/recipes/decorations/paper_lantern.json
+485e930ab934683866344c5aa58416e9998453cc data/xkdeco/advancement/recipes/decorations/paper_lantern.json
 eac941c678024d9611dc2646f4b2cf4c83a5eb3c data/xkdeco/advancement/recipes/decorations/plain_block_display.json
 234e068c9ef83226297687232f8252fa58ff86b6 data/xkdeco/advancement/recipes/decorations/plain_item_display.json
 1b3ba311dde694ef9ee59c897a5eb050157463c2 data/xkdeco/advancement/recipes/decorations/red_lantern.json
@@ -485,7 +485,7 @@ b5508daf81a1c2c1734a980c96a923471c56109f data/xkdeco/recipe/miniature_maple.json
 d3e6bdd11359feb56e6b624f9d2b33a3531c4167 data/xkdeco/recipe/netherrack_slab_from_netherrack_stonecutting.json
 f402c1347781b8c3acd6418d12019577e2a62d5a data/xkdeco/recipe/oil_lamp.json
 76facc7a8b2dac35409de9418832dff45defa804 data/xkdeco/recipe/orange_maple_leaves.json
-1d94323b1b8cf3334ff7db52e9bf6e9710652ff3 data/xkdeco/recipe/paper_lantern.json
+c6005575859f078a7cdba043200d10d48538a5de data/xkdeco/recipe/paper_lantern.json
 c77063d8d27cabd031a8d5bcd9affd4d37a89427 data/xkdeco/recipe/peach_blossom.json
 3c02e4b642830df9369c7da767f18757e0aaa646 data/xkdeco/recipe/peach_blossom_leaves.json
 2dc01d45b7b0f53982b48fa5e0e9e6d0ff2df18c data/xkdeco/recipe/plain_block_display.json
