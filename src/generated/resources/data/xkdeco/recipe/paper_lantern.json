@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "M": {
-      "item": "minecraft:paper"
+      "item": "minecraft:lantern"
     },
     "S": {
-      "item": "minecraft:lantern"
+      "item": "minecraft:paper"
     }
   },
   "pattern": [
