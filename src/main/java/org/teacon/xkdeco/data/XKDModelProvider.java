@@ -201,17 +201,21 @@ public class XKDModelProvider extends FabricModelProvider {
 			ResourceLocation pFenceSideModelLocation) {
 		return MultiPartGenerator.multiPart(pFenceBlock)
 				.with(Variant.variant().with(VariantProperties.MODEL, pFencePostModelLocation))
-				.with(Condition.condition().term(BlockStateProperties.NORTH, true), Variant.variant()
-						.with(VariantProperties.MODEL, pFenceSideModelLocation))
-				.with(Condition.condition().term(BlockStateProperties.EAST, true), Variant.variant()
-						.with(VariantProperties.MODEL, pFenceSideModelLocation)
-						.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.with(Condition.condition().term(BlockStateProperties.SOUTH, true), Variant.variant()
-						.with(VariantProperties.MODEL, pFenceSideModelLocation)
-						.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-				.with(Condition.condition().term(BlockStateProperties.WEST, true), Variant.variant()
-						.with(VariantProperties.MODEL, pFenceSideModelLocation)
-						.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+				.with(
+						Condition.condition().term(BlockStateProperties.NORTH, true), Variant.variant()
+								.with(VariantProperties.MODEL, pFenceSideModelLocation))
+				.with(
+						Condition.condition().term(BlockStateProperties.EAST, true), Variant.variant()
+								.with(VariantProperties.MODEL, pFenceSideModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.with(
+						Condition.condition().term(BlockStateProperties.SOUTH, true), Variant.variant()
+								.with(VariantProperties.MODEL, pFenceSideModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+				.with(
+						Condition.condition().term(BlockStateProperties.WEST, true), Variant.variant()
+								.with(VariantProperties.MODEL, pFenceSideModelLocation)
+								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
 	}
 
 	public static boolean createIfSpecialFenceGate(Block block, BlockModelGenerators generators, BlockFamily family) {
@@ -367,13 +371,15 @@ public class XKDModelProvider extends FabricModelProvider {
 		createSlab(Blocks.DIRT, false, false, UnaryOperator.identity());
 		createSlab(Blocks.DIRT_PATH, true, true, $ -> $.put(TextureSlot.BOTTOM, dirtTexture));
 		createSlab(Blocks.GRASS_BLOCK, true, true, UnaryOperator.identity());
-		createSlab(Blocks.MYCELIUM, true, true, $ -> $
-				.put(TextureSlot.BOTTOM, dirtTexture)
-				.put(TextureSlot.TOP, getBlockTexture(Blocks.MYCELIUM, "_top")));
+		createSlab(
+				Blocks.MYCELIUM, true, true, $ -> $
+						.put(TextureSlot.BOTTOM, dirtTexture)
+						.put(TextureSlot.TOP, getBlockTexture(Blocks.MYCELIUM, "_top")));
 		createSlab(Blocks.NETHERRACK, false, false, UnaryOperator.identity());
-		createSlab(Blocks.PODZOL, true, true, $ -> $
-				.put(TextureSlot.BOTTOM, dirtTexture)
-				.put(TextureSlot.TOP, getBlockTexture(Blocks.PODZOL, "_top")));
+		createSlab(
+				Blocks.PODZOL, true, true, $ -> $
+						.put(TextureSlot.BOTTOM, dirtTexture)
+						.put(TextureSlot.TOP, getBlockTexture(Blocks.PODZOL, "_top")));
 		createSlab(Blocks.CRIMSON_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.WARPED_NYLIUM, true, true, $ -> $.put(TextureSlot.BOTTOM, netherrackTexture));
 		createSlab(Blocks.END_STONE, false, false, UnaryOperator.identity());
@@ -625,8 +631,9 @@ public class XKDModelProvider extends FabricModelProvider {
 						Variant.variant()
 								.with(VariantProperties.MODEL, resourcelocation1)
 								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.with(Condition.condition()
-						.term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, resourcelocation2))
+				.with(
+						Condition.condition()
+								.term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, resourcelocation2))
 				.with(
 						Condition.condition().term(BlockStateProperties.WEST, true),
 						Variant.variant()
@@ -953,23 +960,29 @@ public class XKDModelProvider extends FabricModelProvider {
 		ResourceLocation flipModel = XKDModelTemplates.WOODEN_FENCE_HEAD_FLIP.create(block, mapping, generators.modelOutput);
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
 				.with(PropertyDispatch.property(BlockStateProperties.FACING)
-						.select(Direction.DOWN, Variant.variant()
-								.with(VariantProperties.MODEL, flipModel)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-						.select(Direction.UP, Variant.variant()
-								.with(VariantProperties.MODEL, model)
-								.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-						.select(Direction.NORTH, Variant.variant()
-								.with(VariantProperties.MODEL, model))
-						.select(Direction.SOUTH, Variant.variant()
-								.with(VariantProperties.MODEL, model)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-						.select(Direction.WEST, Variant.variant()
-								.with(VariantProperties.MODEL, model)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-						.select(Direction.EAST, Variant.variant()
-								.with(VariantProperties.MODEL, model)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
+						.select(
+								Direction.DOWN, Variant.variant()
+										.with(VariantProperties.MODEL, flipModel)
+										.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+						.select(
+								Direction.UP, Variant.variant()
+										.with(VariantProperties.MODEL, model)
+										.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+						.select(
+								Direction.NORTH, Variant.variant()
+										.with(VariantProperties.MODEL, model))
+						.select(
+								Direction.SOUTH, Variant.variant()
+										.with(VariantProperties.MODEL, model)
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						.select(
+								Direction.WEST, Variant.variant()
+										.with(VariantProperties.MODEL, model)
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+						.select(
+								Direction.EAST, Variant.variant()
+										.with(VariantProperties.MODEL, model)
+										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
 		generators.blockStateOutput.accept(generator);
 		generators.delegateItemModel(block, model);
 	}
@@ -1158,14 +1171,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createRoofFlat(id + "_flat", roofTexture);
 		createRoofEave(id + "_small_eave", roofTexture, ridgeTexture, true);
 		createRoofEnd(id + "_small_end", roofTexture, asian ? smallRidgeTexture : ridgeTexture, true);
-		if (asian) {
-			createAsianRoofRidgeEnd(id + "_small_ridge_end", roofTexture, ridgeTexture, smallRidgeTexture, true);
-		} else {
-			createHorizontalShift(
-					id + "_small_ridge_end",
-					"template_roof_small_ridge_end",
-					$ -> TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_RIDGE2, ridgeTexture), true);
-		}
+		createRoofRidgeEnd(id + "_small_ridge_end", roofTexture, ridgeTexture, smallRidgeTexture, true, asian);
 		createHorizontalShift(
 				id + "_small_flat_end",
 				"template_roof_small_flat_end",
@@ -1176,7 +1182,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		}
 		createRoofEave(id + "_eave", roofTexture, ridgeTexture, false);
 		createRoofEnd(id + "_end", roofTexture, ridgeTexture, false);
-		createAsianRoofRidgeEnd(id + "_ridge_end", roofTexture, ridgeTexture, smallRidgeTexture, false);
+		createRoofRidgeEnd(id + "_ridge_end", roofTexture, ridgeTexture, smallRidgeTexture, false, asian);
 		generators.delegateItemModel(block(id + "_deco"), ModelLocationUtils.getModelLocation(block(id + "_deco")));
 		createHorizontalShift(
 				id + "_deco",
@@ -1214,17 +1220,24 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createAsianRoofRidgeEnd(
+	private void createRoofRidgeEnd(
 			String id,
 			ResourceLocation roofTexture,
 			ResourceLocation ridgeTexture,
 			ResourceLocation smallRidgeTexture,
-			boolean narrow) {
+			boolean narrow,
+			boolean asian) {
 		Block block = block(id);
+		String pathBase;
+		if (asian) {
+			pathBase = narrow ? "template_roof_small_ridge_end_asian" : "template_roof_ridge_end";
+		} else {
+			pathBase = "template_roof_small_ridge_end";
+		}
 		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(ROOF_VARIANT_WITHOUT_SLOW, HALF)
-						.generate((variant, half) -> {
-							String path = narrow ? "template_roof_small_ridge_end_asian" : "template_roof_ridge_end";
+				.with(PropertyDispatch.property(ROOF_VARIANT_WITHOUT_SLOW)
+						.generate(variant -> {
+							String path = pathBase;
 							TextureMapping textureMapping = TextureMapping.particle(roofTexture);
 							if (narrow) {
 								textureMapping.put(XKDModelTemplates.SLOT_RIDGE, smallRidgeTexture);
@@ -1235,11 +1248,6 @@ public class XKDModelProvider extends FabricModelProvider {
 							}
 							if (!variant.equals("normal")) {
 								path += "_" + variant;
-							}
-							if (half.equals("upper") && !variant.equals("steep")) {
-								path += "_top";
-							} else if (half.equals("lower") && variant.equals("steep")) {
-								path += "_top";
 							}
 							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
 									block,

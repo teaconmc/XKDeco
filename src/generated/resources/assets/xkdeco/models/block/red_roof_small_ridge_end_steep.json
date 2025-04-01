@@ -1,5 +1,5 @@
 {
-  "parent": "xkdeco:block/template_roof_small_ridge_end_top",
+  "parent": "xkdeco:block/template_roof_small_ridge_end_steep",
   "textures": {
     "particle": "xkdeco:block/red_roof",
     "ridge2": "xkdeco:block/red_roof_ridge",
