@@ -10,9 +10,7 @@ credits="ustc-zzzz, LucunJi, 3TUSK, TartaricAcid, IzzelAliz, Gu-ZT, SettingDust,
 version="${file.jarVersion}"
 displayName="XeKr's Decoration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/xks-decoration"
-description='''
-Models and textures are created by XeKr: https://github.com/XeKr
-'''
+description="Models and textures are created by XeKr: https://github.com/XeKr"
 
 [[mixin]]
 config="xkdeco.mixins.json"
