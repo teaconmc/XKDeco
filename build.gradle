@@ -227,7 +227,7 @@ dependencies {
 
     // https://modrinth.com/mod/kiwi/versions
 //    implementation(annotationProcessor("libs:Kiwi-1.21.1-NeoForge:15.5.0"))
-    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.5.0+neoforge")))
+    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.5.1+neoforge")))
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
