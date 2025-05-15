@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "org.teacon.xkdeco.mixin",
-	"compatibilityLevel": "JAVA_16",
+	"compatibilityLevel": "JAVA_21",
 	"refmap": "xkdeco.data.refmap.json",
 	"mixins": [
 		"data.BlockFamilyProviderMixin",

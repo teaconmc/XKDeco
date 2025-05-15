@@ -11,6 +11,7 @@ import snownee.kiwi.customization.block.BasicBlock;
 public class XKDBlock extends BasicBlock implements XKDPlatformBlock {
 	public static final TagKey<Block> AIR_DUCTS = AbstractModule.blockTag(XKDeco.ID, "air_ducts");
 	public static final TagKey<Block> ROOF_RIDGE = AbstractModule.blockTag(XKDeco.ID, "roof_ridge");
+	public static final TagKey<Block> NON_DIAGONAL_WALLS = AbstractModule.blockTag("diagonalwalls", "non_diagonal_walls");
 
 	public XKDBlock(Properties properties) {
 		super(properties);
