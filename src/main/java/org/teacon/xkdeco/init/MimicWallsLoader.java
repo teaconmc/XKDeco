@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
+import org.teacon.xkdeco.block.XKDBlock;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -62,6 +63,7 @@ public final class MimicWallsLoader {
 		List<Holder<Block>> walls = MIMIC_WALLS.stream().map(BuiltInRegistries.BLOCK::wrapAsHolder).toList();
 		appendTagValues(tags, BlockTags.WALLS, walls);
 		appendTagValues(tags, BlockTags.MINEABLE_WITH_PICKAXE, walls);
+		appendTagValues(tags, XKDBlock.NON_DIAGONAL_WALLS, walls);
 	}
 
 	public static void addMimicWallItemTags(Map<ResourceLocation, Collection<Holder<Item>>> tags) {
