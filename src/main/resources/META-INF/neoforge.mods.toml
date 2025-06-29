@@ -31,7 +31,7 @@ versionRange="[1.21,1.22)"
 [[dependencies.xkdeco]]
 modId="kiwi"
 type="required"
-versionRange="[15.5.1,)"
+versionRange="[15.6,)"
 
 [[dependencies.xkdeco]]
 modId="fabric_api"

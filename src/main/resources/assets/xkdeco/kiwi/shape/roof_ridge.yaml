@@ -1,0 +1,10 @@
+type: merge_configured
+configuring:
+  type: configure_wall
+  post_width: 6
+  side_width: 6
+  post_max_y: 16
+  side_min_y: 0
+  low_side_max_y: 16
+  tall_side_max_y: 16
+additional: xkdeco:roof_ridge_base
