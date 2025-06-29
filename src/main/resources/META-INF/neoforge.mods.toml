@@ -12,7 +12,7 @@ displayName="XeKr's Decoration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/xks-decoration"
 description="Models and textures are created by XeKr: https://github.com/XeKr"
 
-[[mixin]]
+[[mixins]]
 config="xkdeco.mixins.json"
 
 [modproperties.xkdeco]
