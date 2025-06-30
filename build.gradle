@@ -227,7 +227,7 @@ dependencies {
 
     // https://modrinth.com/mod/kiwi/versions
 //    implementation(annotationProcessor("libs:Kiwi-1.21.1-NeoForge:15.6.0"))
-    jarJar(implementation(annotationProcessor("maven.modrinth:kiwi:15.6.0+neoforge")))
+    implementation(annotationProcessor("maven.modrinth:kiwi:15.6.1+neoforge"))
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
@@ -367,7 +367,7 @@ unifiedPublishing {
                 id = "497637" // Required, must be a string, ID of CurseForge project
 
                 relations { // Optional, Inferred from the relations above by default
-//                    includes "kiwi"
+                    depends "kiwi"
                     depends "forgified-fabric-api"
                 }
             }
@@ -379,7 +379,7 @@ unifiedPublishing {
                 id = "XlwMlNhH" // Required, must be a string, ID of Modrinth project
 
                 relations { // Optional, Inferred from the relations above by default
-//                    includes "kiwi"
+                    depends "kiwi"
                     depends "forgified-fabric-api"
                 }
             }
