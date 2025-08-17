@@ -1,0 +1,6 @@
+exchange_inputs_in_viewer: xkdeco:solar_system_model
+stonecutter_exchange: true
+switch: {}
+blocks:
+- xkdeco:big_solar_system_model
+- xkdeco:solar_system_model

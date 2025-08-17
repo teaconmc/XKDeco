@@ -1,0 +1,9 @@
+stonecutter_from: xkdeco:hologram_base
+stonecutter_exchange: true
+switch: {}
+blocks:
+- xkdeco:hologram_dna
+- xkdeco:hologram_message
+- xkdeco:hologram_pictures
+- xkdeco:hologram_planet
+- xkdeco:hologram_xekr_logo

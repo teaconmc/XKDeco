@@ -1,0 +1,11 @@
+exchange_inputs_in_viewer: xkdeco:sign_entrance
+stonecutter_exchange: true
+switch: {}
+blocks:
+- xkdeco:sign_entrance
+- xkdeco:sign_exit
+- xkdeco:sign_left
+- xkdeco:sign_right
+- xkdeco:small_sign_ground
+- xkdeco:small_sign_left
+- xkdeco:small_sign_right

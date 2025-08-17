@@ -3,4 +3,4 @@ material: xkdeco:hollow_steel
 components:
 - water_loggable
 no_occlusion: true
-glass_type: hollow_steel
+glass_type: xkdeco:hollow_steel

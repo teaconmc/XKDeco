@@ -134,16 +134,8 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 sourceSets.main.resources { srcDir 'src/kiwi_generated/resources' }
 
 repositories {
-    maven { url = 'https://maven.neoforged.net/releases' }
     maven { url "https://maven.su5ed.dev/releases" }
     maven { url "https://api.modrinth.com/maven" }
-    maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
-        content {
-            includeGroup "dev.latvian.mods"
-        }
-    }
     maven { url "https://maven.shedaniel.me/" }
     maven {
         // location of the maven that hosts JEI files
@@ -182,7 +174,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
     implementation("io.github.llamalad7:mixinextras-forge:0.3.2")
@@ -198,13 +190,15 @@ dependencies {
     implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
 
+//    implementation(annotationProcessor(fg.deobf("libs:Kiwi:1.20.1-Forge-${project.kiwi_version}")))
     implementation(annotationProcessor(fg.deobf("maven.modrinth:kiwi:${project.kiwi_version}+forge")))
-    jarJar("maven.modrinth:kiwi:${project.kiwi_version}+forge") {
-        jarJar.ranged(it, "[${project.kiwi_version},)")
-    }
+//    jarJar("maven.modrinth:kiwi:${project.kiwi_version}+forge") {
+//        jarJar.ranged(it, "[${project.kiwi_version},)")
+//    }
+
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"))
     // https://modrinth.com/mod/jade/versions
-    implementation fg.deobf("maven.modrinth:jade:11.9.4+forge")
+    implementation fg.deobf("maven.modrinth:jade:11.13.2+forge")
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     implementation fg.deobf("maven.modrinth:debugutils:1.20.1-1.0.3-forge")
@@ -214,10 +208,13 @@ dependencies {
     implementation fg.deobf("maven.modrinth:ferrite-core:DG5Fn9Sz")
     implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
 
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
-    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.5")
-    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
+//    compileOnly "dev.su5ed.sinytra.fabric-api:fabric-api:0.92.6+1.11.14+1.20.1"
+    compileOnly "dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1"
+    runtimeOnly fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
+//    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
+//    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
+//    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.5")
+//    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
 }
 
 processResources {
@@ -309,7 +306,8 @@ unifiedPublishing {
                 id = "497637" // Required, must be a string, ID of CurseForge project
 
                 relations { // Optional, Inferred from the relations above by default
-//                    includes "kiwi"
+                    depends "kiwi"
+                    depends "forgified-fabric-api"
                 }
             }
         }
@@ -320,7 +318,8 @@ unifiedPublishing {
                 id = "XlwMlNhH" // Required, must be a string, ID of Modrinth project
 
                 relations { // Optional, Inferred from the relations above by default
-//                    includes "kiwi"
+                    depends "kiwi"
+                    depends "forgified-fabric-api"
                 }
             }
         }

@@ -33,6 +33,6 @@ side="BOTH"
 [[dependencies.xkdeco]]
 modId="kiwi"
 mandatory=true
-versionRange="[11.8.29,11.9)"
+versionRange="[11.9,)"
 ordering="NONE"
 side="BOTH"

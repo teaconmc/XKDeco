@@ -1,4 +1,5 @@
 type: simple
-class: net.minecraft.world.level.block.WallBlock
+class: org.teacon.xkdeco.block.RoofRidgeBlock
 properties:
   shape: xkdeco:roof_ridge
+  collision_shape: xkdeco:roof_ridge

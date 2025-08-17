@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
+import org.teacon.xkdeco.block.HologramBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 
 import com.google.common.collect.ImmutableMap;
@@ -221,7 +222,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		TextureMapping textureMapping = TextureMapping.defaultTexture(block);
 		ResourceLocation $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(block, textureMapping, generators.modelOutput);
 		ResourceLocation $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(block, textureMapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, $$1, $$2, $$1, $$2, true));
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, $$1, $$2, $$1, $$2, false));
 		return true;
 	}
 
@@ -432,11 +433,11 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("tech_table_circle", "furniture/", true);
 
 		createMoulding("egyptian_moulding", "furniture/egyptian_moulding", false, true);
-		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding", false, true);
+		createMoulding("egyptian_moulding2", "furniture/egyptian_moulding2", false, true);
 		createMoulding("greek_moulding", "furniture/greek_moulding", false, true);
-		createMoulding("greek_moulding2", "furniture/greek_moulding", false, true);
+		createMoulding("greek_moulding2", "furniture/greek_moulding2", false, true);
 		createMoulding("roman_moulding", "furniture/roman_moulding", false, true);
-		createMoulding("roman_moulding2", "furniture/roman_moulding", false, true);
+		createMoulding("roman_moulding2", "furniture/roman_moulding2", false, true);
 		createMoulding("factory_light_bar", "furniture/factory_light_bar", false, true);
 		createMoulding("dark_wall_base", "furniture/dark_wall_base", true, true);
 		createMoulding("light_wall_base", "furniture/light_wall_base", true, true);
@@ -490,6 +491,10 @@ public class XKDModelProvider extends FabricModelProvider {
 			var id = BuiltInRegistries.BLOCK.getKey(block);
 			if (block instanceof ItemDisplayBlock || block instanceof BlockDisplayBlock) {
 				createBlockStateOnly(id.getPath(), "furniture/", true);
+				continue;
+			}
+			if (block instanceof HologramBlock) {
+				generators.blockEntityModels(block, block).createWithoutBlockItem(block);
 				continue;
 			}
 			if (id.getPath().endsWith("column_base") || id.getPath().endsWith("column_head")) {

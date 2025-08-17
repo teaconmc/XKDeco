@@ -1,0 +1,12 @@
+target:
+  - '@xkdeco:roof_ridge_end'
+  - '@xkdeco:roof_small_ridge_end'
+  - '@xkdeco:roof_small_ridge_end_asian'
+tag:
+  - '*roof_ridge_end'
+transform_with: facing
+slots:
+  - when:
+      facing: north
+    sides:
+      north: { }

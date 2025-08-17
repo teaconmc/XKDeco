@@ -1,1 +1,2 @@
 openpyxl~=3.1.2
+titlecase~=2.1.4
