@@ -245,21 +245,13 @@ processResources {
     }
 }
 
-tasks.jarJar.configure {
-    archiveClassifier = ''
-
+jar {
     exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
     exclude("/assets/test")
     exclude("/org/teacon/xkdeco/data")
     exclude("/org/teacon/xkdeco/mixin/data")
     exclude("/.cache")
     exclude("/xkdeco.data.mixins.json")
-
-    finalizedBy('reobfJarJar')
-}
-
-jar {
-    archiveClassifier = 'slim'
 
     manifest {
         attributes(["Specification-Title"     : mod_id,
@@ -317,7 +309,7 @@ unifiedPublishing {
             }
         }
 
-        if (System.getenv("CURSE_TOKEN") != null) {
+        if (System.getenv("MODRINTH_TOKEN") != null) {
             modrinth {
                 token = System.getenv("MODRINTH_TOKEN")
                 id = "XlwMlNhH" // Required, must be a string, ID of Modrinth project
