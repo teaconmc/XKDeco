@@ -5,8 +5,7 @@
 	"refmap": "xkdeco.data.refmap.json",
 	"mixins": [
 		"data.BlockFamilyProviderMixin",
-		"data.RecipeProviderMixin",
-		"rei.DefaultCraftingDisplayMixin"
+		"data.RecipeProviderMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
