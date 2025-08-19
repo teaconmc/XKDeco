@@ -1,0 +1,8 @@
+render_type: cutout
+material: xkdeco:wood
+light_emission: 15
+components:
+- water_loggable
+- horizontal
+shape: xkdeco:sign
+no_occlusion: true

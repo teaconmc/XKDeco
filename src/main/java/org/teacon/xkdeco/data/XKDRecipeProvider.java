@@ -497,6 +497,12 @@ public class XKDRecipeProvider extends FabricRecipeProvider {
 				.requires(Items.GLOW_INK_SAC)
 				.unlockedBy("has_item", has(Items.GLOW_INK_SAC))
 				.save(consumer);
+		ShapelessRecipeBuilder.shapeless(DECORATIONS, i("emergency_exit"))
+				.requires(ItemTags.SIGNS)
+				.requires(Items.GLOW_INK_SAC)
+				.requires(Items.GREEN_DYE)
+				.unlockedBy("has_item", has(Items.GLOW_INK_SAC))
+				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(DECORATIONS, i("tech_screen"))
 				.pattern("GGG")

@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-31T10:40:49.9340253	XeKr's Decoration/Recipes
+// 1.21.1	2025-08-20T01:04:11.555796	XeKr's Decoration/Recipes
 2855de40aabd076d06301da9ad6306c2a374f1e5 data/xkdeco/advancement/recipes/building_blocks/aztec_chiseled_stonebricks.json
 47f9a619df5f611cc98f9cf2d9accbd6d43c1d69 data/xkdeco/advancement/recipes/building_blocks/aztec_cut_stonebricks.json
 3d9986d2438b03015e36dd9677692d02a3f7dec2 data/xkdeco/advancement/recipes/building_blocks/aztec_mossy_stonebrick_slab.json
@@ -204,6 +204,7 @@ b81f4350f1388c83d1143c185c9cbe4102b1c2ef data/xkdeco/advancement/recipes/decorat
 e8b0c1d5c8c76c04845abef18e65dcc3b30fc927 data/xkdeco/advancement/recipes/decorations/deepslate_lamp.json
 3eade338a75841fbd6bb12cb4cb52c8ec0c2e09c data/xkdeco/advancement/recipes/decorations/dirty_mud_wall_wall.json
 590517a69653eba8485bb08f8c0a4e26cb3a738d data/xkdeco/advancement/recipes/decorations/ebony_fence.json
+776c179303af3095f6b0902bfcfa5f2f7bd805e4 data/xkdeco/advancement/recipes/decorations/emergency_exit.json
 419379b070890157b5d4d908d14796ed49df6e10 data/xkdeco/advancement/recipes/decorations/empty_bottle_stack.json
 bdeddc1dd7c46d9170340ccea5afa31f8ad3b03d data/xkdeco/advancement/recipes/decorations/empty_candlestick.json
 65c3623c8e385264c08adfd5fcbea18e7c2d3ee0 data/xkdeco/advancement/recipes/decorations/empty_fish_tank.json
@@ -365,6 +366,7 @@ b9fcef95bb880597b09509ea22574ec86d194f04 data/xkdeco/recipe/ebony_fence.json
 ce9f2c89d82f4beaea5bcc3a6c1c02eb38a68866 data/xkdeco/recipe/ebony_trapdoor.json
 44d6fc671c68c3ffc63b645dd8094491d026e564 data/xkdeco/recipe/ebony_wood.json
 863d7e7c74d1015af4c3fbd6c0e494948cc9daa7 data/xkdeco/recipe/ebony_wood_from_smoking.json
+9f310e9d37f09a3dc2517c63ac47dc09c7f73a1d data/xkdeco/recipe/emergency_exit.json
 bd41a5d47f2767fd0d6f408f76bd49d69b12509b data/xkdeco/recipe/empty_bottle_stack.json
 394660a6e1a80afc9572ad17090990f6165d5bff data/xkdeco/recipe/empty_candlestick.json
 dd8f2259477a859cbcb0a37f0995a93fbe1fd77e data/xkdeco/recipe/empty_fish_tank.json
