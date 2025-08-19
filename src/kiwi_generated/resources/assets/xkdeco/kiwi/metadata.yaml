@@ -516,6 +516,10 @@ registry_order:
   - small_sign_left
   - small_sign_right
   - small_sign_ground
+  - emergency_exit_left
+  - emergency_exit_right
+  - emergency_exit
+  - emergency_exit_ground
   - air_duct
   - air_duct_oblique
   - hollow_steel_beam
