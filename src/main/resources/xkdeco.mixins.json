@@ -9,7 +9,8 @@
 		"WallBlockMixin",
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
-		"air_duct.PlayerMixin"
+		"air_duct.PlayerMixin",
+		"rei.DefaultCraftingDisplayMixin"
 	],
 	"client": [
 		"air_duct.PlayerRendererMixin",
