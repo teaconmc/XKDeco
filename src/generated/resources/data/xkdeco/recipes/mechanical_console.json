@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    },
+    "H": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "L": {
+      "item": "xkdeco:factory_lamp"
+    },
+    "T": {
+      "item": "minecraft:lever"
+    },
+    "W": {
+      "item": "xkdeco:factory_warning_lamp"
+    }
+  },
+  "pattern": [
+    "LLW",
+    "BBT",
+    "HHH"
+  ],
+  "result": {
+    "item": "xkdeco:mechanical_console"
+  },
+  "show_notification": true
+}

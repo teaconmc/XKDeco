@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:spyglass"
+    }
+  },
+  "pattern": [
+    " S ",
+    " P ",
+    "HHH"
+  ],
+  "result": {
+    "item": "xkdeco:telescope"
+  },
+  "show_notification": true
+}

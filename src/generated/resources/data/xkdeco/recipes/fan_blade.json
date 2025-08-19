@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "minecraft:lightning_rod"
+    },
+    "S": {
+      "item": "minecraft:heavy_weighted_pressure_plate"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "result": {
+    "item": "xkdeco:fan_blade"
+  },
+  "show_notification": true
+}

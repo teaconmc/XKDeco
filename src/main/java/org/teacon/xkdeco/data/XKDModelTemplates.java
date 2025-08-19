@@ -219,20 +219,13 @@ public class XKDModelTemplates {
 			if (variant == XKDStateProperties.RoofVariant.SLOW) {
 				continue;
 			}
-			for (XKDStateProperties.RoofHalf half : XKDStateProperties.RoofHalf.values()) {
-				String suffix = "";
-				if (variant != XKDStateProperties.RoofVariant.NORMAL) {
-					suffix += "_" + variant;
-				}
-				if (half == XKDStateProperties.RoofHalf.UPPER) {
-					suffix += "_top";
-				}
-				create("template_roof_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_INNER);
-				create("template_roof_small_ridge_end_asian" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_RIDGE2);
-				if (variant == XKDStateProperties.RoofVariant.NORMAL) {
-					create("template_roof_small_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE2);
-				}
+			String suffix = "";
+			if (variant != XKDStateProperties.RoofVariant.NORMAL) {
+				suffix += "_" + variant;
 			}
+			create("template_roof_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_INNER);
+			create("template_roof_small_ridge_end_asian" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE, SLOT_RIDGE2);
+			create("template_roof_small_ridge_end" + suffix, suffix, TextureSlot.PARTICLE, SLOT_ROOF, SLOT_RIDGE2);
 		}
 		for (String s : List.of("_inventory", "_post", "_side", "_side_tall")) {
 			TextureSlot[] slots;

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:candle"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "CIC",
+    " N "
+  ],
+  "result": {
+    "item": "xkdeco:big_candlestick"
+  },
+  "show_notification": true
+}

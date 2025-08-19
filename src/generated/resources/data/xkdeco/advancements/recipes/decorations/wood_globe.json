@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "back_to_overworld": {
+      "conditions": {
+        "from": "minecraft:the_end",
+        "to": "minecraft:overworld"
+      },
+      "trigger": "minecraft:changed_dimension"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "xkdeco:wood_globe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "back_to_overworld",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "xkdeco:wood_globe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

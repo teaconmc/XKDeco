@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "P": {
+      "item": "minecraft:stone_pressure_plate"
+    },
+    "R": {
+      "item": "xkdeco:black_roof_ridge"
+    }
+  },
+  "pattern": [
+    "R",
+    "L",
+    "P"
+  ],
+  "result": {
+    "item": "xkdeco:roofed_lamp"
+  },
+  "show_notification": true
+}

@@ -1,8 +1,11 @@
 package org.teacon.xkdeco.util;
 
+import java.util.Objects;
+
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
+import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
@@ -16,20 +19,25 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.loader.Platform;
 
@@ -40,9 +48,24 @@ public class CommonProxy {
 
 	public CommonProxy() {
 		var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallBlocks);
-		modEventBus.addListener(EventPriority.LOWEST, MimicWallsLoader::addMimicWallItems);
-		modEventBus.addListener(MimicWallsLoader::addMimicWallsToTab);
+		modEventBus.addListener(
+				EventPriority.LOWEST, (RegisterEvent event) -> {
+					if (event.getRegistryKey().equals(Registries.BLOCK)) {
+						MimicWallsLoader.addMimicWallBlocks(Objects.requireNonNull(event.getForgeRegistry())::register);
+					}
+					if (event.getRegistryKey().equals(Registries.ITEM)) {
+						MimicWallsLoader.addMimicWallItems(Objects.requireNonNull(event.getForgeRegistry())::register);
+					}
+				});
+		modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> {
+			if (MimicWallsLoader.STRUCTURE_TAB_KEY.equals(event.getTabKey())) {
+				for (Block block : BuiltInRegistries.BLOCK) {
+					if (block instanceof MimicWallBlock) {
+						event.accept(block);
+					}
+				}
+			}
+		});
 		modEventBus.addListener((GatherDataEvent event) -> {
 			FabricDataGenerator dataGenerator = FabricDataGenerator.create(XKDeco.ID, event);
 			new XKDDataGen().onInitializeDataGenerator(dataGenerator);

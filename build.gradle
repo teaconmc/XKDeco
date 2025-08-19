@@ -206,15 +206,20 @@ dependencies {
     implementation fg.deobf("maven.modrinth:modernfix:j5VhGcov")
     // https://modrinth.com/mod/ferrite-core/versions
     implementation fg.deobf("maven.modrinth:ferrite-core:DG5Fn9Sz")
-    implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.1+forge")
+    implementation fg.deobf("maven.modrinth:suggestion-tweaker:1.20-1.5.2+forge")
 
-//    compileOnly "dev.su5ed.sinytra.fabric-api:fabric-api:0.92.6+1.11.14+1.20.1"
-    compileOnly "dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1"
-    runtimeOnly fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
+    // https://maven.su5ed.dev/#/releases/dev/su5ed/sinytra/fabric-api
 //    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api:0.92.2+1.11.8+1.20.1")
-//    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.4")
-//    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.5")
-//    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
+    implementation fg.deobf("dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api-base:0.4.32+ef105b4977")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api-lookup-api-v1:1.6.37+67f9824077")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-lifecycle-events-v1:2.2.23+afab492177")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.7+369cb3a477")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.6+631c9cd677")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-rendering-fluids-v1:3.0.29+4ac5e37a77")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-model-loading-api-v1:1.0.4+6274ab9d77")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-renderer-api-v1:3.2.2+cf68abbe77")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-renderer-indigo:1.5.3+b5b2da4177")
 }
 
 processResources {

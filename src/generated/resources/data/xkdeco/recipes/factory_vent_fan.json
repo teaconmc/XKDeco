@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "xkdeco:fan_blade"
+    },
+    "S": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SMS",
+    "SSS"
+  ],
+  "result": {
+    "item": "xkdeco:factory_vent_fan"
+  },
+  "show_notification": true
+}
