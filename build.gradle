@@ -215,6 +215,7 @@ dependencies {
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-api-lookup-api-v1:1.6.37+67f9824077")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-lifecycle-events-v1:2.2.23+afab492177")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-data-generation-api-v1:12.3.7+369cb3a477")
+    implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-resource-conditions-api-v1:2.3.9+996d00b277")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-transfer-api-v1:3.3.6+631c9cd677")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-rendering-fluids-v1:3.0.29+4ac5e37a77")
     implementation fg.deobf("dev.su5ed.sinytra.fabric-api:fabric-model-loading-api-v1:1.0.4+6274ab9d77")

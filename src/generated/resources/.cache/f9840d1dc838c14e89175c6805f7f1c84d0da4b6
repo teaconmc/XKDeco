@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-19T15:29:03.8165286	XeKr's Decoration/Block Loot Tables
+// 1.20.1	2025-08-20T15:43:00.5385902	XeKr's Decoration/Block Loot Tables
 d2bd46190aed16a49c1430918a6aa35c68d71b50 data/xkdeco/loot_tables/blocks/air_duct.json
 034aba3d254889ae2b87dc92f3aefc9e79784e05 data/xkdeco/loot_tables/blocks/air_duct_oblique.json
 0272e2feed5e612d0e55838b89e9fcdaf3c0340a data/xkdeco/loot_tables/blocks/aztec_chiseled_stonebricks.json
@@ -190,6 +190,10 @@ b9bc3065409e7d152f06eeda5b7a43195c337c42 data/xkdeco/loot_tables/blocks/egyptian
 33110069d26354883d430f6fd34e50a1c867c966 data/xkdeco/loot_tables/blocks/egyptian_stripe_column.json
 6b4e93749fc3a92e3ff487ede5c3e10b3da982e8 data/xkdeco/loot_tables/blocks/egyptian_stripe_column_base.json
 560927c2d6d71cda8e58e5e912936068ba800013 data/xkdeco/loot_tables/blocks/egyptian_stripe_column_head.json
+3a1419dd4250d1e69c959ce2a973d8de2911d04f data/xkdeco/loot_tables/blocks/emergency_exit.json
+14236869083fc3f940550afa2df404d57484e54d data/xkdeco/loot_tables/blocks/emergency_exit_ground.json
+6963c860d258b72a6d113d4870579c8d728163a9 data/xkdeco/loot_tables/blocks/emergency_exit_left.json
+644042cef7fc1341043fec23ecfcc289817ecebf data/xkdeco/loot_tables/blocks/emergency_exit_right.json
 cec655a727ee5f8651a8072443cbf999ca71ada0 data/xkdeco/loot_tables/blocks/empty_bottle_stack.json
 d74b67d3ba6f857fbc2d0a403ec48890a04922d6 data/xkdeco/loot_tables/blocks/empty_candlestick.json
 1f860fb5d85eecb044026a55ebf3131021a8f596 data/xkdeco/loot_tables/blocks/empty_fish_tank.json

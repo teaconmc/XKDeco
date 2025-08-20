@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-19T15:29:03.8025655	XeKr's Decoration/Recipes
+// 1.20.1	2025-08-20T15:43:00.2862654	XeKr's Decoration/Recipes
 61fb9c454f1610c0dd0561531dea890c4bc231a0 data/xkdeco/advancements/recipes/building_blocks/aztec_chiseled_stonebricks.json
 a0399f98ff248e1d7aee091ae95d37ecaa147ebe data/xkdeco/advancements/recipes/building_blocks/aztec_cut_stonebricks.json
 51588ff59247ac262933f2a13c08927fcb019de8 data/xkdeco/advancements/recipes/building_blocks/aztec_mossy_stonebrick_slab.json
@@ -204,6 +204,7 @@ b0008db8dd7fee3bd2cf7422bb083f65c9f20aec data/xkdeco/advancements/recipes/decora
 e75604842104f74038025c6dfd8455eb2543f06f data/xkdeco/advancements/recipes/decorations/deepslate_lamp.json
 0e25c10806e97b7370c6ccf400fc2d58bf00d416 data/xkdeco/advancements/recipes/decorations/dirty_mud_wall_wall.json
 07c50039166b2d011e1de21e24dc11991e12b69b data/xkdeco/advancements/recipes/decorations/ebony_fence.json
+2187efcf7875d7fcd29ea0d1edc7891c005d257e data/xkdeco/advancements/recipes/decorations/emergency_exit.json
 6710439d9f6bc3429d75fd80c7683ab4b3d022f3 data/xkdeco/advancements/recipes/decorations/empty_bottle_stack.json
 089e3493006804fc2382d123cb3d5f1a249d2600 data/xkdeco/advancements/recipes/decorations/empty_candlestick.json
 b66f997323a364a15fac12fed42640417a8a4264 data/xkdeco/advancements/recipes/decorations/empty_fish_tank.json
@@ -365,6 +366,7 @@ f6a4ca4c4c85c45a6ce9dd9ef77ca1576088a343 data/xkdeco/recipes/ebony_stairs.json
 d7dbba4cebd7181c94a1948f76389f8448a79bca data/xkdeco/recipes/ebony_trapdoor.json
 95994ce51f0ee0f22ae217192dabb5015207fb5d data/xkdeco/recipes/ebony_wood.json
 342d8ea828baf882b2710eae15e36f57eb143b04 data/xkdeco/recipes/ebony_wood_from_smoking.json
+3f2e19561b96ba995984d51b98df4589269ef431 data/xkdeco/recipes/emergency_exit.json
 e95ec4e28b01549ef3a6980af2fa18130ef1df21 data/xkdeco/recipes/empty_bottle_stack.json
 40de30ddacdc461dda770332fd1b0a2c2e91420e data/xkdeco/recipes/empty_candlestick.json
 2ef506317c169bd307e3af18841554c1ca0de0cf data/xkdeco/recipes/empty_fish_tank.json

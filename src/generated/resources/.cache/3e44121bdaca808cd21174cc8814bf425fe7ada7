@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-19T15:29:03.7656656	XeKr's Decoration/Model Definitions
+// 1.20.1	2025-08-20T15:43:00.1436468	XeKr's Decoration/Model Definitions
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -189,6 +189,10 @@ ca310c41a5507684e2a510a060d3dcb0e4e220e0 assets/xkdeco/blockstates/egyptian_smoo
 9a9ac79026dc913db5144b9ac6309612774e2da6 assets/xkdeco/blockstates/egyptian_stripe_column.json
 b285386b670912d86904c5c31c4a29374c0c52b6 assets/xkdeco/blockstates/egyptian_stripe_column_base.json
 ee7047541447ab14f6695e1cd56ec2ba86808c58 assets/xkdeco/blockstates/egyptian_stripe_column_head.json
+a5e2520c83f2699edcc1d4a90a717e720ec29477 assets/xkdeco/blockstates/emergency_exit.json
+ad0b175decf597ea933987fbabea4b93df2750e8 assets/xkdeco/blockstates/emergency_exit_ground.json
+676ab40de85713b5caa9f69327fe89748c7c72ea assets/xkdeco/blockstates/emergency_exit_left.json
+60ba92a89d2317786d6c5cb332967d656233a28c assets/xkdeco/blockstates/emergency_exit_right.json
 638adb71dff043b7a522a11fd534f23a09faf3d3 assets/xkdeco/blockstates/empty_bottle_stack.json
 4c73041a05a1281c45a729c5983413b89c1e23e4 assets/xkdeco/blockstates/empty_fish_tank.json
 b8156996f9418da8559ba989f0d9e78e15ab96f4 assets/xkdeco/blockstates/end_stone_slab.json
@@ -1939,6 +1943,10 @@ a909ded3af9f7b96c1883b7f1ceb502ffdf13b37 assets/xkdeco/models/item/egyptian_smoo
 ba77b388ef735cbfa8bd054db7cd239d73ebe18d assets/xkdeco/models/item/egyptian_stripe_column.json
 1ba6d3393d8ff18313922e5ceded497f9d0478f1 assets/xkdeco/models/item/egyptian_stripe_column_base.json
 941da3ff6a07d318478a1fcc887d42effc8337ba assets/xkdeco/models/item/egyptian_stripe_column_head.json
+00211ef475c5e71c852437b3be499d57078a9979 assets/xkdeco/models/item/emergency_exit.json
+e75d1348f79af01d6c8de47a59380c3d839c3f9f assets/xkdeco/models/item/emergency_exit_ground.json
+0ba55a6279a88146938ec5e6ae54d51558714711 assets/xkdeco/models/item/emergency_exit_left.json
+a20ee31af35fea1ecc3acfca5a90c7e59869a289 assets/xkdeco/models/item/emergency_exit_right.json
 d6888ea04c5e8774d1648dc25f00f90e6e58eaf5 assets/xkdeco/models/item/empty_bottle_stack.json
 6dd49d7f443ce2a7fca978bbbf1d279fad0657eb assets/xkdeco/models/item/empty_candlestick.json
 2c4a5cf159c2045cda5f8787ae46ac334cbd3373 assets/xkdeco/models/item/empty_fish_tank.json
