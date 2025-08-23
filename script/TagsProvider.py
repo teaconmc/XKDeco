@@ -14,7 +14,7 @@ class TagsProvider(TableDataProvider):
             self.data[tagKey] = set()
         self.data[tagKey].add(str(value))
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         if row['Values'] == '':
             return
         for value in row['Values'].split(','):
