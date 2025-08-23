@@ -5,4 +5,5 @@ components:
 - water_loggable
 - horizontal
 shape: minecraft:carpet
+no_collision: true
 no_occlusion: true

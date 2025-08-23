@@ -12,7 +12,7 @@ from ResourceLocation import ResourceLocation
 
 
 class Pack:
-    def __init__(self, config):
+    def __init__(self, config: dict):
         self.config = config
         self.providers = {}
         self.tempDir = tempfile.mkdtemp()

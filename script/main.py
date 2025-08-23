@@ -16,7 +16,10 @@ from MaterialProvider import MaterialProvider
 from MetadataProvider import MetadataProvider
 from Pack import Pack
 from ShapeProvider import ShapeProvider
+from SoundEventProvider import SoundEventProvider
+from SoundTypeProvider import SoundTypeProvider
 from TagsProvider import TagsProvider
+from ToolTierProvider import ToolTierProvider
 from TranslationProvider import TranslationProvider
 
 
@@ -66,6 +69,9 @@ def main():
 
     pack.addProvider(BlockFamilyProvider(pack))
     pack.addProvider(CreativeTabProvider(pack))
+    pack.addProvider(SoundTypeProvider(pack))
+    pack.addProvider(SoundEventProvider(pack))
+    pack.addProvider(ToolTierProvider(pack))
     generateMetadata = True
     if 'generate_metadata' in config:
         generateMetadata = config['generate_metadata']

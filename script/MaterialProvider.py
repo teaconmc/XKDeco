@@ -10,7 +10,7 @@ class MaterialProvider(TableDataProvider):
         super().__init__(pack, 'assets/{}/kiwi/material', 'materials')
         self.tagTransformers = {}
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         materialId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         if materialId in self.tagTransformers:
@@ -18,18 +18,12 @@ class MaterialProvider(TableDataProvider):
         else:
             transformers = {}
 
-        if 'DestroyTime' in row and row['DestroyTime'] != '':
-            data['destroy_time'] = float(row['DestroyTime'])
-        if 'ExplosionResistance' in row and row['ExplosionResistance'] != '':
-            data['explosion_resistance'] = float(row['ExplosionResistance'])
-        if 'SoundType' in row and row['SoundType'] != '':
-            data['sound_type'] = row['SoundType']
-        if 'MapColor' in row and row['MapColor'] != '':
-            data['map_color'] = row['MapColor']
-        if 'Instrument' in row and row['Instrument'] != '':
-            data['instrument'] = row['Instrument']
-        if 'RequiresCorrectTool' in row and row['RequiresCorrectTool'].lower() == 'true':
-            data['requires_correct_tool'] = True
+        self.field(data, 'DestroyTime', float)
+        self.field(data, 'ExplosionResistance', float)
+        self.field(data, 'SoundType', str)
+        self.field(data, 'MapColor', str)
+        self.field(data, 'Instrument', str)
+        self.field(data, 'RequiresCorrectTool', lambda v: True if v.lower() == 'true' else None)
         if 'ToolType' in row and row['ToolType'] != '':
             if '' in transformers:
                 tags = transformers['']
@@ -43,12 +37,9 @@ class MaterialProvider(TableDataProvider):
             else:
                 transformers[''] = tags = []
             tags.append(ResourceLocation('needs_' + row['ToolLevel'] + '_tool'))
-        if 'IgnitedByLava' in row and row['IgnitedByLava'].lower() == 'true':
-            data['ignited_by_lava'] = True
-        if 'IgniteOdds' in row and row['IgniteOdds'] != '':
-            data['ignite_odds'] = int(float(row['IgniteOdds']))
-        if 'BurnOdds' in row and row['BurnOdds'] != '':
-            data['burn_odds'] = int(float(row['BurnOdds']))
+        self.field(data, 'IgnitedByLava', lambda v: True if v.lower() == 'true' else None)
+        self.field(data, 'IgniteOdds', lambda v: int(float(v)))
+        self.field(data, 'BurnOdds', lambda v: int(float(v)))
         if 'TagTransformers' in row and row['TagTransformers'] != '':
             parsed = yaml.safe_load('{' + row['TagTransformers'] + '}')
             # Map<TagKey, List<TagKey>>

@@ -2,6 +2,7 @@ import csv
 from pathlib import Path
 
 import openpyxl
+import camelsnake
 
 import Utils
 from DataProvider import DataProvider
@@ -15,16 +16,16 @@ class TableDataProvider(DataProvider):
         self.added = set()
 
     def generate(self):
-        for inputFile in self.pack.config[self.table]:
+        inputFiles = set()
+        inputFiles.update(self.pack.config['data_sources'] if 'data_sources' in self.pack.config else [])
+        inputFiles.update(self.pack.config[self.table] if self.table in self.pack.config else [])
+        for inputFile in inputFiles:
             ext = Path(inputFile).suffix.lower()
             if ext == '.csv':
                 Utils.removeBOM(inputFile)
                 with open(inputFile, encoding='utf-8') as csvFile:
                     csvReader = csv.DictReader(csvFile)
                     tableConfig = {}
-                    for field in csvReader.fieldnames:
-                        if field != 'Name:en_us' and field.startswith('Name:'):
-                            tableConfig['SecondaryName'] = field[5:]
                     for row in csvReader:
                         rowDict = {}
                         for key, value in row.items():  # TODO dry-run
@@ -41,9 +42,6 @@ class TableDataProvider(DataProvider):
                     if cell.value is not None:
                         fields.append((cell.value, num))
                     num += 1
-                for field, i in fields:
-                    if field != 'Name:en_us' and field.startswith('Name:'):
-                        tableConfig['SecondaryName'] = field[5:]
                 for row in sheet.iter_rows(min_row=2, values_only=True):
                     rowDict = {}
                     for field, i in fields:
@@ -60,7 +58,9 @@ class TableDataProvider(DataProvider):
         if rowId in self.added:
             raise ValueError('Duplicate ID: ' + rowId)
         self.added.add(rowId)
+        self.currentRow = row
         self.generateRow(row, tableConfig)
+        self.currentRow = None
 
     def generateRow(self, row, tableConfig):
         data = {}
@@ -70,8 +70,16 @@ class TableDataProvider(DataProvider):
 
         self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
 
+    def field(self, data: dict, name: str, valueSupplier):
+        if name not in self.currentRow or self.currentRow[name] == '':
+            return
+        value = valueSupplier(self.currentRow[name])
+        if value is not None:
+            name = camelsnake.camel_to_snake(name)
+            data[name] = value
+
     def canGenerate(self) -> bool:
-        return self.table in self.pack.config
+        return 'data_sources' in self.pack.config or self.table in self.pack.config
 
     def __str__(self):
         if self.__class__.__name__ == 'TableDataProvider':

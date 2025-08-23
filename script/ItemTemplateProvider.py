@@ -10,7 +10,7 @@ class ItemTemplateProvider(TableDataProvider):
         self.tags = {}
         self.properties = {}
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         templateId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         for field in row:
@@ -18,7 +18,7 @@ class ItemTemplateProvider(TableDataProvider):
             if field.lower() == field and field not in self.ignoredFields and field != '' and row[field] != '':
                 data[field] = row[field]
 
-        properties = BlockPropertiesReader.read(row, self.pack)
+        properties = BlockPropertiesReader.read(self, row)
         if len(properties) > 0:
             self.properties[templateId] = properties
             data['properties'] = properties
