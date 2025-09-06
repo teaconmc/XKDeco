@@ -2,8 +2,8 @@
 	"credit": "Made by XeKr with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "xkdeco:block/mahogany_screen_bottom",
-		"bottom": "xkdeco:block/mahogany_screen_bottom"
+		"particle": "xkdeco:block/varnished_screen_bottom",
+		"bottom": "xkdeco:block/varnished_screen_bottom"
 	},
 	"elements": [
 		{
