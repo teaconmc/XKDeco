@@ -2,14 +2,14 @@
 	"credit": "Made by XeKr with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "xkdeco:block/ebony_screen_top",
-		"top": "xkdeco:block/ebony_screen_top"
+		"particle": "xkdeco:block/varnished_screen_top",
+		"top": "xkdeco:block/varnished_screen_top"
 	},
 	"elements": [
 		{
 			"from": [3, 0, 0],
 			"to": [5, 16, 16],
-			"rotation": {"angle": -22.5, "axis": "y", "origin": [4, 0, 8]},
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [4, 0, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 2, 16], "texture": "#top"},
 				"east": {"uv": [0, 0, 16, 16], "texture": "#top"},
@@ -19,9 +19,9 @@
 			}
 		},
 		{
-			"from": [6.5, 1, 0],
-			"to": [7.5, 14, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [6.5, 1, 0]},
+			"from": [0.5, 1, 0],
+			"to": [1.5, 14, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0.5, 0, 0]},
 			"faces": {
 				"north": {"uv": [0, 0, 1, 13], "texture": "#top"},
 				"east": {"uv": [0, 0, 1, 13], "texture": "#top"},
@@ -32,9 +32,9 @@
 			}
 		},
 		{
-			"from": [0.5, 1, 15],
-			"to": [1.5, 14, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0.5, 1, 15]},
+			"from": [6.5, 1, 15],
+			"to": [7.5, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6.5, 0, 15]},
 			"faces": {
 				"north": {"uv": [0, 0, 1, 13], "texture": "#top"},
 				"east": {"uv": [0, 0, 1, 13], "texture": "#top"},

@@ -2,8 +2,8 @@
 	"credit": "Made by XeKr with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "xkdeco:block/ebony_screen_top",
-		"top": "xkdeco:block/ebony_screen_top"
+		"particle": "xkdeco:block/varnished_screen_top",
+		"top": "xkdeco:block/varnished_screen_top"
 	},
 	"elements": [
 		{
