@@ -23,6 +23,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
 import snownee.kiwi.item.ModBlockItem;
 import snownee.kiwi.util.NotNullByDefault;
@@ -39,7 +40,9 @@ public final class MimicWallsLoader {
 		ImmutableList.Builder<MimicWallBlock> builder = ImmutableList.builder();
 		for (var holder : BuiltInRegistries.BLOCK.asHolderIdMap()) {
 			var block = holder.value();
-			if (block instanceof WallBlock wall && !(block instanceof MimicWallBlock) && !block.defaultBlockState().hasBlockEntity()) {
+			if (block instanceof WallBlock wall && !(block instanceof MimicWallBlock) && !block.defaultBlockState().hasBlockEntity() &&
+					block.getStateDefinition().getProperties().size() ==
+							Blocks.COBBLESTONE_WALL.getStateDefinition().getProperties().size()) {
 				var registryName = holder.unwrapKey().orElseThrow().location();
 				if (registryName.getPath().endsWith("_wall")) {
 					MimicWallBlock mimicWall = new MimicWallBlock(wall);
