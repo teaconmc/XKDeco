@@ -1,6 +1,6 @@
 {
 	"credit": "Made by XeKr with Blockbench",
-	"parent": "block/door_bottom",
+	"ambientocclusion": false,
 	"textures": {
 		"particle": "xkdeco:block/ebony_screen_top",
 		"top": "xkdeco:block/ebony_screen_top"
