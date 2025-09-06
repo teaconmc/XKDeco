@@ -20,7 +20,7 @@ class ItemDefinitionProvider(TableDataProvider):
         super().generate()
         self.pack.providers['metadata'].putRegistryOrder('item', self.order)
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         self.order.append(row['ID'])
         itemId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
@@ -62,22 +62,15 @@ class ItemDefinitionProvider(TableDataProvider):
             self.pack.providers['block_families'].addItem(self.pack.defaultResourceLocation(row['MainFamily']), itemId)
 
         if hasTranslation:
-            self._addTranslation(row, csvConfig, itemId)
+            hasTranslation = 'Name:en_us' not in row or row['Name:en_us'].lower() != 'n/a'
+        if hasTranslation:
+            translationKey = 'item.{namespace}.{name}'.format(namespace=self.pack.config['namespace'], name=row['ID'])
+            self.processRowTranslations(row, translationKey)
+            if 'Name:en_us' not in row or row['Name:en_us'] == '':
+                self.pack.providers['translations'].putTranslation('en_us', translationKey,
+                                                                   titlecase.titlecase(itemId.path.replace('_', ' ')))
 
         for tag in tags:
             self.pack.providers['item_tags'].addBlock(tag, itemId)
 
         self.writeFile(itemId, data)
-
-    def _addTranslation(self, row, csvConfig, itemId):
-        translationKey = 'item.{namespace}.{name}'.format(namespace=self.pack.config['namespace'], name=row['ID'])
-        if 'Name:en_us' in row and row['Name:en_us'] != '':
-            if row['Name:en_us'].lower() == 'n/a':
-                return
-            self.pack.providers['translations'].putTranslation('en_us', translationKey, row['Name:en_us'])
-        else:
-            self.pack.providers['translations'].putTranslation('en_us', translationKey, titlecase.titlecase(itemId.path.replace('_', ' ')))
-        if 'SecondaryName' in csvConfig:
-            fieldName = 'Name:' + csvConfig['SecondaryName']
-            if fieldName in row and row[fieldName] != '':
-                self.pack.providers['translations'].putTranslation(csvConfig['SecondaryName'], translationKey, row[fieldName])
