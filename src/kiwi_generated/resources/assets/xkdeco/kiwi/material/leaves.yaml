@@ -1,4 +1,5 @@
 destroy_time: 0.2
+sound_type: grass
 ignited_by_lava: true
 ignite_odds: 30
 burn_odds: 60

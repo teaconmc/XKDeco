@@ -24,4 +24,6 @@ def read(provider: TableDataProvider, row: dict) -> dict:
     provider.field(data, 'NoOcclusion', lambda v: True if v.lower() == 'true' else None)
     provider.field(data, 'GlassType', str)
     provider.field(data, 'ColorProvider', str)
+    provider.field(data, 'PushReaction', str)
+    provider.field(data, 'OffsetFunction', str)
     return data
