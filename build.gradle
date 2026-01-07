@@ -229,6 +229,10 @@ processResources {
     }
 
     doLast {
+        if (System.getProperty('idea.active')) {
+            return
+        }
+
         def jsonMinifyStart = System.currentTimeMillis()
         def jsonMinified = 0
         def jsonBytesSaved = 0

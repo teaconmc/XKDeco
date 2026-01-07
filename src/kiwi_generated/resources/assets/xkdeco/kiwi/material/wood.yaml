@@ -1,3 +1,5 @@
+sound_type: wood
+instrument: bass
 ignited_by_lava: true
 ignite_odds: 5
 burn_odds: 20
