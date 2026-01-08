@@ -2,6 +2,7 @@ type: simple
 properties:
   components:
   - water_loggable
-  - moulding
+  - type: moulding
+    connect_to: '#xkdeco:meiren_kao'
   shape: xkdeco:meiren_kao
   no_occlusion: true

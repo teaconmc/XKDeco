@@ -1,0 +1,8 @@
+exchange_inputs_in_viewer: xkdeco:emergency_exit
+stonecutter_exchange: true
+switch: {}
+blocks:
+- xkdeco:emergency_exit
+- xkdeco:emergency_exit_ground
+- xkdeco:emergency_exit_left
+- xkdeco:emergency_exit_right

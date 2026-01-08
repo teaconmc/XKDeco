@@ -1,0 +1,10 @@
+exchange_inputs_in_viewer: xkdeco:refreshments
+stonecutter_exchange: true
+switch: {}
+blocks:
+- xkdeco:refreshments
+- xkdeco:refreshments2
+- xkdeco:refreshments3
+- xkdeco:refreshments4
+- xkdeco:refreshments5
+- xkdeco:refreshments6

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "T": {
+      "item": "minecraft:torch"
+    }
+  },
+  "pattern": [
+    "NTN",
+    " N "
+  ],
+  "result": {
+    "item": "xkdeco:oil_lamp"
+  },
+  "show_notification": true
+}

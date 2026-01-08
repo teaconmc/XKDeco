@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "minecraft:stripped_oak_log"
+    },
+    "S": {
+      "item": "minecraft:oak_trapdoor"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "result": {
+    "item": "xkdeco:wooden_windmill"
+  },
+  "show_notification": true
+}

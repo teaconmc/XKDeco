@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "S": {
+      "item": "minecraft:stone_bricks"
+    }
+  },
+  "pattern": [
+    "S",
+    "G",
+    "S"
+  ],
+  "result": {
+    "item": "xkdeco:stone_lamp"
+  },
+  "show_notification": true
+}

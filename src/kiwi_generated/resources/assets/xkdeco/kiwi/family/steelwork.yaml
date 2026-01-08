@@ -1,4 +1,4 @@
-stonecutter_from: steel_block
+stonecutter_from: xkdeco:steel_block
 stonecutter_from_multiplier: 4
 stonecutter_exchange: true
 switch: {}

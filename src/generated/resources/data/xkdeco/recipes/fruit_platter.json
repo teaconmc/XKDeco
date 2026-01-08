@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:sweet_berries"
+    },
+    "B": {
+      "item": "minecraft:glow_berries"
+    },
+    "C": {
+      "item": "minecraft:apple"
+    },
+    "D": {
+      "item": "minecraft:melon_slice"
+    },
+    "_": {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  },
+  "pattern": [
+    "ABC",
+    "DDD",
+    " _ "
+  ],
+  "result": {
+    "item": "xkdeco:fruit_platter"
+  },
+  "show_notification": true
+}

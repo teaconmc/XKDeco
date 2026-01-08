@@ -1,0 +1,5 @@
+type: replace_in_hand
+spread:
+  type: plane_xz
+  facing_limit: front_and_back
+family: xkdeco:roof_rule

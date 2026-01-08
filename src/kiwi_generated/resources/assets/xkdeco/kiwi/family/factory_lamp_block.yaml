@@ -1,4 +1,5 @@
-exchange_inputs_in_viewer: xkdeco:factory_lamp_block
+stonecutter_from: glowstone
+stonecutter_from_multiplier: 4
 stonecutter_exchange: true
 switch: {}
 blocks:

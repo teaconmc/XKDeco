@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "L": {
+      "item": "xkdeco:factory_lamp"
+    },
+    "W": {
+      "item": "xkdeco:factory_warning_lamp"
+    }
+  },
+  "pattern": [
+    "BGL",
+    "BGW"
+  ],
+  "result": {
+    "item": "xkdeco:mechanical_screen"
+  },
+  "show_notification": true
+}

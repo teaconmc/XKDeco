@@ -27,7 +27,7 @@ public class ClientPacketListenerMixin {
 					remap = true
 			), method = {"method_38542", "lambda$handleBlockEntityData$5"}, cancellable = true, remap = false
 	)
-	private void kiwi$handleBlockEntityData(
+	private void xkdeco$handleBlockEntityData(
 			ClientboundBlockEntityDataPacket clientboundBlockEntityDataPacket,
 			BlockEntity blockEntity,
 			CallbackInfo ci) {

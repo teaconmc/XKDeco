@@ -1,4 +1,5 @@
-exchange_inputs_in_viewer: xkdeco:factory_block
+stonecutter_from: iron_block
+stonecutter_from_multiplier: 9
 stonecutter_exchange: true
 switch: {}
 blocks:

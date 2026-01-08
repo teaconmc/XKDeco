@@ -1,9 +1,11 @@
-/*
 package org.teacon.xkdeco.block;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
-import org.teacon.xkdeco.blockentity.MimicWallBlockEntity;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,36 +13,36 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import snownee.kiwi.block.IKiwiBlock;
 import snownee.kiwi.util.NotNullByDefault;
 
 @NotNullByDefault
-public final class MimicWallBlock extends WallBlock implements EntityBlock {
+public final class MimicWallBlock extends WallBlock implements IKiwiBlock {
 	private static final VoxelShape NORTH_TEST = Block.box(7, 0, 0, 9, 16, 9);
 	private static final VoxelShape SOUTH_TEST = Block.box(7, 0, 7, 9, 16, 16);
 	private static final VoxelShape WEST_TEST = Block.box(0, 0, 7, 9, 16, 9);
 	private static final VoxelShape EAST_TEST = Block.box(7, 0, 7, 16, 16, 9);
-	public static final String MIMIC_WALL_PREFIX = "mimic/";
+	public static final String ID_TEMPLATE = "mimic/%s/%s";
 
 	public static String toMimicId(ResourceLocation original) {
-		return MIMIC_WALL_PREFIX + original.getNamespace() + "/" + original.getPath();
+		return ID_TEMPLATE.formatted(original.getNamespace(), original.getPath());
 	}
 
 	private final WallBlock wall;
+	private final Cache<BlockState, BlockState> delegateLookup = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES).build();
 
 	public MimicWallBlock(WallBlock wallDelegate) {
 		super(Properties.copy(wallDelegate));
@@ -111,11 +113,6 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 			var abovePos = pCurrentPos.above();
 			var aboveBlockState = pLevel.getBlockState(abovePos);
 			var aboveShape = aboveBlockState.getCollisionShape(pLevel, abovePos).getFaceShape(Direction.DOWN);
-
-			if (pLevel.getBlockEntity(pCurrentPos) instanceof MimicWallBlockEntity blockEntity) {
-				blockEntity.updateBlocksFromLevel(this);
-			}
-
 			return this.updateSides(pCurrentPos, aboveShape, pState, pLevel);
 		}
 
@@ -133,19 +130,66 @@ public final class MimicWallBlock extends WallBlock implements EntityBlock {
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-		return new MimicWallBlockEntity(pPos, pState);
+	public MutableComponent getName(ItemStack stack) {
+		return getName();
 	}
 
 	@Override
-	protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
-		super.spawnDestroyParticles(pLevel, pPlayer, pPos, this.wall.defaultBlockState());
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		try {
+			return lookupDelegate(state).getShape(level, pos, context);
+		} catch (Exception ignored) {
+		}
+		return super.getShape(state, level, pos, context);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public RenderShape getRenderShape(BlockState pState) {
-		return RenderShape.ENTITYBLOCK_ANIMATED;
+	public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		try {
+			return lookupDelegate(state).getVisualShape(level, pos, context);
+		} catch (Exception ignored) {
+		}
+		return super.getVisualShape(state, level, pos, context);
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		try {
+			return lookupDelegate(state).getCollisionShape(level, pos, context);
+		} catch (Exception ignored) {
+		}
+		return super.getCollisionShape(state, level, pos, context);
+	}
+
+	@Override
+	public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
+		try {
+			return lookupDelegate(state).getInteractionShape(level, pos);
+		} catch (Exception ignored) {
+		}
+		return super.getInteractionShape(state, level, pos);
+	}
+
+	@Override
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+		try {
+			return lookupDelegate(state).getOcclusionShape(level, pos);
+		} catch (Exception ignored) {
+		}
+		return super.getOcclusionShape(state, level, pos);
+	}
+
+	private BlockState lookupDelegate(BlockState state) {
+		try {
+			return this.delegateLookup.get(
+					state.setValue(WATERLOGGED, false), () -> wall.defaultBlockState()
+							.setValue(NORTH_WALL, state.getValue(NORTH_WALL))
+							.setValue(EAST_WALL, state.getValue(EAST_WALL))
+							.setValue(SOUTH_WALL, state.getValue(SOUTH_WALL))
+							.setValue(WEST_WALL, state.getValue(WEST_WALL))
+							.setValue(UP, state.getValue(UP)));
+		} catch (ExecutionException e) {
+			return wall.defaultBlockState();
+		}
 	}
 }
-*/

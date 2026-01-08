@@ -3,14 +3,19 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
+import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
 import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
+import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -18,6 +23,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -70,10 +76,23 @@ public class CommonProxy implements ModInitializer {
 		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
 	}
 
+	public static void onRegistriesFrozen() {
+		MimicWallsLoader.addMimicWallBlocks((id, block) -> Registry.register(BuiltInRegistries.BLOCK, id, block));
+		MimicWallsLoader.addMimicWallItems((id, item) -> Registry.register(BuiltInRegistries.ITEM, id, item));
+	}
+
 	@Override
 	public void onInitialize() {
 		if (Platform.isPhysicalClient()) {
 			ClientProxy.init();
 		}
+
+		ItemGroupEvents.modifyEntriesEvent(MimicWallsLoader.STRUCTURE_TAB_KEY).register(entries -> {
+			for (Block block : BuiltInRegistries.BLOCK) {
+				if (block instanceof MimicWallBlock) {
+					entries.accept(block);
+				}
+			}
+		});
 	}
 }

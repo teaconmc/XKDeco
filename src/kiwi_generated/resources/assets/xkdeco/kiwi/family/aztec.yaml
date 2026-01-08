@@ -1,4 +1,4 @@
-exchange_inputs_in_viewer: xkdeco:aztec_stonebricks
+stonecutter_from: xkdeco:maya_stone
 stonecutter_exchange: true
 switch: {}
 blocks:

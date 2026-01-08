@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "pattern": [
+    "W",
+    "S",
+    "S"
+  ],
+  "result": {
+    "item": "xkdeco:stone_water_tank"
+  },
+  "show_notification": true
+}

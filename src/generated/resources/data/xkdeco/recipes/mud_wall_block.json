@@ -2,17 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "minecraft:bone_meal"
-    },
-    "C": {
+    "M": {
       "item": "minecraft:clay"
+    },
+    "S": {
+      "item": "minecraft:bone_meal"
     }
   },
   "pattern": [
-    " B ",
-    "BCB",
-    " B "
+    " S ",
+    "SMS",
+    " S "
   ],
   "result": {
     "count": 4,

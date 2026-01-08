@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:mangrove_button"
+    },
+    "B": {
+      "item": "minecraft:dark_oak_button"
+    },
+    "C": {
+      "item": "minecraft:spruce_pressure_plate"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "BBB",
+    " C "
+  ],
+  "result": {
+    "item": "xkdeco:xiangqi_board"
+  },
+  "show_notification": true
+}

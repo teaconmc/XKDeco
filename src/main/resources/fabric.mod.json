@@ -26,6 +26,12 @@
 		],
 		"fabric-datagen": [
 			"org.teacon.xkdeco.data.XKDDataGen"
+		],
+		"jei_mod_plugin": [
+			"org.teacon.xkdeco.compat.jei.XKDecoJEIPlugin"
+		],
+		"rei_client": [
+			"org.teacon.xkdeco.compat.rei.XKDecoREIPlugin"
 		]
 	},
 	"mixins": [
