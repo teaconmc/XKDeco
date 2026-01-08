@@ -1,0 +1,22 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"particle": "xkdeco:block/emergency_exit_ground",
+		"down": "xkdeco:block/emergency_exit_ground"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 0.5, 12],
+			"faces": {
+				"north": {"uv": [4, 4, 12, 5], "texture": "#down"},
+				"east": {"uv": [4, 4, 12, 5], "texture": "#down"},
+				"south": {"uv": [4, 4, 12, 5], "texture": "#down"},
+				"west": {"uv": [4, 4, 12, 5], "texture": "#down"},
+				"up": {"uv": [4, 4, 12, 12], "rotation": 180, "texture": "#down"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#down"}
+			}
+		}
+	]
+}
