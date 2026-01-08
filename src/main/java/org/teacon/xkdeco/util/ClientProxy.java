@@ -76,7 +76,7 @@ public final class ClientProxy implements ClientModInitializer {
 					context.setModel(blockState, wallModel);
 				}
 			};
-			for (MimicWallBlock block : MimicWallsLoader.MIMIC_WALLS) {
+			for (MimicWallBlock block : MimicWallsLoader.mimicWalls()) {
 				ctx.registerBlockStateResolver(block, resolver);
 			}
 			ctx.resolveModel().register(context -> {

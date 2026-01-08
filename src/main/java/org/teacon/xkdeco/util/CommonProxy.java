@@ -11,16 +11,19 @@ import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -76,9 +79,12 @@ public class CommonProxy implements ModInitializer {
 		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
 	}
 
-	public static void onRegistriesFrozen() {
-		MimicWallsLoader.addMimicWallBlocks((id, block) -> Registry.register(BuiltInRegistries.BLOCK, id, block));
-		MimicWallsLoader.addMimicWallItems((id, item) -> Registry.register(BuiltInRegistries.ITEM, id, item));
+	public static void registerBlock(ResourceLocation id, Block block) {
+		Registry.register(BuiltInRegistries.BLOCK, id, block);
+	}
+
+	public static void registerItem(ResourceLocation id, Item item) {
+		Registry.register(BuiltInRegistries.ITEM, id, item);
 	}
 
 	@Override
@@ -86,6 +92,11 @@ public class CommonProxy implements ModInitializer {
 		if (Platform.isPhysicalClient()) {
 			ClientProxy.init();
 		}
+
+		MimicWallsLoader.addMimicWalls();
+		RegistryEntryAddedCallback.event(BuiltInRegistries.BLOCK).register((rawId, id, object) -> {
+			MimicWallsLoader.newBlockAdded(id, object);
+		});
 
 		ItemGroupEvents.modifyEntriesEvent(MimicWallsLoader.STRUCTURE_TAB_KEY).register(entries -> {
 			for (Block block : BuiltInRegistries.BLOCK) {

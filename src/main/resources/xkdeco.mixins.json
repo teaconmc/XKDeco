@@ -9,8 +9,8 @@
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
 		"air_duct.PlayerMixin",
-		"fabric.BuiltInRegistriesMixin",
-		"fabric.LivingEntityMixin"
+		"fabric.LivingEntityMixin",
+		"rei.DefaultCraftingDisplayMixin"
 	],
 	"client": [
 		"air_duct.PlayerRendererMixin",

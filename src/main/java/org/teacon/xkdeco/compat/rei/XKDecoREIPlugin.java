@@ -16,7 +16,7 @@ public class XKDecoREIPlugin implements REIClientPlugin {
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
 	public void registerCollapsibleEntries(CollapsibleEntryRegistry registry) {
-		List<EntryStack<ItemStack>> list = MimicWallsLoader.MIMIC_WALLS.stream().map(EntryStacks::of).toList();
+		List<EntryStack<ItemStack>> list = MimicWallsLoader.mimicWalls().stream().map(EntryStacks::of).toList();
 		registry.group(XKDeco.id("mimic_wall"), Component.translatable("xkdeco.mimic_walls"), list);
 	}
 }
