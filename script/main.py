@@ -4,19 +4,20 @@ from pathlib import Path
 
 import yaml
 
+import Download
 from BlockDefinitionProvider import BlockDefinitionProvider
+from BlockFamilyProvider import BlockFamilyProvider
 from BlockTemplateProvider import BlockTemplateProvider
 from CreativeTabProvider import CreativeTabProvider
+from GlassTypeProvider import GlassTypeProvider
 from ItemDefinitionProvider import ItemDefinitionProvider
 from ItemTemplateProvider import ItemTemplateProvider
 from MaterialProvider import MaterialProvider
-from BlockFamilyProvider import BlockFamilyProvider
 from MetadataProvider import MetadataProvider
 from Pack import Pack
 from ShapeProvider import ShapeProvider
 from TagsProvider import TagsProvider
 from TranslationProvider import TranslationProvider
-import Download
 
 
 def main():
@@ -53,14 +54,15 @@ def main():
     pack = Pack(config)
 
     pack.addProvider(MaterialProvider(pack))
+    pack.addProvider(GlassTypeProvider(pack))
     pack.addProvider(BlockTemplateProvider(pack))
     pack.addProvider(BlockDefinitionProvider(pack))
-    pack.addProvider(TagsProvider(pack, 'block', 'blocks'))
+    pack.addProvider(TagsProvider(pack, 'block'))
     pack.addProvider(ShapeProvider(pack))
 
     pack.addProvider(ItemTemplateProvider(pack))
     pack.addProvider(ItemDefinitionProvider(pack))
-    pack.addProvider(TagsProvider(pack, 'item', 'items'))
+    pack.addProvider(TagsProvider(pack, 'item'))
 
     pack.addProvider(BlockFamilyProvider(pack))
     pack.addProvider(CreativeTabProvider(pack))

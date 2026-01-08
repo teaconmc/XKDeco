@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.client.model.AirDuctModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
+import org.teacon.xkdeco.client.renderer.HologramRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
@@ -28,6 +29,7 @@ public final class ClientProxy implements ClientModInitializer {
 		BlockEntityRenderers.register(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
 		BlockEntityRenderers.register(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemDisplayRenderer::new);
 		BlockEntityRenderers.register(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
 
 		ModelLoadingPlugin.register(ctx -> {
 			ResourceLocation airDuctModel = XKDeco.id("block/air_duct");

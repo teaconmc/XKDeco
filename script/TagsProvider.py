@@ -1,12 +1,10 @@
-from Pack import Pack
 from ResourceLocation import ResourceLocation
 from TableDataProvider import TableDataProvider
 
 
 class TagsProvider(TableDataProvider):
-    def __init__(self, pack: Pack, registry: str, alias: str = None):
-        alias = alias if alias is not None else registry
-        super().__init__(pack, 'data/{}/tags/' + alias, registry + '_tags')
+    def __init__(self, pack, registry: str):
+        super().__init__(pack, 'data/{}/tags/' + registry, registry + '_tags')
         self.prettyPrint = True
         self.exportFormat = 'json'
         self.data = {}

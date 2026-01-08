@@ -1,8 +1,8 @@
-from DataProvider import DataProvider
-
-import os
 import json
+import os
 from pathlib import Path
+
+from DataProvider import DataProvider
 
 
 class TranslationProvider(DataProvider):
@@ -34,7 +34,7 @@ class TranslationProvider(DataProvider):
         if 'translation_dest' in self.pack.config:
             file = os.path.join(self.pack.config['translation_dest'], file.path + '.json')
         else:
-            file = self.pack.toAbsPath(self.dataPath, file, '.json')
+            file = self.pack.toAbsPath(self, file, '.json')
         Path(file).parent.mkdir(parents=True, exist_ok=True)
         with open(file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2 if self.prettyPrint else None, ensure_ascii=False)

@@ -35,7 +35,7 @@
 	"accessWidener": "xkdeco.accesswidener",
 	"depends": {
 		"minecraft": "1.20.1",
-		"kiwi": ">=11.8.27"
+		"kiwi": ">=11.10"
 	},
 	"custom": {
 		"modmenu": {
