@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-08T23:45:59.9023808	XeKr's Decoration/Block Loot Tables
+// 1.20.1	2026-01-09T01:23:21.4987075	XeKr's Decoration/Block Loot Tables
 6eca40282efe4ff5a14d373b651b1bd74a780546 data\xkdeco\loot_tables\blocks\ebony_trapdoor.json
 990ea1a66ecc1e25fb6a454c5058d0591a7e62a0 data\xkdeco\loot_tables\blocks\bluewhite_porcelain_tall.json
 472cbc9ba30938d07a08e71f764099be03d5eebe data\xkdeco\loot_tables\blocks\green_roof_small_end.json
@@ -552,8 +552,8 @@ e34167e20feaa5a9a2c9c548023d9d62761532f7 data\xkdeco\loot_tables\blocks\ebony_wi
 c69c95f37937bf7bbdb1002329abf8e2f0f3cbe6 data\xkdeco\loot_tables\blocks\teapot.json
 e4e95757d11717b05486985753d4f17a78f76554 data\xkdeco\loot_tables\blocks\mahogany_wall.json
 a6218486b290eb5fcbfe8982d9a46aee1fd04549 data\xkdeco\loot_tables\blocks\red_sandstone_small_bricks.json
-a87c3b94bb05b539a4da797f75b2774043e15185 data\xkdeco\loot_tables\blocks\stone_water_tank.json
 86cd24698b308b86f38bf8cd2ea04c516f4f0a90 data\xkdeco\loot_tables\blocks\steel_ladder.json
+a87c3b94bb05b539a4da797f75b2774043e15185 data\xkdeco\loot_tables\blocks\stone_water_tank.json
 4e8d368c843f3619df9e1f2dce60c7595c3e4cc6 data\xkdeco\loot_tables\blocks\varnished_wall.json
 393d3760486f19030ec3711d38a07b6aaf4e9fe1 data\xkdeco\loot_tables\blocks\wood_globe.json
 13a73c4d6649429d8e80915b0470f5d3d3a711d5 data\xkdeco\loot_tables\blocks\big_candlestick.json
