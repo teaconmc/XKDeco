@@ -36,3 +36,9 @@ class DataProvider:
 
     def __str__(self):
         return self.__class__.__name__
+
+    def processRowTranslations(self, row: dict, key: str):
+        for field, value in row.items():
+            if field.startswith('Name:') and value != '':
+                lang = field[5:]
+                self.pack.providers['translations'].putTranslation(lang, key, value)

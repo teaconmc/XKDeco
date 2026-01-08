@@ -10,7 +10,7 @@ class BlockTemplateProvider(TableDataProvider):
         self.tags = {}
         self.properties = {}
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         templateId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         for field in row:
@@ -27,7 +27,7 @@ class BlockTemplateProvider(TableDataProvider):
             else:
                 raise ValueError('Unknown template type: ' + templateType)
 
-        properties = BlockPropertiesReader.read(row, self.pack)
+        properties = BlockPropertiesReader.read(self, row)
         if len(properties) > 0:
             self.properties[templateId] = properties
             data['properties'] = properties

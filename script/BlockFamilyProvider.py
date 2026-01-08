@@ -23,7 +23,7 @@ class BlockFamilyProvider(TableDataProvider):
             self.ids.add(key)
         self.items[key].add(str(value))
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         familyId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
         if 'StonecutterFrom' in row and row['StonecutterFrom'] != '':

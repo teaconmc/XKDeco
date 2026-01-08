@@ -7,16 +7,13 @@ class GlassTypeProvider(TableDataProvider):
         super().__init__(pack, 'assets/{}/kiwi/glass_type', 'glass_types')
         self.glassTypes = {}
 
-    def generateRow(self, row, csvConfig):
+    def generateRow(self, row, tableConfig):
         glassTypeId = self.pack.defaultResourceLocation(row['ID'])
         data = {}
 
-        if 'SkipRendering' in row and row['SkipRendering'].lower() == 'false':
-            data['skip_rendering'] = False
-        if 'ShadeBrightness' in row and row['ShadeBrightness'] != '':
-            data['shade_brightness'] = float(row['ShadeBrightness'])
-        if 'RenderType' in row and row['RenderType'] != '':
-            data['render_type'] = row['RenderType']
+        self.field(data, 'SkipRendering', lambda v: False if v.lower() == 'false' else None)
+        self.field(data, 'ShadeBrightness', float)
+        self.field(data, 'RenderType', str)
 
         self.glassTypes[glassTypeId] = data
         self.writeFile(glassTypeId, data)

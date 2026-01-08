@@ -1,17 +1,13 @@
 import yaml
 
-from Pack import Pack
+from TableDataProvider import TableDataProvider
 
 
-def read(row: dict, pack: Pack) -> dict:
+def read(provider: TableDataProvider, row: dict) -> dict:
     data = {}
-    if 'RenderType' in row and row['RenderType'] != 'solid' and row['RenderType'] != '':
-        data['render_type'] = row['RenderType']
-    if 'Material' in row and row['Material'] != '':
-        materialId = pack.defaultResourceLocation(row['Material'])
-        data['material'] = str(materialId)
-    if 'LightEmission' in row and row['LightEmission'] != '0' and row['LightEmission'] != 'custom' and row['LightEmission'] != '':
-        data['light_emission'] = int(float(row['LightEmission']))
+    provider.field(data, 'RenderType', lambda v: v if v != 'solid' else None)
+    provider.field(data, 'Material', lambda v: str(provider.pack.defaultResourceLocation(v)))
+    provider.field(data, 'LightEmission', lambda v: int(float(v)))
     components = []
     if 'WaterLoggable' in row and row['WaterLoggable'].lower() == 'true':
         components.append('water_loggable')
@@ -21,18 +17,11 @@ def read(row: dict, pack: Pack) -> dict:
         components.extend(yaml.safe_load(row['ExtraComponents']))
     if len(components) > 0:
         data['components'] = components
-    if 'Shape' in row and row['Shape'] != '':
-        data['shape'] = row['Shape']
-    if 'CollisionShape' in row and row['CollisionShape'] != '':
-        data['collision_shape'] = row['CollisionShape']
-    if 'InteractionShape' in row and row['InteractionShape'] != '':
-        data['interaction_shape'] = row['InteractionShape']
-    if 'NoCollision' in row and row['NoCollision'].lower() == 'true':
-        data['no_collision'] = True
-    if 'NoOcclusion' in row and row['NoOcclusion'].lower() == 'true':
-        data['no_occlusion'] = True
-    if 'GlassType' in row and row['GlassType'] != '':
-        data['glass_type'] = row['GlassType']
-    if 'ColorProvider' in row and row['ColorProvider'] != '':
-        data['color_provider'] = row['ColorProvider']
+    provider.field(data, 'Shape', str)
+    provider.field(data, 'CollisionShape', str)
+    provider.field(data, 'InteractionShape', str)
+    provider.field(data, 'NoCollision', lambda v: True if v.lower() == 'true' else None)
+    provider.field(data, 'NoOcclusion', lambda v: True if v.lower() == 'true' else None)
+    provider.field(data, 'GlassType', str)
+    provider.field(data, 'ColorProvider', str)
     return data
