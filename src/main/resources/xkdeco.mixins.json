@@ -6,6 +6,7 @@
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
 		"ReloadableServerResourcesMixin",
+		"WallBlockMixin",
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
 		"air_duct.PlayerMixin",
