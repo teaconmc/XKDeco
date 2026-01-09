@@ -1,7 +1,5 @@
 package org.teacon.xkdeco.util;
 
-import java.util.Objects;
-
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
@@ -21,10 +19,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +37,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.loader.Platform;
@@ -51,10 +52,7 @@ public class CommonProxy {
 		modEventBus.addListener(
 				EventPriority.LOWEST, (RegisterEvent event) -> {
 					if (event.getRegistryKey().equals(Registries.BLOCK)) {
-						MimicWallsLoader.addMimicWallBlocks(Objects.requireNonNull(event.getForgeRegistry())::register);
-					}
-					if (event.getRegistryKey().equals(Registries.ITEM)) {
-						MimicWallsLoader.addMimicWallItems(Objects.requireNonNull(event.getForgeRegistry())::register);
+						MimicWallsLoader.addMimicWalls();
 					}
 				});
 		modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> {
@@ -111,5 +109,13 @@ public class CommonProxy {
 				!blockState.isFaceSturdy(level, pos, direction.getOpposite())) {
 			player.xkdeco$collideWithAirDuctHorizontally();
 		}
+	}
+
+	public static void registerBlock(ResourceLocation id, Block block) {
+		ForgeRegistries.BLOCKS.register(id, block);
+	}
+
+	public static void registerItem(ResourceLocation id, Item item) {
+		ForgeRegistries.ITEMS.register(id, item);
 	}
 }

@@ -27,7 +27,7 @@ public class DefaultCraftingDisplayMixin {
 	private static void xkdeco$of(Recipe<?> shapeless, CallbackInfoReturnable<DefaultCraftingDisplay<?>> cir) {
 		if (shapeless instanceof MimicWallRecipe recipe) {
 			List<EntryIngredient> inputs = EntryIngredients.ofIngredients(recipe.getIngredients());
-			List<EntryIngredient> outputs = List.of(EntryIngredients.ofItems(MimicWallsLoader.MIMIC_WALLS.stream()
+			List<EntryIngredient> outputs = List.of(EntryIngredients.ofItems(MimicWallsLoader.mimicWalls().stream()
 					.map($ -> (ItemLike) $)
 					.toList()));
 			cir.setReturnValue(new DefaultCustomShapelessDisplay(recipe, inputs, outputs));
