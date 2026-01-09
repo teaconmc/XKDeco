@@ -244,7 +244,11 @@ dependencies {
     implementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.2+neoforge"
 
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.116.7+2.2.0+1.21.1"
-    implementation "org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1:20.2.34+12dbe3c819"
+    implementation("org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1") {
+        version {
+            strictly("20.2.22+2d91a6db19")
+        }
+    }
 //    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-api-v1:3.4.0+9c40919e19"))
 //    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-indigo:1.7.0+acb05a3919"))
 //    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-model-loading-api-v1:2.0.0+a6e994cd19"))

@@ -1,6 +1,7 @@
 package org.teacon.xkdeco.util;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.XKDecoCommonConfig;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
@@ -42,7 +43,7 @@ public class CommonProxy {
 	public CommonProxy(IEventBus modEventBus) {
 		modEventBus.addListener(
 				EventPriority.LOWEST, (RegisterEvent event) -> {
-					if (event.getRegistryKey().equals(Registries.BLOCK)) {
+					if (XKDecoCommonConfig.mimicWalls && event.getRegistryKey().equals(Registries.BLOCK)) {
 						MimicWallsLoader.addMimicWalls();
 					}
 				});
