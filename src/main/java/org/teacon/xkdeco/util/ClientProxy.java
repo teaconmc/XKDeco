@@ -82,7 +82,7 @@ public final class ClientProxy {
 					context.setModel(blockState, wallModel);
 				}
 			};
-			for (MimicWallBlock block : MimicWallsLoader.MIMIC_WALLS) {
+			for (MimicWallBlock block : MimicWallsLoader.mimicWalls()) {
 				ctx.registerBlockStateResolver(block, resolver);
 			}
 			ctx.resolveModel().register(context -> {

@@ -35,7 +35,7 @@ public class MimicWallRecipe extends ShapelessRecipe {
 	}
 
 	public static Ingredient makeWallIngredient() {
-		return Ingredient.of(MimicWallsLoader.MIMIC_WALLS.stream()
+		return Ingredient.of(MimicWallsLoader.mimicWalls().stream()
 				.map(MimicWallBlock::getWallDelegate)
 				.map(Block::asItem)
 				.toArray(Item[]::new));
@@ -52,7 +52,7 @@ public class MimicWallRecipe extends ShapelessRecipe {
 			if (another.test(itemStack)) {
 				continue;
 			}
-			for (MimicWallBlock mimicWall : MimicWallsLoader.MIMIC_WALLS) {
+			for (MimicWallBlock mimicWall : MimicWallsLoader.mimicWalls()) {
 				if (itemStack.is(mimicWall.getWallDelegate().asItem())) {
 					return new ItemStack(mimicWall);
 				}

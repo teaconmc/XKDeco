@@ -38,7 +38,7 @@ public class XKDecoJEIPlugin implements IModPlugin {
 						MimicWallRecipe recipe = recipeHolder.value();
 						craftingGridHelper.createAndSetOutputs(
 								builder,
-								MimicWallsLoader.MIMIC_WALLS.stream().map(Block::asItem).map(Item::getDefaultInstance).toList());
+								MimicWallsLoader.mimicWalls().stream().map(Block::asItem).map(Item::getDefaultInstance).toList());
 						craftingGridHelper.createAndSetIngredients(builder, recipe.getIngredients(), 0, 0);
 					}
 				});

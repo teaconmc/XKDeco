@@ -10,14 +10,18 @@ import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.loader.Platform;
@@ -40,21 +43,18 @@ public class CommonProxy {
 		modEventBus.addListener(
 				EventPriority.LOWEST, (RegisterEvent event) -> {
 					if (event.getRegistryKey().equals(Registries.BLOCK)) {
-						MimicWallsLoader.addMimicWallBlocks();
-					}
-					if (event.getRegistryKey().equals(Registries.ITEM)) {
-						MimicWallsLoader.addMimicWallItems();
+						MimicWallsLoader.addMimicWalls();
 					}
 				});
-		modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> {
-			if (MimicWallsLoader.STRUCTURE_TAB_KEY.equals(event.getTabKey())) {
-				for (Block block : BuiltInRegistries.BLOCK) {
-					if (block instanceof MimicWallBlock) {
-						event.accept(block);
-					}
+
+		ItemGroupEvents.modifyEntriesEvent(MimicWallsLoader.STRUCTURE_TAB_KEY).register(entries -> {
+			for (Block block : BuiltInRegistries.BLOCK) {
+				if (block instanceof MimicWallBlock) {
+					entries.accept(block);
 				}
 			}
 		});
+
 		if (Platform.isDataGen() && !Platform.isProduction() && Platform.isModLoaded("fabric_data_generation_api_v1")) {
 			ForgeXKDDataGen.init(modEventBus);
 		}
@@ -95,5 +95,13 @@ public class CommonProxy {
 				!blockState.isFaceSturdy(level, pos, direction.getOpposite())) {
 			player.xkdeco$collideWithAirDuctHorizontally();
 		}
+	}
+
+	public static void registerBlock(ResourceLocation id, Block block) {
+		Registry.register(BuiltInRegistries.BLOCK, id, block);
+	}
+
+	public static void registerItem(ResourceLocation id, Item item) {
+		Registry.register(BuiltInRegistries.ITEM, id, item);
 	}
 }

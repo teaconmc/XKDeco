@@ -1,8 +1,10 @@
 package org.teacon.xkdeco.client.model;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -10,9 +12,11 @@ import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.MultiPartBakedModel;
+import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -37,6 +41,23 @@ public class MimicWallBakedModel extends ForwardingBakedModel {
 	public MimicWallBakedModel(WallBlock base, BakedModel baked) {
 		this.base = base;
 		wrapped = baked;
+		if (wrapped instanceof MultiPartBakedModel multiPart) {
+			RandomSource random = RandomSource.create(42L);
+			BlockState blockState = base.defaultBlockState();
+			EnumMap<Direction, List<BakedQuad>> culledFaces = Maps.newEnumMap(Direction.class);
+			for (Direction direction : Direction.values()) {
+				culledFaces.put(direction, multiPart.getQuads(blockState, direction, random));
+			}
+			wrapped = new SimpleBakedModel(
+					wrapped.getQuads(blockState, null, random),
+					culledFaces,
+					wrapped.useAmbientOcclusion(),
+					wrapped.usesBlockLight(),
+					wrapped.isGui3d(),
+					wrapped.getParticleIcon(),
+					wrapped.getTransforms(),
+					wrapped.getOverrides());
+		}
 	}
 
 	@Override

@@ -21,7 +21,7 @@ kiwiCustomization=true
 [[dependencies.xkdeco]]
 modId="neoforge"
 type="required"
-versionRange="[21,)"
+versionRange="[21.1,)"
 
 [[dependencies.xkdeco]]
 modId="minecraft"
