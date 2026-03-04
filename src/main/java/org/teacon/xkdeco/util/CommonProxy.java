@@ -11,14 +11,15 @@ import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
@@ -30,23 +31,22 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.registries.RegisterEvent;
+import snownee.kiwi.Mod;
 import snownee.kiwi.customization.block.loader.BlockCodecs;
 import snownee.kiwi.loader.Platform;
 
 @Mod(XKDeco.ID)
-public class CommonProxy {
+public class CommonProxy implements ModInitializer {
+	@Override
+	public void onInitialize() {
+		initCodecs();
+		if (Platform.isPhysicalClient()) {
+			ClientProxy.init();
+		}
 
-	public CommonProxy(IEventBus modEventBus) {
-		modEventBus.addListener(
-				EventPriority.LOWEST, (RegisterEvent event) -> {
-					if (XKDecoCommonConfig.mimicWalls && event.getRegistryKey().equals(Registries.BLOCK)) {
-						MimicWallsLoader.addMimicWalls();
-					}
-				});
+		if (XKDecoCommonConfig.mimicWalls) {
+			MimicWallsLoader.addMimicWalls();
+		}
 
 		ItemGroupEvents.modifyEntriesEvent(MimicWallsLoader.STRUCTURE_TAB_KEY).register(entries -> {
 			for (Block block : BuiltInRegistries.BLOCK) {
@@ -55,11 +55,9 @@ public class CommonProxy {
 				}
 			}
 		});
+	}
 
-		if (Platform.isDataGen() && !Platform.isProduction() && Platform.isModLoaded("fabric_data_generation_api_v1")) {
-			ForgeXKDDataGen.init(modEventBus);
-		}
-
+	public static void initCodecs() {
 		BlockCodecs.register(XKDeco.id("block"), Block.simpleCodec(XKDBlock::new));
 		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
 		BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
@@ -67,11 +65,11 @@ public class CommonProxy {
 	}
 
 	public static boolean isLadder(BlockState blockState, LevelReader world, BlockPos pos) {
-		return blockState.isLadder(world, pos, null);
+		return blockState.is(BlockTags.CLIMBABLE);
 	}
 
 	public static SoundEvent getFenceGateSound(FenceGateBlock block, boolean open) {
-		return open ? block.openSound : block.closeSound;
+		return open ? block.type.fenceGateOpen() : block.type.fenceGateClose();
 	}
 
 	public static void moveEntity(XKDPlayer player, Entity entity, Vec3 pPos) {

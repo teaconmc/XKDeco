@@ -2,9 +2,6 @@ package org.teacon.xkdeco.client.renderer;
 
 import java.util.Objects;
 
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,8 +26,8 @@ public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisp
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(BlockDisplayBlockEntity be) {
-		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
+	public boolean shouldRenderOffScreen(BlockDisplayBlockEntity be) {
+		return true;
 	}
 
 	@Override

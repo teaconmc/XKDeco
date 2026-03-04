@@ -135,7 +135,7 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
-	@Override
+//	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
 		CompoundTag compoundtag = pkt.getTag();
 		if (compoundtag != null) {

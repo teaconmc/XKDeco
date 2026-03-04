@@ -10,11 +10,13 @@
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
 		"air_duct.PlayerMixin",
+		"fabric.LivingEntityMixin",
 		"rei.DefaultCraftingDisplayMixin"
 	],
 	"client": [
 		"air_duct.PlayerRendererMixin",
-		"client.MinecraftMixin"
+		"client.MinecraftMixin",
+		"fabric.ClientPacketListenerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

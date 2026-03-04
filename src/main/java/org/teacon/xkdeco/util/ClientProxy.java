@@ -17,10 +17,11 @@ import org.teacon.xkdeco.init.XKDecoEntityTypes;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -29,23 +30,14 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
-@Mod(value = XKDeco.ID, dist = Dist.CLIENT)
-@ParametersAreNonnullByDefault
-public final class ClientProxy {
-	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
-	}
+public final class ClientProxy implements ClientModInitializer {
 
-	public ClientProxy(IEventBus modEventBus) {
-		modEventBus.addListener(ClientProxy::setEntityRenderers);
+	public static void init() {
+		BlockEntityRenderers.register(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemDisplayRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
 
 		ModelLoadingPlugin.register(ctx -> {
 			ResourceLocation airDuctModel = XKDeco.id("block/air_duct");
@@ -103,4 +95,8 @@ public final class ClientProxy {
 		});
 	}
 
+	@Override
+	public void onInitializeClient() {
+
+	}
 }

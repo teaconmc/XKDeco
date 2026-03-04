@@ -20,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import snownee.kiwi.util.NotNullByDefault;
 
@@ -43,12 +42,8 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(ItemDisplayBlockEntity be) {
-		if (be.isProjector()) {
-			return AABB.ofSize(Vec3.atBottomCenterOf(be.getBlockPos().above(9)), 16, 16, 16);
-		} else {
-			return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
-		}
+	public boolean shouldRenderOffScreen(ItemDisplayBlockEntity be) {
+		return be.isProjector();
 	}
 
 	@Override

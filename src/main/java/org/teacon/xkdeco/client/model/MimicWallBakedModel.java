@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
@@ -21,7 +20,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -93,11 +91,5 @@ public class MimicWallBakedModel extends ForwardingBakedModel {
 	@Override
 	public boolean isVanillaAdapter() {
 		return false;
-	}
-
-	@Override
-	public BakedModel applyTransform(ItemDisplayContext transformType, PoseStack poseStack, boolean applyLeftHandTransform) {
-		getTransforms().getTransform(transformType).apply(applyLeftHandTransform, poseStack);
-		return wrapped instanceof MultiPartBakedModel ? super.applyTransform(transformType, poseStack, applyLeftHandTransform) : this;
 	}
 }

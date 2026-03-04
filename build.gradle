@@ -1,175 +1,44 @@
 plugins {
+    id 'fabric-loom' version "${loom_version}"
     id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.140'
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-//        vendor = JvmVendorSpec.ANY
-    }
-}
+version = project.minecraft_version + "-Fabric-" + project.mod_version
+group = project.mod_base_package
+var realVersion = mod_version + '+fabric'
 
-tasks.named('wrapper', Wrapper).configure {
-    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
-    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
-    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
-    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
-    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
-    distributionType = Wrapper.DistributionType.BIN
-}
+loom {
+    runs {
+        datagen {
+            inherit server
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.modid=${project.mod_id}"
 
-abstract class TeaConDumpPathToGitHub extends DefaultTask {
-    @Input
-    abstract Property<String> getPublishName()
-
-    @InputFile
-    abstract RegularFileProperty getTargetFile()
-
-    @TaskAction
-    void dump() {
-        if (System.env.GITHUB_ACTIONS) {
-            File theFile = targetFile.getAsFile().get()
-
-            def outputFile = new File(System.env.GITHUB_OUTPUT)
-            // Use the env-specific line separator for maximally possible compatibility
-            def newLine = System.getProperty('line.separator')
-
-            // Write out new env variable for later usage
-            outputFile << newLine << "artifact_name=${theFile.getName()}"
-            outputFile << newLine << "artifact_path=${theFile.absolutePath}"
+            runDir "build/datagen"
         }
     }
 }
 
-base {
-    archivesName = 'XeKr\'s Decoration'
-}
-version = "${minecraft_version}-NeoForge-${mod_version}"
-group = "${mod_base_package}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-
 if (System.env.GITHUB_ACTIONS) {
     version += "-build.${System.env.GITHUB_RUN_NUMBER}"
-}
-
-var realVersion = mod_version + '+neoforge'
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-compileJava.options.encoding = 'UTF-8'
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
 }
 
 static def isJetBrainsRuntime() {
     return System.getProperty('java.vm.vendor').contains('JetBrains')
 }
 
-neoForge {
-    // Specify the version of NeoForge to use.
-    version = project.neo_version
-
-    // Enable access transformers
-    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
-    mods {
-        // define mod <-> source bindings
-        // these are used to tell the game which sources are for which mod
-        // mostly optional in a single mod project
-        // but multi mod projects should define one per mod
-        xkdeco {
-            sourceSet(sourceSets.main)
-        }
+loom {
+    mixin {
+        defaultRefmapName = "${project.mod_id}.refmap.json"
     }
 
-    if (isJetBrainsRuntime()) {
-        runs {
-            client {
-                jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-                jvmArgument("-XX:HotswapAgent=fatjar")
-            }
-        }
-    }
-
-    runs {
-        client {
-            client()
-            ideName = "Run ${project.mod_id} - Client"
-            gameDirectory = project.file('run_client')
-//            property 'production', 'true'
-            systemProperty 'forge.logging.console.level', 'debug'
-
-            // Export mixin-changed classes
-            systemProperty 'mixin.debug.export', 'true'
-            systemProperty 'mixin.env.remapRefMap', 'true'
-            systemProperty 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-//            jvmArgument("-Dmixin.debug.verbose=true")
-//            jvmArgument("-Dmixin.debug.export=true")
-
-            // These arguments allow for optional authentication with Mojang servers.
-            // If you want to authenticate, put these properties in GRADLE_HOME/gradle.properties.
-            // By default, this is C:\Users\<your username>\.gradle\gradle.properties on Windows or ~/.gradle/gradle.properties on Linux/MacOS.
-            if (project.hasProperty('mc_uuid')) {
-                // Your UUID, trimmed / without the dashes
-                programArguments.addAll('--uuid', project.getProperty('mc_uuid'))
-            }
-            if (project.hasProperty('mc_username')) {
-                // Your Minecraft in-game username, not email
-                programArguments.addAll('--username', project.getProperty('mc_username'))
-            }
-            if (project.hasProperty('mc_accessToken')) {
-                // Your current access token. When it expires, you need to retrieve a new one and regenerate your run configurations.
-                // You may be able to find it in your .minecraft folder in launcher_accounts.json or launcher_profiles.json.
-                programArguments.addAll('--accessToken', project.getProperty('mc_accessToken'))
-            }
-
-            // Add mixin config to runtime
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
-        }
-
-        server {
-            server()
-            ideName = "Run ${project.mod_id} - Server"
-            gameDirectory = project.file('run_server')
-//            property 'production', 'true'
-            systemProperty 'forge.logging.console.level', 'debug'
-
-            // Export mixin-changed classes
-            systemProperty 'mixin.debug.export', 'true'
-
-            // Add mixin config to runtime
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
-        }
-
-        data {
-            data()
-            ideName = "Run ${project.mod_id} - Data"
-            gameDirectory = project.file('run_data')
-//            property 'production', 'true'
-            systemProperty 'forge.logging.console.level', 'debug'
-
-            // Export mixin-changed classes
-            systemProperty 'mixin.debug.export', 'true'
-
-            // Add mixin config to runtime
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            programArguments.addAll('--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
-        }
-    }
+    accessWidenerPath = file("src/main/resources/${project.mod_id}.accesswidener")
 }
 
 // Include resources generated by data generators.
@@ -177,8 +46,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 sourceSets.main.resources { srcDir 'src/kiwi_generated/resources' }
 
 repositories {
-    maven { url = 'https://maven.neoforged.net/releases' }
-    maven { url = "https://maven.su5ed.dev/releases" }
     maven { url = "https://api.modrinth.com/maven" }
     maven {
         // saps.dev Maven (KubeJS and Rhino)
@@ -198,14 +65,8 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
-    maven {
-        url = "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
     maven { url = 'https://maven.blamejared.com' }
-    maven { url = "https://maven.theillusivec4.top/" }
+    maven { url = "https://maven.terraformersmc.com/releases/" }
     mavenLocal() // YES
     flatDir {
         dirs './libs'
@@ -213,46 +74,47 @@ repositories {
 }
 
 dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-1.20.6:${project.mappings_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
     // https://modrinth.com/mod/jei/versions
     // compile against the JEI API but do not include it at runtime
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    modCompileOnlyApi "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    modCompileOnlyApi "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}"
     // at runtime, use the full JEI jar for Forge
-    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    modImplementation "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 
-    // https://linkie.shedaniel.dev/dependencies?loader=neoforge&version=1.21.1
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
-    implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
-    compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
+    // https://linkie.shedaniel.dev/dependencies?loader=fabric&version=1.21.1
+    modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
     // https://modrinth.com/mod/kiwi/versions
 //    implementation(annotationProcessor("libs:Kiwi-1.21.1-NeoForge:15.6.0"))
-    implementation(annotationProcessor("maven.modrinth:kiwi:15.6.1+neoforge"))
+    modImplementation(annotationProcessor("maven.modrinth:kiwi:15.8.2+fabric"))
 
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
+    modImplementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
-    implementation "maven.modrinth:jade:15.10.0+neoforge"
+    modImplementation "maven.modrinth:jade:15.10.5+fabric"
     // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
 
     // https://modrinth.com/mod/debugutils/versions
-    implementation "maven.modrinth:debugutils:TvU10aNN"
+    modImplementation "maven.modrinth:debugutils:1.21.1-1.0.9-fabric"
     // https://modrinth.com/mod/modernfix/versions
-    implementation "maven.modrinth:modernfix:ZKnJCu6a"
+    modImplementation "maven.modrinth:modernfix:5.25.1+mc1.21.1"
     // https://modrinth.com/mod/ferrite-core/versions
-    implementation "maven.modrinth:ferrite-core:7.0.2-neoforge"
+    modImplementation "maven.modrinth:ferrite-core:7.0.3-fabric"
     // https://modrinth.com/mod/suggestion-tweaker/versions
-    implementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.2+neoforge"
-
-    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.116.7+2.2.0+1.21.1"
-    implementation("org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1") {
-        version {
-            strictly("20.2.22+2d91a6db19")
-        }
-    }
-//    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-api-v1:3.4.0+9c40919e19"))
-//    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-indigo:1.7.0+acb05a3919"))
-//    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-model-loading-api-v1:2.0.0+a6e994cd19"))
-    //implementation "dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1"
+    modImplementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.3+fabric"
 }
 
 processResources {
@@ -282,6 +144,11 @@ processResources {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 21
+}
+
 jar {
     exclude("/assets/${project.mod_id}/lang/en_us.existing.json")
     exclude("/assets/test")
@@ -302,41 +169,6 @@ jar {
     reproducibleFileOrder = true
 }
 
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = "org.teacon"
-            artifactId = "XKDeco-NeoForge-1.21"
-
-            artifact jar
-            pom {
-                name = 'XKDeco for Minecraft 1.21 and NeoForge'
-                description = "XeKr's decoration blocks"
-                url = 'https://github.com/teaconmc/XKDeco'
-                issueManagement {
-                    system = 'GitHub Issues'
-                    url = 'https://github.com/teaconmc/XKDeco/issues'
-                }
-                scm {
-                    url = 'https://github.com/teaconmc/XKDeco'
-                    connection = 'scm:git:git://github.com/teaconmc/XKDeco.git'
-                    developerConnection = 'scm:git:git@github.com:teaconmc/XKDeco.git'
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            name = "teacon"
-            url = "s3://maven/"
-            credentials(AwsCredentials) {
-                accessKey = System.env.ARCHIVE_ACCESS_KEY
-                secretKey = System.env.ARCHIVE_SECRET_KEY
-            }
-        }
-    }
-}
-
 idea {
     module {
         downloadSources = true
@@ -344,33 +176,19 @@ idea {
     }
 }
 
-tasks.withType(PublishToMavenRepository) {
-    onlyIf {
-        System.env.ARCHIVE_ACCESS_KEY && System.env.ARCHIVE_SECRET_KEY
-    }
-}
-
-tasks.register("githubActionOutput", TeaConDumpPathToGitHub) { task ->
-    task.onlyIf {
-        System.env.GITHUB_ACTIONS
-    }
-    task.getPublishName().set("${jar.archiveBaseName.get()}-${version}.jar")
-    task.getTargetFile().set(jar.archiveFile)
-}
-
 publishMods {
-    file = jar.archiveFile
+    file = remapJar.archiveFile
     changelog = file('CHANGELOG.md').exists() ? file('CHANGELOG.md').text : ''
     type = ['release': STABLE, 'beta': BETA, 'alpha': ALPHA][release_type]
-    modLoaders.add("neoforge")
-    displayName = "[NeoForge ${supported_version}] ${mod_version}"
+    modLoaders.add("fabric")
+    displayName = "[Fabric ${supported_version}] ${mod_version}"
     version = realVersion
 
     curseforge {
         projectId = "497637"
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add(minecraft_version)
-        requires("kiwi")
+        requires("kiwi-fabric")
         requires("forgified-fabric-api")
         requires("cloth-config")
     }

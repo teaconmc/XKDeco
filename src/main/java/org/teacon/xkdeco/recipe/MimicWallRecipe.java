@@ -1,7 +1,5 @@
 package org.teacon.xkdeco.recipe;
 
-import java.util.List;
-
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 import org.teacon.xkdeco.init.XKDecoRecipes;
@@ -30,7 +28,7 @@ public class MimicWallRecipe extends ShapelessRecipe {
 	private final Ingredient another;
 
 	public MimicWallRecipe(String group, CraftingBookCategory category, Ingredient another) {
-		super(group, category, ItemStack.EMPTY, NonNullList.copyOf(List.of(makeWallIngredient(), another)));
+		super(group, category, ItemStack.EMPTY, NonNullList.of(null, makeWallIngredient(), another));
 		this.another = another;
 	}
 
