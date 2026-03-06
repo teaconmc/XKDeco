@@ -15,7 +15,7 @@
 		"sources": "https://github.com/teaconmc/XKDeco",
 		"issues": "https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
 	},
-	"license": "ARR",
+	"license": "See GitHub repo",
 	"icon": "assets/xkdeco/logo.png",
 	"entrypoints": {
 		"main": [
@@ -46,7 +46,7 @@
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.discord": "https://discord.gg/rRBvGkz"
+				"modmenu.discord": "https://discord.gg/CUuEwCeTkq"
 			}
 		},
 		"kiwiCustomization": { }
