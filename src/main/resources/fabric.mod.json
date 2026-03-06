@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "xkdeco",
+	"version": "${version}",
+	"name": "XeKr's Decoration",
+	"description": "Models and textures are created by XeKr: https://github.com/XeKr",
+	"authors": [
+		"XeKr",
+		"Snownee",
+		"LittleBai",
+		"TeaConMC"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/xks-decoration",
+		"sources": "https://github.com/teaconmc/XKDeco",
+		"issues": "https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
+	},
+	"license": "See GitHub repo",
+	"icon": "assets/xkdeco/logo.png",
+	"entrypoints": {
+		"main": [
+			"org.teacon.xkdeco.util.CommonProxy"
+		],
+		"client": [
+			"org.teacon.xkdeco.util.ClientProxy"
+		],
+		"fabric-datagen": [
+			"org.teacon.xkdeco.data.XKDDataGen"
+		],
+		"jei_mod_plugin": [
+			"org.teacon.xkdeco.compat.jei.XKDecoJEIPlugin"
+		],
+		"rei_client": [
+			"org.teacon.xkdeco.compat.rei.XKDecoREIPlugin"
+		]
+	},
+	"mixins": [
+		"xkdeco.data.mixins.json",
+		"xkdeco.mixins.json"
+	],
+	"accessWidener": "xkdeco.accesswidener",
+	"depends": {
+		"minecraft": "1.21.1",
+		"kiwi": ">=15.8.3"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.gg/CUuEwCeTkq"
+			}
+		},
+		"kiwi": {
+			"customization": true
+		}
+	}
+}

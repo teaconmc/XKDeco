@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
+import org.teacon.xkdeco.util.IModelBakerExtension;
 
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,7 +38,8 @@ public class MimicWallModel implements UnbakedModel {
 
 	@Override
 	public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState state) {
-		UnbakedModel topLevelModel = Objects.requireNonNull(baker.getTopLevelModel(BlockModelShaper.stateToModelLocation(base.defaultBlockState())));
+		UnbakedModel topLevelModel = Objects.requireNonNull(((IModelBakerExtension) baker).xkdeco$getTopLevelModel(BlockModelShaper.stateToModelLocation(
+				base.defaultBlockState())));
 		BakedModel baked = Objects.requireNonNull(topLevelModel.bake(baker, spriteGetter, state));
 		return new MimicWallBakedModel(base, baked);
 	}

@@ -16,7 +16,8 @@
 	"client": [
 		"air_duct.PlayerRendererMixin",
 		"client.MinecraftMixin",
-		"fabric.ClientPacketListenerMixin"
+		"fabric.ClientPacketListenerMixin",
+		"fabric.ModelBakerImplMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

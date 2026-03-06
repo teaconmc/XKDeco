@@ -22,3 +22,6 @@ accessible field net/minecraft/world/level/block/state/properties/IntegerPropert
 accessible field net/minecraft/world/level/block/state/properties/IntegerProperty max I
 
 accessible field net/minecraft/world/level/block/FenceGateBlock type Lnet/minecraft/world/level/block/state/properties/WoodType;
+
+accessible class net/minecraft/client/resources/model/ModelBakery$ModelBakerImpl
+accessible field net/minecraft/client/resources/model/ModelBakery topLevelModels Ljava/util/Map;
