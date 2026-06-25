@@ -1,16 +1,16 @@
 package org.teacon.xkdeco.data;
 
-import java.util.List;
-import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
@@ -27,25 +27,17 @@ import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
 import snownee.kiwi.util.GameObjectLookup;
 
-public class XKDBlockLootTableProvider extends net.minecraft.data.loot.BlockLootSubProvider {
-	public XKDBlockLootTableProvider(HolderLookup.Provider registries) {
-		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
-	}
-
-	private List<Block> knownBlocks() {
-		return GameObjectLookup.all(this.registries, Registries.BLOCK, XKDeco.ID)
-				.filter($ -> !($ instanceof MimicWallBlock))
-				.toList();
-	}
-
-	@Override
-	protected Iterable<Block> getKnownBlocks() {
-		return knownBlocks();
+public class XKDBlockLootTableProvider extends FabricBlockLootSubProvider {
+	public XKDBlockLootTableProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+		super(dataOutput, registryLookup);
 	}
 
 	@Override
 	public void generate() {
-		for (Block block : knownBlocks()) {
+		for (Block block : GameObjectLookup.all(this.registries, Registries.BLOCK, XKDeco.ID).toList()) {
+			if (block instanceof MimicWallBlock) {
+				continue;
+			}
 			if (block.asItem() == Items.AIR) {
 				add(block, noDrop());
 				continue;
@@ -89,6 +81,16 @@ public class XKDBlockLootTableProvider extends net.minecraft.data.loot.BlockLoot
 							.add(LootItem.lootTableItem(block)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties($)
 									.setProperties(StatePropertiesPredicate.Builder.properties()
 											.hasProperty(property, property.max)))));
+
+
+//					add(block, $ -> LootTable.lootTable().withPool(LootPool.lootPool()
+//							.setRolls(ConstantValue.exactly(1))
+//							.add(applyExplosionDecay($, LootItem.lootTableItem($).apply(
+//									IntStream.rangeClosed(property.min, property.max).boxed().toList(),
+//									i -> SetItemCountFunction.setCount(ConstantValue.exactly(i))
+//											.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties($)
+//													.setProperties(StatePropertiesPredicate.Builder.properties()
+//															.hasProperty(property, i))))))));
 					continue;
 				}
 			}

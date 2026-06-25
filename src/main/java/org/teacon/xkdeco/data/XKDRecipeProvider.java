@@ -8,11 +8,13 @@ import java.util.concurrent.CompletableFuture;
 
 import org.teacon.xkdeco.XKDeco;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.criterion.ChangeDimensionTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -35,8 +37,33 @@ public class XKDRecipeProvider extends RecipeProvider {
 	private static final TagKey<Item> MAHOGANY_LOGS = AbstractModule.itemTag(XKDeco.ID, "mahogany_logs");
 	private static final TagKey<Item> VARNISHED_LOGS = AbstractModule.itemTag(XKDeco.ID, "varnished_logs");
 
-	protected XKDRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+	protected XKDRecipeProvider(Provider registries, RecipeOutput output) {
 		super(registries, output);
+	}
+
+	// 26.1 vanilla crafts a CHISELED variant from its SLAB and hard-throws ("Slab is not defined for
+	// the family") when a family has CHISELED but no SLAB. 1.20.1 silently generated no recipe in that
+	// case, so to keep the same output we run recipe generation on a family copy without the CHISELED
+	// variant. Families that do have a slab (e.g. maya/aztec stonebricks) are left untouched and still
+	// get their vanilla chiseled-from-slab recipe.
+	private static BlockFamily withoutUnsupportedChiseled(BlockFamily family) {
+		if (!family.getVariants().containsKey(BlockFamily.Variant.CHISELED)
+				|| family.getVariants().containsKey(BlockFamily.Variant.SLAB)) {
+			return family;
+		}
+		BlockFamily.Builder builder = new BlockFamily.Builder(family.getBaseBlock());
+		if (!family.shouldGenerateCraftingRecipe()) {
+			builder.dontGenerateCraftingRecipe();
+		}
+		if (family.shouldGenerateStonecutterRecipe()) {
+			builder.generateStonecutterRecipe();
+		}
+		family.getRecipeGroupPrefix().ifPresent(builder::recipeGroupPrefix);
+		family.getRecipeUnlockedBy().ifPresent(builder::recipeUnlockedBy);
+		BlockFamily copy = builder.getFamily();
+		copy.getVariants().putAll(family.getVariants());
+		copy.getVariants().remove(BlockFamily.Variant.CHISELED);
+		return copy;
 	}
 
 	@Override
@@ -45,14 +72,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 			if (family.getBaseBlock().asItem() == Items.AIR) {
 				return;
 			}
-			// 26.1 vanilla crafts CHISELED blocks from a SLAB (getBaseBlockForCrafting throws
-			// "Slab is not defined for the family" when a family has CHISELED but no SLAB). XKDeco has
-			// chiseled blocks with no slab variant, so skip vanilla's auto-recipes for those families.
-			if (family.getVariants().containsKey(BlockFamily.Variant.CHISELED)
-					&& !family.getVariants().containsKey(BlockFamily.Variant.SLAB)) {
-				return;
-			}
-			generateRecipes(family, FeatureFlags.VANILLA_SET);
+			generateRecipes(withoutUnsupportedChiseled(family), FeatureFlags.VANILLA_SET);
 		});
 
 		coloredTiles("black", Items.BLACK_TERRACOTTA);
@@ -103,15 +123,13 @@ public class XKDRecipeProvider extends RecipeProvider {
 		planksFromLogs(i("mahogany_planks"), MAHOGANY_LOGS, 4);
 		planksFromLogs(i("varnished_planks"), VARNISHED_LOGS, 4);
 
-		shapelessTwoToOne(
-				BUILDING_BLOCKS,
+		shapelessTwoToOne(BUILDING_BLOCKS,
 				i("mossy_deepslate_bricks"),
 				Items.DEEPSLATE_BRICKS,
 				Items.MOSS_BLOCK,
 				1,
 				true);
-		shapelessTwoToOne(
-				BUILDING_BLOCKS,
+		shapelessTwoToOne(BUILDING_BLOCKS,
 				i("mossy_deepslate_bricks"),
 				Items.DEEPSLATE_BRICKS,
 				Items.VINE,
@@ -143,13 +161,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 				.unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT))
 				.save(output);
 
-		SimpleCookingRecipeBuilder.blasting(
-						Ingredient.of(Items.IRON_BLOCK),
-						BUILDING_BLOCKS,
-						CookingBookCategory.MISC,
-						i("steel_block"),
-						0.1f,
-						100)
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(Items.IRON_BLOCK), BUILDING_BLOCKS, CookingBookCategory.BLOCKS, i("steel_block"), 0.1f, 100)
 				.unlockedBy("has_item", has(Items.IRON_BLOCK))
 				.save(output);
 		shapelessTwoToOne(BUILDING_BLOCKS, i("translucent_lamp_block"), i("tech_lamp_block"), Items.GLASS, 2, false);
@@ -188,8 +200,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 		shapedSurroundedBy8(BUILDING_BLOCKS, i("plantable_leaves_dark"), Items.DIRT, Items.DARK_OAK_LEAVES, 8);
 		shapelessTwoToOne(BUILDING_BLOCKS, i("peach_blossom_leaves"), i("peach_blossom"), Items.OAK_LEAVES, 2, false);
 		shapelessTwoToOne(BUILDING_BLOCKS, i("cherry_blossom_leaves"), i("cherry_blossom"), Items.OAK_LEAVES, 2, false);
-		shapelessTwoToOne(
-				BUILDING_BLOCKS,
+		shapelessTwoToOne(BUILDING_BLOCKS,
 				i("white_cherry_blossom_leaves"),
 				i("white_cherry_blossom"),
 				Items.OAK_LEAVES,
@@ -601,8 +612,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 				.save(output);
 	}
 
-	private void shapedSurroundedBy8(
-			RecipeCategory category,
+	private void shapedSurroundedBy8(			RecipeCategory category,
 			ItemLike result,
 			Item middle,
 			ItemLike surround,
@@ -617,8 +627,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 				.save(output);
 	}
 
-	private void shapedSurroundedBy4(
-			RecipeCategory category,
+	private void shapedSurroundedBy4(			RecipeCategory category,
 			ItemLike result,
 			Item middle,
 			ItemLike surround,
@@ -633,8 +642,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 				.save(output);
 	}
 
-	private void shapelessTwoToOne(
-			RecipeCategory category,
+	private void shapelessTwoToOne(			RecipeCategory category,
 			ItemLike result,
 			ItemLike input1,
 			ItemLike input2,
@@ -677,9 +685,9 @@ public class XKDRecipeProvider extends RecipeProvider {
 		return BuiltInRegistries.ITEM.getOptional(resourceLocation).orElseThrow();
 	}
 
-	public static class Runner extends RecipeProvider.Runner {
-		public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-			super(packOutput, registries);
+	public static class Runner extends FabricRecipeProvider {
+		public Runner(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+			super(output, registriesFuture);
 		}
 
 		@Override

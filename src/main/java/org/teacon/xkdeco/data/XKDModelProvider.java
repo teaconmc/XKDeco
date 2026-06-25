@@ -34,6 +34,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -52,7 +53,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -125,7 +125,6 @@ public class XKDModelProvider extends ModelProvider {
 			block("ebony_wardrobe"),
 			block("full_glass_wardrobe"),
 			block("glass_wardrobe"),
-			block("hologram_base"),
 			block("hologram_dna"),
 			block("hologram_message"),
 			block("hologram_pictures"),
@@ -141,7 +140,7 @@ public class XKDModelProvider extends ModelProvider {
 	private final Identifier snowySlabDouble = Identifier.withDefaultNamespace("block/grass_block_snow");
 	private final Identifier snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
-	public XKDModelProvider(PackOutput output) {
+	public XKDModelProvider(FabricPackOutput output) {
 		super(output, XKDeco.ID);
 	}
 

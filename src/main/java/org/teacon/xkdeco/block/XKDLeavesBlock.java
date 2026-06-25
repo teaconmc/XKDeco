@@ -23,7 +23,16 @@ public class XKDLeavesBlock extends LeavesBlock {
 	public static final MapCodec<XKDLeavesBlock> CODEC = simpleCodec(XKDLeavesBlock::new);
 
 	public XKDLeavesBlock(Properties properties) {
-		super(0.01F, properties);
+		// Vanilla leaves are registered with leavesProperties(), which crucially calls noOcclusion()
+		// (plus never suffocate / view-block / conduct redstone). Kiwi's "leaves" template only sets
+		// render_type, which 26.1 ignores (render layer is auto-derived; ItemBlockRenderTypes is gone),
+		// so without noOcclusion the block occludes and, combined with the alpha leaf texture, renders
+		// see-through. Mirror vanilla's leaf properties so every XKDLeavesBlock renders correctly.
+		super(0.01F, properties
+				.noOcclusion()
+				.isSuffocating((state, level, pos) -> false)
+				.isViewBlocking((state, level, pos) -> false)
+				.isRedstoneConductor((state, level, pos) -> false));
 	}
 
 	@Override

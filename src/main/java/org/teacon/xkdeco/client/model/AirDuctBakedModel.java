@@ -2,32 +2,25 @@ package org.teacon.xkdeco.client.model;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
+import org.teacon.xkdeco.block.XKDStateProperties;
+import org.teacon.xkdeco.util.NotNullByDefault;
+
 import com.google.common.collect.Lists;
 
+import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
-import org.jspecify.annotations.Nullable;
-import org.teacon.xkdeco.block.XKDStateProperties;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-/**
- * The baked, connection-driven block-state model for the air duct, ported from the 1.21.1 Fabric
- * dynamic {@code BakedModel}.
- *
- * <p>In 26.1 the part-selection logic moved from {@code getQuads} into
- * {@link #collectParts(BlockAndTintGetter, BlockPos, BlockState, RandomSource, List)}: instead of
- * merging the chosen sub-models' quads into one list, we hand the renderer the chosen
- * {@link BlockStateModelPart}s and it gathers their quads. Geometry reuse (previously a Guava cache
- * keyed by {@code (blockState, direction)}) is now driven by {@link #createGeometryKey}.
- */
 @NotNullByDefault
-public final class AirDuctBakedModel implements DynamicBlockStateModel {
+public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStateModel {
 	private final List<BlockStateModelPart> straight;
 	private final List<BlockStateModelPart> corner;
 	private final List<BlockStateModelPart> cover;
@@ -44,16 +37,8 @@ public final class AirDuctBakedModel implements DynamicBlockStateModel {
 		this.frame = frame;
 	}
 
-	/**
-	 * Reads the six per-direction connection booleans for the given state, in
-	 * {@link Direction#from3DDataValue} order, packed into a bitmask. Returns {@code -1} when the
-	 * state is null (item / fallback rendering) which maps to the first straight part.
-	 */
 	private static int connectionMask(@Nullable BlockState state) {
-		// Null state, or a state without the air-duct direction properties (e.g. the AIR fallback
-		// supplied by the no-context collectParts overload, or item rendering), maps to -1 which
-		// selects the first straight part -- matching the old getQuads(null, ...) behaviour.
-		if (state == null || !state.hasProperty(XKDStateProperties.DIRECTION_PROPERTIES.get(0))) {
+		if (state == null || !state.hasProperty(XKDStateProperties.DIRECTION_PROPERTIES.getFirst())) {
 			return -1;
 		}
 		int mask = 0;
@@ -123,9 +108,6 @@ public final class AirDuctBakedModel implements DynamicBlockStateModel {
 			BlockPos pos,
 			BlockState state,
 			RandomSource random) {
-		// Geometry depends only on which of the six faces are connected. Two states with the same
-		// connection mask produce identical parts, so they can share baked geometry (the old code
-		// achieved this by ignoring WATERLOGGED in its cache key).
 		return new GeometryKey(this, connectionMask(state));
 	}
 
@@ -133,11 +115,20 @@ public final class AirDuctBakedModel implements DynamicBlockStateModel {
 	}
 
 	@Override
+	@Deprecated
+	public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
+		collectForMask(-1, output);
+	}
+
+	@Override
+	@Deprecated
 	public Material.Baked particleMaterial() {
 		return straight.getFirst().particleMaterial();
 	}
 
 	@Override
+	@Deprecated
+	@BakedQuad.MaterialFlags
 	public int materialFlags() {
 		int flags = 0;
 		for (BlockStateModelPart part : straight) {

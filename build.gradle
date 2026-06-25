@@ -223,6 +223,7 @@ dependencies {
 
     // === Forgified Fabric API ==============================================
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${ffapi_version}"
+    compileOnly "org.sinytra:forgified-fabric-loader:${ffloader_version}"
 
     // === Optional integrations =============================================
     // -- JEI: https://modrinth.com/mod/jei/versions

@@ -6,20 +6,20 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.RoofRidgeBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagBuilder;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import snownee.kiwi.util.GameObjectLookup;
 
-public class XKDBlockTagsProvider extends BlockTagsProvider {
+public class XKDBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
 
 	public XKDBlockTagsProvider(
-			PackOutput output,
+			FabricPackOutput output,
 			CompletableFuture<HolderLookup.Provider> registriesFuture) {
-		super(output, registriesFuture, XKDeco.ID);
+		super(output, registriesFuture);
 	}
 
 	@Override
