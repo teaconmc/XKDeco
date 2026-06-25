@@ -51,13 +51,9 @@ type="optional"
 versionRange="*"
 referralUrl="https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items"
 
-# 26.1 migration: FFAPI has no 26.1 release yet. The in-house compat layer
-# (org.teacon.xkdeco.compat.fabric) lets the mod load without it, so this is
-# downgraded from "required" to "optional". Switch back to "required" and bump
-# the range once FFAPI 26.1 ships and the shim is retired.
 [[dependencies.xkdeco]]
 modId="fabric_api"
-type="optional"
-versionRange="*"
-reason="Forgified Fabric API — optional while the in-house compat layer stands in."
+type="required"
+versionRange="[0.152.1,)"
+reason="Forgified Fabric API is required for this mod to work."
 referralUrl="https://www.curseforge.com/minecraft/mc-mods/forgified-fabric-api"

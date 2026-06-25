@@ -222,12 +222,7 @@ dependencies {
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
 
     // === Forgified Fabric API ==============================================
-    // NOTE(26.1 migration): FFAPI has NO 26.1 release yet (Sinytra branch 26.1.2 WIP).
-    // The mod's FFAPI usages are being replaced by an in-house compat layer under
-    // org.teacon.xkdeco.compat.fabric (see MIGRATION-26.1.md). Re-enable these and
-    // delete the shim once FFAPI 26.1 ships.
-//    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:<26.1>"
-//    implementation("org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1") { version { strictly("<26.1>") } }
+    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${ffapi_version}"
 
     // === Optional integrations =============================================
     // -- JEI: https://modrinth.com/mod/jei/versions
