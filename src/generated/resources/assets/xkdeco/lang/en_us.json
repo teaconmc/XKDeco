@@ -1,6 +1,7 @@
 {
   "block.xkdeco.mimic_wall": "Mimic %s",
   "fml.menu.mods.info.description.xkdeco": "Models and textures are created by XeKr: https://github.com/XeKr",
+  "item.xkdeco.mimic_wall": "Mimic %s",
   "modmenu.descriptionTranslation.xkdeco": "Models and textures are created by XeKr: https://github.com/XeKr",
   "modmenu.nameTranslation.xkdeco": "XeKr's Decoration",
   "xkdeco.config.mimicWalls": "Mimic Walls",

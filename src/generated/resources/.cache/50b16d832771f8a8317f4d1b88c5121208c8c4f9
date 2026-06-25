@@ -1,0 +1,3 @@
+// 26.1.2	-999999999-01-01T00:00:00	Tags for minecraft:block mod id vanilla
+ec997e1ea674fd5ca675b4889ed486a8e501e266 data/diagonalwalls/tags/block/non_diagonal_walls.json
+00334273c08f6e9ebbec46d206bdbfdfa3054ae4 data/minecraft/tags/block/climbable.json

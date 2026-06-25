@@ -1,4 +1,4 @@
-// 26.1.2	2026-06-25T02:57:33.049502861	Model Definitions - xkdeco
+// 26.1.2	-999999999-01-01T00:00:00	Model Definitions - xkdeco
 bacdb50aa816cffa89bc63bfb63cd850a3dd1b8e assets/xkdeco/blockstates/air_duct.json
 ba6bfcffc9787c9960a3c2134c6e8e5acb005173 assets/xkdeco/blockstates/air_duct_oblique.json
 577dc2268c7e74278fa527f34433eb81e35ddfe6 assets/xkdeco/blockstates/aztec_chiseled_stonebricks.json
@@ -935,11 +935,11 @@ e2d528c7ceb13196640e4881f94a7a2f1e2b4726 assets/xkdeco/items/hollow_steel_half_b
 dee53941eeb5d6cd47a01e470a3c75fa01873011 assets/xkdeco/items/hollow_steel_trapdoor.json
 acf860fa9b27568363e355b3020ca433f37724fe assets/xkdeco/items/hollow_varnished_column_wall.json
 99276239295ee1508494fbba1fe3c9ae86740ad7 assets/xkdeco/items/hologram_base.json
-9db60d784dbdd260adefc9a6fe171704941d98fc assets/xkdeco/items/hologram_dna.json
-21faf8ea3f2c02713b157e34a7bfa1720d46e391 assets/xkdeco/items/hologram_message.json
-f49d1c12079cf1cfbd0b6fcad2df69aeb62c94ed assets/xkdeco/items/hologram_pictures.json
-0a1bef622578f20bc31f92a9ce0bced6d3b72205 assets/xkdeco/items/hologram_planet.json
-d5fe5500b8a356ff2e8e42752a10b7af8c772488 assets/xkdeco/items/hologram_xekr_logo.json
+ee10258b4c12811800b2bda988d6b3a2b5d97830 assets/xkdeco/items/hologram_dna.json
+748c2a66dd481787fc4ac35d2ce7e66f10b56bcf assets/xkdeco/items/hologram_message.json
+431c71b804ca605b622e4c2d7f496942ffcfed50 assets/xkdeco/items/hologram_pictures.json
+4d803cccffc852c1177dc4f5dedc8ee9ec60ed05 assets/xkdeco/items/hologram_planet.json
+c114951787a4ae529bd0052e48e8304bcd44a640 assets/xkdeco/items/hologram_xekr_logo.json
 556d451ccebf7dcf8b09592c8161f59f7a8e303f assets/xkdeco/items/inca_brick_slab.json
 c1b90164993189f5f6ebdca37e4ca11f78fcc39b assets/xkdeco/items/inca_brick_stairs.json
 f363c7f9011d2cac36cea85d8dc9607fb297d719 assets/xkdeco/items/inca_bricks.json
