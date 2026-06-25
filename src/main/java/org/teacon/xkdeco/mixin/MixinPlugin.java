@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 public class MixinPlugin implements IMixinConfigPlugin {
+	private static final String REI_CRAFTING_DISPLAY_MIXIN = "org.teacon.xkdeco.mixin.rei.DefaultCraftingDisplayMixin";
+	private static final String REI_CRAFTING_DISPLAY = "me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay";
 
 	@Override
 	public void onLoad(String mixinPackage) {
@@ -20,6 +22,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+		if (REI_CRAFTING_DISPLAY_MIXIN.equals(mixinClassName)) {
+			return classExists(REI_CRAFTING_DISPLAY);
+		}
 		return true;
 	}
 
@@ -41,5 +46,14 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 
+	}
+
+	private static boolean classExists(String className) {
+		try {
+			Class.forName(className, false, MixinPlugin.class.getClassLoader());
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 }

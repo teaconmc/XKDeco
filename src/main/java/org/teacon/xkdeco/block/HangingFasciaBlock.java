@@ -7,10 +7,12 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -19,7 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import snownee.kiwi.customization.block.BasicBlock;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class HangingFasciaBlock extends BasicBlock {
@@ -38,13 +40,15 @@ public class HangingFasciaBlock extends BasicBlock {
 	}
 
 	@Override
-	public BlockState updateShape(
+	protected BlockState updateShape(
 			BlockState pState,
-			Direction pDirection,
-			BlockState pNeighborState,
-			LevelAccessor pLevel,
+			LevelReader pLevel,
+			ScheduledTickAccess pTicks,
 			BlockPos pPos,
-			BlockPos pNeighborPos) {
+			Direction pDirection,
+			BlockPos pNeighborPos,
+			BlockState pNeighborState,
+			RandomSource pRandom) {
 		var axis = pState.getValue(AXIS);
 		if (pDirection.getAxis() != axis) {
 			return pState;

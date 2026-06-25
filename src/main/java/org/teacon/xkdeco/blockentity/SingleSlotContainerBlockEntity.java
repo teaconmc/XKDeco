@@ -1,6 +1,9 @@
 package org.teacon.xkdeco.blockentity;
 
-import net.minecraft.Util;
+import com.mojang.logging.LogUtils;
+
+import org.slf4j.Logger;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -13,6 +16,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,10 +26,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import snownee.kiwi.util.NotNullByDefault;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
+	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final String ITEM_STACK_KEY = "Display";
 	protected ItemStack item = ItemStack.EMPTY;
 
@@ -99,7 +108,7 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 			pStack.setCount(getMaxStackSize());
 		}
 		refresh();
-		if (level != null && !level.isClientSide) {
+		if (level != null && !level.isClientSide()) {
 			if (empty && !isEmpty()) {
 				level.playSound(null, worldPosition, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1, 1);
 			} else if (!empty && isEmpty()) {
@@ -119,15 +128,15 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
-		super.loadAdditional(pTag, registries);
-		readPacketData(pTag, registries);
+	public void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		readPacketData(input);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
-		super.saveAdditional(pTag, registries);
-		writePacketData(pTag, registries);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		writePacketData(output);
 	}
 
 	@Override
@@ -136,34 +145,31 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
-		CompoundTag compoundtag = pkt.getTag();
-		if (compoundtag != null) {
-			this.readPacketData(compoundtag, registries);
-		}
+	public void onDataPacket(Connection net, ValueInput valueInput) {
+		this.readPacketData(valueInput);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		return this.writePacketData(new CompoundTag(), registries);
-	}
-
-	protected void readPacketData(CompoundTag pTag, HolderLookup.Provider registries) {
-		item = ItemStack.EMPTY;
-		if (pTag.contains(ITEM_STACK_KEY)) {
-			item = ItemStack.parseOptional(registries, pTag.getCompound(ITEM_STACK_KEY));
+		try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), LOGGER)) {
+			TagValueOutput output = TagValueOutput.createWithContext(reporter, registries);
+			writePacketData(output);
+			return output.buildResult();
 		}
 	}
 
-	protected CompoundTag writePacketData(CompoundTag pTag, HolderLookup.Provider registries) {
+	protected void readPacketData(ValueInput input) {
+		item = input.read(ITEM_STACK_KEY, ItemStack.CODEC).orElse(ItemStack.EMPTY);
+	}
+
+	protected void writePacketData(ValueOutput output) {
 		if (!item.isEmpty()) {
-			pTag.put(ITEM_STACK_KEY, item.save(registries, new CompoundTag()));
+			output.store(ITEM_STACK_KEY, ItemStack.CODEC, item);
 		}
-		return pTag;
 	}
 
 	public void refresh() {
-		if (this.hasLevel() && !this.level.isClientSide) {
+		if (this.hasLevel() && !this.level.isClientSide()) {
 			BlockState state = this.getBlockState();
 			this.level.sendBlockUpdated(this.worldPosition, state, state, 11);
 			this.setChanged();

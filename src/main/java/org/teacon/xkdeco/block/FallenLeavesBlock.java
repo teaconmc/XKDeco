@@ -5,14 +5,16 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import snownee.kiwi.customization.block.StringProperty;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class FallenLeavesBlock extends Block {
@@ -23,13 +25,15 @@ public final class FallenLeavesBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(
+	protected BlockState updateShape(
 			BlockState pState,
-			Direction pDirection,
-			BlockState pNeighborState,
-			LevelAccessor pLevel,
+			LevelReader pLevel,
+			ScheduledTickAccess pTicks,
 			BlockPos pPos,
-			BlockPos pNeighborPos) {
+			Direction pDirection,
+			BlockPos pNeighborPos,
+			BlockState pNeighborState,
+			RandomSource pRandom) {
 		if (pDirection == Direction.DOWN) {
 			pState = pState.setValue(HALF, isBottomSlab(pNeighborState) ? "lower" : "upper");
 		}

@@ -11,24 +11,25 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import snownee.kiwi.customization.placement.PlaceSlot;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class RoofRidgeBlock extends WallBlock {
 	public static final Map<Direction, EnumProperty<WallSide>> DIRECTION_TO_PROPERTY = Map.of(
 			Direction.NORTH,
-			WallBlock.NORTH_WALL,
+			BlockStateProperties.NORTH_WALL,
 			Direction.EAST,
-			WallBlock.EAST_WALL,
+			BlockStateProperties.EAST_WALL,
 			Direction.SOUTH,
-			WallBlock.SOUTH_WALL,
+			BlockStateProperties.SOUTH_WALL,
 			Direction.WEST,
-			WallBlock.WEST_WALL);
+			BlockStateProperties.WEST_WALL);
 
 	public RoofRidgeBlock(Properties properties) {
 		super(properties);

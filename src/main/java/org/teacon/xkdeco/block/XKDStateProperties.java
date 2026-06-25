@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import snownee.kiwi.customization.block.StringProperty;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public interface XKDStateProperties {
@@ -31,7 +31,7 @@ public interface XKDStateProperties {
 	StringProperty ROOF_END_SHAPE = StringProperty.convert(EnumProperty.create("shape", RoofEndShape.class));
 
 	enum RoofHalf implements StringRepresentable {
-		UPPER, LOWER;
+		LOWER, UPPER;
 
 		@Override
 		public String getSerializedName() {

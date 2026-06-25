@@ -6,13 +6,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class BlockDisplayBlock extends DisplayBlock {
@@ -42,7 +42,7 @@ public final class BlockDisplayBlock extends DisplayBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useTop(
+	protected InteractionResult useTop(
 			ItemStack held,
 			BlockState pState,
 			Level pLevel,
@@ -51,11 +51,11 @@ public final class BlockDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!(pLevel.getBlockEntity(pPos) instanceof BlockDisplayBlockEntity be)) {
-			return ItemInteractionResult.FAIL;
+			return InteractionResult.FAIL;
 		}
 		boolean empty = be.getStoredBlockState().isAir();
-		ItemInteractionResult result = super.useTop(held, pState, pLevel, pPos, pPlayer, pHand, pHit);
-		if (!pLevel.isClientSide && empty && !be.getStoredBlockState().isAir()) {
+		InteractionResult result = super.useTop(held, pState, pLevel, pPos, pPlayer, pHand, pHit);
+		if (!pLevel.isClientSide() && empty && !be.getStoredBlockState().isAir()) {
 			Block block = be.getStoredBlockState().getBlock();
 			BlockState blockState = block.getStateForPlacement(new BlockPlaceContext(pPlayer, pHand, held, pHit));
 			if (blockState != null) {
@@ -66,7 +66,7 @@ public final class BlockDisplayBlock extends DisplayBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useSide(
+	protected InteractionResult useSide(
 			ItemStack held,
 			BlockState pState,
 			Level pLevel,
@@ -75,20 +75,20 @@ public final class BlockDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!(pLevel.getBlockEntity(pPos) instanceof BlockDisplayBlockEntity be)) {
-			return ItemInteractionResult.FAIL;
+			return InteractionResult.FAIL;
 		}
-		if (pLevel.isClientSide) {
-			return ItemInteractionResult.SUCCESS;
+		if (pLevel.isClientSide()) {
+			return InteractionResult.SUCCESS;
 		}
 		if (checkEmptyProperties(pPlayer, be)) {
-			return ItemInteractionResult.CONSUME;
+			return InteractionResult.CONSUME;
 		}
 		var property = Objects.requireNonNull(be.getSelectedProperty());
 		be.setStoredBlockState(cycleState(be.getStoredBlockState(), property, pPlayer.isSecondaryUseActive()));
 		message(pPlayer, Component.translatable(
 				Items.DEBUG_STICK.getDescriptionId() + ".update",
 				property.getName(), getValueName(be.getStoredBlockState(), property)));
-		return ItemInteractionResult.CONSUME;
+		return InteractionResult.CONSUME;
 	}
 
 	@Override

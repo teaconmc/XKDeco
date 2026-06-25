@@ -55,7 +55,7 @@ public abstract class PlayerMixin extends LivingEntity implements XKDPlayer {
 			}
 		});
 		xkdeco$isHidingInAirDuct = counts[0] > 0 && counts[0] >= counts[1];
-		if (xkdeco$isHidingInAirDuct && !level().isClientSide) {
+		if (xkdeco$isHidingInAirDuct && !level().isClientSide()) {
 			addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 15, 0, false, false, true));
 		}
 	}

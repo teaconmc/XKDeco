@@ -13,6 +13,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import snownee.kiwi.customization.placement.PlaceSlot;
@@ -69,10 +70,10 @@ public abstract class WallBlockMixin {
 
 	@Unique
 	private boolean xkdeco$shouldRaisePost(BlockState state) {
-		WallSide wallside = state.getValue(WallBlock.NORTH_WALL);
-		WallSide wallside1 = state.getValue(WallBlock.SOUTH_WALL);
-		WallSide wallside2 = state.getValue(WallBlock.EAST_WALL);
-		WallSide wallside3 = state.getValue(WallBlock.WEST_WALL);
+		WallSide wallside = state.getValue(BlockStateProperties.NORTH_WALL);
+		WallSide wallside1 = state.getValue(BlockStateProperties.SOUTH_WALL);
+		WallSide wallside2 = state.getValue(BlockStateProperties.EAST_WALL);
+		WallSide wallside3 = state.getValue(BlockStateProperties.WEST_WALL);
 		boolean flag1 = wallside1 == WallSide.NONE;
 		boolean flag2 = wallside3 == WallSide.NONE;
 		boolean flag3 = wallside2 == WallSide.NONE;

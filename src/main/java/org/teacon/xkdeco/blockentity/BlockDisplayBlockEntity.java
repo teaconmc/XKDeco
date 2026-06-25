@@ -19,7 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import snownee.kiwi.util.NotNullByDefault;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntity {
@@ -82,11 +84,9 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
-		super.loadAdditional(pTag, registries);
-		super.readPacketData(pTag, registries);
-		readPacketData(pTag, registries);
-		if (pTag.contains(SELECTED_PROPERTY_KEY)) {
+	public void loadAdditional(ValueInput input) {
+		super.loadAdditional(input); // base reads item + blockState via readPacketData
+		if (input.getString(SELECTED_PROPERTY_KEY).isPresent()) {
 			try {
 				selectedProperty = blockState.getBlock().getStateDefinition().getProperty(SELECTED_PROPERTY_KEY);
 			} catch (Exception e) {
@@ -96,23 +96,22 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider registries) {
-		super.saveAdditional(pTag, registries);
-		super.writePacketData(pTag, registries);
-		writePacketData(pTag, registries);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output); // base writes item + blockState via writePacketData
 		if (selectedProperty != null) {
-			pTag.putString(SELECTED_PROPERTY_KEY, selectedProperty.getName());
+			output.putString(SELECTED_PROPERTY_KEY, selectedProperty.getName());
 		}
 	}
 
 	@Override
-	protected void readPacketData(CompoundTag pTag, HolderLookup.Provider registries) {
-		blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), pTag.getCompound(BLOCK_STATE_KEY));
+	protected void readPacketData(ValueInput input) {
+		super.readPacketData(input);
+		input.read(BLOCK_STATE_KEY, BlockState.CODEC).ifPresent(bs -> blockState = bs);
 	}
 
 	@Override
-	protected CompoundTag writePacketData(CompoundTag pTag, HolderLookup.Provider registries) {
-		pTag.put(BLOCK_STATE_KEY, NbtUtils.writeBlockState(blockState));
-		return pTag;
+	protected void writePacketData(ValueOutput output) {
+		super.writePacketData(output);
+		output.store(BLOCK_STATE_KEY, BlockState.CODEC, blockState);
 	}
 }

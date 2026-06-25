@@ -9,10 +9,10 @@ import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-import snownee.kiwi.util.NotNullByDefault;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
@@ -48,15 +48,14 @@ public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 	}
 
 	@Override
-	protected void readPacketData(CompoundTag pTag, HolderLookup.Provider registries) {
-		super.readPacketData(pTag, registries);
-		this.fixedSpin = pTag.getFloat(SPIN_KEY);
+	protected void readPacketData(ValueInput input) {
+		super.readPacketData(input);
+		this.fixedSpin = input.getFloatOr(SPIN_KEY, 0.0F);
 	}
 
-	@NotNull
 	@Override
-	protected CompoundTag writePacketData(CompoundTag pTag, HolderLookup.Provider registries) {
-		pTag.putFloat(SPIN_KEY, fixedSpin);
-		return super.writePacketData(pTag, registries);
+	protected void writePacketData(ValueOutput output) {
+		super.writePacketData(output);
+		output.putFloat(SPIN_KEY, fixedSpin);
 	}
 }

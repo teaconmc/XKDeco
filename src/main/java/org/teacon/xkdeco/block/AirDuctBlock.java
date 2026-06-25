@@ -14,8 +14,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -25,7 +27,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.customization.block.BasicBlock;
 import snownee.kiwi.customization.placement.PlaceSlot;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @SuppressWarnings("deprecation")
 @NotNullByDefault
@@ -80,7 +82,7 @@ public class AirDuctBlock extends BasicBlock {
 		Direction direction = pHit.getDirection();
 		pState = pState.cycle(DIRECTION_PROPERTIES.get(direction.get3DDataValue()));
 		pLevel.setBlockAndUpdate(pPos, pState);
-		return InteractionResult.sidedSuccess(pLevel.isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -115,13 +117,15 @@ public class AirDuctBlock extends BasicBlock {
 	}
 
 	@Override
-	public BlockState updateShape(
+	protected BlockState updateShape(
 			BlockState blockState,
-			Direction pDirection,
-			BlockState pNeighborState,
-			LevelAccessor level,
+			LevelReader level,
+			ScheduledTickAccess pTicks,
 			BlockPos pos,
-			BlockPos pNeighborPos) {
+			Direction pDirection,
+			BlockPos pNeighborPos,
+			BlockState pNeighborState,
+			RandomSource pRandom) {
 		if (!isAirDuctSlot(pNeighborState, pDirection.getOpposite())) {
 			return blockState;
 		}

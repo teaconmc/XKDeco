@@ -2,10 +2,10 @@
 	"required": true,
 	"package": "org.teacon.xkdeco.mixin",
 	"plugin": "org.teacon.xkdeco.mixin.MixinPlugin",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_25",
 	"refmap": "xkdeco.refmap.json",
 	"mixins": [
-		"ReloadableServerResourcesMixin",
+		"MappedRegistryMixin",
 		"WallBlockMixin",
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
@@ -13,7 +13,6 @@
 		"rei.DefaultCraftingDisplayMixin"
 	],
 	"client": [
-		"air_duct.PlayerRendererMixin",
 		"client.MinecraftMixin"
 	],
 	"injectors": {

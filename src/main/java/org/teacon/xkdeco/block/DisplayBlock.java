@@ -2,11 +2,12 @@ package org.teacon.xkdeco.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.block.ModBlock;
 import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public abstract class DisplayBlock extends ModBlock implements EntityBlock, CheckedWaterloggedBlock {
@@ -27,7 +28,7 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(
+	protected InteractionResult useItemOn(
 			ItemStack stack,
 			BlockState state,
 			Level level,
@@ -42,7 +43,7 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 		}
 	}
 
-	protected ItemInteractionResult useSide(
+	protected InteractionResult useSide(
 			ItemStack held,
 			BlockState pState,
 			Level pLevel,
@@ -50,10 +51,10 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 			Player pPlayer,
 			InteractionHand pHand,
 			BlockHitResult pHit) {
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
-	protected ItemInteractionResult useTop(
+	protected InteractionResult useTop(
 			ItemStack held,
 			BlockState pState,
 			Level pLevel,
@@ -62,17 +63,17 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!(pLevel.getBlockEntity(pPos) instanceof Container container)) {
-			return ItemInteractionResult.FAIL;
+			return InteractionResult.FAIL;
 		}
-		if (pLevel.isClientSide) {
-			return ItemInteractionResult.SUCCESS;
+		if (pLevel.isClientSide()) {
+			return InteractionResult.SUCCESS;
 		}
 		if (held.isEmpty()) {
 			grab(pState, pLevel, pPos, pPlayer);
-			return ItemInteractionResult.CONSUME;
+			return InteractionResult.CONSUME;
 		}
 		insertItem(container, pPlayer.getAbilities().instabuild ? held.copy() : held);
-		return ItemInteractionResult.CONSUME;
+		return InteractionResult.CONSUME;
 	}
 
 	public void click(BlockState blockState, Level level, BlockPos pos, ServerPlayer player, BlockHitResult hit) {
@@ -110,7 +111,7 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 	@Override
 	public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
 		super.stepOn(pLevel, pPos, pState, pEntity);
-		if (!pLevel.isClientSide && pEntity instanceof ItemEntity itemEntity &&
+		if (!pLevel.isClientSide() && pEntity instanceof ItemEntity itemEntity &&
 				pLevel.getBlockEntity(pPos) instanceof Container container) {
 			if (insertItem(container, itemEntity.getItem())) {
 				itemEntity.setItem(itemEntity.getItem()); // send update packet
@@ -119,7 +120,7 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 	}
 
 	public void grab(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
-		if (pLevel.isClientSide || !(pLevel.getBlockEntity(pPos) instanceof Container be)) {
+		if (pLevel.isClientSide() || !(pLevel.getBlockEntity(pPos) instanceof Container be)) {
 			return;
 		}
 		ItemStack item = be.getItem(0);
@@ -143,14 +144,10 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 	// BlockItem now automatically handles custom name. setPlacedBy is no longer required.
 	// cf. BlockEntity.applyComponentsFromItemStack
 
+	// Container contents are dropped automatically via BlockEntity.preRemoveSideEffects.
 	@Override
-	public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-		if (!pState.is(pNewState.getBlock()) && pLevel.getBlockEntity(pPos) instanceof Container container) {
-			Containers.dropContents(pLevel, pPos, container);
-			pLevel.updateNeighbourForOutputSignal(pPos, this);
-		}
-
-		super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+	protected void affectNeighborsAfterRemoval(BlockState pState, ServerLevel pLevel, BlockPos pPos, boolean pMovedByPiston) {
+		Containers.updateNeighboursAfterDestroy(pState, pLevel, pPos);
 	}
 
 	@Override
@@ -159,7 +156,7 @@ public abstract class DisplayBlock extends ModBlock implements EntityBlock, Chec
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState pBlockState, Level pLevel, BlockPos pPos) {
+	public int getAnalogOutputSignal(BlockState pBlockState, Level pLevel, BlockPos pPos, Direction pDirection) {
 		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(pLevel.getBlockEntity(pPos));
 	}
 

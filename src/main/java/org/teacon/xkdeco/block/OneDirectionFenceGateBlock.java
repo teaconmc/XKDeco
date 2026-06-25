@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class OneDirectionFenceGateBlock extends FenceGateBlock {
@@ -57,6 +57,6 @@ public class OneDirectionFenceGateBlock extends FenceGateBlock {
 				1.0F,
 				pLevel.getRandom().nextFloat() * 0.1F + 0.9F);
 		pLevel.gameEvent(pPlayer, flag ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pPos);
-		return InteractionResult.sidedSuccess(pLevel.isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 }

@@ -2,16 +2,18 @@ package org.teacon.xkdeco.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SnowyDirtBlock;
+import net.minecraft.world.level.block.SnowyBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class SnowySlabBlock extends SpecialSlabBlock {
@@ -32,17 +34,19 @@ public final class SnowySlabBlock extends SpecialSlabBlock {
 	}
 
 	@Override
-	public BlockState updateShape(
+	protected BlockState updateShape(
 			BlockState pState,
-			Direction pFacing,
-			BlockState pFacingState,
-			LevelAccessor pLevel,
+			LevelReader pLevel,
+			ScheduledTickAccess pTicks,
 			BlockPos pCurrentPos,
-			BlockPos pFacingPos) {
+			Direction pFacing,
+			BlockPos pFacingPos,
+			BlockState pFacingState,
+			RandomSource pRandom) {
 		if (pFacing == Direction.UP) {
-			pState = pState.setValue(SNOWY, pState.getValue(TYPE) != SlabType.BOTTOM && SnowyDirtBlock.isSnowySetting(pFacingState));
+			pState = pState.setValue(SNOWY, pState.getValue(TYPE) != SlabType.BOTTOM && SnowyBlock.isSnowySetting(pFacingState));
 		}
-		return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+		return super.updateShape(pState, pLevel, pTicks, pCurrentPos, pFacing, pFacingPos, pFacingState, pRandom);
 	}
 
 	@Override
@@ -50,7 +54,7 @@ public final class SnowySlabBlock extends SpecialSlabBlock {
 		BlockState state = super.getStateForPlacement(pContext);
 		if (state != null && state.getValue(TYPE) != SlabType.BOTTOM) {
 			BlockState aboveState = pContext.getLevel().getBlockState(pContext.getClickedPos().above());
-			state = state.setValue(SNOWY, SnowyDirtBlock.isSnowySetting(aboveState));
+			state = state.setValue(SNOWY, SnowyBlock.isSnowySetting(aboveState));
 		}
 		return state;
 	}

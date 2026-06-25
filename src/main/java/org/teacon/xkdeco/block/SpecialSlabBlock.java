@@ -15,18 +15,18 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.NyliumBlock;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SpreadingSnowyDirtBlock;
+import net.minecraft.world.level.block.SpreadingSnowyBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class SpecialSlabBlock extends SlabBlock {
@@ -34,8 +34,8 @@ public class SpecialSlabBlock extends SlabBlock {
 			propertiesCodec(),
 			StringRepresentable.fromEnum(Type::values).fieldOf("type").forGetter(block -> block.type)
 	).apply(instance, SpecialSlabBlock::new));
-	private static final Supplier<Block> DIRT_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.get(XKDeco.id("dirt_slab")));
-	private static final Supplier<Block> NETHERRACK_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.get(XKDeco.id("netherrack_slab")));
+	private static final Supplier<Block> DIRT_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.getValue(XKDeco.id("dirt_slab")));
+	private static final Supplier<Block> NETHERRACK_SLAB = Suppliers.memoize(() -> BuiltInRegistries.BLOCK.getValue(XKDeco.id("netherrack_slab")));
 
 	protected final Type type;
 
@@ -50,13 +50,19 @@ public class SpecialSlabBlock extends SlabBlock {
 	}
 
 	@Override
-	public BlockState updateShape(
-			BlockState state, Direction facing,
-			BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos) {
+	protected BlockState updateShape(
+			BlockState state,
+			LevelReader world,
+			ScheduledTickAccess ticks,
+			BlockPos pos,
+			Direction facing,
+			BlockPos facingPos,
+			BlockState facingState,
+			RandomSource random) {
 		if (type == Type.PATH && facing == Direction.UP && !state.canSurvive(world, pos)) {
-			world.scheduleTick(pos, this, 1);
+			ticks.scheduleTick(pos, this, 1);
 		}
-		return super.updateShape(state, facing, facingState, world, pos, facingPos);
+		return super.updateShape(state, world, ticks, pos, facing, facingPos, facingState, random);
 	}
 
 	@Override
@@ -71,7 +77,7 @@ public class SpecialSlabBlock extends SlabBlock {
 				if (pState.getValue(WATERLOGGED)) {
 					turnToAnotherSlab(DIRT_SLAB, pState, pLevel, pPos);
 				}
-			} else if (!SpreadingSnowyDirtBlock.canBeGrass(pState.setValue(TYPE, SlabType.DOUBLE), pLevel, pPos)) {
+			} else if (!SpreadingSnowyBlock.canStayAlive(pState.setValue(TYPE, SlabType.DOUBLE), pLevel, pPos)) {
 				turnToAnotherSlab(DIRT_SLAB, pState, pLevel, pPos);
 			}
 		} else if (type == Type.NYLIUM) {

@@ -13,9 +13,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -30,7 +32,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -39,11 +40,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity> {
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final EnumProperty<DoorHingeSide> HINGE = BlockStateProperties.DOOR_HINGE;
 	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
@@ -110,7 +111,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockPos blockpos = pContext.getClickedPos();
 		Level level = pContext.getLevel();
-		if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(pContext)) {
+		if (blockpos.getY() < level.getMaxY() && level.getBlockState(blockpos.above()).canBeReplaced(pContext)) {
 			return this.defaultBlockState()
 					.setValue(FACING, pContext.getHorizontalDirection().getOpposite())
 					.setValue(OPEN, false)
@@ -129,7 +130,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 
 	@Override
 	public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-		if (!pLevel.isClientSide && pPlayer.isCreative()) {
+		if (!pLevel.isClientSide() && pPlayer.isCreative()) {
 			preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
 		}
 		return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
@@ -140,13 +141,15 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	 */
 	@Override
 	@SuppressWarnings("deprecation")
-	public BlockState updateShape(
+	protected BlockState updateShape(
 			BlockState pState,
-			Direction pFacing,
-			BlockState pFacingState,
-			LevelAccessor pLevel,
+			LevelReader pLevel,
+			ScheduledTickAccess pTicks,
 			BlockPos pCurrentPos,
-			BlockPos pFacingPos) {
+			Direction pFacing,
+			BlockPos pFacingPos,
+			BlockState pFacingState,
+			RandomSource pRandom) {
 		DoubleBlockHalf currentHalf = pState.getValue(HALF);
 		if (pFacing.getAxis() == Direction.Axis.Y && currentHalf == DoubleBlockHalf.LOWER == (pFacing == Direction.UP)) {
 			// vertical direction and from a place supposed to be a counterpart
@@ -162,7 +165,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 			}
 		} else {
 			// this is a lower part and not supported by the ground
-			return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+			return super.updateShape(pState, pLevel, pTicks, pCurrentPos, pFacing, pFacingPos, pFacingState, pRandom);
 		}
 	}
 
@@ -176,14 +179,14 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+	protected boolean propagatesSkylightDown(BlockState pState) {
 		return pState.getValue(HALF) == DoubleBlockHalf.UPPER;
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public int getLightBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-		return this.propagatesSkylightDown(pState, pLevel, pPos) ? 0 : 15;
+	protected int getLightDampening(BlockState pState) {
+		return this.propagatesSkylightDown(pState) ? 0 : 15;
 	}
 
 	@Nullable

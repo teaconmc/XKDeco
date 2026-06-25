@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.SegmentedAnglePrecision;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,8 +22,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @NotNullByDefault
 public class ItemDisplayBlock extends DisplayBlock {
@@ -53,20 +54,20 @@ public class ItemDisplayBlock extends DisplayBlock {
 	}
 
 	@Override
-	public void neighborChanged(
+	protected void neighborChanged(
 			BlockState pState,
 			Level pLevel,
 			BlockPos pPos,
 			Block pBlock,
-			BlockPos pFromPos,
+			@Nullable Orientation pOrientation,
 			boolean pIsMoving) {
-		if (!pLevel.isClientSide && pState.getValue(POWERED) != pLevel.hasNeighborSignal(pPos)) {
+		if (!pLevel.isClientSide() && pState.getValue(POWERED) != pLevel.hasNeighborSignal(pPos)) {
 			pLevel.setBlock(pPos, pState.cycle(POWERED), 2);
 		}
 	}
 
 	@Override
-	protected ItemInteractionResult useSide(
+	protected InteractionResult useSide(
 			ItemStack held,
 			BlockState pState,
 			Level pLevel,
@@ -75,17 +76,17 @@ public class ItemDisplayBlock extends DisplayBlock {
 			InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (!pState.getValue(POWERED)) {
-			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+			return InteractionResult.TRY_WITH_EMPTY_HAND;
 		}
-		if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof ItemDisplayBlockEntity blockEntity) {
+		if (!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof ItemDisplayBlockEntity blockEntity) {
 			blockEntity.setFixedSpin(blockEntity.getSpin() + angleStep);
 			blockEntity.refresh();
 		}
-		return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	protected ItemInteractionResult useTop(
+	protected InteractionResult useTop(
 			ItemStack held,
 			BlockState pState,
 			Level pLevel,
@@ -98,7 +99,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 	}
 
 	private void setSpin(Level level, BlockPos pos, @Nullable LivingEntity placer) {
-		if (!level.isClientSide && placer != null && level.getBlockEntity(pos) instanceof ItemDisplayBlockEntity be) {
+		if (!level.isClientSide() && placer != null && level.getBlockEntity(pos) instanceof ItemDisplayBlockEntity be) {
 			be.setFixedSpin(SEGMENTED_ANGLE8.toDegrees(SEGMENTED_ANGLE8.fromDegrees(-placer.getYRot() - 180)) / 45F * angleStep);
 		}
 	}
