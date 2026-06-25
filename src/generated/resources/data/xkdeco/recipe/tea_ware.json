@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "xkdeco:cup"
-    },
-    "S": {
-      "item": "xkdeco:teapot"
-    }
+    "M": "xkdeco:cup",
+    "S": "xkdeco:teapot"
   },
   "pattern": [
     " S ",

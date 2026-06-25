@@ -3,6 +3,18 @@ import yaml
 from TableDataProvider import TableDataProvider
 
 
+def normalize_property_order(data):
+    if isinstance(data, list):
+        for item in data:
+            normalize_property_order(item)
+    elif isinstance(data, dict):
+        values = data.get('values')
+        if data.get('name') == 'half' and isinstance(values, list) and sorted(values) == ['lower', 'upper']:
+            data['values'] = ['lower', 'upper']
+        for value in data.values():
+            normalize_property_order(value)
+
+
 def read(provider: TableDataProvider, row: dict) -> dict:
     data = {}
     provider.field(data, 'RenderType', lambda v: v if v != 'solid' else None)
@@ -14,7 +26,9 @@ def read(provider: TableDataProvider, row: dict) -> dict:
     if 'BaseComponent' in row and row['BaseComponent'] != '':
         components.append(row['BaseComponent'])
     if 'ExtraComponents' in row and row['ExtraComponents'] != '':
-        components.extend(yaml.safe_load(row['ExtraComponents']))
+        extra_components = yaml.safe_load(row['ExtraComponents'])
+        normalize_property_order(extra_components)
+        components.extend(extra_components)
     if len(components) > 0:
         data['components'] = components
     provider.field(data, 'Shape', str)

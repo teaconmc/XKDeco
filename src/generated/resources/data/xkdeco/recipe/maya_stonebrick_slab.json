@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:maya_stonebricks"
-    }
+    "#": "xkdeco:maya_stonebricks"
   },
   "pattern": [
     "###"

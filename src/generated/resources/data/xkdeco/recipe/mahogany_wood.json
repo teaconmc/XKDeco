@@ -3,9 +3,7 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": {
-      "item": "xkdeco:mahogany_log"
-    }
+    "#": "xkdeco:mahogany_log"
   },
   "pattern": [
     "##",

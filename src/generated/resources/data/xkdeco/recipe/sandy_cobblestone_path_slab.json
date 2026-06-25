@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:sandy_cobblestone_path"
-    }
+    "#": "xkdeco:sandy_cobblestone_path"
   },
   "pattern": [
     "###"

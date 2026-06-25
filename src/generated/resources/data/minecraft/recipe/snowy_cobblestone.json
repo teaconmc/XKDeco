@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:snow_block",
+    "minecraft:cobblestone"
+  ],
+  "result": {
+    "id": "xkdeco:snowy_cobblestone"
+  }
+}

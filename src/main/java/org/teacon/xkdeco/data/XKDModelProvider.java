@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.data;
 
-import static net.minecraft.data.models.model.TextureMapping.getBlockTexture;
+import static net.minecraft.client.data.models.model.TextureMapping.getBlockTexture;
 import static org.teacon.xkdeco.block.XKDStateProperties.HALF;
 import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_EAVE_SHAPE;
 import static org.teacon.xkdeco.block.XKDStateProperties.ROOF_END_SHAPE;
@@ -22,38 +22,44 @@ import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.HologramBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
+import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
+import com.mojang.math.Quadrant;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
-import net.minecraft.data.models.blockstates.Condition;
-import net.minecraft.data.models.blockstates.MultiPartGenerator;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.data.models.model.TexturedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
@@ -61,13 +67,13 @@ import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
 import snownee.kiwi.util.GameObjectLookup;
-import snownee.kiwi.util.NotNullByDefault;
+import org.teacon.xkdeco.util.NotNullByDefault;
 
 @SuppressWarnings({"deprecation", "SameParameterValue"})
 @NotNullByDefault
-public class XKDModelProvider extends FabricModelProvider {
+public class XKDModelProvider extends ModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final ResourceLocation ROOF_INNER_TEXTURE = XKDeco.id("block/roof_inner");
+	private static final Identifier ROOF_INNER_TEXTURE = XKDeco.id("block/roof_inner");
 	private static final Set<Block> ROTATED_PILLARS = Set.of(
 			block("chiseled_bronze_block"),
 			block("chiseled_steel_block"),
@@ -90,6 +96,15 @@ public class XKDModelProvider extends FabricModelProvider {
 			"block/hollow_steel_beam_oblique_slow_top",
 			"block/hollow_steel_beam_oblique_steep",
 			"block/hollow_steel_beam_oblique_steep_top",
+			"block/glass_trapdoor_bottom",
+			"block/glass_trapdoor_open",
+			"block/glass_trapdoor_top",
+			"block/hollow_steel_trapdoor_bottom",
+			"block/hollow_steel_trapdoor_open",
+			"block/hollow_steel_trapdoor_top",
+			"block/steel_trapdoor_bottom",
+			"block/steel_trapdoor_open",
+			"block/steel_trapdoor_top",
 			"block/quartz_wall_post");
 	private static final Set<Block> SKIPPED_TRAPDOORS = Set.of(
 			block("glass_trapdoor"),
@@ -106,13 +121,42 @@ public class XKDModelProvider extends FabricModelProvider {
 	private static final Set<Block> GADGET_SKIP_BLOCKS = Set.of(
 			block("empty_candlestick"),
 			block("oil_lamp"));
+	private static final Set<Block> LEGACY_ITEM_MODEL_BLOCKS = Set.of(
+			block("ebony_wardrobe"),
+			block("full_glass_wardrobe"),
+			block("glass_wardrobe"),
+			block("hologram_base"),
+			block("hologram_dna"),
+			block("hologram_message"),
+			block("hologram_pictures"),
+			block("hologram_planet"),
+			block("hologram_xekr_logo"),
+			block("hollow_steel_bars"),
+			block("iron_wardrobe"),
+			block("mahogany_wardrobe"),
+			block("oil_lamp"),
+			block("varnished_wardrobe"));
 	private BlockModelGenerators generators;
 	private static final Set<Block> generated = Sets.newHashSet();
-	private final ResourceLocation snowySlabDouble = ResourceLocation.withDefaultNamespace("block/grass_block_snow");
-	private final ResourceLocation snowySlabTop = XKDeco.id("block/snowy_slab_top");
+	private final Identifier snowySlabDouble = Identifier.withDefaultNamespace("block/grass_block_snow");
+	private final Identifier snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
-	public XKDModelProvider(FabricDataOutput output) {
-		super(output);
+	public XKDModelProvider(PackOutput output) {
+		super(output, XKDeco.ID);
+	}
+
+	@Override
+	protected Stream<? extends Holder<Block>> getKnownBlocks() {
+		return Stream.empty();
+	}
+
+	@Override
+	protected Stream<? extends Holder<Item>> getKnownItems() {
+		return super.getKnownItems();
+	}
+
+	private static MultiVariant plainVariant(Identifier model) {
+		return BlockModelGenerators.plainVariant(model);
 	}
 
 	public static boolean createIfRotatedPillar(Block block, BlockModelGenerators generators) {
@@ -130,34 +174,42 @@ public class XKDModelProvider extends FabricModelProvider {
 		TextureMapping mapping = TextureMapping.column(
 				getBlockTexture(block),
 				getBlockTexture(family.getBaseBlock()));
-		ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
-		ResourceLocation top = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
-		ResourceLocation cube = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, bottom, top, cube));
+		Identifier bottom = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
+		Identifier top = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
+		Identifier cube = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, plainVariant(bottom), plainVariant(top), plainVariant(cube)));
 		return true;
 	}
 
 	public static boolean createIfSpecialTrapdoor(Block block, BlockModelGenerators generators, BlockFamily family) {
-		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(family.getBaseBlock());
+		Identifier id = BuiltInRegistries.BLOCK.getKey(family.getBaseBlock());
 		if (id.getPath().startsWith("factory_")) {
 			createTrapdoor(block, family.getBaseBlock(), generators);
 			return true;
 		}
 		if (TREATED_WOOD_FAMILIES.contains(family)) {
 			TextureMapping $$1 = TextureMapping.defaultTexture(block);
-			ResourceLocation $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(block, $$1, generators.modelOutput);
-			ResourceLocation $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(block, $$1, generators.modelOutput);
-			ResourceLocation $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(block, $$1, generators.modelOutput);
-			generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(block, $$2, $$3, $$4));
-			generators.delegateItemModel(block, $$3);
+			Identifier $$2 = XKDModelTemplates.THIN_TRAPDOOR_TOP.create(block, $$1, generators.modelOutput);
+			Identifier $$3 = XKDModelTemplates.THIN_TRAPDOOR_BOTTOM.create(block, $$1, generators.modelOutput);
+			Identifier $$4 = XKDModelTemplates.THIN_TRAPDOOR_OPEN.create(block, $$1, generators.modelOutput);
+			generators.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(
+					block,
+					plainVariant($$2),
+					plainVariant($$3),
+					plainVariant($$4)));
+			generators.registerSimpleItemModel(block, $$3);
 			return true;
 		}
 		if (SKIPPED_TRAPDOORS.contains(block)) {
-			ResourceLocation model1 = ModelLocationUtils.getModelLocation(block, "_top");
-			ResourceLocation model2 = ModelLocationUtils.getModelLocation(block, "_bottom");
-			ResourceLocation model3 = ModelLocationUtils.getModelLocation(block, "_open");
-			generators.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, model1, model2, model3));
-			generators.delegateItemModel(block, model2);
+			Identifier model1 = ModelLocationUtils.getModelLocation(block, "_top");
+			Identifier model2 = ModelLocationUtils.getModelLocation(block, "_bottom");
+			Identifier model3 = ModelLocationUtils.getModelLocation(block, "_open");
+			generators.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(
+					block,
+					plainVariant(model1),
+					plainVariant(model2),
+					plainVariant(model3)));
+			generators.registerSimpleItemModel(block, model2);
 			return true;
 		}
 		return false;
@@ -165,11 +217,15 @@ public class XKDModelProvider extends FabricModelProvider {
 
 	private static void createTrapdoor(Block trapdoorBlock, Block fullBlock, BlockModelGenerators generators) {
 		TextureMapping mapping = TextureMapping.defaultTexture(fullBlock);
-		ResourceLocation model1 = ModelTemplates.TRAPDOOR_TOP.create(trapdoorBlock, mapping, generators.modelOutput);
-		ResourceLocation model2 = ModelTemplates.TRAPDOOR_BOTTOM.create(trapdoorBlock, mapping, generators.modelOutput);
-		ResourceLocation model3 = ModelTemplates.TRAPDOOR_OPEN.create(trapdoorBlock, mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(trapdoorBlock, model1, model2, model3));
-		generators.delegateItemModel(trapdoorBlock, model2);
+		Identifier model1 = ModelTemplates.TRAPDOOR_TOP.create(trapdoorBlock, mapping, generators.modelOutput);
+		Identifier model2 = ModelTemplates.TRAPDOOR_BOTTOM.create(trapdoorBlock, mapping, generators.modelOutput);
+		Identifier model3 = ModelTemplates.TRAPDOOR_OPEN.create(trapdoorBlock, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(
+				trapdoorBlock,
+				plainVariant(model1),
+				plainVariant(model2),
+				plainVariant(model3)));
+		generators.registerSimpleItemModel(trapdoorBlock, model2);
 	}
 
 	public static boolean createIfSpecialFence(Block block, BlockModelGenerators generators, BlockFamily family) {
@@ -178,44 +234,34 @@ public class XKDModelProvider extends FabricModelProvider {
 		}
 		TextureMapping postTextures = TextureMapping.defaultTexture(getBlockTexture(block, "_post"));
 		postTextures.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block));
-		ResourceLocation post = XKDModelTemplates.WOODEN_FENCE_POST.create(
+		Identifier post = XKDModelTemplates.WOODEN_FENCE_POST.create(
 				block,
 				postTextures,
 				generators.modelOutput);
-		ResourceLocation side = XKDModelTemplates.WOODEN_FENCE_SIDE.create(
+		Identifier side = XKDModelTemplates.WOODEN_FENCE_SIDE.create(
 				block,
 				TextureMapping.defaultTexture(block),
 				generators.modelOutput);
-		ResourceLocation inventory = XKDModelTemplates.WOODEN_FENCE_INVENTORY.create(
+		Identifier inventory = XKDModelTemplates.WOODEN_FENCE_INVENTORY.create(
 				block,
 				postTextures,
 				generators.modelOutput);
 		generators.blockStateOutput.accept(createFenceNoUvLock(block, post, side));
-		generators.delegateItemModel(block, inventory);
+		generators.registerSimpleItemModel(block, inventory);
 		return true;
 	}
 
-	public static BlockStateGenerator createFenceNoUvLock(
+	public static BlockModelDefinitionGenerator createFenceNoUvLock(
 			Block pFenceBlock,
-			ResourceLocation pFencePostModelLocation,
-			ResourceLocation pFenceSideModelLocation) {
+			Identifier pFencePostModelLocation,
+			Identifier pFenceSideModelLocation) {
+		MultiVariant side = plainVariant(pFenceSideModelLocation);
 		return MultiPartGenerator.multiPart(pFenceBlock)
-				.with(Variant.variant().with(VariantProperties.MODEL, pFencePostModelLocation))
-				.with(
-						Condition.condition().term(BlockStateProperties.NORTH, true), Variant.variant()
-								.with(VariantProperties.MODEL, pFenceSideModelLocation))
-				.with(
-						Condition.condition().term(BlockStateProperties.EAST, true), Variant.variant()
-								.with(VariantProperties.MODEL, pFenceSideModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.with(
-						Condition.condition().term(BlockStateProperties.SOUTH, true), Variant.variant()
-								.with(VariantProperties.MODEL, pFenceSideModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-				.with(
-						Condition.condition().term(BlockStateProperties.WEST, true), Variant.variant()
-								.with(VariantProperties.MODEL, pFenceSideModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+				.with(plainVariant(pFencePostModelLocation))
+				.with(BlockModelGenerators.condition().term(BlockStateProperties.NORTH, true), side)
+				.with(BlockModelGenerators.condition().term(BlockStateProperties.EAST, true), side.with(BlockModelGenerators.Y_ROT_90))
+				.with(BlockModelGenerators.condition().term(BlockStateProperties.SOUTH, true), side.with(BlockModelGenerators.Y_ROT_180))
+				.with(BlockModelGenerators.condition().term(BlockStateProperties.WEST, true), side.with(BlockModelGenerators.Y_ROT_270));
 	}
 
 	public static boolean createIfSpecialFenceGate(Block block, BlockModelGenerators generators, BlockFamily family) {
@@ -223,9 +269,15 @@ public class XKDModelProvider extends FabricModelProvider {
 			return false;
 		}
 		TextureMapping textureMapping = TextureMapping.defaultTexture(block);
-		ResourceLocation $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(block, textureMapping, generators.modelOutput);
-		ResourceLocation $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(block, textureMapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, $$1, $$2, $$1, $$2, false));
+		Identifier $$1 = XKDModelTemplates.WOODEN_FENCE_GATE_OPEN.create(block, textureMapping, generators.modelOutput);
+		Identifier $$2 = XKDModelTemplates.WOODEN_FENCE_GATE_CLOSED.create(block, textureMapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(
+				block,
+				plainVariant($$1),
+				plainVariant($$2),
+				plainVariant($$1),
+				plainVariant($$2),
+				false));
 		return true;
 	}
 
@@ -235,19 +287,38 @@ public class XKDModelProvider extends FabricModelProvider {
 			return false;
 		}
 		mapping = mapping.copyAndUpdate(TextureSlot.SIDE, mapping.get(TextureSlot.ALL));
-		ResourceLocation straightModel = XKDModelTemplates.GLASS_STAIRS.create(block, mapping, generators.modelOutput);
-		ResourceLocation innerModel = XKDModelTemplates.GLASS_STAIRS_INNER.create(block, mapping, generators.modelOutput);
-		ResourceLocation outerModel = XKDModelTemplates.GLASS_STAIRS_OUTER.create(block, mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createStairs(block, innerModel, straightModel, outerModel));
+		Identifier straightModel = XKDModelTemplates.GLASS_STAIRS.create(block, mapping, generators.modelOutput);
+		Identifier innerModel = XKDModelTemplates.GLASS_STAIRS_INNER.create(block, mapping, generators.modelOutput);
+		Identifier outerModel = XKDModelTemplates.GLASS_STAIRS_OUTER.create(block, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createStairs(
+				block,
+				plainVariant(innerModel),
+				plainVariant(straightModel),
+				plainVariant(outerModel)));
 		return true;
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockModelGenerators generators) {
+	protected void registerModels(BlockModelGenerators generators, ItemModelGenerators itemModelGenerators) {
 		this.generators = generators;
+		BuiltInRegistries.ITEM.listElements()
+				.map(Holder::value)
+				.filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(XKDeco.ID))
+				.filter(item -> !(item instanceof BlockItem))
+				.forEach(itemModelGenerators::declareCustomModelItem);
+		LEGACY_ITEM_MODEL_BLOCKS.forEach(block -> generators.registerSimpleItemModel(
+				block,
+				ModelLocationUtils.getModelLocation(block.asItem())));
+		MimicWallsLoader.mimicWalls().forEach(mimicWall -> {
+			Identifier delegateModel = BuiltInRegistries.BLOCK.getKey(mimicWall.getWallDelegate())
+					.withPrefix("block/")
+					.withSuffix("_inventory");
+			generators.registerSimpleItemModel(mimicWall, delegateModel);
+		});
+
 		var originalBlockStateOutput = generators.blockStateOutput;
 		generators.blockStateOutput = generator -> {
-			generated.add(generator.getBlock());
+			generated.add(generator.block());
 			originalBlockStateOutput.accept(generator);
 		};
 		var originalModelOutput = generators.modelOutput;
@@ -267,8 +338,8 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		var mayaCutStonebricks = block("maya_cut_stonebricks");
 		var aztecCutStonebricks = block("aztec_cut_stonebricks");
-		generators.texturedModels = ImmutableMap.<Block, TexturedModel>builder()
-				.putAll(generators.texturedModels)
+		BlockModelGenerators.TEXTURED_MODELS = ImmutableMap.<Block, TexturedModel>builder()
+				.putAll(BlockModelGenerators.TEXTURED_MODELS)
 				.put(
 						mayaCutStonebricks,
 						new TexturedModel(
@@ -294,25 +365,25 @@ public class XKDModelProvider extends FabricModelProvider {
 						getBlockTexture(block("lined_mud_wall_block")),
 						getBlockTexture(block("crossed_mud_wall_block")));
 				provider = generators.new BlockFamilyProvider(textureMapping);
-				ResourceLocation blockModel = ModelTemplates.CUBE_COLUMN.create(
+				Identifier blockModel = ModelTemplates.CUBE_COLUMN.create(
 						baseBlock,
 						textureMapping,
 						generators.modelOutput);
-				ResourceLocation horizontalBlockModel = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(
+				Identifier horizontalBlockModel = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(
 						baseBlock,
 						textureMapping,
 						generators.modelOutput);
-				BlockStateGenerator generator = BlockModelGenerators.createRotatedPillarWithHorizontalVariant(
+				BlockModelDefinitionGenerator generator = BlockModelGenerators.createRotatedPillarWithHorizontalVariant(
 						baseBlock,
-						blockModel,
-						horizontalBlockModel);
+						plainVariant(blockModel),
+						plainVariant(horizontalBlockModel));
 				generators.blockStateOutput.accept(generator);
-				provider.fullBlock = blockModel;
+				provider.fullBlock = BlockModelGenerators.plainModel(blockModel);
 			} else if (family == XKDBlockFamilies.CUT_BRONZE_BLOCK || family == XKDBlockFamilies.MAYA_POLISHED_STONEBRICKS) {
 				// we have already generated the base model in other families
-				TexturedModel texturedModel = generators.texturedModels.getOrDefault(baseBlock, TexturedModel.CUBE.get(baseBlock));
+				TexturedModel texturedModel = BlockModelGenerators.TEXTURED_MODELS.getOrDefault(baseBlock, TexturedModel.CUBE.get(baseBlock));
 				provider = generators.new BlockFamilyProvider(texturedModel.getMapping());
-				provider.fullBlock = ModelLocationUtils.getModelLocation(baseBlock);
+				provider.fullBlock = BlockModelGenerators.plainModel(ModelLocationUtils.getModelLocation(baseBlock));
 			} else {
 				provider = generators.family(baseBlock);
 			}
@@ -358,10 +429,10 @@ public class XKDModelProvider extends FabricModelProvider {
 		createFallenLeaves("cherry_blossom");
 		createFallenLeaves("white_cherry_blossom");
 		createBlockStateOnly("hanging_willow_leaves", false);
-		generators.createSimpleFlatItemModel(block("hanging_willow_leaves"));
+		generators.registerSimpleFlatItemModel(block("hanging_willow_leaves"));
 
-		ResourceLocation dirtTexture = getBlockTexture(Blocks.DIRT);
-		ResourceLocation netherrackTexture = getBlockTexture(Blocks.NETHERRACK);
+		Material dirtTexture = getBlockTexture(Blocks.DIRT);
+		Material netherrackTexture = getBlockTexture(Blocks.NETHERRACK);
 		TextureMapping snowyMapping = new TextureMapping()
 				.put(TextureSlot.BOTTOM, dirtTexture)
 				.copyForced(TextureSlot.BOTTOM, TextureSlot.PARTICLE)
@@ -388,14 +459,14 @@ public class XKDModelProvider extends FabricModelProvider {
 		createTreatedWood("ebony");
 		createTreatedWood("mahogany");
 		createBlockStateOnly("air_duct", false);
-		generators.delegateItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
+		generators.registerSimpleItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
 		createHorizontalShift("air_duct_oblique", "air_duct_oblique", null, false);
 		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
 				block("hollow_steel_beam"),
-				XKDeco.id("block/furniture/hollow_steel_beam_post"),
-				XKDeco.id("block/furniture/hollow_steel_beam_side"),
-				XKDeco.id("block/furniture/hollow_steel_beam_side_tall")));
-		generators.delegateItemModel(block("hollow_steel_beam"), XKDeco.id("block/furniture/hollow_steel_beam_inventory"));
+				plainVariant(XKDeco.id("block/furniture/hollow_steel_beam_post")),
+				plainVariant(XKDeco.id("block/furniture/hollow_steel_beam_side")),
+				plainVariant(XKDeco.id("block/furniture/hollow_steel_beam_side_tall"))));
+		generators.registerSimpleItemModel(block("hollow_steel_beam"), XKDeco.id("block/furniture/hollow_steel_beam_inventory"));
 		createHorizontalShift("hollow_steel_beam_oblique", "hollow_steel_beam_oblique", null, false);
 		createHorizontalShift("hollow_steel_beam_oblique_slow", "hollow_steel_beam_oblique_slow", null, false);
 		createHorizontalShift("hollow_steel_beam_oblique_steep", "hollow_steel_beam_oblique_steep", null, false);
@@ -408,16 +479,16 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
 				block("dark_stone_handrail"),
-				XKDeco.id("block/furniture/dark_stone_handrail_post"),
-				XKDeco.id("block/furniture/dark_stone_handrail"),
-				XKDeco.id("block/furniture/dark_stone_handrail_side_tall")));
-		generators.delegateItemModel(block("dark_stone_handrail"), XKDeco.id("block/furniture/dark_stone_handrail_inventory"));
+				plainVariant(XKDeco.id("block/furniture/dark_stone_handrail_post")),
+				plainVariant(XKDeco.id("block/furniture/dark_stone_handrail")),
+				plainVariant(XKDeco.id("block/furniture/dark_stone_handrail_side_tall"))));
+		generators.registerSimpleItemModel(block("dark_stone_handrail"), XKDeco.id("block/furniture/dark_stone_handrail_inventory"));
 		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
 				block("light_stone_handrail"),
-				XKDeco.id("block/furniture/light_stone_handrail_post"),
-				XKDeco.id("block/furniture/light_stone_handrail"),
-				XKDeco.id("block/furniture/light_stone_handrail_side_tall")));
-		generators.delegateItemModel(block("light_stone_handrail"), XKDeco.id("block/furniture/light_stone_handrail_inventory"));
+				plainVariant(XKDeco.id("block/furniture/light_stone_handrail_post")),
+				plainVariant(XKDeco.id("block/furniture/light_stone_handrail")),
+				plainVariant(XKDeco.id("block/furniture/light_stone_handrail_side_tall"))));
+		generators.registerSimpleItemModel(block("light_stone_handrail"), XKDeco.id("block/furniture/light_stone_handrail_inventory"));
 
 		createBlockStateOnly("factory_ceiling_lamp", "furniture/", true);
 		createBlockStateOnly("factory_pendant", "furniture/", true);
@@ -478,9 +549,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createNonRotatedPillar("dark_column_base");
 		createNonRotatedPillar("light_column_base");
 
-		generators.delegateItemModel(block("empty_candlestick"), XKDeco.id("block/furniture/empty_candlestick"));
-
-		generators.skipAutoItemBlock(block("item_projector"));
+		generators.registerSimpleItemModel(block("empty_candlestick"), XKDeco.id("block/furniture/empty_candlestick"));
 
 		createBlockStateOnly("calligraphy", 2);
 		createBlockStateOnly("ink_painting", 2);
@@ -488,7 +557,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createBlockStateOnly("xiangqi_board", 2);
 
 		outer:
-		for (Item item : GameObjectLookup.all(Registries.ITEM, XKDeco.ID).toList()) {
+		for (Item item : GameObjectLookup.all(BuiltInRegistries.ITEM, XKDeco.ID).toList()) {
 			Block block = Block.byItem(item);
 			if (block == Blocks.AIR || GADGET_SKIP_BLOCKS.contains(block) || generated.contains(block)) {
 				continue;
@@ -499,7 +568,7 @@ public class XKDModelProvider extends FabricModelProvider {
 				continue;
 			}
 			if (block instanceof HologramBlock) {
-				generators.blockEntityModels(block, block).createWithoutBlockItem(block);
+				generators.createParticleOnlyBlock(block);
 				continue;
 			}
 			if (id.getPath().endsWith("column_base") || id.getPath().endsWith("column_head")) {
@@ -522,66 +591,59 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createNonRotatedPillar(String id) {
 		Block block = block(id);
 		TextureMapping mapping = TextureMapping.column(block);
-		ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(block, mapping, generators.modelOutput);
+		ModelTemplates.CUBE_COLUMN.create(block, mapping, generators.modelOutput);
 		createBlockStateOnly(id, true);
 	}
 
 	private void createWall(String id, String texture) {
 		Block block = block(id);
-		TextureMapping mapping = new TextureMapping().put(TextureSlot.WALL, XKDeco.id("block/" + texture));
-		ResourceLocation $$1 = ModelTemplates.WALL_POST.create(block, mapping, generators.modelOutput);
-		ResourceLocation $$2 = ModelTemplates.WALL_LOW_SIDE.create(block, mapping, generators.modelOutput);
-		ResourceLocation $$3 = ModelTemplates.WALL_TALL_SIDE.create(block, mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, $$1, $$2, $$3));
-		ResourceLocation $$4 = ModelTemplates.WALL_INVENTORY.create(block, mapping, generators.modelOutput);
-		generators.delegateItemModel(block, $$4);
+		TextureMapping mapping = new TextureMapping().put(TextureSlot.WALL, new Material(XKDeco.id("block/" + texture)));
+		Identifier $$1 = ModelTemplates.WALL_POST.create(block, mapping, generators.modelOutput);
+		Identifier $$2 = ModelTemplates.WALL_LOW_SIDE.create(block, mapping, generators.modelOutput);
+		Identifier $$3 = ModelTemplates.WALL_TALL_SIDE.create(block, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, plainVariant($$1), plainVariant($$2), plainVariant($$3)));
+		Identifier $$4 = ModelTemplates.WALL_INVENTORY.create(block, mapping, generators.modelOutput);
+		generators.registerSimpleItemModel(block, $$4);
 	}
 
 	private void createInscriptionBronzeBlock() {
 		ModelTemplates.CUBE_ALL.create(
 				XKDeco.id("block/inscription_bronze_block"),
-				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block")),
+				TextureMapping.cube(new Material(XKDeco.id("block/inscription_bronze_block"))),
 				generators.modelOutput);
 
 		ModelTemplates.CUBE_ALL.create(
 				XKDeco.id("block/inscription_bronze_block1"),
-				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block1")),
+				TextureMapping.cube(new Material(XKDeco.id("block/inscription_bronze_block1"))),
 				generators.modelOutput);
 
 		ModelTemplates.CUBE_ALL.create(
 				XKDeco.id("block/inscription_bronze_block2"),
-				TextureMapping.cube(XKDeco.id("block/inscription_bronze_block2")),
+				TextureMapping.cube(new Material(XKDeco.id("block/inscription_bronze_block2"))),
 				generators.modelOutput);
 
 		generators.blockStateOutput.accept(MultiPartGenerator.multiPart(block("inscription_bronze_block"))
-				.with(List.of(
-						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block")),
-						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block1")),
-						Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/inscription_bronze_block2")))));
+				.with(plainVariant(XKDeco.id("block/inscription_bronze_block")))
+				.with(plainVariant(XKDeco.id("block/inscription_bronze_block1")))
+				.with(plainVariant(XKDeco.id("block/inscription_bronze_block2"))));
 	}
 
 	private void createSingleScrewState(String id) {
 		var mayaSingleScrewThreadStone = block(id);
-		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(mayaSingleScrewThreadStone)
-				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(mayaSingleScrewThreadStone)
+				.with(PropertyDispatch.initial(BlockStateProperties.HORIZONTAL_FACING)
 						.select(
 								Direction.NORTH,
-								Variant.variant().with(VariantProperties.MODEL, XKDeco.id("block/" + id)))
+								plainVariant(XKDeco.id("block/" + id)))
 						.select(
 								Direction.SOUTH,
-								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_s"))
-										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+								plainVariant(XKDeco.id("block/" + id + "_s")).with(BlockModelGenerators.Y_ROT_180))
 						.select(
 								Direction.WEST,
-								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_w"))
-										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+								plainVariant(XKDeco.id("block/" + id + "_w")).with(BlockModelGenerators.Y_ROT_270))
 						.select(
 								Direction.EAST,
-								Variant.variant()
-										.with(VariantProperties.MODEL, XKDeco.id("block/" + id + "_e"))
-										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+								plainVariant(XKDeco.id("block/" + id + "_e")).with(BlockModelGenerators.Y_ROT_90))
 				));
 	}
 
@@ -589,28 +651,28 @@ public class XKDModelProvider extends FabricModelProvider {
 		Block leaves = block(id);
 		Block fallenLeaves = block("fallen_" + id);
 		TextureMapping textureMapping = TextureMapping.cube(leaves);
-		ResourceLocation model0 = XKDModelTemplates.FALLEN_LEAVES.create(fallenLeaves, textureMapping, generators.modelOutput);
-		ResourceLocation model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(fallenLeaves)
-				.with(PropertyDispatch.property(HALF)
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model1)));
+		Identifier model0 = XKDModelTemplates.FALLEN_LEAVES.create(fallenLeaves, textureMapping, generators.modelOutput);
+		Identifier model1 = XKDModelTemplates.FALLEN_LEAVES_SLAB.create(fallenLeaves, textureMapping, generators.modelOutput);
+		var generator = MultiVariantGenerator.dispatch(fallenLeaves)
+				.with(PropertyDispatch.initial(property(fallenLeaves, HALF))
+						.select("upper", plainVariant(model0))
+						.select("lower", plainVariant(model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
 	private void createIronBarsLike(String id, String paneTexture, String edgeTexture) {
 		Block block = block(id);
 		TextureMapping texturemapping = new TextureMapping()
-				.put(TextureSlot.PANE, XKDeco.id(paneTexture).withPrefix("block/"))
-				.put(TextureSlot.EDGE, XKDeco.id(edgeTexture).withPrefix("block/"));
-		ResourceLocation resourcelocation = ModelTemplates.STAINED_GLASS_PANE_POST.create(block, texturemapping, generators.modelOutput);
-		ResourceLocation resourcelocation1 = ModelTemplates.STAINED_GLASS_PANE_SIDE.create(block, texturemapping, generators.modelOutput);
-		ResourceLocation resourcelocation2 = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.create(
+				.put(TextureSlot.PANE, new Material(XKDeco.id(paneTexture).withPrefix("block/")))
+				.put(TextureSlot.EDGE, new Material(XKDeco.id(edgeTexture).withPrefix("block/")));
+		Identifier resourcelocation = ModelTemplates.STAINED_GLASS_PANE_POST.create(block, texturemapping, generators.modelOutput);
+		Identifier resourcelocation1 = ModelTemplates.STAINED_GLASS_PANE_SIDE.create(block, texturemapping, generators.modelOutput);
+		Identifier resourcelocation2 = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.create(
 				block,
 				texturemapping,
 				generators.modelOutput);
-		ResourceLocation resourcelocation3 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.create(block, texturemapping, generators.modelOutput);
-		ResourceLocation resourcelocation4 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.create(
+		Identifier resourcelocation3 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.create(block, texturemapping, generators.modelOutput);
+		Identifier resourcelocation4 = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.create(
 				block,
 				texturemapping,
 				generators.modelOutput);
@@ -620,41 +682,31 @@ public class XKDModelProvider extends FabricModelProvider {
 				TextureMapping.layer0(texturemapping.get(TextureSlot.PANE)),
 				generators.modelOutput);
 		generators.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-				.with(Variant.variant()
-						.with(VariantProperties.MODEL, resourcelocation))
+				.with(plainVariant(resourcelocation))
 				.with(
-						Condition.condition().term(BlockStateProperties.NORTH, true),
-						Variant.variant().with(VariantProperties.MODEL, resourcelocation1))
+						BlockModelGenerators.condition().term(BlockStateProperties.NORTH, true),
+						plainVariant(resourcelocation1))
 				.with(
-						Condition.condition()
-								.term(BlockStateProperties.EAST, true),
-						Variant.variant()
-								.with(VariantProperties.MODEL, resourcelocation1)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+						BlockModelGenerators.condition().term(BlockStateProperties.EAST, true),
+						plainVariant(resourcelocation1).with(BlockModelGenerators.Y_ROT_90))
 				.with(
-						Condition.condition()
-								.term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, resourcelocation2))
+						BlockModelGenerators.condition().term(BlockStateProperties.SOUTH, true),
+						plainVariant(resourcelocation2))
 				.with(
-						Condition.condition().term(BlockStateProperties.WEST, true),
-						Variant.variant()
-								.with(VariantProperties.MODEL, resourcelocation2)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+						BlockModelGenerators.condition().term(BlockStateProperties.WEST, true),
+						plainVariant(resourcelocation2).with(BlockModelGenerators.Y_ROT_90))
 				.with(
-						Condition.condition().term(BlockStateProperties.NORTH, false),
-						Variant.variant().with(VariantProperties.MODEL, resourcelocation3))
+						BlockModelGenerators.condition().term(BlockStateProperties.NORTH, false),
+						plainVariant(resourcelocation3))
 				.with(
-						Condition.condition().term(BlockStateProperties.EAST, false),
-						Variant.variant().with(VariantProperties.MODEL, resourcelocation4))
+						BlockModelGenerators.condition().term(BlockStateProperties.EAST, false),
+						plainVariant(resourcelocation4))
 				.with(
-						Condition.condition().term(BlockStateProperties.SOUTH, false),
-						Variant.variant()
-								.with(VariantProperties.MODEL, resourcelocation4)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+						BlockModelGenerators.condition().term(BlockStateProperties.SOUTH, false),
+						plainVariant(resourcelocation4).with(BlockModelGenerators.Y_ROT_90))
 				.with(
-						Condition.condition().term(BlockStateProperties.WEST, false),
-						Variant.variant()
-								.with(VariantProperties.MODEL, resourcelocation3)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
+						BlockModelGenerators.condition().term(BlockStateProperties.WEST, false),
+						plainVariant(resourcelocation3).with(BlockModelGenerators.Y_ROT_270)));
 	}
 
 	private void createMouldingWithModels(String id, String template, TextureMapping mapping, boolean itemModel) {
@@ -665,155 +717,68 @@ public class XKDModelProvider extends FabricModelProvider {
 		createMoulding(id, id, false, itemModel);
 	}
 
-	private void createMoulding(String id, String model, boolean uvLock, boolean itemModel, Variant... baseVariants) {
-		if (baseVariants.length == 0) {
-			baseVariants = new Variant[]{Variant.variant()};
-		}
+	private void createMoulding(String id, String model, boolean uvLock, boolean itemModel, VariantMutator... baseMutators) {
 		Block block = block(id);
-		ResourceLocation pStraightModelLocation = XKDeco.id("block/" + model);
-		ResourceLocation pOuterModelLocation = XKDeco.id("block/" + model + "_outer");
-		ResourceLocation pInnerModelLocation = XKDeco.id("block/" + model + "_inner");
+		Identifier pStraightModelLocation = XKDeco.id("block/" + model);
+		Identifier pOuterModelLocation = XKDeco.id("block/" + model + "_outer");
+		Identifier pInnerModelLocation = XKDeco.id("block/" + model + "_inner");
 		if (itemModel) {
-			generators.delegateItemModel(block, pStraightModelLocation);
+			generators.registerSimpleItemModel(block, pStraightModelLocation);
 		}
-		var generator = MultiVariantGenerator.multiVariant(block, baseVariants).with(PropertyDispatch.properties(
-						BlockStateProperties.HORIZONTAL_FACING,
-						BlockStateProperties.STAIRS_SHAPE)
-				.select(
-						Direction.EAST,
-						StairsShape.STRAIGHT,
-						Variant.variant().with(VariantProperties.MODEL, pStraightModelLocation))
-				.select(
-						Direction.WEST,
-						StairsShape.STRAIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pStraightModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.SOUTH,
-						StairsShape.STRAIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pStraightModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.NORTH,
-						StairsShape.STRAIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pStraightModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.EAST,
-						StairsShape.OUTER_RIGHT,
-						Variant.variant().with(VariantProperties.MODEL, pOuterModelLocation))
-				.select(
-						Direction.WEST,
-						StairsShape.OUTER_RIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pOuterModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.SOUTH,
-						StairsShape.OUTER_RIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pOuterModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.NORTH,
-						StairsShape.OUTER_RIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pOuterModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.EAST,
-						StairsShape.OUTER_LEFT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pOuterModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.WEST,
-						StairsShape.OUTER_LEFT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pOuterModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.SOUTH,
-						StairsShape.OUTER_LEFT,
-						Variant.variant().with(VariantProperties.MODEL, pOuterModelLocation))
-				.select(
-						Direction.NORTH,
-						StairsShape.OUTER_LEFT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pOuterModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.EAST,
-						StairsShape.INNER_RIGHT,
-						Variant.variant().with(VariantProperties.MODEL, pInnerModelLocation))
-				.select(
-						Direction.WEST,
-						StairsShape.INNER_RIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pInnerModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.SOUTH,
-						StairsShape.INNER_RIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pInnerModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.NORTH,
-						StairsShape.INNER_RIGHT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pInnerModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.EAST,
-						StairsShape.INNER_LEFT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pInnerModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.WEST,
-						StairsShape.INNER_LEFT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pInnerModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-								.with(VariantProperties.UV_LOCK, uvLock))
-				.select(
-						Direction.SOUTH,
-						StairsShape.INNER_LEFT,
-						Variant.variant().with(VariantProperties.MODEL, pInnerModelLocation))
-				.select(
-						Direction.NORTH,
-						StairsShape.INNER_LEFT,
-						Variant.variant()
-								.with(VariantProperties.MODEL, pInnerModelLocation)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-								.with(VariantProperties.UV_LOCK, uvLock)));
+		VariantMutator base = combine(baseMutators);
+		MultiVariant straight = plainVariant(pStraightModelLocation).with(base);
+		MultiVariant outer = plainVariant(pOuterModelLocation).with(base);
+		MultiVariant inner = plainVariant(pInnerModelLocation).with(base);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(
+								BlockStateProperties.HORIZONTAL_FACING,
+								BlockStateProperties.STAIRS_SHAPE)
+						.select(Direction.EAST, StairsShape.STRAIGHT, straight)
+						.select(Direction.WEST, StairsShape.STRAIGHT, withUvLock(straight.with(BlockModelGenerators.Y_ROT_180), uvLock))
+						.select(Direction.SOUTH, StairsShape.STRAIGHT, withUvLock(straight.with(BlockModelGenerators.Y_ROT_90), uvLock))
+						.select(Direction.NORTH, StairsShape.STRAIGHT, withUvLock(straight.with(BlockModelGenerators.Y_ROT_270), uvLock))
+						.select(Direction.EAST, StairsShape.OUTER_RIGHT, outer)
+						.select(Direction.WEST, StairsShape.OUTER_RIGHT, withUvLock(outer.with(BlockModelGenerators.Y_ROT_180), uvLock))
+						.select(Direction.SOUTH, StairsShape.OUTER_RIGHT, withUvLock(outer.with(BlockModelGenerators.Y_ROT_90), uvLock))
+						.select(Direction.NORTH, StairsShape.OUTER_RIGHT, withUvLock(outer.with(BlockModelGenerators.Y_ROT_270), uvLock))
+						.select(Direction.EAST, StairsShape.OUTER_LEFT, withUvLock(outer.with(BlockModelGenerators.Y_ROT_270), uvLock))
+						.select(Direction.WEST, StairsShape.OUTER_LEFT, withUvLock(outer.with(BlockModelGenerators.Y_ROT_90), uvLock))
+						.select(Direction.SOUTH, StairsShape.OUTER_LEFT, outer)
+						.select(Direction.NORTH, StairsShape.OUTER_LEFT, withUvLock(outer.with(BlockModelGenerators.Y_ROT_180), uvLock))
+						.select(Direction.EAST, StairsShape.INNER_RIGHT, inner)
+						.select(Direction.WEST, StairsShape.INNER_RIGHT, withUvLock(inner.with(BlockModelGenerators.Y_ROT_180), uvLock))
+						.select(Direction.SOUTH, StairsShape.INNER_RIGHT, withUvLock(inner.with(BlockModelGenerators.Y_ROT_90), uvLock))
+						.select(Direction.NORTH, StairsShape.INNER_RIGHT, withUvLock(inner.with(BlockModelGenerators.Y_ROT_270), uvLock))
+						.select(Direction.EAST, StairsShape.INNER_LEFT, withUvLock(inner.with(BlockModelGenerators.Y_ROT_270), uvLock))
+						.select(Direction.WEST, StairsShape.INNER_LEFT, withUvLock(inner.with(BlockModelGenerators.Y_ROT_90), uvLock))
+						.select(Direction.SOUTH, StairsShape.INNER_LEFT, inner)
+						.select(Direction.NORTH, StairsShape.INNER_LEFT, withUvLock(inner.with(BlockModelGenerators.Y_ROT_180), uvLock)));
 		generators.blockStateOutput.accept(generator);
+	}
+
+	private static VariantMutator combine(VariantMutator... mutators) {
+		VariantMutator result = BlockModelGenerators.NOP;
+		for (VariantMutator mutator : mutators) {
+			result = result.then(mutator);
+		}
+		return result;
+	}
+
+	private static MultiVariant withUvLock(MultiVariant variant, boolean uvLock) {
+		return uvLock ? variant.with(BlockModelGenerators.UV_LOCK) : variant;
 	}
 
 	private void createTreatedWood(String id) {
 		Block log = block(id + "_log");
 		TextureMapping logMapping = generators.woodProvider(log).log(log).wood(block(id + "_wood")).logMapping;
 		Block slab = block(id + "_log_slab");
-		ResourceLocation $$2 = ModelTemplates.SLAB_BOTTOM.create(slab, logMapping, generators.modelOutput);
-		ResourceLocation $$3 = ModelTemplates.SLAB_TOP.create(slab, logMapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, $$2, $$3, ModelLocationUtils.getModelLocation(log)));
+		Identifier $$2 = ModelTemplates.SLAB_BOTTOM.create(slab, logMapping, generators.modelOutput);
+		Identifier $$3 = ModelTemplates.SLAB_TOP.create(slab, logMapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(
+				slab,
+				plainVariant($$2),
+				plainVariant($$3),
+				plainVariant(ModelLocationUtils.getModelLocation(log))));
 
 		createTrivialBlock(id + "_table", XKDModelTemplates.WOODEN_TABLE_PROVIDER);
 		createTrivialBlock(id + "_big_table", XKDModelTemplates.WOODEN_BIG_TABLE_PROVIDER);
@@ -823,8 +788,8 @@ public class XKDModelProvider extends FabricModelProvider {
 		createGadget(block(id + "_chair"));
 		createHorizontalAxis(id + "_stool", XKDModelTemplates.WOODEN_STOOL_PROVIDER);
 
-		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, XKDeco.id("block/" + id + "_smooth"));
-		textureMapping.put(XKDModelTemplates.PLANKS, XKDeco.id("block/" + id + "_planks"));
+		TextureMapping textureMapping = logMapping.copyAndUpdate(TextureSlot.WALL, new Material(XKDeco.id("block/" + id + "_smooth")));
+		textureMapping.put(XKDModelTemplates.PLANKS, new Material(XKDeco.id("block/" + id + "_planks")));
 		createWoodenWall(id + "_column_wall", "wooden_column_wall", textureMapping);
 		createWoodenWall("hollow_" + id + "_column_wall", "hollow_wooden_column_wall", textureMapping);
 		createWoodenWall(id + "_wall", "wooden_wall", textureMapping);
@@ -832,7 +797,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createMoulding(id + "_meiren_kao", "furniture/" + id + "_meiren_kao", false, true);
 		createMoulding(id + "_meiren_kao_with_column", "furniture/" + id + "_meiren_kao_with_column", false, true);
 
-		textureMapping = new TextureMapping().put(TextureSlot.SIDE, XKDeco.id("block/" + id + "_smooth"));
+		textureMapping = new TextureMapping().put(TextureSlot.SIDE, new Material(XKDeco.id("block/" + id + "_smooth")));
 		createMouldingWithModels(id + "_dougong", "template_dougong", textureMapping, true);
 		createMouldingWithModels(id + "_dougong_connection", "template_dougong_connection", textureMapping, true);
 		createMouldingWithModels(id + "_dougong_hollow_connection", "template_dougong_hollow_connection", textureMapping, true);
@@ -843,24 +808,24 @@ public class XKDModelProvider extends FabricModelProvider {
 
 		textureMapping = TextureMapping.defaultTexture(block(id + "_trapdoor"));
 		textureMapping.put(TextureSlot.PARTICLE, getBlockTexture(block(id + "_window")));
-		textureMapping.put(TextureSlot.TOP, XKDeco.id("block/" + id + "_narrow_doors_top"));
-		textureMapping.put(TextureSlot.BOTTOM, XKDeco.id("block/" + id + "_narrow_doors_bottom"));
+		textureMapping.put(TextureSlot.TOP, new Material(XKDeco.id("block/" + id + "_narrow_doors_top")));
+		textureMapping.put(TextureSlot.BOTTOM, new Material(XKDeco.id("block/" + id + "_narrow_doors_bottom")));
 		createWoodenFenceGate(id + "_window", "wooden_window", textureMapping);
 		createWoodenFenceGate(id + "_awning_window", "wooden_awning_window", textureMapping);
 		createWoodenFenceGate(id + "_narrow_doors", "wooden_narrow_doors", textureMapping);
-		ResourceLocation narrowDoors = ModelLocationUtils.getModelLocation(block(id + "_narrow_doors").asItem());
+		Identifier narrowDoors = ModelLocationUtils.getModelLocation(block(id + "_narrow_doors").asItem());
 		ModelTemplates.FLAT_ITEM.create(
 				narrowDoors,
-				TextureMapping.layer0(narrowDoors),
+				TextureMapping.layer0(new Material(narrowDoors)),
 				generators.modelOutput);
 
 		Block columnHead = block(id + "_column_head");
 		XKDModelTemplates.WOODEN_COLUMN_HEAD.create(columnHead, TextureMapping.particle(columnHead), generators.modelOutput);
 		createDirectional(id + "_column_head", "");
-		generators.createSimpleFlatItemModel(block(id + "_screen").asItem());
+		generators.registerSimpleFlatItemModel(block(id + "_screen").asItem());
 
 		Block fenceOblique = block(id + "_fence_oblique");
-		textureMapping = TextureMapping.particle(fenceOblique).put(XKDModelTemplates.POST, XKDeco.id("block/" + id + "_fence_post"));
+		textureMapping = TextureMapping.particle(fenceOblique).put(XKDModelTemplates.POST, new Material(XKDeco.id("block/" + id + "_fence_post")));
 		XKDModelTemplates.WOODEN_FENCE_OBLIQUE.create(fenceOblique, textureMapping, generators.modelOutput);
 		createHorizontal(id + "_fence_oblique", "");
 
@@ -883,8 +848,8 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createWoodenShelf(String id, int randomVariants) {
 		Block block = block(id + "_shelf");
 		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block));
-		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/");
-		List<Variant> variants = Lists.newArrayList(Variant.variant().with(VariantProperties.MODEL, modelLocation));
+		Identifier modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/");
+		List<Variant> variants = Lists.newArrayList(BlockModelGenerators.plainModel(modelLocation));
 		List<ModelTemplate> templates = Lists.newArrayList(
 				XKDModelTemplates.WOODEN_SHELF,
 				XKDModelTemplates.WOODEN_SHELF_2,
@@ -896,49 +861,55 @@ public class XKDModelProvider extends FabricModelProvider {
 			for (int i = 0; i < templates.size(); i++) {
 				String suffix = i == 0 ? "" : "_" + (i + 1);
 				templates.get(i).create(modelLocation.withSuffix(suffix), mapping, generators.modelOutput);
-				variants.add(Variant.variant().with(VariantProperties.MODEL, modelLocation.withSuffix(suffix)));
+				variants.add(BlockModelGenerators.plainModel(modelLocation.withSuffix(suffix)));
 			}
 		}
-		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(
 						block,
-						variants.toArray(Variant[]::new))
-				.with(BlockModelGenerators.createHorizontalFacingDispatch()));
-		generators.delegateItemModel(block, modelLocation);
+						BlockModelGenerators.variants(variants.toArray(Variant[]::new)))
+				.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+		generators.registerSimpleItemModel(block, modelLocation);
 	}
 
 	private void createWoodenFenceGate(String id, String template, TextureMapping mapping) {
 		Block block = block(id);
-		ResourceLocation open = XKDModelTemplates.MAP.get(template + "_open").create(block, mapping, generators.modelOutput);
-		ResourceLocation closed = XKDModelTemplates.MAP.get(template).create(block, mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(block, open, closed, open, closed, false));
+		Identifier open = XKDModelTemplates.MAP.get(template + "_open").create(block, mapping, generators.modelOutput);
+		Identifier closed = XKDModelTemplates.MAP.get(template).create(block, mapping, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createFenceGate(
+				block,
+				plainVariant(open),
+				plainVariant(closed),
+				plainVariant(open),
+				plainVariant(closed),
+				false));
 	}
 
 	private void createHorizontalAxis(String id, TexturedModel.Provider provider) {
 		Block block = block(id);
-		ResourceLocation model = provider.create(block, generators.modelOutput);
-		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+		Identifier model = provider.create(block, generators.modelOutput);
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(
 						block,
-						Variant.variant().with(VariantProperties.MODEL, model))
-				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
-						.select(Direction.Axis.X, Variant.variant())
-						.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
+						plainVariant(model))
+				.with(PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_AXIS)
+						.select(Direction.Axis.X, BlockModelGenerators.NOP)
+						.select(Direction.Axis.Z, BlockModelGenerators.Y_ROT_90)));
 	}
 
 	private void createHangingFascia(String id) {
 		Block block = block(id + "_hanging_fascia");
 		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block, "_side"));
-		ResourceLocation sideModel = XKDModelTemplates.HANGING_FASCIA_SIDE.create(block, mapping, generators.modelOutput);
+		Identifier sideModel = XKDModelTemplates.HANGING_FASCIA_SIDE.create(block, mapping, generators.modelOutput);
 		mapping = TextureMapping.particle(getBlockTexture(block, "_middle"));
-		ResourceLocation middleModel = XKDModelTemplates.HANGING_FASCIA_MIDDLE.create(block, mapping, generators.modelOutput);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(HangingFasciaBlock.SIDE, BlockStateProperties.HORIZONTAL_AXIS)
+		Identifier middleModel = XKDModelTemplates.HANGING_FASCIA_MIDDLE.create(block, mapping, generators.modelOutput);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(HangingFasciaBlock.SIDE, BlockStateProperties.HORIZONTAL_AXIS)
 						.generate((side, axis) -> {
 							int rotation = 0;
-							var variant = Variant.variant();
+							MultiVariant variant;
 							if (side == HangingFasciaBlock.Side.NONE) {
-								variant.with(VariantProperties.MODEL, middleModel);
+								variant = plainVariant(middleModel);
 							} else {
-								variant.with(VariantProperties.MODEL, sideModel);
+								variant = plainVariant(sideModel);
 								if (side == HangingFasciaBlock.Side.POSITIVE) {
 									rotation += 180;
 								}
@@ -946,75 +917,57 @@ public class XKDModelProvider extends FabricModelProvider {
 							if (axis == Direction.Axis.Z) {
 								rotation += 90;
 							}
-							variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.valueOf("R" + rotation));
-							return variant;
+							return variant.with(VariantMutator.Y_ROT.withValue(quadrant(rotation)));
 						}));
 		generators.blockStateOutput.accept(generator);
-		generators.delegateItemModel(block, sideModel);
+		generators.registerSimpleItemModel(block, sideModel);
 	}
 
 	private void createWoodenFenceHead(String id) {
 		Block block = block(id + "_fence_head");
 		TextureMapping mapping = TextureMapping.particle(getBlockTexture(block(id + "_fence"), "_post"));
-		ResourceLocation model = XKDModelTemplates.WOODEN_FENCE_HEAD.create(block, mapping, generators.modelOutput);
-		ResourceLocation flipModel = XKDModelTemplates.WOODEN_FENCE_HEAD_FLIP.create(block, mapping, generators.modelOutput);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.property(BlockStateProperties.FACING)
-						.select(
-								Direction.DOWN, Variant.variant()
-										.with(VariantProperties.MODEL, flipModel)
-										.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-						.select(
-								Direction.UP, Variant.variant()
-										.with(VariantProperties.MODEL, model)
-										.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-						.select(
-								Direction.NORTH, Variant.variant()
-										.with(VariantProperties.MODEL, model))
-						.select(
-								Direction.SOUTH, Variant.variant()
-										.with(VariantProperties.MODEL, model)
-										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-						.select(
-								Direction.WEST, Variant.variant()
-										.with(VariantProperties.MODEL, model)
-										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-						.select(
-								Direction.EAST, Variant.variant()
-										.with(VariantProperties.MODEL, model)
-										.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
+		Identifier model = XKDModelTemplates.WOODEN_FENCE_HEAD.create(block, mapping, generators.modelOutput);
+		Identifier flipModel = XKDModelTemplates.WOODEN_FENCE_HEAD_FLIP.create(block, mapping, generators.modelOutput);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(BlockStateProperties.FACING)
+						.select(Direction.DOWN, plainVariant(flipModel).with(BlockModelGenerators.X_ROT_90))
+						.select(Direction.UP, plainVariant(model).with(BlockModelGenerators.X_ROT_270))
+						.select(Direction.NORTH, plainVariant(model))
+						.select(Direction.SOUTH, plainVariant(model).with(BlockModelGenerators.Y_ROT_180))
+						.select(Direction.WEST, plainVariant(model).with(BlockModelGenerators.Y_ROT_270))
+						.select(Direction.EAST, plainVariant(model).with(BlockModelGenerators.Y_ROT_90)));
 		generators.blockStateOutput.accept(generator);
-		generators.delegateItemModel(block, model);
+		generators.registerSimpleItemModel(block, model);
 	}
 
 	private void createWoodenWall(String id, String templateId, TextureMapping textureMapping) {
 		Block block = block(id);
-		ResourceLocation side = XKDModelTemplates.MAP.get(templateId + "_side").create(block, textureMapping, generators.modelOutput);
-		ResourceLocation post = XKDModelTemplates.MAP.get(templateId + "_post").create(block, textureMapping, generators.modelOutput);
-		ResourceLocation tallSide = XKDModelTemplates.MAP.get(templateId + "_side_tall").create(
+		Identifier side = XKDModelTemplates.MAP.get(templateId + "_side").create(block, textureMapping, generators.modelOutput);
+		Identifier post = XKDModelTemplates.MAP.get(templateId + "_post").create(block, textureMapping, generators.modelOutput);
+		Identifier tallSide = XKDModelTemplates.MAP.get(templateId + "_side_tall").create(
 				block,
 				textureMapping,
 				generators.modelOutput);
-		ResourceLocation inventory = XKDModelTemplates.MAP.get(templateId + "_inventory").create(
+		Identifier inventory = XKDModelTemplates.MAP.get(templateId + "_inventory").create(
 				block,
 				textureMapping,
 				generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, post, side, tallSide));
-		generators.delegateItemModel(block, inventory);
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, plainVariant(post), plainVariant(side), plainVariant(tallSide)));
+		generators.registerSimpleItemModel(block, inventory);
 	}
 
 	private void createTrivialBlock(String id, TexturedModel.Provider provider) {
 		Block block = block(id);
-		ResourceLocation model = provider.create(block, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+		Identifier model = provider.create(block, generators.modelOutput);
+		generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
 	}
 
 	private void createHorizontallyRotatedBlock(String id, TexturedModel.Provider provider) {
 		Block block = block(id);
-		ResourceLocation model = provider.create(block, generators.modelOutput);
-		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+		Identifier model = provider.create(block, generators.modelOutput);
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(
 				block,
-				Variant.variant().with(VariantProperties.MODEL, model)).with(BlockModelGenerators.createHorizontalFacingDispatch()));
+				plainVariant(model)).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
 	}
 
 	private void createGadget(Block block) {
@@ -1029,69 +982,67 @@ public class XKDModelProvider extends FabricModelProvider {
 				.findAny()
 				.orElse(null);
 		if (settings.hasComponent(KBlockComponents.HORIZONTAL.get())) {
-			ResourceLocation model = id.withPrefix("block/furniture/");
-			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
-							block,
-							layered == null ? Variant.variant().with(VariantProperties.MODEL, model) : Variant.variant())
-					.with(BlockModelGenerators.createHorizontalFacingDispatch());
-			if (layered != null) {
-				generator.with(PropertyDispatch.property(layered.getLayerProperty())
-						.generate(layer -> Variant.variant().with(VariantProperties.MODEL, model.withSuffix("_" + layer))));
-				generators.delegateItemModel(block, model.withSuffix("_" + layered.getDefaultLayer()));
+			Identifier model = id.withPrefix("block/furniture/");
+			MultiVariantGenerator generator;
+			if (layered == null) {
+				generator = MultiVariantGenerator.dispatch(block, plainVariant(model))
+						.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
+				generators.registerSimpleItemModel(block, model);
 			} else {
-				generators.delegateItemModel(block, model);
+				generator = MultiVariantGenerator.dispatch(block)
+						.with(PropertyDispatch.initial(layered.getLayerProperty())
+								.generate(layer -> plainVariant(model.withSuffix("_" + layer))))
+						.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
+				generators.registerSimpleItemModel(block, model.withSuffix("_" + layered.getDefaultLayer()));
 			}
 			generators.blockStateOutput.accept(generator);
 		} else if (settings.hasComponent(KBlockComponents.DIRECTIONAL.get())) {
 			createDirectional(id.getPath(), "furniture/");
 		} else if (settings.hasComponent(KBlockComponents.FRONT_AND_TOP.get())) {
-			ResourceLocation model;
+			Identifier model;
 			if (id.getPath().startsWith("screen_")) {
 				TextureMapping mapping = TextureMapping.particle(block);
 				model = XKDModelTemplates.SCREEN.create(block, mapping, generators.modelOutput);
 			} else {
 				model = id.withPrefix("block/furniture/");
 			}
-			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(
-							block,
-							Variant.variant().with(VariantProperties.MODEL, model))
-					.with(PropertyDispatch.property(BlockStateProperties.ORIENTATION).generate(frontAndTop -> {
-						return generators.applyRotation(frontAndTop, Variant.variant());
-					}));
-			generators.delegateItemModel(block, model);
+			var generator = MultiVariantGenerator.dispatch(block, plainVariant(model))
+					.with(PropertyDispatch.modify(BlockStateProperties.ORIENTATION)
+							.generate(BlockModelGenerators::applyRotation));
+			generators.registerSimpleItemModel(block, model);
 			generators.blockStateOutput.accept(generator);
 		} else if (layered != null) {
-			ResourceLocation model = id.withPrefix("block/furniture/");
-			MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-					.with(PropertyDispatch.property(layered.getLayerProperty())
-							.generate(layer -> Variant.variant().with(VariantProperties.MODEL, model.withSuffix("_" + layer))));
-			generators.delegateItemModel(block, model.withSuffix("_" + layered.getDefaultLayer()));
+			Identifier model = id.withPrefix("block/furniture/");
+			var generator = MultiVariantGenerator.dispatch(block)
+					.with(PropertyDispatch.initial(layered.getLayerProperty())
+							.generate(layer -> plainVariant(model.withSuffix("_" + layer))));
+			generators.registerSimpleItemModel(block, model.withSuffix("_" + layered.getDefaultLayer()));
 			generators.blockStateOutput.accept(generator);
 		}
 	}
 
 	private void createDirectional(String id, String prefix) {
 		Block block = block(id);
-		ResourceLocation model = XKDeco.id(id).withPrefix("block/" + prefix);
-		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+		Identifier model = XKDeco.id(id).withPrefix("block/" + prefix);
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(
 						block,
-						Variant.variant().with(VariantProperties.MODEL, model))
-				.with(BlockModelGenerators.createFacingDispatch()));
-		generators.delegateItemModel(block, model);
+						plainVariant(model))
+				.with(BlockModelGenerators.ROTATION_FACING));
+		generators.registerSimpleItemModel(block, model);
 	}
 
 	private void createHorizontal(String id, String prefix) {
 		Block block = block(id);
-		ResourceLocation model = XKDeco.id(id).withPrefix("block/" + prefix);
-		generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(
+		Identifier model = XKDeco.id(id).withPrefix("block/" + prefix);
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(
 						block,
-						Variant.variant().with(VariantProperties.MODEL, model))
-				.with(BlockModelGenerators.createHorizontalFacingDispatch()));
-		generators.delegateItemModel(block, model);
+						plainVariant(model))
+				.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+		generators.registerSimpleItemModel(block, model);
 	}
 
 	private void createSlab(Block fullBlock, boolean sided, boolean natural, UnaryOperator<TextureMapping> textureMappingOperator) {
-		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(fullBlock);
+		Identifier id = BuiltInRegistries.BLOCK.getKey(fullBlock);
 		Block slab = block(id.getPath() + "_slab");
 		TextureMapping textureMapping = TextureMapping.cube(fullBlock);
 		if (sided) {
@@ -1099,22 +1050,22 @@ public class XKDModelProvider extends FabricModelProvider {
 		}
 		textureMapping = textureMappingOperator.apply(textureMapping);
 		ModelTemplate bottomTemplate = natural ? XKDModelTemplates.NATURAL_SLAB : ModelTemplates.SLAB_BOTTOM;
-		ResourceLocation bottomModel = bottomTemplate.create(slab, textureMapping, generators.modelOutput);
-		ResourceLocation topModel = ModelTemplates.SLAB_TOP.create(slab, textureMapping, generators.modelOutput);
-		ResourceLocation fullModel = ModelLocationUtils.getModelLocation(fullBlock);
-		BlockStateGenerator generator;
+		Identifier bottomModel = bottomTemplate.create(slab, textureMapping, generators.modelOutput);
+		Identifier topModel = ModelTemplates.SLAB_TOP.create(slab, textureMapping, generators.modelOutput);
+		Identifier fullModel = ModelLocationUtils.getModelLocation(fullBlock);
+		BlockModelDefinitionGenerator generator;
 		if (slab.defaultBlockState().hasProperty(BlockStateProperties.SNOWY)) {
-			generator = MultiVariantGenerator.multiVariant(slab).with(PropertyDispatch.properties(
+			generator = MultiVariantGenerator.dispatch(slab).with(PropertyDispatch.initial(
 							BlockStateProperties.SNOWY,
 							BlockStateProperties.SLAB_TYPE)
-					.select(true, SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottomModel))
-					.select(true, SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, snowySlabTop))
-					.select(true, SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, snowySlabDouble))
-					.select(false, SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottomModel))
-					.select(false, SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, topModel))
-					.select(false, SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, fullModel)));
+					.select(true, SlabType.BOTTOM, plainVariant(bottomModel))
+					.select(true, SlabType.TOP, plainVariant(snowySlabTop))
+					.select(true, SlabType.DOUBLE, plainVariant(snowySlabDouble))
+					.select(false, SlabType.BOTTOM, plainVariant(bottomModel))
+					.select(false, SlabType.TOP, plainVariant(topModel))
+					.select(false, SlabType.DOUBLE, plainVariant(fullModel)));
 		} else {
-			generator = BlockModelGenerators.createSlab(slab, bottomModel, topModel, fullModel);
+			generator = BlockModelGenerators.createSlab(slab, plainVariant(bottomModel), plainVariant(topModel), plainVariant(fullModel));
 		}
 		generators.blockStateOutput.accept(generator);
 	}
@@ -1134,21 +1085,22 @@ public class XKDModelProvider extends FabricModelProvider {
 	private void createBlockStateOnly(String id, String prefix, boolean delegateItem, int randomVariants) {
 		Block block = block(id);
 		KBlockSettings settings = KBlockSettings.of(block);
-		ResourceLocation modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" + prefix);
-		List<Variant> variants = Lists.newArrayList(Variant.variant().with(VariantProperties.MODEL, modelLocation));
+		Identifier modelLocation = BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/" + prefix);
+		List<Variant> variants = Lists.newArrayList(BlockModelGenerators.plainModel(modelLocation));
 		if (randomVariants > 1) {
 			for (int i = 1; i < randomVariants; i++) {
-				variants.add(Variant.variant().with(VariantProperties.MODEL, modelLocation.withSuffix("_" + (i + 1))));
+				variants.add(BlockModelGenerators.plainModel(modelLocation.withSuffix("_" + (i + 1))));
 			}
 		}
+		MultiVariant multiVariant = BlockModelGenerators.variants(variants.toArray(Variant[]::new));
 		if (settings != null && settings.hasComponent(KBlockComponents.HORIZONTAL.get())) {
-			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, variants.toArray(Variant[]::new))
-					.with(BlockModelGenerators.createHorizontalFacingDispatch()));
+			generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, multiVariant)
+					.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
 		} else {
-			generators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, variants.toArray(Variant[]::new)));
+			generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, multiVariant));
 		}
 		if (delegateItem) {
-			generators.delegateItemModel(block, modelLocation);
+			generators.registerSimpleItemModel(block, modelLocation);
 		}
 	}
 
@@ -1163,9 +1115,9 @@ public class XKDModelProvider extends FabricModelProvider {
 	}
 
 	private void createRoof(String id, boolean asian) {
-		ResourceLocation roofTexture = getBlockTexture(block(id));
-		ResourceLocation ridgeTexture = getBlockTexture(block(id), "_ridge");
-		ResourceLocation smallRidgeTexture = getBlockTexture(block(id), "_small_ridge");
+		Material roofTexture = getBlockTexture(block(id));
+		Material ridgeTexture = getBlockTexture(block(id), "_ridge");
+		Material smallRidgeTexture = getBlockTexture(block(id), "_small_ridge");
 		createRoofNormal(id, roofTexture, ridgeTexture);
 		createRoofRidge(id + "_ridge", roofTexture, ridgeTexture, asian);
 		createRoofFlat(id + "_flat", roofTexture);
@@ -1183,7 +1135,7 @@ public class XKDModelProvider extends FabricModelProvider {
 		createRoofEave(id + "_eave", roofTexture, ridgeTexture, false);
 		createRoofEnd(id + "_end", roofTexture, ridgeTexture, false);
 		createRoofRidgeEnd(id + "_ridge_end", roofTexture, ridgeTexture, smallRidgeTexture, false, asian);
-		generators.delegateItemModel(block(id + "_deco"), ModelLocationUtils.getModelLocation(block(id + "_deco")));
+		generators.registerSimpleItemModel(block(id + "_deco"), ModelLocationUtils.getModelLocation(block(id + "_deco")));
 		createHorizontalShift(
 				id + "_deco",
 				"template_roof_deco",
@@ -1204,27 +1156,28 @@ public class XKDModelProvider extends FabricModelProvider {
 		} else {
 			textureMapping = textureMappingFactory.apply(block);
 		}
-		ResourceLocation model0 = XKDModelTemplates.MAP.get(templateId).create(
+		Identifier model0 = XKDModelTemplates.MAP.get(templateId).create(
 				block,
 				textureMapping,
 				generators.modelOutput);
-		ResourceLocation model1 = XKDModelTemplates.MAP.get(templateId + "_top").create(
+		Identifier model1 = XKDModelTemplates.MAP.get(templateId + "_top").create(
 				block,
 				textureMapping,
 				generators.modelOutput);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(altRotation ? createHorizontalFacingDispatchAlt() : BlockModelGenerators.createHorizontalFacingDispatch())
-				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+		var half = property(block, HALF);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(half)
+						.select("lower", plainVariant(model0))
+						.select("upper", plainVariant(model1)))
+				.with(altRotation ? rotationHorizontalFacingAlt() : BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
 		generators.blockStateOutput.accept(generator);
 	}
 
 	private void createRoofRidgeEnd(
 			String id,
-			ResourceLocation roofTexture,
-			ResourceLocation ridgeTexture,
-			ResourceLocation smallRidgeTexture,
+			Material roofTexture,
+			Material ridgeTexture,
+			Material smallRidgeTexture,
 			boolean narrow,
 			boolean asian) {
 		Block block = block(id);
@@ -1234,8 +1187,9 @@ public class XKDModelProvider extends FabricModelProvider {
 		} else {
 			pathBase = "template_roof_small_ridge_end";
 		}
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.property(ROOF_VARIANT_WITHOUT_SLOW)
+		var variantProperty = property(block, ROOF_VARIANT_WITHOUT_SLOW);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(variantProperty)
 						.generate(variant -> {
 							String path = pathBase;
 							TextureMapping textureMapping = TextureMapping.particle(roofTexture);
@@ -1243,26 +1197,29 @@ public class XKDModelProvider extends FabricModelProvider {
 								textureMapping.put(XKDModelTemplates.SLOT_RIDGE, smallRidgeTexture);
 								textureMapping.put(XKDModelTemplates.SLOT_RIDGE2, ridgeTexture);
 							} else {
-								textureMapping.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE);
+								textureMapping.put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE));
 								textureMapping.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture);
 							}
 							if (!variant.equals("normal")) {
 								path += "_" + variant;
 							}
-							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
+							Identifier model = XKDModelTemplates.MAP.get(path).create(
 									block,
 									textureMapping,
 									generators.modelOutput);
-							return Variant.variant().with(VariantProperties.MODEL, model);
+							return plainVariant(model);
 						}))
-				.with(createHorizontalFacingDispatchAlt());
+				.with(rotationHorizontalFacingAlt());
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createRoofEnd(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture, boolean narrow) {
+	private void createRoofEnd(String id, Material roofTexture, Material ridgeTexture, boolean narrow) {
 		Block block = block(id);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(ROOF_VARIANT, ROOF_END_SHAPE, HALF)
+		var variantProperty = property(block, ROOF_VARIANT);
+		var shapeProperty = property(block, ROOF_END_SHAPE);
+		var halfProperty = property(block, HALF);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(variantProperty, shapeProperty, halfProperty)
 						.generate((variant, shape, half) -> {
 							String path = narrow ? "template_roof_small_end" : "template_roof_end";
 							if (!"normal".equals(variant)) {
@@ -1274,23 +1231,25 @@ public class XKDModelProvider extends FabricModelProvider {
 							} else if ("lower".equals(half) && "steep".equals(variant)) {
 								path += "_top";
 							}
-							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
+							Identifier model = XKDModelTemplates.MAP.get(path).create(
 									block,
 									TextureMapping.particle(roofTexture)
-											.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE)
+											.put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE))
 											.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture),
 									generators.modelOutput);
-							return Variant.variant().with(VariantProperties.MODEL, model);
+							return plainVariant(model);
 						}))
-				.with(createHorizontalFacingDispatchAlt());
-		generators.delegateItemModel(block, ModelLocationUtils.getModelLocation(block).withSuffix("_left"));
+				.with(rotationHorizontalFacingAlt());
+		generators.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block).withSuffix("_left"));
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createRoofEave(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture, boolean narrow) {
+	private void createRoofEave(String id, Material roofTexture, Material ridgeTexture, boolean narrow) {
 		Block block = block(id);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(ROOF_EAVE_SHAPE, HALF).generate((shape, half) -> {
+		var shapeProperty = property(block, ROOF_EAVE_SHAPE);
+		var halfProperty = property(block, HALF);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(shapeProperty, halfProperty).generate((shape, half) -> {
 					String path = narrow ? "template_roof_small_eave" : "template_roof_eave";
 					if (!shape.equals("straight")) {
 						path += "_" + shape;
@@ -1298,39 +1257,40 @@ public class XKDModelProvider extends FabricModelProvider {
 					if (half.equals("upper")) {
 						path += "_top";
 					}
-					ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
+					Identifier model = XKDModelTemplates.MAP.get(path).create(
 							block,
 							TextureMapping.particle(roofTexture)
-									.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE)
+									.put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE))
 									.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture),
 							generators.modelOutput);
-					return Variant.variant().with(VariantProperties.MODEL, model);
+					return plainVariant(model);
 				}))
-				.with(createHorizontalFacingDispatchAlt());
+				.with(rotationHorizontalFacingAlt());
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createRoofFlat(String id, ResourceLocation roofTexture) {
+	private void createRoofFlat(String id, Material roofTexture) {
 		Block block = block(id);
-		ResourceLocation model0 = XKDModelTemplates.MAP.get("template_roof_flat").create(
+		Identifier model0 = XKDModelTemplates.MAP.get("template_roof_flat").create(
 				block,
-				TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE),
+				TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE)),
 				generators.modelOutput);
-		ResourceLocation model1 = XKDModelTemplates.MAP.get("template_roof_flat_top").create(
+		Identifier model1 = XKDModelTemplates.MAP.get("template_roof_flat_top").create(
 				block,
-				TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE),
+				TextureMapping.particle(roofTexture).put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE)),
 				generators.modelOutput);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
-						.select(Direction.Axis.Z, Variant.variant())
-						.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
-				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+		var half = property(block, HALF);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(half)
+						.select("lower", plainVariant(model0))
+						.select("upper", plainVariant(model1)))
+				.with(PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_AXIS)
+						.select(Direction.Axis.Z, BlockModelGenerators.NOP)
+						.select(Direction.Axis.X, BlockModelGenerators.Y_ROT_90));
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createRoofRidge(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture, boolean asian) {
+	private void createRoofRidge(String id, Material roofTexture, Material ridgeTexture, boolean asian) {
 		Block block = block(id);
 		Stream<ModelTemplate> templateStream;
 		if (asian) {
@@ -1347,99 +1307,86 @@ public class XKDModelProvider extends FabricModelProvider {
 					XKDModelTemplates.ROOF_RIDGE_POST,
 					XKDModelTemplates.ROOF_RIDGE_INVENTORY);
 		}
-		List<ResourceLocation> models = templateStream.map(template -> template.create(
+		List<Identifier> models = templateStream.map(template -> template.create(
 				block,
 				TextureMapping.particle(roofTexture)
-						.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE)
+						.put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE))
 						.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture),
 				generators.modelOutput)).toList();
-		ResourceLocation normalModel = models.get(0);
-		ResourceLocation cornerModel = models.get(1);
-		ResourceLocation postModel = models.get(2);
-		ResourceLocation steepModel = asian ? models.get(4) : normalModel;
-		generators.delegateItemModel(block, models.get(3));
-		MultiPartGenerator generator = MultiPartGenerator.multiPart(block)
+		Identifier normalModel = models.get(0);
+		Identifier cornerModel = models.get(1);
+		Identifier postModel = models.get(2);
+		Identifier steepModel = asian ? models.get(4) : normalModel;
+		generators.registerSimpleItemModel(block, models.get(3));
+		MultiVariant post = plainVariant(postModel);
+		MultiVariant normal = plainVariant(normalModel);
+		MultiVariant corner = plainVariant(cornerModel);
+		MultiVariant steep = plainVariant(steepModel);
+		var generator = MultiPartGenerator.multiPart(block)
 				.with(
-						Condition.condition()
+						BlockModelGenerators.condition()
 								.term(BlockStateProperties.NORTH_WALL, WallSide.LOW)
 								.term(BlockStateProperties.EAST_WALL, WallSide.LOW)
 								.term(BlockStateProperties.SOUTH_WALL, WallSide.LOW)
 								.term(BlockStateProperties.WEST_WALL, WallSide.LOW),
-						Variant.variant().with(VariantProperties.MODEL, postModel))
+						post)
 				.with(
-						Condition.condition()
+						BlockModelGenerators.condition()
 								.term(BlockStateProperties.WEST_WALL, WallSide.NONE)
 								.term(BlockStateProperties.NORTH_WALL, WallSide.NONE),
-						Variant.variant().with(VariantProperties.MODEL, cornerModel))
+						corner)
 				.with(
-						Condition.condition()
+						BlockModelGenerators.condition()
 								.term(BlockStateProperties.WEST_WALL, WallSide.NONE)
 								.term(BlockStateProperties.SOUTH_WALL, WallSide.NONE),
-						Variant.variant()
-								.with(VariantProperties.MODEL, cornerModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+						corner.with(BlockModelGenerators.Y_ROT_270))
 				.with(
-						Condition.condition()
+						BlockModelGenerators.condition()
 								.term(BlockStateProperties.EAST_WALL, WallSide.NONE)
 								.term(BlockStateProperties.SOUTH_WALL, WallSide.NONE),
-						Variant.variant()
-								.with(VariantProperties.MODEL, cornerModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						corner.with(BlockModelGenerators.Y_ROT_180))
 				.with(
-						Condition.condition()
+						BlockModelGenerators.condition()
 								.term(BlockStateProperties.EAST_WALL, WallSide.NONE)
 								.term(BlockStateProperties.NORTH_WALL, WallSide.NONE),
-						Variant.variant()
-								.with(VariantProperties.MODEL, cornerModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+						corner.with(BlockModelGenerators.Y_ROT_90))
 				.with(
-						Condition.condition().term(BlockStateProperties.UP, true),
-						Variant.variant().with(VariantProperties.MODEL, postModel))
+						BlockModelGenerators.condition().term(BlockStateProperties.UP, true),
+						post)
 				.with(
-						Condition.condition().term(BlockStateProperties.NORTH_WALL, WallSide.LOW),
-						Variant.variant()
-								.with(VariantProperties.MODEL, normalModel))
+						BlockModelGenerators.condition().term(BlockStateProperties.NORTH_WALL, WallSide.LOW),
+						normal)
 				.with(
-						Condition.condition().term(BlockStateProperties.EAST_WALL, WallSide.LOW),
-						Variant.variant()
-								.with(VariantProperties.MODEL, normalModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+						BlockModelGenerators.condition().term(BlockStateProperties.EAST_WALL, WallSide.LOW),
+						normal.with(BlockModelGenerators.Y_ROT_90))
 				.with(
-						Condition.condition().term(BlockStateProperties.SOUTH_WALL, WallSide.LOW),
-						Variant.variant()
-								.with(VariantProperties.MODEL, normalModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						BlockModelGenerators.condition().term(BlockStateProperties.SOUTH_WALL, WallSide.LOW),
+						normal.with(BlockModelGenerators.Y_ROT_180))
 				.with(
-						Condition.condition().term(BlockStateProperties.WEST_WALL, WallSide.LOW),
-						Variant.variant()
-								.with(VariantProperties.MODEL, normalModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+						BlockModelGenerators.condition().term(BlockStateProperties.WEST_WALL, WallSide.LOW),
+						normal.with(BlockModelGenerators.Y_ROT_270))
 				.with(
-						Condition.condition().term(BlockStateProperties.NORTH_WALL, WallSide.TALL),
-						Variant.variant()
-								.with(VariantProperties.MODEL, steepModel))
+						BlockModelGenerators.condition().term(BlockStateProperties.NORTH_WALL, WallSide.TALL),
+						steep)
 				.with(
-						Condition.condition().term(BlockStateProperties.EAST_WALL, WallSide.TALL),
-						Variant.variant()
-								.with(VariantProperties.MODEL, steepModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+						BlockModelGenerators.condition().term(BlockStateProperties.EAST_WALL, WallSide.TALL),
+						steep.with(BlockModelGenerators.Y_ROT_90))
 				.with(
-						Condition.condition().term(BlockStateProperties.SOUTH_WALL, WallSide.TALL),
-						Variant.variant()
-								.with(VariantProperties.MODEL, steepModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+						BlockModelGenerators.condition().term(BlockStateProperties.SOUTH_WALL, WallSide.TALL),
+						steep.with(BlockModelGenerators.Y_ROT_180))
 				.with(
-						Condition.condition().term(BlockStateProperties.WEST_WALL, WallSide.TALL),
-						Variant.variant()
-								.with(VariantProperties.MODEL, steepModel)
-								.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+						BlockModelGenerators.condition().term(BlockStateProperties.WEST_WALL, WallSide.TALL),
+						steep.with(BlockModelGenerators.Y_ROT_270));
 		generators.blockStateOutput.accept(generator);
 	}
 
-	private void createRoofNormal(String id, ResourceLocation roofTexture, ResourceLocation ridgeTexture) {
+	private void createRoofNormal(String id, Material roofTexture, Material ridgeTexture) {
 		Block block = block(id);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.properties(ROOF_VARIANT, ROOF_SHAPE, HALF)
+		var variantProperty = property(block, ROOF_VARIANT);
+		var shapeProperty = property(block, ROOF_SHAPE);
+		var halfProperty = property(block, HALF);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(variantProperty, shapeProperty, halfProperty)
 						.generate((variant, shape, half) -> {
 							String path = "template_roof";
 							if (!"normal".equals(variant)) {
@@ -1453,15 +1400,15 @@ public class XKDModelProvider extends FabricModelProvider {
 							} else if ("lower".equals(half) && "steep".equals(variant)) {
 								path += "_top";
 							}
-							ResourceLocation model = XKDModelTemplates.MAP.get(path).create(
+							Identifier model = XKDModelTemplates.MAP.get(path).create(
 									block,
 									TextureMapping.particle(roofTexture)
-											.put(XKDModelTemplates.SLOT_INNER, ROOF_INNER_TEXTURE)
+											.put(XKDModelTemplates.SLOT_INNER, new Material(ROOF_INNER_TEXTURE))
 											.put(XKDModelTemplates.SLOT_RIDGE, ridgeTexture),
 									generators.modelOutput);
-							return Variant.variant().with(VariantProperties.MODEL, model);
+							return plainVariant(model);
 						}))
-				.with(createHorizontalFacingDispatchAlt());
+				.with(rotationHorizontalFacingAlt());
 		generators.blockStateOutput.accept(generator);
 	}
 
@@ -1469,38 +1416,53 @@ public class XKDModelProvider extends FabricModelProvider {
 		generators.createAxisAlignedPillarBlock(block(id), TexturedModel.COLUMN);
 	}
 
-	public static PropertyDispatch createHorizontalFacingDispatchAlt() {
-		return PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-				.select(Direction.EAST, Variant.variant())
-				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.select(Direction.WEST, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-				.select(Direction.NORTH, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+	public static PropertyDispatch<VariantMutator> rotationHorizontalFacingAlt() {
+		return PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
+				.select(Direction.EAST, BlockModelGenerators.NOP)
+				.select(Direction.SOUTH, BlockModelGenerators.Y_ROT_90)
+				.select(Direction.WEST, BlockModelGenerators.Y_ROT_180)
+				.select(Direction.NORTH, BlockModelGenerators.Y_ROT_270);
 	}
 
 	private void createRoofTip(String id) {
 		Block block = block(id);
-		ResourceLocation model0 = XKDModelTemplates.MAP.get("template_roof_tip").create(
+		Identifier model0 = XKDModelTemplates.MAP.get("template_roof_tip").create(
 				block,
 				TextureMapping.cube(block),
 				generators.modelOutput);
-		ResourceLocation model1 = XKDModelTemplates.MAP.get("template_roof_tip_top").create(
+		Identifier model1 = XKDModelTemplates.MAP.get("template_roof_tip_top").create(
 				block,
 				TextureMapping.cube(block),
 				generators.modelOutput);
-		MultiVariantGenerator generator = MultiVariantGenerator.multiVariant(block)
-				.with(PropertyDispatch.property(HALF)
-						.select("lower", Variant.variant().with(VariantProperties.MODEL, model0))
-						.select("upper", Variant.variant().with(VariantProperties.MODEL, model1)));
+		var half = property(block, HALF);
+		var generator = MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(half)
+						.select("lower", plainVariant(model0))
+						.select("upper", plainVariant(model1)));
 		generators.blockStateOutput.accept(generator);
 	}
 
-	@Override
-	public void generateItemModels(ItemModelGenerators generators) {
+	private static Quadrant quadrant(int degrees) {
+		return switch (((degrees % 360) + 360) % 360) {
+			case 90 -> Quadrant.R90;
+			case 180 -> Quadrant.R180;
+			case 270 -> Quadrant.R270;
+			default -> Quadrant.R0;
+		};
 	}
 
 	private static Block block(String id) {
-		ResourceLocation resourceLocation = XKDeco.id(id);
+		Identifier resourceLocation = XKDeco.id(id);
 		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(() -> new IllegalStateException(
 				"Missing block: " + resourceLocation));
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <P extends Property<?>> P property(Block block, P expected) {
+		Property<?> property = block.getStateDefinition().getProperty(expected.getName());
+		if (property == null) {
+			throw new IllegalStateException("Missing property %s for block %s".formatted(expected.getName(), block));
+		}
+		return (P) property;
 	}
 }

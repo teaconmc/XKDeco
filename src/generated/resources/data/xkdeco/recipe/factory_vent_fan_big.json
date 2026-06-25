@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "xkdeco:factory_vent_fan"
-    }
+    "#": "xkdeco:factory_vent_fan"
   },
   "pattern": [
     "##",
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:factory_vent_fan_big"
   }
 }

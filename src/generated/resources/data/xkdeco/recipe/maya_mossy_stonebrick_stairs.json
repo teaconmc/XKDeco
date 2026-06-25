@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:maya_mossy_stonebricks"
-    }
+    "#": "xkdeco:maya_mossy_stonebricks"
   },
   "pattern": [
     "#  ",

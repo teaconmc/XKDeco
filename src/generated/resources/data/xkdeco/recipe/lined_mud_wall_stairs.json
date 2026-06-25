@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:lined_mud_wall_block"
-    }
+    "#": "xkdeco:lined_mud_wall_block"
   },
   "pattern": [
     "#  ",

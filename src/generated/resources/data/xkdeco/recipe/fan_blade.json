@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "minecraft:lightning_rod"
-    },
-    "S": {
-      "item": "minecraft:heavy_weighted_pressure_plate"
-    }
+    "M": "minecraft:lightning_rod",
+    "S": "minecraft:heavy_weighted_pressure_plate"
   },
   "pattern": [
     " S ",
@@ -15,7 +11,6 @@
     " S "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:fan_blade"
   }
 }

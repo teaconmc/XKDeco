@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:quartz_pillar",
+  "result": {
+    "id": "xkdeco:quartz_wall"
+  }
+}

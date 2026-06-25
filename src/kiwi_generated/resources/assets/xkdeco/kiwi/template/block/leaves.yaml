@@ -1,0 +1,4 @@
+type: simple
+class: org.teacon.xkdeco.block.XKDLeavesBlock
+properties:
+  render_type: cutout_mipped

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "M": {
-      "item": "minecraft:white_dye"
-    },
-    "S": {
-      "item": "minecraft:cherry_leaves"
-    }
+    "M": "minecraft:white_dye",
+    "S": "minecraft:cherry_leaves"
   },
   "pattern": [
     "SSS",

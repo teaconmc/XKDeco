@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "minecraft:amethyst_shard"
-    },
-    "M": {
-      "item": "xkdeco:maya_stone_slab"
-    },
-    "S": {
-      "item": "minecraft:skeleton_skull"
-    }
+    "A": "minecraft:amethyst_shard",
+    "M": "xkdeco:maya_stone_slab",
+    "S": "minecraft:skeleton_skull"
   },
   "pattern": [
     " A ",
@@ -18,7 +12,6 @@
     " M "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:maya_crystal_skull"
   }
 }

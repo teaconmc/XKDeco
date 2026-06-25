@@ -3,11 +3,8 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "xkdeco:quartz_sand"
-  },
+  "ingredient": "xkdeco:quartz_sand",
   "result": {
-    "count": 1,
     "id": "xkdeco:quartz_glass"
   }
 }

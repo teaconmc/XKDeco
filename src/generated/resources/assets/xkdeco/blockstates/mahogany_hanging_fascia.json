@@ -1,12 +1,10 @@
 {
   "variants": {
     "axis=x,side=negative": {
-      "model": "xkdeco:block/mahogany_hanging_fascia_side",
-      "y": 0
+      "model": "xkdeco:block/mahogany_hanging_fascia_side"
     },
     "axis=x,side=none": {
-      "model": "xkdeco:block/mahogany_hanging_fascia_middle",
-      "y": 0
+      "model": "xkdeco:block/mahogany_hanging_fascia_middle"
     },
     "axis=x,side=positive": {
       "model": "xkdeco:block/mahogany_hanging_fascia_side",

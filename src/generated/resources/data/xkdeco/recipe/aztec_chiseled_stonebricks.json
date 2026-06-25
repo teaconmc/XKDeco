@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:aztec_stonebrick_slab"
-    }
+    "#": "xkdeco:aztec_stonebrick_slab"
   },
   "pattern": [
     "#",
     "#"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:aztec_chiseled_stonebricks"
   }
 }

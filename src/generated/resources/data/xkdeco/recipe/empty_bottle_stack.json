@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:glass_bottle"
-    }
+    "#": "minecraft:glass_bottle"
   },
   "pattern": [
     "##",
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:empty_bottle_stack"
   }
 }

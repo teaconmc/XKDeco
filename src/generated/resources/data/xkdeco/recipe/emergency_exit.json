@@ -2,18 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:signs"
-    },
-    {
-      "item": "minecraft:glow_ink_sac"
-    },
-    {
-      "item": "minecraft:green_dye"
-    }
+    "#minecraft:signs",
+    "minecraft:glow_ink_sac",
+    "minecraft:green_dye"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:emergency_exit"
   }
 }

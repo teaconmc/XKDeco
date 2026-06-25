@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "minecraft:lantern"
-    },
-    "S": {
-      "item": "minecraft:paper"
-    }
+    "M": "minecraft:lantern",
+    "S": "minecraft:paper"
   },
   "pattern": [
     " S ",
@@ -15,7 +11,6 @@
     " S "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:paper_lantern"
   }
 }

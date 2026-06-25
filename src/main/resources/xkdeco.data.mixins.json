@@ -1,14 +1,14 @@
 {
-	"required": true,
+	"required": false,
 	"package": "org.teacon.xkdeco.mixin",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_25",
 	"refmap": "xkdeco.data.refmap.json",
 	"mixins": [
 		"data.BlockFamilyProviderMixin",
 		"data.RecipeProviderMixin"
 	],
 	"injectors": {
-		"defaultRequire": 1
+		"defaultRequire": 0
 	},
 	"minVersion": "0.8"
 }

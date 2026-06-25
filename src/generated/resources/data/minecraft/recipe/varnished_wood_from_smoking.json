@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": "minecraft:oak_wood",
+  "result": {
+    "id": "xkdeco:varnished_wood"
+  }
+}

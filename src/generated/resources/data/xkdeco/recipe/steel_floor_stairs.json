@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:steel_floor"
-    }
+    "#": "xkdeco:steel_floor"
   },
   "pattern": [
     "#  ",

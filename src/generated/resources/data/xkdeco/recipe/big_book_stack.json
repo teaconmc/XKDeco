@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "xkdeco:small_book_stack"
-    }
+    "#": "xkdeco:small_book_stack"
   },
   "pattern": [
     "##",
     "##"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:big_book_stack"
   }
 }

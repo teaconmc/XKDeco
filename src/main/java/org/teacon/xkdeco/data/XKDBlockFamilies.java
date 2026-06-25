@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 public class XKDBlockFamilies {
@@ -158,7 +158,7 @@ public class XKDBlockFamilies {
 	}
 
 	private static Block block(String id) {
-		ResourceLocation resourceLocation = XKDeco.id(id);
+		Identifier resourceLocation = XKDeco.id(id);
 		return BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElseThrow(
 				() -> new IllegalStateException("Missing block: " + resourceLocation));
 	}

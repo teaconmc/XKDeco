@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "fallen_leaves",
   "key": {
-    "#": {
-      "item": "xkdeco:cherry_blossom"
-    }
+    "#": "xkdeco:cherry_blossom"
   },
   "pattern": [
     "##"

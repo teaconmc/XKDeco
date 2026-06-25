@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:cut_obsidian_bricks"
-    }
+    "#": "xkdeco:cut_obsidian_bricks"
   },
   "pattern": [
     "###"

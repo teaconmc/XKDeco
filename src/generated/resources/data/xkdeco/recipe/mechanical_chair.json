@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "minecraft:wooden_buttons"
-    },
-    "H": {
-      "tag": "minecraft:wooden_slabs"
-    },
-    "W": {
-      "item": "minecraft:red_wool"
-    }
+    "B": "#minecraft:wooden_buttons",
+    "H": "#minecraft:wooden_slabs",
+    "W": "minecraft:red_wool"
   },
   "pattern": [
     "H  ",
@@ -18,7 +12,6 @@
     "HBH"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:mechanical_chair"
   }
 }

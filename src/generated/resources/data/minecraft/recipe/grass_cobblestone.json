@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:short_grass",
+    "minecraft:cobblestone"
+  ],
+  "result": {
+    "id": "xkdeco:grass_cobblestone"
+  }
+}

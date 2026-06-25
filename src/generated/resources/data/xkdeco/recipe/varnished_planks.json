@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "tag": "xkdeco:varnished_logs"
-    }
+    "#xkdeco:varnished_logs"
   ],
   "result": {
     "count": 4,

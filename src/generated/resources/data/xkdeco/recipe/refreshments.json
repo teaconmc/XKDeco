@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "minecraft:cookie"
-    },
-    "B": {
-      "item": "minecraft:pumpkin_pie"
-    },
-    "C": {
-      "item": "minecraft:cake"
-    },
-    "_": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "A": "minecraft:cookie",
+    "B": "minecraft:pumpkin_pie",
+    "C": "minecraft:cake",
+    "_": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "ABA",
@@ -21,7 +13,6 @@
     " _ "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:refreshments"
   }
 }

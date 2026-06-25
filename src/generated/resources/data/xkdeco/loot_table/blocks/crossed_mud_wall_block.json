@@ -1,3 +1,4 @@
 {
-  "type": "minecraft:block"
+  "type": "minecraft:block",
+  "random_sequence": "xkdeco:blocks/crossed_mud_wall_block"
 }

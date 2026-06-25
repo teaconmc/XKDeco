@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:sand",
+    "minecraft:cobblestone"
+  ],
+  "result": {
+    "id": "xkdeco:sandy_cobblestone"
+  }
+}

@@ -2,15 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "xkdeco:item_frame_cover"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    }
+    "xkdeco:item_frame_cover",
+    "minecraft:glowstone_dust"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:glow_item_frame_cover"
   }
 }

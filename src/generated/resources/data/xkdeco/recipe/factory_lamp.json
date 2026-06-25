@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "G": {
-      "item": "minecraft:glass_pane"
-    },
-    "S": {
-      "item": "xkdeco:steel_tile_slab"
-    }
+    "D": "minecraft:glowstone_dust",
+    "G": "minecraft:glass_pane",
+    "S": "xkdeco:steel_tile_slab"
   },
   "pattern": [
     " G ",

@@ -8,7 +8,7 @@ properties:
     properties:
     - name: half
       values:
-      - upper
       - lower
+      - upper
   shape: xkdeco:roof_deco
   no_occlusion: true

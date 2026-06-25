@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "I": {
-      "item": "minecraft:ink_sac"
-    },
-    "P": {
-      "item": "minecraft:paper"
-    }
+    "F": "minecraft:feather",
+    "I": "minecraft:ink_sac",
+    "P": "minecraft:paper"
   },
   "pattern": [
     " F ",
@@ -18,7 +12,6 @@
     "PPP"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:calligraphy"
   }
 }

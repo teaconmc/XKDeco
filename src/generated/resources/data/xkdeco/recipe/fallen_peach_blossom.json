@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "fallen_leaves",
   "key": {
-    "#": {
-      "item": "xkdeco:peach_blossom"
-    }
+    "#": "xkdeco:peach_blossom"
   },
   "pattern": [
     "##"

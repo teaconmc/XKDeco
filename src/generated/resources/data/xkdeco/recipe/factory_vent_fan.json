@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "xkdeco:fan_blade"
-    },
-    "S": {
-      "item": "minecraft:iron_bars"
-    }
+    "M": "xkdeco:fan_blade",
+    "S": "minecraft:iron_bars"
   },
   "pattern": [
     "SSS",
@@ -15,7 +11,6 @@
     "SSS"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:factory_vent_fan"
   }
 }

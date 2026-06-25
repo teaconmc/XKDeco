@@ -2,19 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "xkdeco:candlestick"
-    },
-    "M": {
-      "item": "minecraft:mangrove_roots"
-    }
+    "C": "xkdeco:candlestick",
+    "M": "minecraft:mangrove_roots"
   },
   "pattern": [
     "M",
     "C"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:covered_lamp"
   }
 }

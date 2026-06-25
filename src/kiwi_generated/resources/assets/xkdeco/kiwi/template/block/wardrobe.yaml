@@ -1,0 +1,5 @@
+type: simple
+class: org.teacon.xkdeco.block.WardrobeBlock
+properties:
+  render_type: cutout
+  no_occlusion: true

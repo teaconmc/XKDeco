@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "item": "minecraft:glowstone"
-    },
-    "S": {
-      "item": "minecraft:stone_bricks"
-    }
+    "G": "minecraft:glowstone",
+    "S": "minecraft:stone_bricks"
   },
   "pattern": [
     "S",
@@ -15,7 +11,6 @@
     "S"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:stone_lamp"
   }
 }

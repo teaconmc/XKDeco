@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:quartz_block",
+  "result": {
+    "count": 4,
+    "id": "xkdeco:quartz_sand"
+  }
+}

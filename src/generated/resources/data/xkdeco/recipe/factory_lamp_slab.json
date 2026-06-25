@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:factory_lamp_block"
-    }
+    "#": "xkdeco:factory_lamp_block"
   },
   "pattern": [
     "###"

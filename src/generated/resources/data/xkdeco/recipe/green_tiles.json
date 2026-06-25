@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "T": {
-      "item": "minecraft:green_terracotta"
-    },
-    "W": {
-      "tag": "minecraft:planks"
-    }
+    "T": "minecraft:green_terracotta",
+    "W": "#minecraft:planks"
   },
   "pattern": [
     "TTT",

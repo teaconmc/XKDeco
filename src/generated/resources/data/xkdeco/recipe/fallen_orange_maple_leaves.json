@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "fallen_leaves",
   "key": {
-    "#": {
-      "item": "xkdeco:orange_maple_leaves"
-    }
+    "#": "xkdeco:orange_maple_leaves"
   },
   "pattern": [
     "##"

@@ -11,13 +11,13 @@ import org.teacon.xkdeco.data.XKDModelProvider;
 
 import javax.annotation.Nullable;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.Block;
 
 @Mixin(BlockModelGenerators.BlockFamilyProvider.class)
 public class BlockFamilyProviderMixin {
-	@Shadow(aliases = {"f_125029_", "field_22836"})
+	@Shadow(aliases = {"field_22836"})
 	@Final
 	BlockModelGenerators this$0;
 

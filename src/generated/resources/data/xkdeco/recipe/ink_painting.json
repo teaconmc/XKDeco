@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "G": {
-      "item": "minecraft:green_dye"
-    },
-    "I": {
-      "item": "minecraft:ink_sac"
-    },
-    "P": {
-      "item": "minecraft:paper"
-    },
-    "R": {
-      "item": "minecraft:red_dye"
-    }
+    "F": "minecraft:feather",
+    "G": "minecraft:green_dye",
+    "I": "minecraft:ink_sac",
+    "P": "minecraft:paper",
+    "R": "minecraft:red_dye"
   },
   "pattern": [
     " F ",
@@ -24,7 +14,6 @@
     "PPP"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:ink_painting"
   }
 }

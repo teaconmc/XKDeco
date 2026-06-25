@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "M": {
-      "item": "minecraft:dirt"
-    },
-    "S": {
-      "item": "minecraft:dark_oak_leaves"
-    }
+    "M": "minecraft:dirt",
+    "S": "minecraft:dark_oak_leaves"
   },
   "pattern": [
     "SSS",

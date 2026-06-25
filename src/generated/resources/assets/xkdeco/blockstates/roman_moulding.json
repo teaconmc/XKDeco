@@ -2,7 +2,6 @@
   "variants": {
     "facing=east,shape=inner_left": {
       "model": "xkdeco:block/furniture/roman_moulding_inner",
-      "uvlock": false,
       "y": 270
     },
     "facing=east,shape=inner_right": {
@@ -10,7 +9,6 @@
     },
     "facing=east,shape=outer_left": {
       "model": "xkdeco:block/furniture/roman_moulding_outer",
-      "uvlock": false,
       "y": 270
     },
     "facing=east,shape=outer_right": {
@@ -21,27 +19,22 @@
     },
     "facing=north,shape=inner_left": {
       "model": "xkdeco:block/furniture/roman_moulding_inner",
-      "uvlock": false,
       "y": 180
     },
     "facing=north,shape=inner_right": {
       "model": "xkdeco:block/furniture/roman_moulding_inner",
-      "uvlock": false,
       "y": 270
     },
     "facing=north,shape=outer_left": {
       "model": "xkdeco:block/furniture/roman_moulding_outer",
-      "uvlock": false,
       "y": 180
     },
     "facing=north,shape=outer_right": {
       "model": "xkdeco:block/furniture/roman_moulding_outer",
-      "uvlock": false,
       "y": 270
     },
     "facing=north,shape=straight": {
       "model": "xkdeco:block/furniture/roman_moulding",
-      "uvlock": false,
       "y": 270
     },
     "facing=south,shape=inner_left": {
@@ -49,7 +42,6 @@
     },
     "facing=south,shape=inner_right": {
       "model": "xkdeco:block/furniture/roman_moulding_inner",
-      "uvlock": false,
       "y": 90
     },
     "facing=south,shape=outer_left": {
@@ -57,37 +49,30 @@
     },
     "facing=south,shape=outer_right": {
       "model": "xkdeco:block/furniture/roman_moulding_outer",
-      "uvlock": false,
       "y": 90
     },
     "facing=south,shape=straight": {
       "model": "xkdeco:block/furniture/roman_moulding",
-      "uvlock": false,
       "y": 90
     },
     "facing=west,shape=inner_left": {
       "model": "xkdeco:block/furniture/roman_moulding_inner",
-      "uvlock": false,
       "y": 90
     },
     "facing=west,shape=inner_right": {
       "model": "xkdeco:block/furniture/roman_moulding_inner",
-      "uvlock": false,
       "y": 180
     },
     "facing=west,shape=outer_left": {
       "model": "xkdeco:block/furniture/roman_moulding_outer",
-      "uvlock": false,
       "y": 90
     },
     "facing=west,shape=outer_right": {
       "model": "xkdeco:block/furniture/roman_moulding_outer",
-      "uvlock": false,
       "y": 180
     },
     "facing=west,shape=straight": {
       "model": "xkdeco:block/furniture/roman_moulding",
-      "uvlock": false,
       "y": 180
     }
   }

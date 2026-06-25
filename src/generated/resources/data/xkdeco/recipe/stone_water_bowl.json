@@ -2,19 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "S": {
-      "item": "minecraft:stone"
-    },
-    "W": {
-      "item": "minecraft:water_bucket"
-    }
+    "S": "minecraft:stone",
+    "W": "minecraft:water_bucket"
   },
   "pattern": [
     "W",
     "S"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:stone_water_bowl"
   }
 }

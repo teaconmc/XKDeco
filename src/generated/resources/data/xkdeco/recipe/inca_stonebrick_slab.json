@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:inca_stonebricks"
-    }
+    "#": "xkdeco:inca_stonebricks"
   },
   "pattern": [
     "###"

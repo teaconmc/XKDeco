@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "minecraft:iron_block"
-    },
-    "S": {
-      "item": "minecraft:iron_trapdoor"
-    }
+    "M": "minecraft:iron_block",
+    "S": "minecraft:iron_trapdoor"
   },
   "pattern": [
     " S ",
@@ -15,7 +11,6 @@
     " S "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:iron_windmill"
   }
 }

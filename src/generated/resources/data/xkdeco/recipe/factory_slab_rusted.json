@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:factory_block_rusted"
-    }
+    "#": "xkdeco:factory_block_rusted"
   },
   "pattern": [
     "###"

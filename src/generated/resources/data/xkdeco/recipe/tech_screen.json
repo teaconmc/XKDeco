@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "item": "minecraft:blue_stained_glass_pane"
-    }
+    "G": "minecraft:blue_stained_glass_pane"
   },
   "pattern": [
     "GGG",
     "GGG"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:tech_screen"
   }
 }

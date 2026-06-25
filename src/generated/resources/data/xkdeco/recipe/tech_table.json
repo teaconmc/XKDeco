@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "S": {
-      "item": "xkdeco:screen_off"
-    }
+    "I": "minecraft:iron_ingot",
+    "S": "xkdeco:screen_off"
   },
   "pattern": [
     " S ",
@@ -15,7 +11,6 @@
     " I "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:tech_table"
   }
 }

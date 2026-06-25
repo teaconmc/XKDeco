@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "xkdeco:maya_mossy_bricks"
-    }
+    "#": "xkdeco:maya_mossy_bricks"
   },
   "pattern": [
     "###",

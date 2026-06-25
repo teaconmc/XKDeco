@@ -7,8 +7,8 @@ properties:
     properties:
     - name: half
       values:
-      - upper
       - lower
+      - upper
   shape: xkdeco:fallen_leaves
   no_collision: true
   no_occlusion: true

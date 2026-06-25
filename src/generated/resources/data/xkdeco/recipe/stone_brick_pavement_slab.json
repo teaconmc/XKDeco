@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:stone_brick_pavement"
-    }
+    "#": "xkdeco:stone_brick_pavement"
   },
   "pattern": [
     "###"

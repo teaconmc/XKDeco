@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:gold_bricks"
-    }
+    "#": "xkdeco:gold_bricks"
   },
   "pattern": [
     "###"

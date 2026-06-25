@@ -10,10 +10,11 @@ import org.teacon.xkdeco.block.XKDStateProperties;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.data.models.model.TexturedModel;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.world.level.block.Block;
 
 public class XKDModelTemplates {
@@ -95,7 +96,7 @@ public class XKDModelTemplates {
 			block -> {
 				return TextureMapping.cube(block).put(
 						TextureSlot.SIDE,
-						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("desk", "tall_table_side")));
+						new Material(TextureMapping.getBlockTexture(block).sprite().withPath(s -> s.replace("desk", "tall_table_side"))));
 			},
 			create("wooden_desk", TextureSlot.ALL, TextureSlot.SIDE));
 	public static final TexturedModel.Provider WOODEN_STOOL_PROVIDER = createDefault(
@@ -103,10 +104,10 @@ public class XKDModelTemplates {
 				TextureMapping mapping = new TextureMapping();
 				mapping.put(
 						TextureSlot.END,
-						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("stool", "table")));
+						new Material(TextureMapping.getBlockTexture(block).sprite().withPath(s -> s.replace("stool", "table"))));
 				mapping.put(
 						TextureSlot.SIDE,
-						TextureMapping.getBlockTexture(block).withPath(s -> s.replace("stool", "table_side")));
+						new Material(TextureMapping.getBlockTexture(block).sprite().withPath(s -> s.replace("stool", "table_side"))));
 				return mapping;
 			},
 			create("wooden_stool", TextureSlot.END, TextureSlot.SIDE));

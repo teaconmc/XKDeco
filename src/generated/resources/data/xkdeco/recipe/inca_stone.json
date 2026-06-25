@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "xkdeco:maya_stone"
-    },
-    "T": {
-      "item": "minecraft:granite"
-    }
+    "B": "xkdeco:maya_stone",
+    "T": "minecraft:granite"
   },
   "pattern": [
     "TB",

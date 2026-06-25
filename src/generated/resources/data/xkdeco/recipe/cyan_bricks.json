@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "minecraft:bricks"
-    },
-    "T": {
-      "item": "minecraft:cyan_terracotta"
-    }
+    "B": "minecraft:bricks",
+    "T": "minecraft:cyan_terracotta"
   },
   "pattern": [
     "TB",

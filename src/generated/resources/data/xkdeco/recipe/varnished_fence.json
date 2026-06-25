@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "xkdeco:varnished_planks"
-    }
+    "#": "minecraft:stick",
+    "W": "xkdeco:varnished_planks"
   },
   "pattern": [
     "W#W",

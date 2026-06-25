@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:black_tiles"
-    }
+    "#": "xkdeco:black_tiles"
   },
   "pattern": [
     "#  ",

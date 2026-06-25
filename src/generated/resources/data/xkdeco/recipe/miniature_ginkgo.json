@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "xkdeco:ginkgo_leaves"
-    },
-    "B": {
-      "item": "minecraft:flower_pot"
-    },
-    "C": {
-      "tag": "minecraft:wooden_slabs"
-    }
+    "A": "xkdeco:ginkgo_leaves",
+    "B": "minecraft:flower_pot",
+    "C": "#minecraft:wooden_slabs"
   },
   "pattern": [
     "A",
@@ -18,7 +12,6 @@
     "C"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:miniature_ginkgo"
   }
 }

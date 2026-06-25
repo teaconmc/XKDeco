@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "*": {
-      "item": "xkdeco:wood_globe"
-    },
-    "B": {
-      "item": "minecraft:blue_dye"
-    },
-    "G": {
-      "item": "minecraft:green_dye"
-    },
-    "W": {
-      "item": "minecraft:white_dye"
-    },
-    "Y": {
-      "item": "minecraft:yellow_dye"
-    }
+    "*": "xkdeco:wood_globe",
+    "B": "minecraft:blue_dye",
+    "G": "minecraft:green_dye",
+    "W": "minecraft:white_dye",
+    "Y": "minecraft:yellow_dye"
   },
   "pattern": [
     " W ",
@@ -24,7 +14,6 @@
     " Y "
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:globe"
   }
 }

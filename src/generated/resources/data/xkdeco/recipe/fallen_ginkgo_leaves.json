@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "fallen_leaves",
   "key": {
-    "#": {
-      "item": "xkdeco:ginkgo_leaves"
-    }
+    "#": "xkdeco:ginkgo_leaves"
   },
   "pattern": [
     "##"

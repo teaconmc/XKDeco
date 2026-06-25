@@ -3,11 +3,8 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "xkdeco:toughened_sand"
-  },
+  "ingredient": "xkdeco:toughened_sand",
   "result": {
-    "count": 1,
     "id": "xkdeco:toughened_glass"
   }
 }

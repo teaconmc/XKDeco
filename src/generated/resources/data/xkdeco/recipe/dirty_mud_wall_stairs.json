@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "xkdeco:dirty_mud_wall_block"
-    }
+    "#": "xkdeco:dirty_mud_wall_block"
   },
   "pattern": [
     "#  ",

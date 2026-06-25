@@ -8,8 +8,8 @@ properties:
     properties:
     - name: half
       values:
-      - upper
       - lower
+      - upper
   shape: xkdeco:roof_deco_oblique
   no_collision: true
   no_occlusion: true

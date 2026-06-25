@@ -9,8 +9,8 @@ properties:
     properties:
     - name: half
       values:
-      - upper
       - lower
+      - upper
     - name: shape
       values:
       - straight

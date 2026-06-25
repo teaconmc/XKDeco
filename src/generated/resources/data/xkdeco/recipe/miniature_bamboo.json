@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "minecraft:bamboo"
-    },
-    "B": {
-      "item": "minecraft:flower_pot"
-    },
-    "C": {
-      "tag": "minecraft:wooden_slabs"
-    }
+    "A": "minecraft:bamboo",
+    "B": "minecraft:flower_pot",
+    "C": "#minecraft:wooden_slabs"
   },
   "pattern": [
     "A",
@@ -18,7 +12,6 @@
     "C"
   ],
   "result": {
-    "count": 1,
     "id": "xkdeco:miniature_bamboo"
   }
 }
