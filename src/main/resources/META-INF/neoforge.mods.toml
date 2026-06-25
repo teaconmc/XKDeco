@@ -15,27 +15,49 @@ description="Models and textures are created by XeKr: https://github.com/XeKr"
 [[mixins]]
 config="xkdeco.mixins.json"
 
+# Datagen-only mixins (take over vanilla model generation, etc.). Targets are client/datagen
+# classes, so the config is marked required=false to stay safe on a dedicated server where those
+# classes are absent (the mixins are simply skipped there; they only apply during data generation).
+[[mixins]]
+config="xkdeco.data.mixins.json"
+
 [modproperties.xkdeco]
 kiwiCustomization=true
 
 [[dependencies.xkdeco]]
 modId="neoforge"
 type="required"
-versionRange="[21.1,)"
+versionRange="[26.1.2.71,)"
 
 [[dependencies.xkdeco]]
 modId="minecraft"
 type="required"
-versionRange="[1.21,1.22)"
+versionRange="[26.1.2,26.2)"
 
 [[dependencies.xkdeco]]
 modId="kiwi"
 type="required"
-versionRange="[15.6.1,)"
+versionRange="[26.0.8,)"
 
 [[dependencies.xkdeco]]
-modId="fabric_api"
-type="required"
+modId="jei"
+type="optional"
 versionRange="*"
-reason="Forgified Fabric API is required for this mod to work."
+referralUrl="https://www.curseforge.com/minecraft/mc-mods/jei"
+
+[[dependencies.xkdeco]]
+modId="roughlyenoughitems"
+type="optional"
+versionRange="*"
+referralUrl="https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items"
+
+# 26.1 migration: FFAPI has no 26.1 release yet. The in-house compat layer
+# (org.teacon.xkdeco.compat.fabric) lets the mod load without it, so this is
+# downgraded from "required" to "optional". Switch back to "required" and bump
+# the range once FFAPI 26.1 ships and the shim is retired.
+[[dependencies.xkdeco]]
+modId="fabric_api"
+type="optional"
+versionRange="*"
+reason="Forgified Fabric API — optional while the in-house compat layer stands in."
 referralUrl="https://www.curseforge.com/minecraft/mc-mods/forgified-fabric-api"

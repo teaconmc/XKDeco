@@ -3,13 +3,13 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.140'
+    id 'net.neoforged.moddev' version '2.0.141'
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
 //        vendor = JvmVendorSpec.ANY
     }
 }
@@ -58,11 +58,14 @@ if (System.env.GITHUB_ACTIONS) {
 
 var realVersion = mod_version + '+neoforge'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    // During the 26.1 migration, show all errors (javac caps at 100 by default, which masks real
+    // errors behind datagen/integration noise). TODO: drop once the port compiles clean.
+    options.compilerArgs += ['-Xmaxerrs', '500']
 }
 
 static def isJetBrainsRuntime() {
@@ -76,10 +79,11 @@ neoForge {
     // Enable access transformers
     accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
+    // Parchment disabled for 26.1 (deobfuscated names shipped). Re-enable if/when mappings exist.
+//    parchment {
+//        mappingsVersion = project.parchment_mappings_version
+//        minecraftVersion = project.parchment_minecraft_version
+//    }
     mods {
         // define mod <-> source bindings
         // these are used to tell the game which sources are for which mod
@@ -132,9 +136,7 @@ neoForge {
                 programArguments.addAll('--accessToken', project.getProperty('mc_accessToken'))
             }
 
-            // Add mixin config to runtime
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
+            // The main mixin config is declared in META-INF/neoforge.mods.toml.
         }
 
         server {
@@ -147,13 +149,13 @@ neoForge {
             // Export mixin-changed classes
             systemProperty 'mixin.debug.export', 'true'
 
-            // Add mixin config to runtime
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
+            // The main mixin config is declared in META-INF/neoforge.mods.toml.
         }
 
         data {
-            data()
+            // 26.1 ModDevGradle replaced data() with clientData()/serverData(); clientData() + --all
+            // drives both client (GatherDataEvent.Client) and server (GatherDataEvent.Server) providers.
+            clientData()
             ideName = "Run ${project.mod_id} - Data"
             gameDirectory = project.file('run_data')
 //            property 'production', 'true'
@@ -162,9 +164,8 @@ neoForge {
             // Export mixin-changed classes
             systemProperty 'mixin.debug.export', 'true'
 
-            // Add mixin config to runtime
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.mixins.json')
-            programArgument('-mixin.config=' + project.getProperty('mod_id') + '.data.mixins.json')
+            // Note: the datagen-only mixins (xkdeco.data.mixins.json) are declared in neoforge.mods.toml
+            // (required=false), so they load during this run without a fragile program/system argument.
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             programArguments.addAll('--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
@@ -213,46 +214,90 @@ repositories {
 }
 
 dependencies {
-    // https://modrinth.com/mod/jei/versions
-    // compile against the JEI API but do not include it at runtime
+    // === Core library: Kiwi (26.1) ========================================
+    // https://modrinth.com/mod/kiwi/versions
+    implementation(annotationProcessor("maven.modrinth:kiwi:${kiwi_version}+neoforge"))
+
+    // === Config: Cloth Config (26.1) ======================================
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
+
+    // === Forgified Fabric API ==============================================
+    // NOTE(26.1 migration): FFAPI has NO 26.1 release yet (Sinytra branch 26.1.2 WIP).
+    // The mod's FFAPI usages are being replaced by an in-house compat layer under
+    // org.teacon.xkdeco.compat.fabric (see MIGRATION-26.1.md). Re-enable these and
+    // delete the shim once FFAPI 26.1 ships.
+//    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:<26.1>"
+//    implementation("org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1") { version { strictly("<26.1>") } }
+
+    // === Optional integrations =============================================
+    // -- JEI: https://modrinth.com/mod/jei/versions
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    // at runtime, use the full JEI jar for Forge
     implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-
-    // https://linkie.shedaniel.dev/dependencies?loader=neoforge&version=1.21.1
+    // -- Architectury / REI: https://linkie.shedaniel.dev/dependencies?loader=neoforge
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
-    compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
+    compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.0.93"
+    // -- Jade: https://modrinth.com/mod/jade/versions
+//    implementation "maven.modrinth:jade:15.10.0+neoforge"
+    // -- DebugUtils / ModernFix / FerriteCore / Suggestion Tweaker
+//    implementation "maven.modrinth:debugutils:TvU10aNN"
+//    implementation "maven.modrinth:modernfix:ZKnJCu6a"
+//    implementation "maven.modrinth:ferrite-core:7.0.2-neoforge"
+//    implementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.2+neoforge"
+}
 
-    // https://modrinth.com/mod/kiwi/versions
-//    implementation(annotationProcessor("libs:Kiwi-1.21.1-NeoForge:15.6.0"))
-    implementation(annotationProcessor("maven.modrinth:kiwi:15.6.1+neoforge"))
-
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
-    // https://modrinth.com/mod/jade/versions
-    implementation "maven.modrinth:jade:15.10.0+neoforge"
-    // implementation fg.deobf("maven.modrinth:uBKACKpl:qk7bNI3G") //shimmer
-
-    // https://modrinth.com/mod/debugutils/versions
-    implementation "maven.modrinth:debugutils:TvU10aNN"
-    // https://modrinth.com/mod/modernfix/versions
-    implementation "maven.modrinth:modernfix:ZKnJCu6a"
-    // https://modrinth.com/mod/ferrite-core/versions
-    implementation "maven.modrinth:ferrite-core:7.0.2-neoforge"
-    // https://modrinth.com/mod/suggestion-tweaker/versions
-    implementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.2+neoforge"
-
-    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.116.7+2.2.0+1.21.1"
-    implementation("org.sinytra.forgified-fabric-api:fabric-data-generation-api-v1") {
-        version {
-            strictly("20.2.22+2d91a6db19")
-        }
+def mergeXKDecoLangFiles = {
+    def langDir = file("${layout.buildDirectory.get().asFile}/resources/main/assets/${project.mod_id}/lang")
+    def langSourceDirs = [
+            file("src/kiwi_generated/resources/assets/${project.mod_id}_extra/lang"),
+            file("src/generated/resources/assets/${project.mod_id}/lang"),
+            file("src/main/resources/assets/${project.mod_id}/lang")
+    ]
+    def langNames = new TreeSet<String>()
+    langSourceDirs.findAll { it.isDirectory() }.each { dir ->
+        dir.eachFileMatch(~/.*\.json/) { langNames.add(it.name) }
     }
-//    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-api-v1:3.4.0+9c40919e19"))
-//    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-renderer-indigo:1.7.0+acb05a3919"))
-//    jarJar(implementation("org.sinytra.forgified-fabric-api:fabric-model-loading-api-v1:2.0.0+a6e994cd19"))
-    //implementation "dev.su5ed.sinytra:fabric-loader:2.7.4+0.15.3+1.20.1"
+    langNames.each { langName ->
+        def merged = [:]
+        langSourceDirs.each { dir ->
+            def sourceLang = new File(dir, langName)
+            if (sourceLang.isFile()) {
+                merged.putAll(new groovy.json.JsonSlurper().parse(sourceLang) as Map)
+            }
+        }
+        def blockLangPrefix = "block.${project.mod_id}."
+        def itemLangPrefix = "item.${project.mod_id}."
+        merged.findAll { key, ignored -> key.startsWith(blockLangPrefix) }.each { key, value ->
+            def itemKey = itemLangPrefix + key.substring(blockLangPrefix.length())
+            if (!merged.containsKey(itemKey)) {
+                merged[itemKey] = value
+            }
+        }
+        def targetLang = new File(langDir, langName)
+        targetLang.parentFile.mkdirs()
+        targetLang.text = groovy.json.JsonOutput.toJson(merged)
+    }
+}
+
+tasks.register('mergeXKDecoLang') {
+    inputs.files(
+            fileTree(dir: "src/kiwi_generated/resources/assets/${project.mod_id}_extra/lang", include: '*.json'),
+            fileTree(dir: "src/generated/resources/assets/${project.mod_id}/lang", include: '*.json'),
+            fileTree(dir: "src/main/resources/assets/${project.mod_id}/lang", include: '*.json'))
+    outputs.dir(layout.buildDirectory.dir("resources/main/assets/${project.mod_id}/lang"))
+
+    doLast {
+        mergeXKDecoLangFiles()
+    }
+}
+
+tasks.named('mergeXKDecoLang') {
+    mustRunAfter(tasks.named('processResources'))
+}
+
+tasks.named('classes') {
+    dependsOn(tasks.named('mergeXKDecoLang'))
 }
 
 processResources {
@@ -261,6 +306,8 @@ processResources {
     }
 
     doLast {
+        mergeXKDecoLangFiles()
+
         if (System.getProperty('idea.active')) {
             return
         }
