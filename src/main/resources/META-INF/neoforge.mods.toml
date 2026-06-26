@@ -1,59 +1,54 @@
-modLoader="javafml"
-loaderVersion="[1,)"
-license="ARR"
-issueTrackerURL="https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "ARR"
+issueTrackerURL = "https://github.com/teaconmc/XKDeco/issues?q=is%3Aissue"
+mixins = [
+    { config = "xkdeco.mixins.json" },
+    { config = "xkdeco.data.mixins.json" },
+]
 
 [[mods]]
-modId="xkdeco"
-authors="XeKr, Snownee, LittleBai, TeaConMC"
-credits="ustc-zzzz, LucunJi, 3TUSK, TartaricAcid, IzzelAliz, Gu-ZT, SettingDust, a1640727878, xkball"
-version="${file.jarVersion}"
-displayName="XeKr's Decoration"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/xks-decoration"
-description="Models and textures are created by XeKr: https://github.com/XeKr"
-
-[[mixins]]
-config="xkdeco.mixins.json"
-
-# Datagen-only mixins (take over vanilla model generation, etc.). Targets are client/datagen
-# classes, so the config is marked required=false to stay safe on a dedicated server where those
-# classes are absent (the mixins are simply skipped there; they only apply during data generation).
-[[mixins]]
-config="xkdeco.data.mixins.json"
+modId = "xkdeco"
+authors = "XeKr, Snownee, LittleBai, TeaConMC"
+credits = "ustc-zzzz, LucunJi, 3TUSK, TartaricAcid, IzzelAliz, Gu-ZT, SettingDust, a1640727878, xkball"
+version = "${file.jarVersion}"
+displayName = "XeKr's Decoration"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/xks-decoration"
+description = "Models and textures are created by XeKr: https://github.com/XeKr"
 
 [modproperties.xkdeco]
-kiwiCustomization=true
+kiwiCustomization = true
 
 [[dependencies.xkdeco]]
-modId="neoforge"
-type="required"
-versionRange="[26.1.2.71,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[26.1.2.71,)"
 
 [[dependencies.xkdeco]]
-modId="minecraft"
-type="required"
-versionRange="[26.1.2,26.2)"
+modId = "minecraft"
+type = "required"
+versionRange = "[26.1.2,26.2)"
 
 [[dependencies.xkdeco]]
-modId="kiwi"
-type="required"
-versionRange="[26.0.8,)"
+modId = "kiwi"
+type = "required"
+versionRange = "[26.0.8,)"
 
 [[dependencies.xkdeco]]
-modId="jei"
-type="optional"
-versionRange="*"
-referralUrl="https://www.curseforge.com/minecraft/mc-mods/jei"
+modId = "jei"
+type = "optional"
+versionRange = "*"
+referralUrl = "https://www.curseforge.com/minecraft/mc-mods/jei"
 
 [[dependencies.xkdeco]]
-modId="roughlyenoughitems"
-type="optional"
-versionRange="*"
-referralUrl="https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items"
+modId = "roughlyenoughitems"
+type = "optional"
+versionRange = "*"
+referralUrl = "https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items"
 
 [[dependencies.xkdeco]]
-modId="fabric_api"
-type="required"
-versionRange="[0.152.1,)"
-reason="Forgified Fabric API is required for this mod to work."
-referralUrl="https://www.curseforge.com/minecraft/mc-mods/forgified-fabric-api"
+modId = "fabric_api"
+type = "required"
+versionRange = "[0.152.1,)"
+reason = "Forgified Fabric API is required for this mod to work."
+referralUrl = "https://www.curseforge.com/minecraft/mc-mods/forgified-fabric-api"

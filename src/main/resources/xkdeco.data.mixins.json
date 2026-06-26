@@ -3,11 +3,10 @@
 	"package": "org.teacon.xkdeco.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"data.BlockFamilyProviderMixin",
-		"data.RecipeProviderMixin"
+		"data.BlockFamilyProviderMixin"
 	],
 	"injectors": {
-		"defaultRequire": 0
+		"defaultRequire": 1
 	},
 	"minVersion": "0.8"
 }

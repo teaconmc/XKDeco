@@ -41,10 +41,10 @@ import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerato
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
@@ -123,19 +123,19 @@ public class XKDModelProvider extends ModelProvider {
 			block("empty_candlestick"),
 			block("oil_lamp"));
 	private static final Set<Block> LEGACY_ITEM_MODEL_BLOCKS = Set.of(
-			block("ebony_wardrobe"),
-			block("full_glass_wardrobe"),
-			block("glass_wardrobe"),
+//			block("ebony_wardrobe"),
+//			block("full_glass_wardrobe"),
+//			block("glass_wardrobe"),
 			block("hologram_dna"),
 			block("hologram_message"),
 			block("hologram_pictures"),
 			block("hologram_planet"),
 			block("hologram_xekr_logo"),
 			block("hollow_steel_bars"),
-			block("iron_wardrobe"),
-			block("mahogany_wardrobe"),
-			block("oil_lamp"),
-			block("varnished_wardrobe"));
+//			block("iron_wardrobe"),
+//			block("mahogany_wardrobe"),
+//			block("varnished_wardrobe"),
+			block("oil_lamp"));
 	private static final List<String> FOLIAGE_TINTED_ITEM_MODELS = List.of(
 			"willow_leaves",
 			"plantable_leaves_dark");

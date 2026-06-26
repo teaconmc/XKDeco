@@ -1,4 +1,4 @@
-template: leaves
+template: xkdeco:leaves
 material: xkdeco:leaves
 no_collision: true
 no_occlusion: true
