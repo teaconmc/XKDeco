@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "xkdeco:block/furniture/stone_water_bowl"
+    "model": "xkdeco:block/furniture/stone_water_bowl",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -12618012
+      }
+    ]
   }
 }

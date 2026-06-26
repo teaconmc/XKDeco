@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "xkdeco:block/plantable_leaves_dark"
+    "model": "xkdeco:block/plantable_leaves_dark",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -12012264
+      }
+    ]
   }
 }

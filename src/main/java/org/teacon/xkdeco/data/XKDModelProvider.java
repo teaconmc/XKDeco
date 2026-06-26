@@ -31,6 +31,8 @@ import com.mojang.logging.LogUtils;
 import com.mojang.math.Quadrant;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.client.color.item.GrassColorSource;
+import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -42,6 +44,7 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
@@ -55,6 +58,7 @@ import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -132,6 +136,23 @@ public class XKDModelProvider extends ModelProvider {
 			block("mahogany_wardrobe"),
 			block("oil_lamp"),
 			block("varnished_wardrobe"));
+	private static final List<String> FOLIAGE_TINTED_ITEM_MODELS = List.of(
+			"willow_leaves",
+			"plantable_leaves_dark");
+	private static final List<String> GRASS_DIRECT_TINTED_ITEM_MODELS = List.of(
+			"plantable_leaves",
+			"grass_block_slab",
+			"grass_cobblestone",
+			"grass_cobblestone_path");
+	private static final List<String> GRASS_FAMILY_TINTED_ITEM_MODELS = List.of(
+			"grass_cobblestone_slab",
+			"grass_cobblestone_stairs",
+			"grass_cobblestone_path_slab",
+			"grass_cobblestone_path_stairs");
+	private static final List<String> WATER_TINTED_ITEM_MODELS = List.of(
+			"stone_water_bowl",
+			"stone_water_tank");
+	private static final int DEFAULT_WATER_ITEM_COLOR = 0x3F76E4;
 	private BlockModelGenerators generators;
 	private static final Set<Block> generated = Sets.newHashSet();
 	private final Identifier snowySlabDouble = Identifier.withDefaultNamespace("block/grass_block_snow");
@@ -330,8 +351,18 @@ public class XKDModelProvider extends ModelProvider {
 				originalModelOutput.accept(modelLocation, json);
 			}
 		};
-		BlockModelGenerators.SHAPE_CONSUMERS = ImmutableMap.<BlockFamily.Variant, BiConsumer<BlockModelGenerators.BlockFamilyProvider, Block>>builder()
-				.putAll(BlockModelGenerators.SHAPE_CONSUMERS)
+		var shapeConsumers = ImmutableMap.<BlockFamily.Variant, BiConsumer<BlockModelGenerators.BlockFamilyProvider, Block>>builder();
+		BlockModelGenerators.SHAPE_CONSUMERS.forEach((variant, consumer) -> {
+			if (variant != BlockFamily.Variant.SLAB
+					&& variant != BlockFamily.Variant.STAIRS
+					&& variant != BlockFamily.Variant.CUT
+					&& variant != BlockFamily.Variant.POLISHED) {
+				shapeConsumers.put(variant, consumer);
+			}
+		});
+		BlockModelGenerators.SHAPE_CONSUMERS = shapeConsumers
+				.put(BlockFamily.Variant.SLAB, (provider, block) -> slabWithGrassTintedItem(provider, block, generators))
+				.put(BlockFamily.Variant.STAIRS, (provider, block) -> stairsWithGrassTintedItem(provider, block, generators))
 				.put(BlockFamily.Variant.CUT, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant)
 				.put(BlockFamily.Variant.POLISHED, BlockModelGenerators.BlockFamilyProvider::fullBlockVariant)
 				.build();
@@ -431,7 +462,10 @@ public class XKDModelProvider extends ModelProvider {
 		createFallenLeaves("cherry_blossom");
 		createFallenLeaves("white_cherry_blossom");
 		createBlockStateOnly("hanging_willow_leaves", false);
-		generators.registerSimpleFlatItemModel(block("hanging_willow_leaves"));
+		Identifier hangingWillowLeavesItem = generators.createFlatItemModelWithBlockTexture(
+				block("hanging_willow_leaves").asItem(),
+				block("hanging_willow_leaves"));
+		registerTintedBlockItemModel("hanging_willow_leaves", hangingWillowLeavesItem, foliageItemTint());
 
 		Material dirtTexture = getBlockTexture(Blocks.DIRT);
 		Material netherrackTexture = getBlockTexture(Blocks.NETHERRACK);
@@ -503,8 +537,8 @@ public class XKDModelProvider extends ModelProvider {
 		createBlockStateOnly("stone_lamp", "furniture/", true);
 		createBlockStateOnly("deepslate_lamp", "furniture/", true);
 		createBlockStateOnly("blackstone_lamp", "furniture/", true);
-		createBlockStateOnly("stone_water_bowl", "furniture/", true);
-		createBlockStateOnly("stone_water_tank", "furniture/", true);
+		createBlockStateOnly("stone_water_bowl", "furniture/", false);
+		createBlockStateOnly("stone_water_tank", "furniture/", false);
 		createBlockStateOnly("candlestick", "furniture/", true);
 		createBlockStateOnly("big_candlestick", "furniture/", true);
 		createBlockStateOnly("tech_table", "furniture/", true);
@@ -557,6 +591,7 @@ public class XKDModelProvider extends ModelProvider {
 		createBlockStateOnly("ink_painting", 2);
 		createBlockStateOnly("weiqi_board", 2);
 		createBlockStateOnly("xiangqi_board", 2);
+		registerColorProviderItemModels();
 
 		outer:
 		for (Item item : GameObjectLookup.all(BuiltInRegistries.ITEM, XKDeco.ID).toList()) {
@@ -588,6 +623,60 @@ public class XKDModelProvider extends ModelProvider {
 			}
 			createGadget(block);
 		}
+	}
+
+	private void registerColorProviderItemModels() {
+		ItemTintSource foliageTint = foliageItemTint();
+		ItemTintSource grassTint = new GrassColorSource();
+		ItemTintSource waterTint = ItemModelUtils.constantTint(DEFAULT_WATER_ITEM_COLOR);
+		FOLIAGE_TINTED_ITEM_MODELS.forEach(id -> registerTintedBlockItemModel(id, "", foliageTint));
+		GRASS_DIRECT_TINTED_ITEM_MODELS.forEach(id -> registerTintedBlockItemModel(id, "", grassTint));
+		WATER_TINTED_ITEM_MODELS.forEach(id -> registerTintedBlockItemModel(id, "furniture/", waterTint));
+	}
+
+	private static void slabWithGrassTintedItem(BlockModelGenerators.BlockFamilyProvider provider, Block slab, BlockModelGenerators generators) {
+		if (!isGrassFamilyTintedItemModel(slab)) {
+			provider.slab(slab);
+			return;
+		}
+		String path = BuiltInRegistries.BLOCK.getKey(slab).getPath();
+		Identifier bottom = ModelLocationUtils.getModelLocation(slab);
+		Identifier top = ModelLocationUtils.getModelLocation(slab, "_top");
+		Identifier full = XKDeco.id(path.substring(0, path.length() - "_slab".length())).withPrefix("block/");
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, plainVariant(bottom), plainVariant(top), plainVariant(full)));
+		generators.registerSimpleTintedItemModel(slab, bottom, new GrassColorSource());
+	}
+
+	private static void stairsWithGrassTintedItem(BlockModelGenerators.BlockFamilyProvider provider, Block stairs, BlockModelGenerators generators) {
+		if (!isGrassFamilyTintedItemModel(stairs)) {
+			provider.stairs(stairs);
+			return;
+		}
+		Identifier inner = ModelLocationUtils.getModelLocation(stairs, "_inner");
+		Identifier straight = ModelLocationUtils.getModelLocation(stairs);
+		Identifier outer = ModelLocationUtils.getModelLocation(stairs, "_outer");
+		generators.blockStateOutput.accept(BlockModelGenerators.createStairs(
+				stairs,
+				plainVariant(inner),
+				plainVariant(straight),
+				plainVariant(outer)));
+		generators.registerSimpleTintedItemModel(stairs, straight, new GrassColorSource());
+	}
+
+	private static boolean isGrassFamilyTintedItemModel(Block block) {
+		return GRASS_FAMILY_TINTED_ITEM_MODELS.contains(BuiltInRegistries.BLOCK.getKey(block).getPath());
+	}
+
+	private static ItemTintSource foliageItemTint() {
+		return ItemModelUtils.constantTint(FoliageColor.FOLIAGE_DEFAULT);
+	}
+
+	private void registerTintedBlockItemModel(String id, String prefix, ItemTintSource tint) {
+		registerTintedBlockItemModel(id, XKDeco.id(id).withPrefix("block/" + prefix), tint);
+	}
+
+	private void registerTintedBlockItemModel(String id, Identifier modelLocation, ItemTintSource tint) {
+		generators.registerSimpleTintedItemModel(block(id), modelLocation, tint);
 	}
 
 	private void createNonRotatedPillar(String id) {

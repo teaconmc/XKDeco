@@ -1,6 +1,13 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "xkdeco:block/grass_cobblestone_path_stairs"
+    "model": "xkdeco:block/grass_cobblestone_path_stairs",
+    "tints": [
+      {
+        "type": "minecraft:grass",
+        "downfall": 1.0,
+        "temperature": 0.5
+      }
+    ]
   }
 }
