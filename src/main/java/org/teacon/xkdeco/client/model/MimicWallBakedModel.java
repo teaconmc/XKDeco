@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.jspecify.annotations.Nullable;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
 import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.minecraft.client.Minecraft;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.WallSide;
 
-@NotNullByDefault
 public final class MimicWallBakedModel implements BlockStateModel, FabricBlockStateModel {
 	private static final EnumProperty<WallSide>[] WALL_SIDE_PROPERTIES = makeWallSideProperties();
 

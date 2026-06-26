@@ -8,7 +8,6 @@ import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
 /**
  * Concrete leaves block for XKDeco's data-driven decorative leaves.
@@ -18,7 +17,6 @@ import org.teacon.xkdeco.util.NotNullByDefault;
  * This subclass provides the {@code (Properties)} constructor Kiwi's {@code type: simple} template
  * instantiates via reflection.
  */
-@NotNullByDefault
 public class XKDLeavesBlock extends LeavesBlock {
 	public static final MapCodec<XKDLeavesBlock> CODEC = simpleCodec(XKDLeavesBlock::new);
 

@@ -1,8 +1,6 @@
 package org.teacon.xkdeco.client.renderer;
 
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,10 +18,9 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
-import org.teacon.xkdeco.util.NotNullByDefault;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
-@NotNullByDefault
 public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity, BlockDisplayRenderState> {
 	private static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
 	private static final float BLOCK_SCALE = 0.99f;

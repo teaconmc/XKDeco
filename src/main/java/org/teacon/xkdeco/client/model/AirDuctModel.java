@@ -1,7 +1,6 @@
 package org.teacon.xkdeco.client.model;
 
 import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Quadrant;
@@ -18,7 +17,6 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.resources.Identifier;
 
-@NotNullByDefault
 public record AirDuctModel(Identifier straight, Identifier corner, Identifier cover, Identifier frame)
 		implements CustomUnbakedBlockStateModel {
 	public static final Identifier ID = XKDeco.id("air_duct");

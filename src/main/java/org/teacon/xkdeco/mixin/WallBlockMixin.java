@@ -27,38 +27,38 @@ public abstract class WallBlockMixin {
 
 	@Inject(method = "updateSides", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$updateSides(
-			BlockState blockState,
+			BlockState state,
 			boolean northConnection,
 			boolean eastConnection,
 			boolean southConnection,
 			boolean westConnection,
-			VoxelShape wallShape,
+			VoxelShape aboveShape,
 			CallbackInfoReturnable<BlockState> cir) {
 		if (xkdeco$isRoofRidge()) {
-			cir.setReturnValue(blockState);
+			cir.setReturnValue(state);
 		}
 	}
 
 	@Inject(method = "connectsTo", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$connectsTo(BlockState blockState, boolean sideSolid, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+	private void xkdeco$connectsTo(BlockState state, boolean faceSolid, Direction direction, CallbackInfoReturnable<Boolean> cir) {
 		if (xkdeco$isRoofRidge()) {
 			cir.setReturnValue(
-					blockState.getBlock().getClass() == RoofRidgeBlock.class || !Block.isExceptionForConnection(blockState) && sideSolid ||
-							PlaceSlot.find(blockState, direction, "*roof_ridge_end").isPresent());
+					state.getBlock().getClass() == RoofRidgeBlock.class || !Block.isExceptionForConnection(state) && faceSolid ||
+							PlaceSlot.find(state, direction, "*roof_ridge_end").isPresent());
 		}
 	}
 
 	@Inject(method = "sideUpdate", at = @At("HEAD"), cancellable = true)
 	private void xkdeco$sideUpdate(
 			LevelReader level,
-			BlockPos firstPos,
+			BlockPos pos,
 			BlockState firstState,
-			BlockPos secondPos,
-			BlockState secondState,
+			BlockPos neighbourPos,
+			BlockState neighbour,
 			Direction direction,
 			CallbackInfoReturnable<BlockState> cir) {
 		if (xkdeco$isRoofRidge()) {
-			WallSide wallSide = RoofRidgeBlock.makeSide(level, secondPos, secondState, direction);
+			WallSide wallSide = RoofRidgeBlock.makeSide(level, neighbourPos, neighbour, direction);
 			if (wallSide == null) {
 				wallSide = WallSide.LOW;
 			}

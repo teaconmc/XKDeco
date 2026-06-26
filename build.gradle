@@ -332,6 +332,7 @@ jar {
     exclude("/org/teacon/xkdeco/mixin/data")
     exclude("/.cache")
     exclude("/xkdeco.data.mixins.json")
+    exclude("**/*.py")
 
     manifest {
         attributes(["Specification-Title"     : mod_id,

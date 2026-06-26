@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.client.renderer;
 
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,10 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.Nullable;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity, ItemDisplayRenderState> {
 	private final ItemModelResolver itemModelResolver;
 	private final RandomSource random = RandomSource.create();

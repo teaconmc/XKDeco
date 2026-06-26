@@ -6,6 +6,7 @@ import java.util.Map;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -45,8 +46,8 @@ public abstract class MappedRegistryMixin<T> {
 	private void xkdeco$addMimicWallTags(
 			TagLoader.LoadResult<T> tags,
 			CallbackInfoReturnable<Registry.PendingTags<T>> cir,
-			@Local ImmutableMap.Builder<TagKey<T>, HolderSet.Named<T>> pendingTagsBuilder,
-			@Local Map<TagKey<T>, List<Holder<T>>> pendingContents) {
+			@Local(name = "pendingTagsBuilder") ImmutableMap.Builder<TagKey<T>, HolderSet.Named<T>> pendingTagsBuilder,
+			@Local(name = "pendingContents") Map<TagKey<T>, List<Holder<T>>> pendingContents) {
 		if (this.key.equals(Registries.BLOCK)) {
 			ensurePendingTag(pendingTagsBuilder, pendingContents, cast(BlockTags.WALLS));
 			ensurePendingTag(pendingTagsBuilder, pendingContents, cast(BlockTags.MINEABLE_WITH_PICKAXE));
@@ -58,6 +59,7 @@ public abstract class MappedRegistryMixin<T> {
 		}
 	}
 
+	@Unique
 	private void ensurePendingTag(
 			ImmutableMap.Builder<TagKey<T>, HolderSet.Named<T>> pendingTagsBuilder,
 			Map<TagKey<T>, List<Holder<T>>> pendingContents,
@@ -68,11 +70,13 @@ public abstract class MappedRegistryMixin<T> {
 		}
 	}
 
+	@Unique
 	@SuppressWarnings("unchecked")
 	private static <T, V> TagKey<T> cast(TagKey<V> key) {
 		return (TagKey<T>) key;
 	}
 
+	@Unique
 	@SuppressWarnings("unchecked")
 	private static <T, V> Map<TagKey<T>, List<Holder<T>>> castMap(Map<TagKey<V>, List<Holder<V>>> map) {
 		return (Map<TagKey<T>, List<Holder<T>>>) (Object) map;

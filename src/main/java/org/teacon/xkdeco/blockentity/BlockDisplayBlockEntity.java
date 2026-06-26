@@ -4,16 +4,11 @@
  */
 package org.teacon.xkdeco.blockentity;
 
-import net.minecraft.core.HolderLookup;
-
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -21,9 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 	private static final String BLOCK_STATE_KEY = "BlockState";
 	private static final String SELECTED_PROPERTY_KEY = "SelectedProperty";

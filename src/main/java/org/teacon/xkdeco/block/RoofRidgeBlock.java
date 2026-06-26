@@ -2,7 +2,7 @@ package org.teacon.xkdeco.block;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,9 +17,7 @@ import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import snownee.kiwi.customization.placement.PlaceSlot;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class RoofRidgeBlock extends WallBlock {
 	public static final Map<Direction, EnumProperty<WallSide>> DIRECTION_TO_PROPERTY = Map.of(
 			Direction.NORTH,
@@ -42,7 +40,7 @@ public class RoofRidgeBlock extends WallBlock {
 		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 		BlockState blockState = defaultBlockState().setValue(WATERLOGGED, fluidState.is(Fluids.WATER));
 		BlockPos.MutableBlockPos mutable = pos.mutable();
-		WallSide[] wallSides = new WallSide[4];
+		@Nullable WallSide[] wallSides = new WallSide[4];
 		boolean hasTall = false;
 		int i = 0;
 		for (Direction direction : Direction.Plane.HORIZONTAL) {

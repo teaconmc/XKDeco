@@ -4,7 +4,6 @@
  */
 package org.teacon.xkdeco.blockentity;
 
-import org.jetbrains.annotations.NotNull;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
@@ -12,9 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 	public static final String SPIN_KEY = "FixedSpin";
 	private float fixedSpin;

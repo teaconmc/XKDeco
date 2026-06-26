@@ -1,19 +1,18 @@
 package org.teacon.xkdeco.block;
 
-import com.mojang.serialization.MapCodec;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.WardrobeBlockEntity;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
+import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -40,9 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity> {
 	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -66,9 +63,8 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 		return CODEC;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
+	public RenderShape getRenderShape(BlockState pState) {
 		return RenderShape.MODEL;
 	}
 
@@ -77,7 +73,6 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 		builder.add(FACING, OPEN, HINGE, HALF, DOUBLE);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
 		return !pState.getValue(OPEN) ? Shapes.block() : switch (pState.getValue(FACING)) {
@@ -91,7 +86,6 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 		};
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState rotate(BlockState pState, Rotation pRotation) {
 		return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
@@ -124,7 +118,7 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	}
 
 	@Override
-	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
+	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
 		pLevel.setBlock(pPos.above(), pState.setValue(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 
@@ -140,7 +134,6 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 	 * Borrowed from DoorBlock#updateShape
 	 */
 	@Override
-	@SuppressWarnings("deprecation")
 	protected BlockState updateShape(
 			BlockState pState,
 			LevelReader pLevel,
@@ -183,7 +176,6 @@ public final class WardrobeBlock extends AbstractChestBlock<WardrobeBlockEntity>
 		return pState.getValue(HALF) == DoubleBlockHalf.UPPER;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected int getLightDampening(BlockState pState) {
 		return this.propagatesSkylightDown(pState) ? 0 : 15;

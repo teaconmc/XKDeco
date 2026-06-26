@@ -1,12 +1,11 @@
 package org.teacon.xkdeco.data;
 
 import org.teacon.xkdeco.XKDeco;
+
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import org.teacon.xkdeco.util.NotNullByDefault;
 import snownee.kiwi.datagen.KiwiLanguageProvider;
 
-@NotNullByDefault
 public class XKDDataGen implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator generator) {

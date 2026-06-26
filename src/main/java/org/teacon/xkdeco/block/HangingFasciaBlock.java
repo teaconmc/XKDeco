@@ -3,7 +3,7 @@ package org.teacon.xkdeco.block;
 import java.util.List;
 import java.util.Locale;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,9 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import snownee.kiwi.customization.block.BasicBlock;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class HangingFasciaBlock extends BasicBlock {
 	public static final EnumProperty<Side> SIDE = EnumProperty.create("side", Side.class);
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;

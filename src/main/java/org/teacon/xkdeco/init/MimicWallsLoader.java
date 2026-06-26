@@ -16,8 +16,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -28,9 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import snownee.kiwi.item.ModBlockItem;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class MimicWallsLoader {
 	private static ImmutableList<MimicWallBlock> MIMIC_WALLS = ImmutableList.of();
 	private static final List<MimicWallBlock> PENDING_MIMIC_WALLS = Lists.newArrayList();

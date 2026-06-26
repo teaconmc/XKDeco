@@ -1,15 +1,11 @@
 package org.teacon.xkdeco.mixin.air_duct;
 
-import net.minecraft.world.level.block.state.BlockState;
-
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.AirDuctBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
@@ -61,8 +57,8 @@ public abstract class PlayerMixin extends LivingEntity implements XKDPlayer {
 	}
 
 	@Inject(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At("HEAD"), cancellable = true)
-	private void xkdeco$canPlayerFitWithinBlocksAndEntitiesWhen(Pose pose, CallbackInfoReturnable<Boolean> cir) {
-		if (pose != Pose.STANDING && pose != Pose.CROUCHING) {
+	private void xkdeco$canPlayerFitWithinBlocksAndEntitiesWhen(Pose newPose, CallbackInfoReturnable<Boolean> cir) {
+		if (newPose != Pose.STANDING && newPose != Pose.CROUCHING) {
 			return;
 		}
 		if (!(this instanceof XKDPlayer player)) {

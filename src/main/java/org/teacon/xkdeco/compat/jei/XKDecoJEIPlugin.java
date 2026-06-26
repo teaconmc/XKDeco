@@ -2,7 +2,6 @@ package org.teacon.xkdeco.compat.jei;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.recipe.MimicWallRecipe;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -11,10 +10,9 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
-@NotNullByDefault
 public class XKDecoJEIPlugin implements IModPlugin {
 	public static final Identifier ID = XKDeco.id("main");
 

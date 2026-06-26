@@ -1,7 +1,5 @@
 package org.teacon.xkdeco.block;
 
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -14,9 +12,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import snownee.kiwi.customization.block.StringProperty;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class FallenLeavesBlock extends Block {
 	private static final StringProperty HALF = XKDStateProperties.HALF;
 
@@ -41,7 +37,7 @@ public final class FallenLeavesBlock extends Block {
 	}
 
 	@Override
-	public @NotNull BlockState getStateForPlacement(BlockPlaceContext pContext) {
+	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState blockState = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
 		return defaultBlockState().setValue(HALF, isBottomSlab(blockState) ? "lower" : "upper");
 	}

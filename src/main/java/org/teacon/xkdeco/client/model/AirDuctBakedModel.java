@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.block.XKDStateProperties;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
 import com.google.common.collect.Lists;
 
@@ -19,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-@NotNullByDefault
 public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStateModel {
 	private final List<BlockStateModelPart> straight;
 	private final List<BlockStateModelPart> corner;

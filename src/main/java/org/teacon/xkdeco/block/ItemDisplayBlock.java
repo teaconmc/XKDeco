@@ -1,6 +1,6 @@
 package org.teacon.xkdeco.block;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
 
 import com.mojang.serialization.Codec;
@@ -24,9 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class ItemDisplayBlock extends DisplayBlock {
 	private static final SegmentedAnglePrecision SEGMENTED_ANGLE8 = new SegmentedAnglePrecision(3);
 	private static final float angleStep = Mth.PI / 4 * 20;

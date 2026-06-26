@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.client.renderer;
 
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.HologramBlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,10 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.Nullable;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class HologramRenderer implements BlockEntityRenderer<HologramBlockEntity, HologramRenderState> {
 	private final ItemModelResolver itemModelResolver;
 

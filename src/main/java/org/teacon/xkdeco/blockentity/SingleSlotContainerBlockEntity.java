@@ -1,8 +1,9 @@
 package org.teacon.xkdeco.blockentity;
 
-import com.mojang.logging.LogUtils;
-
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -18,9 +19,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.Util;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -29,9 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final String ITEM_STACK_KEY = "Display";
@@ -49,8 +46,9 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 		return Component.translatable(Util.makeDescriptionId("container", BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(getType())));
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
-	protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
+	protected @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory) {
 		return null;
 	}
 
@@ -115,11 +113,6 @@ public class SingleSlotContainerBlockEntity extends BaseContainerBlockEntity {
 				level.playSound(null, worldPosition, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1, 1);
 			}
 		}
-	}
-
-	@Override
-	public boolean stillValid(Player pPlayer) {
-		return Container.stillValidBlockEntity(this, pPlayer);
 	}
 
 	@Override

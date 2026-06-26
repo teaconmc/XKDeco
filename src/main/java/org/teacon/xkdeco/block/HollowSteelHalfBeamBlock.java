@@ -5,9 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.kiwi.customization.block.component.FrontAndTopComponent;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class HollowSteelHalfBeamBlock extends XKDBlock {
 	public HollowSteelHalfBeamBlock(Properties pProperties) {
 		super(pProperties);

@@ -1,20 +1,18 @@
 package org.teacon.xkdeco.network;
 
+import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.block.DisplayBlock;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-
-import org.teacon.xkdeco.XKDeco;
-import org.teacon.xkdeco.block.DisplayBlock;
-
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import snownee.kiwi.network.KPacketSender;
 import snownee.kiwi.network.KiwiPacket;
 import snownee.kiwi.network.PayloadContext;
@@ -54,7 +52,7 @@ public record CClickDisplayPacket(Vec3 location, boolean miss, Direction directi
 					cClickDisplayPacket.direction,
 					cClickDisplayPacket.pos,
 					cClickDisplayPacket.inside);
-			if (player == null || pos.distToCenterSqr(player.position()) > 256) {
+			if (pos.distToCenterSqr(player.position()) > 256) {
 				return;
 			}
 			payloadContext.execute(() -> {

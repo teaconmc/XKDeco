@@ -19,9 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.block.ModBlock;
 import snownee.kiwi.customization.block.CheckedWaterloggedBlock;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public abstract class DisplayBlock extends ModBlock implements EntityBlock, CheckedWaterloggedBlock {
 	public DisplayBlock(Properties builder) {
 		super(builder);

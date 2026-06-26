@@ -2,7 +2,6 @@ package org.teacon.xkdeco.block.impl;
 
 import java.util.List;
 
-import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
 import org.teacon.xkdeco.util.CommonProxy;
 
 import net.minecraft.core.BlockPos;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
 
 public class MetalLadderCanSurviveHandler implements CanSurviveHandler {
 	@Override

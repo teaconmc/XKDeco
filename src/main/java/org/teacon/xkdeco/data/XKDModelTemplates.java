@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.XKDStateProperties;
 
@@ -93,11 +94,9 @@ public class XKDModelTemplates {
 			XKDModelTemplates::allAndSide,
 			create("wooden_tall_table", TextureSlot.ALL, TextureSlot.SIDE));
 	public static final TexturedModel.Provider WOODEN_DESK_PROVIDER = createDefault(
-			block -> {
-				return TextureMapping.cube(block).put(
-						TextureSlot.SIDE,
-						new Material(TextureMapping.getBlockTexture(block).sprite().withPath(s -> s.replace("desk", "tall_table_side"))));
-			},
+			block -> TextureMapping.cube(block).put(
+					TextureSlot.SIDE,
+					new Material(TextureMapping.getBlockTexture(block).sprite().withPath(s -> s.replace("desk", "tall_table_side")))),
 			create("wooden_desk", TextureSlot.ALL, TextureSlot.SIDE));
 	public static final TexturedModel.Provider WOODEN_STOOL_PROVIDER = createDefault(
 			block -> {
@@ -263,7 +262,7 @@ public class XKDModelTemplates {
 				pRequiredSlots);
 	}
 
-	private static ModelTemplate create(String pBlockModelLocation, String pSuffix, TextureSlot... pRequiredSlots) {
+	private static ModelTemplate create(String pBlockModelLocation, @Nullable String pSuffix, TextureSlot... pRequiredSlots) {
 		ModelTemplate template = new ModelTemplate(
 				Optional.of(XKDeco.id("block/" + pBlockModelLocation)),
 				Optional.ofNullable(pSuffix),

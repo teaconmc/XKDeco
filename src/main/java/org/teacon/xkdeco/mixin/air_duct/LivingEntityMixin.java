@@ -1,5 +1,6 @@
 package org.teacon.xkdeco.mixin.air_duct;
 
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.teacon.xkdeco.block.AirDuctBlock;
@@ -19,8 +20,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@ModifyExpressionValue(
 			method = "handleRelativeFrictionAndCalculateMovement", at = @At(
-			value = "FIELD",
-			target = "Lnet/minecraft/world/entity/LivingEntity;horizontalCollision:Z"))
+			value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;horizontalCollision:Z", opcode = Opcodes.GETFIELD))
 	private boolean xkdeco$suppressClimbing(boolean original) {
 		if (original && getInBlockState().getBlock() instanceof AirDuctBlock) {
 			return false;

@@ -9,9 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.customization.block.BasicBlock;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class ObliqueHollowSteelBeamBlock extends BasicBlock {
 	public ObliqueHollowSteelBeamBlock(Properties properties) {
 		super(properties);

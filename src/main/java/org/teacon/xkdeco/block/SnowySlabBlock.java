@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.block;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -13,9 +15,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class SnowySlabBlock extends SpecialSlabBlock {
 	public static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 
@@ -50,7 +50,7 @@ public final class SnowySlabBlock extends SpecialSlabBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+	public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState state = super.getStateForPlacement(pContext);
 		if (state != null && state.getValue(TYPE) != SlabType.BOTTOM) {
 			BlockState aboveState = pContext.getLevel().getBlockState(pContext.getClickedPos().above());

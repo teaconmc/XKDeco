@@ -2,12 +2,11 @@ package org.teacon.xkdeco.block.impl;
 
 import java.util.function.Predicate;
 
-import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import snownee.kiwi.customization.block.behavior.CanSurviveHandler;
 
 public record BlockPredicateCanSurviveHandler(Predicate<BlockState> predicate, Direction direction) implements CanSurviveHandler {
 	@Override

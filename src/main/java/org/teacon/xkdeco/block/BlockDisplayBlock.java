@@ -2,15 +2,14 @@ package org.teacon.xkdeco.block;
 
 import java.util.Objects;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
 
-import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,16 +22,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public final class BlockDisplayBlock extends DisplayBlock {
 	public BlockDisplayBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public @NotNull BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
 		return new BlockDisplayBlockEntity(pPos, pState);
 	}
 
@@ -85,9 +82,10 @@ public final class BlockDisplayBlock extends DisplayBlock {
 		}
 		var property = Objects.requireNonNull(be.getSelectedProperty());
 		be.setStoredBlockState(cycleState(be.getStoredBlockState(), property, pPlayer.isSecondaryUseActive()));
-		message(pPlayer, Component.translatable(
-				Items.DEBUG_STICK.getDescriptionId() + ".update",
-				property.getName(), getValueName(be.getStoredBlockState(), property)));
+		message(
+				pPlayer, Component.translatable(
+						Items.DEBUG_STICK.getDescriptionId() + ".update",
+						property.getName(), getValueName(be.getStoredBlockState(), property)));
 		return InteractionResult.CONSUME;
 	}
 
@@ -102,8 +100,10 @@ public final class BlockDisplayBlock extends DisplayBlock {
 		var property = Objects.requireNonNull(be.getSelectedProperty());
 		var newProperty = getRelative(be.getStoredBlockState().getProperties(), property, player.isSecondaryUseActive());
 		be.setSelectedProperty(newProperty);
-		message(player, Component.translatable(Items.DEBUG_STICK.getDescriptionId() + ".select",
-				newProperty.getName(), getValueName(be.getStoredBlockState(), newProperty)));
+		message(
+				player, Component.translatable(
+						Items.DEBUG_STICK.getDescriptionId() + ".select",
+						newProperty.getName(), getValueName(be.getStoredBlockState(), newProperty)));
 	}
 
 	private static boolean checkEmptyProperties(Player player, BlockDisplayBlockEntity be) {

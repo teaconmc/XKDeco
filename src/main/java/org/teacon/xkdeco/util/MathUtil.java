@@ -3,7 +3,6 @@ package org.teacon.xkdeco.util;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-@NotNullByDefault
 public final class MathUtil {
 	public static final double TAU = Math.PI * 2;
 

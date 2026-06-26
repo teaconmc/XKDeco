@@ -16,9 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@NotNullByDefault
 public class OneDirectionFenceGateBlock extends FenceGateBlock {
 	// If you declare a specific type, that means your type is invariant.
 	// No ? extends nor ? super for you.

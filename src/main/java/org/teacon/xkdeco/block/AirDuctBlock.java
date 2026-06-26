@@ -4,17 +4,17 @@ import static org.teacon.xkdeco.block.XKDStateProperties.DIRECTION_PROPERTIES;
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
@@ -27,10 +27,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import snownee.kiwi.customization.block.BasicBlock;
 import snownee.kiwi.customization.placement.PlaceSlot;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@SuppressWarnings("deprecation")
-@NotNullByDefault
 public class AirDuctBlock extends BasicBlock {
 
 	private static final Direction[] DIRECTIONS = Direction.values();
@@ -105,7 +102,7 @@ public class AirDuctBlock extends BasicBlock {
 		}
 		BlockState blockState = defaultBlockState();
 		if (neighbors.size() < 2) {
-			Direction face = neighbors.isEmpty() ? pContext.getClickedFace() : neighbors.get(0);
+			Direction face = neighbors.isEmpty() ? pContext.getClickedFace() : neighbors.getFirst();
 			return blockState.setValue(DIRECTION_PROPERTIES.get(face.get3DDataValue()), true)
 					.setValue(DIRECTION_PROPERTIES.get(face.getOpposite().get3DDataValue()), true);
 		} else {
@@ -143,7 +140,7 @@ public class AirDuctBlock extends BasicBlock {
 				}
 			}
 		}
-		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.get(0);
+		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.getFirst();
 		for (Direction direction : DIRECTIONS) {
 			blockState = blockState.setValue(
 					DIRECTION_PROPERTIES.get(direction.get3DDataValue()),

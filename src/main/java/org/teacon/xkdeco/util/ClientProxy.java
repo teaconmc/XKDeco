@@ -10,7 +10,6 @@ import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -22,7 +21,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 @Mod(value = XKDeco.ID, dist = Dist.CLIENT)
-@ParametersAreNonnullByDefault
 public final class ClientProxy {
 	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);

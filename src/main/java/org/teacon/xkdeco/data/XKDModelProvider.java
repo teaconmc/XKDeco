@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.BlockDisplayBlock;
@@ -30,11 +30,11 @@ import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quadrant;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -51,7 +51,6 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
@@ -67,10 +66,8 @@ import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
 import snownee.kiwi.util.GameObjectLookup;
-import org.teacon.xkdeco.util.NotNullByDefault;
 
-@SuppressWarnings({"deprecation", "SameParameterValue"})
-@NotNullByDefault
+@SuppressWarnings("SameParameterValue")
 public class XKDModelProvider extends ModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Identifier ROOF_INNER_TEXTURE = XKDeco.id("block/roof_inner");
@@ -176,7 +173,11 @@ public class XKDModelProvider extends ModelProvider {
 		Identifier bottom = ModelTemplates.SLAB_BOTTOM.create(block, mapping, generators.modelOutput);
 		Identifier top = ModelTemplates.SLAB_TOP.create(block, mapping, generators.modelOutput);
 		Identifier cube = ModelTemplates.CUBE_COLUMN.createWithOverride(block, "_full", mapping, generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(block, plainVariant(bottom), plainVariant(top), plainVariant(cube)));
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(
+				block,
+				plainVariant(bottom),
+				plainVariant(top),
+				plainVariant(cube)));
 		return true;
 	}
 
@@ -380,7 +381,9 @@ public class XKDModelProvider extends ModelProvider {
 				provider.fullBlock = BlockModelGenerators.plainModel(blockModel);
 			} else if (family == XKDBlockFamilies.CUT_BRONZE_BLOCK || family == XKDBlockFamilies.MAYA_POLISHED_STONEBRICKS) {
 				// we have already generated the base model in other families
-				TexturedModel texturedModel = BlockModelGenerators.TEXTURED_MODELS.getOrDefault(baseBlock, TexturedModel.CUBE.get(baseBlock));
+				TexturedModel texturedModel = BlockModelGenerators.TEXTURED_MODELS.getOrDefault(
+						baseBlock,
+						TexturedModel.CUBE.get(baseBlock));
 				provider = generators.new BlockFamilyProvider(texturedModel.getMapping());
 				provider.fullBlock = BlockModelGenerators.plainModel(ModelLocationUtils.getModelLocation(baseBlock));
 			} else {
@@ -824,7 +827,9 @@ public class XKDModelProvider extends ModelProvider {
 		generators.registerSimpleFlatItemModel(block(id + "_screen").asItem());
 
 		Block fenceOblique = block(id + "_fence_oblique");
-		textureMapping = TextureMapping.particle(fenceOblique).put(XKDModelTemplates.POST, new Material(XKDeco.id("block/" + id + "_fence_post")));
+		textureMapping = TextureMapping.particle(fenceOblique).put(
+				XKDModelTemplates.POST,
+				new Material(XKDeco.id("block/" + id + "_fence_post")));
 		XKDModelTemplates.WOODEN_FENCE_OBLIQUE.create(fenceOblique, textureMapping, generators.modelOutput);
 		createHorizontal(id + "_fence_oblique", "");
 
@@ -951,7 +956,11 @@ public class XKDModelProvider extends ModelProvider {
 				block,
 				textureMapping,
 				generators.modelOutput);
-		generators.blockStateOutput.accept(BlockModelGenerators.createWall(block, plainVariant(post), plainVariant(side), plainVariant(tallSide)));
+		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
+				block,
+				plainVariant(post),
+				plainVariant(side),
+				plainVariant(tallSide)));
 		generators.registerSimpleItemModel(block, inventory);
 	}
 
