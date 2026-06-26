@@ -1,7 +1,6 @@
 type: simple
 class: org.teacon.xkdeco.block.HologramBlock
 properties:
-  render_type: translucent
   components:
   - horizontal
   no_collision: true

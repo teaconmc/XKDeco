@@ -1,4 +1,3 @@
-render_type: cutout
 material: xkdeco:hollow_steel
 components:
 - water_loggable

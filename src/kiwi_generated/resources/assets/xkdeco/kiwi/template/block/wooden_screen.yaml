@@ -1,6 +1,5 @@
 type: built_in
 codec: door
 properties:
-  render_type: translucent
   no_occlusion: true
   push_reaction: destroy

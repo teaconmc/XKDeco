@@ -8,7 +8,7 @@ import titlecase
 
 import PackVersion
 from DataProvider import DataProvider
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 
 
 class Pack:
@@ -25,10 +25,10 @@ class Pack:
         else:
             self.config['export_format'] = self.config['export_format'].lower()
         if 'pack_version' not in self.config:
-            packpack_version = '1.20'
+            pack_version = '1.20'
         else:
-            packpack_version = self.config['pack_version']
-        self.packVersion = PackVersion.get(packpack_version)
+            pack_version = self.config['pack_version']
+        self.packVersion = PackVersion.get(pack_version)
         if 'translation_dest' in self.config:
             self.config['translation_dest'] = self.config['translation_dest'].replace('%TEMP%', self.tempDir)
         self.includes = []
@@ -75,14 +75,17 @@ class Pack:
         shutil.rmtree(self.tempDir)
         print('Finished building pack:', dest.resolve().as_uri())
 
-    def defaultResourceLocation(self, path: str) -> ResourceLocation:
+    def defaultIdentifier(self, path: str) -> Identifier:
         path = path.strip()
         if ':' in path:
-            return ResourceLocation(path)
+            return Identifier(path)
         else:
-            return ResourceLocation(self.config['namespace'], path)
+            return Identifier(self.config['namespace'], path)
 
-    def toAbsPath(self, data_provider: DataProvider, file: ResourceLocation, ext: str = None) -> str:
+    def toAbsPath(self, data_provider: DataProvider, file: Identifier, ext: str = None) -> str:
         if ext is None:
             ext = '.' + data_provider.exportFormat
         return os.path.join(self.tempDir, data_provider.dataPath.format(file.namespace, file.path), file.path + ext)
+
+    def has(self, feature: str) -> bool:
+        return feature in self.packVersion.extraFeatures

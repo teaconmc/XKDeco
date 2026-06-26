@@ -1,6 +1,6 @@
 import BlockPropertiesReader
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -11,7 +11,7 @@ class ItemTemplateProvider(TableDataProvider):
         self.properties = {}
 
     def generateRow(self, row, tableConfig):
-        templateId = self.pack.defaultResourceLocation(row['ID'])
+        templateId = self.pack.defaultIdentifier(row['ID'])
         data = {}
         for field in row:
             # only add fields which name is lowercase and not in ignoredFields
@@ -24,7 +24,7 @@ class ItemTemplateProvider(TableDataProvider):
             data['properties'] = properties
 
         if 'Tags' in row and row['Tags'] != '':
-            tags = [ResourceLocation(tag) for tag in row['Tags'].split(',')]
+            tags = [Identifier(tag) for tag in row['Tags'].split(',')]
             self.tags[templateId] = tags
 
         if templateId.namespace != 'minecraft':

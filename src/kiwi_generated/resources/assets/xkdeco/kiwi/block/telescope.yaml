@@ -1,4 +1,3 @@
-render_type: translucent
 material: xkdeco:wood
 components:
 - water_loggable

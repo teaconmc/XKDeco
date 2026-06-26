@@ -17,8 +17,9 @@ def normalize_property_order(data):
 
 def read(provider: TableDataProvider, row: dict) -> dict:
     data = {}
-    provider.field(data, 'RenderType', lambda v: v if v != 'solid' else None)
-    provider.field(data, 'Material', lambda v: str(provider.pack.defaultResourceLocation(v)))
+    if provider.pack.has('render_type'):
+        provider.field(data, 'RenderType', lambda v: v if v != 'solid' else None)
+    provider.field(data, 'Material', lambda v: str(provider.pack.defaultIdentifier(v)))
     provider.field(data, 'LightEmission', lambda v: int(float(v)))
     components = []
     if 'WaterLoggable' in row and row['WaterLoggable'].lower() == 'true':

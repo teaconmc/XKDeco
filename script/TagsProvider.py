@@ -1,4 +1,4 @@
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -9,7 +9,7 @@ class TagsProvider(TableDataProvider):
         self.exportFormat = 'json'
         self.data = {}
 
-    def addEntry(self, tagKey: ResourceLocation, value: ResourceLocation):
+    def addEntry(self, tagKey: Identifier, value: Identifier):
         if tagKey not in self.data:
             self.data[tagKey] = set()
         self.data[tagKey].add(str(value))
@@ -18,7 +18,7 @@ class TagsProvider(TableDataProvider):
         if row['Values'] == '':
             return
         for value in row['Values'].split(','):
-            self.addEntry(ResourceLocation(row['ID']), self.pack.defaultResourceLocation(value))
+            self.addEntry(Identifier(row['ID']), self.pack.defaultIdentifier(value))
 
     def generate(self):
         super().generate()

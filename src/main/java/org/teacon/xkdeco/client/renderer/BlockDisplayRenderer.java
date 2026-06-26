@@ -18,7 +18,6 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity, BlockDisplayRenderState> {
@@ -31,8 +30,8 @@ public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisp
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(BlockDisplayBlockEntity be) {
-		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
+	public boolean shouldRenderOffScreen() {
+		return true;
 	}
 
 	@Override

@@ -3,7 +3,7 @@ import re
 namespacePattern = re.compile(r'^[a-z0-9_\-]+')
 pathPattern = re.compile(r'^[a-z0-9_\-/]+')
 
-class ResourceLocation:
+class Identifier:
     def __init__(self, string: str, string2: str = None):
         if string2 is not None:
             self.namespace = string
@@ -17,7 +17,7 @@ class ResourceLocation:
             self.namespace = parts[0]
             self.path = parts[1]
         else:
-            raise ValueError('Invalid ResourceLocation string: ' + string)
+            raise ValueError('Invalid Identifier string: ' + string)
         if not namespacePattern.match(self.namespace):
             raise ValueError('Invalid namespace: "' + self.namespace + '"')
         if not pathPattern.match(self.path):

@@ -11,14 +11,14 @@ class CreativeTabProvider(TableDataProvider):
         data = {}
         self.tabCount += 1
         data['order'] = self.tabCount
-        data['icon'] = str(self.pack.defaultResourceLocation(row['Icon']))
+        data['icon'] = str(self.pack.defaultIdentifier(row['Icon']))
         if row['ID'] in self.contents:
             data['contents'] = self.contents[row['ID']]
 
         translationKey = 'itemGroup.{namespace}.{name}'.format(namespace=self.pack.config['namespace'], name=row['ID'])
         self.processRowTranslations(row, translationKey)
 
-        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultIdentifier(row['ID']), data)
 
     def addContent(self, tabId, content):
         if tabId not in self.contents:

@@ -1,4 +1,3 @@
-render_type: cutout
 material: xkdeco:stone
 light_emission: 15
 components:

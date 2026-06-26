@@ -1,4 +1,3 @@
 template: wall
-render_type: cutout
 material: xkdeco:stone
 glass_type: xkdeco:hollow_steel

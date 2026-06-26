@@ -3,7 +3,7 @@ from pathlib import Path
 
 import yaml
 
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 
 
 class DataProvider:
@@ -16,7 +16,7 @@ class DataProvider:
         self.exportFormat = pack.config['export_format']
         self.count = 0
 
-    def writeFile(self, file: ResourceLocation, data: any):
+    def writeFile(self, file: Identifier, data: any):
         file = self.pack.toAbsPath(self, file)
         Path(file).parent.mkdir(parents=True, exist_ok=True)
         with open(file, 'w', encoding='utf-8') as f:

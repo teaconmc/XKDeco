@@ -1,7 +1,7 @@
 import yaml
 
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -11,7 +11,7 @@ class MaterialProvider(TableDataProvider):
         self.tagTransformers = {}
 
     def generateRow(self, row, tableConfig):
-        materialId = self.pack.defaultResourceLocation(row['ID'])
+        materialId = self.pack.defaultIdentifier(row['ID'])
         data = {}
         if materialId in self.tagTransformers:
             transformers = self.tagTransformers[materialId]
@@ -30,13 +30,13 @@ class MaterialProvider(TableDataProvider):
             else:
                 transformers[''] = tags = []
             for tool in row['ToolType'].split(','):
-                tags.append(ResourceLocation('mineable/' + tool))
+                tags.append(Identifier('mineable/' + tool))
         if 'ToolLevel' in row and row['ToolLevel'] != '':
             if '' in transformers:
                 tags = transformers['']
             else:
                 transformers[''] = tags = []
-            tags.append(ResourceLocation('needs_' + row['ToolLevel'] + '_tool'))
+            tags.append(Identifier('needs_' + row['ToolLevel'] + '_tool'))
         self.field(data, 'IgnitedByLava', lambda v: True if v.lower() == 'true' else None)
         self.field(data, 'IgniteOdds', lambda v: int(float(v)))
         self.field(data, 'BurnOdds', lambda v: int(float(v)))
@@ -45,9 +45,9 @@ class MaterialProvider(TableDataProvider):
             # Map<TagKey, List<TagKey>>
             for key, value in parsed.items():
                 if type(value) is list:
-                    transformers[key] = [ResourceLocation(v) for v in value]
+                    transformers[key] = [Identifier(v) for v in value]
                 elif type(value) is str:
-                    transformers[key] = [ResourceLocation(value)]
+                    transformers[key] = [Identifier(value)]
                 else:
                     raise Exception('Invalid tag transformer value: ' + value)
 

@@ -1,7 +1,7 @@
 import yaml
 
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -19,14 +19,14 @@ class ToolTierProvider(TableDataProvider):
         self.field(data, 'EnchantmentValue', lambda v: int(float(v)))
         self.field(data, 'RepairIngredient', self.convertToIngredient)
 
-        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultIdentifier(row['ID']), data)
 
     def convertToIngredient(self, value: str):
         if value.startswith('#'):
             return {
-                'tag': ResourceLocation(value[1:])
+                'tag': Identifier(value[1:])
             }
         else:
             return {
-                'item': ResourceLocation(value)
+                'item': Identifier(value)
             }

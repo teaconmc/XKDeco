@@ -1,7 +1,6 @@
 type: simple
 class: org.teacon.xkdeco.block.ObliqueHollowSteelBeamBlock
 properties:
-  render_type: cutout
   components:
   - water_loggable
   - horizontal

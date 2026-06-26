@@ -68,7 +68,7 @@ class TableDataProvider(DataProvider):
             if field != 'ID' and field not in self.ignoredFields and field != '' and row[field] != '':
                 data[field] = row[field]
 
-        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultIdentifier(row['ID']), data)
 
     def field(self, data: dict, name: str, valueSupplier):
         if name not in self.currentRow or self.currentRow[name] == '':

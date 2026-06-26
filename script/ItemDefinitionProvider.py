@@ -3,7 +3,7 @@ import yaml
 
 import ItemPropertiesReader
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -22,7 +22,7 @@ class ItemDefinitionProvider(TableDataProvider):
 
     def generateRow(self, row, tableConfig):
         self.order.append(row['ID'])
-        itemId = self.pack.defaultResourceLocation(row['ID'])
+        itemId = self.pack.defaultIdentifier(row['ID'])
         data = {}
         tags = set()
         templateId = None
@@ -40,7 +40,7 @@ class ItemDefinitionProvider(TableDataProvider):
             else:
                 templateId = row['Template']
                 data['template'] = templateId
-            templateId = ResourceLocation(templateId)
+            templateId = Identifier(templateId)
             templateString = str(templateId)
             if templateString == 'minecraft:none':
                 self.writeFile(itemId, data)
@@ -59,7 +59,7 @@ class ItemDefinitionProvider(TableDataProvider):
         if 'ItemGroup' in row and row['ItemGroup'] != '':
             self.pack.providers['creative_tabs'].addContent(row['ItemGroup'], itemId)
         if 'MainFamily' in row and row['MainFamily'] != '':
-            self.pack.providers['block_families'].addItem(self.pack.defaultResourceLocation(row['MainFamily']), itemId)
+            self.pack.providers['block_families'].addItem(self.pack.defaultIdentifier(row['MainFamily']), itemId)
 
         if hasTranslation:
             hasTranslation = 'Name:en_us' not in row or row['Name:en_us'].lower() != 'n/a'

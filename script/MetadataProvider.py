@@ -18,4 +18,4 @@ class MetadataProvider(DataProvider):
         registryOrder[key].extend(values)
 
     def generate(self):
-        self.writeFile(self.pack.defaultResourceLocation('metadata'), self.data)
+        self.writeFile(self.pack.defaultIdentifier('metadata'), self.data)

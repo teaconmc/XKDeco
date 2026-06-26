@@ -3,7 +3,7 @@ import yaml
 
 import BlockPropertiesReader
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -30,7 +30,7 @@ class BlockDefinitionProvider(TableDataProvider):
 
     def generateRow(self, row, tableConfig):
         self.order.append(row['ID'])
-        blockId = self.pack.defaultResourceLocation(row['ID'])
+        blockId = self.pack.defaultIdentifier(row['ID'])
         self.blocks.add(blockId)
         data = {}
         tags = set()
@@ -48,7 +48,7 @@ class BlockDefinitionProvider(TableDataProvider):
             else:
                 templateId = row['Template']
                 data['template'] = templateId
-            templateId = ResourceLocation(templateId)
+            templateId = Identifier(templateId)
             if templateId in self.templateTags:
                 tags.update(self.templateTags[templateId])
 
@@ -63,7 +63,7 @@ class BlockDefinitionProvider(TableDataProvider):
                 properties['components'] = components
 
         if 'SustainsPlant' in row and row['SustainsPlant'].lower() == 'true':
-            self.pack.providers['block_tags'].addBlock(ResourceLocation('kiwi:sustains_plant'), blockId)
+            self.pack.providers['block_tags'].addBlock(Identifier('kiwi:sustains_plant'), blockId)
         # item = {}
         # if 'ItemGroup' in row and row['ItemGroup'] != '':
         #     item['tab'] = row['ItemGroup']
@@ -72,7 +72,7 @@ class BlockDefinitionProvider(TableDataProvider):
         if 'ItemGroup' in row and row['ItemGroup'] != '':
             self.pack.providers['creative_tabs'].addContent(row['ItemGroup'], blockId)
         if 'MainFamily' in row and row['MainFamily'] != '':
-            self.pack.providers['block_families'].addBlock(self.pack.defaultResourceLocation(row['MainFamily']), blockId)
+            self.pack.providers['block_families'].addBlock(self.pack.defaultIdentifier(row['MainFamily']), blockId)
 
         translationKey = 'block.{namespace}.{name}'.format(namespace=self.pack.config['namespace'], name=row['ID'])
         self.processRowTranslations(row, translationKey)
@@ -81,18 +81,18 @@ class BlockDefinitionProvider(TableDataProvider):
 
         if self.glassTypes is not None and 'glass_type' in properties:
             glassType = None
-            if ResourceLocation(properties['glass_type']) in self.glassTypes:
-                glassType = self.glassTypes[ResourceLocation(properties['glass_type'])]
+            if Identifier(properties['glass_type']) in self.glassTypes:
+                glassType = self.glassTypes[Identifier(properties['glass_type'])]
             if glassType is None or 'skip_rendering' not in glassType or glassType['skip_rendering']:
-                self.pack.providers['block_tags'].addEntry(ResourceLocation('impermeable'), blockId)
+                self.pack.providers['block_tags'].addEntry(Identifier('impermeable'), blockId)
 
-        materialId = self.pack.defaultResourceLocation(properties['material']) if 'material' in properties else None
+        materialId = self.pack.defaultIdentifier(properties['material']) if 'material' in properties else None
         if materialId in self.tagTransformers:
             for key, value in self.tagTransformers[materialId].items():
                 if key == '':
                     tags.update(value)
                     continue
-                key = ResourceLocation(key)
+                key = Identifier(key)
                 if key in tags:
                     tags.remove(key)
                     tags.update(value)

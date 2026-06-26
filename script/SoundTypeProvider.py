@@ -1,7 +1,7 @@
 import yaml
 
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -21,9 +21,9 @@ class SoundTypeProvider(TableDataProvider):
 
         for key, value in self.mappings.items():
             if key in row and row[key] != '':
-                data[value] = self.pack.defaultResourceLocation(row[key])
+                data[value] = self.pack.defaultIdentifier(row[key])
 
         self.field(data,'Volume', float)
         self.field(data,'Pitch', float)
 
-        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultIdentifier(row['ID']), data)

@@ -3,7 +3,6 @@
 	"package": "org.teacon.xkdeco.mixin",
 	"plugin": "org.teacon.xkdeco.mixin.MixinPlugin",
 	"compatibilityLevel": "JAVA_25",
-	"refmap": "xkdeco.refmap.json",
 	"mixins": [
 		"MappedRegistryMixin",
 		"WallBlockMixin",

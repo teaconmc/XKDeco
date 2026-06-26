@@ -42,13 +42,8 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 				: BlockEntityRenderer.super.shouldRender(pBlockEntity, pCameraPos);
 	}
 
-	@Override
-	public AABB getRenderBoundingBox(ItemDisplayBlockEntity be) {
-		if (be.isProjector()) {
-			return AABB.ofSize(Vec3.atBottomCenterOf(be.getBlockPos().above(9)), 16, 16, 16);
-		} else {
-			return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
-		}
+	public boolean shouldRenderOffScreen(ItemDisplayBlockEntity be) {
+		return be.isProjector();
 	}
 
 	@Override

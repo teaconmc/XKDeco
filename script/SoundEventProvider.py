@@ -1,7 +1,7 @@
 import yaml
 
 from Pack import Pack
-from ResourceLocation import ResourceLocation
+from Identifier import Identifier
 from TableDataProvider import TableDataProvider
 
 
@@ -14,4 +14,4 @@ class SoundEventProvider(TableDataProvider):
 
         self.field(data, 'Range', float)
 
-        self.writeFile(self.pack.defaultResourceLocation(row['ID']), data)
+        self.writeFile(self.pack.defaultIdentifier(row['ID']), data)

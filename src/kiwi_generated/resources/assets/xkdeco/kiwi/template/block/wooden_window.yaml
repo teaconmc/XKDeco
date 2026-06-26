@@ -1,5 +1,4 @@
 type: built_in
 codec: xkdeco:one_direction_fence_gate
 properties:
-  render_type: cutout
   shape: xkdeco:wooden_window

@@ -8,7 +8,7 @@ class GlassTypeProvider(TableDataProvider):
         self.glassTypes = {}
 
     def generateRow(self, row, tableConfig):
-        glassTypeId = self.pack.defaultResourceLocation(row['ID'])
+        glassTypeId = self.pack.defaultIdentifier(row['ID'])
         data = {}
 
         self.field(data, 'SkipRendering', lambda v: False if v.lower() == 'false' else None)
