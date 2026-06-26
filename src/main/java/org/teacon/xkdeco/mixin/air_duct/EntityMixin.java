@@ -21,6 +21,13 @@ public abstract class EntityMixin {
 		}
 	}
 
+	@Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
+	private void xkdeco$shouldRender(CallbackInfoReturnable<Boolean> cir) {
+		if (this instanceof XKDPlayer player && player.xkdeco$isHidingInAirDuct()) {
+			cir.setReturnValue(false);
+		}
+	}
+
 	@Inject(method = "move", at = @At("TAIL"))
 	private void xkdeco$move(MoverType moverType, Vec3 delta, CallbackInfo ci) {
 		if (!(this instanceof XKDPlayer player)) {
