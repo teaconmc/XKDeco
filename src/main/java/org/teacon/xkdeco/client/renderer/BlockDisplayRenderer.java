@@ -2,6 +2,7 @@ package org.teacon.xkdeco.client.renderer;
 
 import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.BlockDisplayBlockEntity;
+import org.teacon.xkdeco.util.XKDBlockEntityRenderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -18,9 +19,10 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity, BlockDisplayRenderState> {
+public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisplayBlockEntity, BlockDisplayRenderState>, XKDBlockEntityRenderer<BlockDisplayBlockEntity> {
 	private static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
 	private static final float BLOCK_SCALE = 0.99f;
 	private final BlockModelResolver blockModelResolver;
@@ -81,5 +83,10 @@ public final class BlockDisplayRenderer implements BlockEntityRenderer<BlockDisp
 				OverlayTexture.NO_OVERLAY,
 				0);
 		poseStack.popPose();
+	}
+
+	@Override
+	public AABB xkdeco$getRenderBoundingBox(BlockDisplayBlockEntity be) {
+		return AABB.encapsulatingFullBlocks(be.getBlockPos().above(1), be.getBlockPos().above(2));
 	}
 }

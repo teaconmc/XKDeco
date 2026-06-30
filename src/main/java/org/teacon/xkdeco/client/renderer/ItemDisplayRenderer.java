@@ -2,11 +2,11 @@ package org.teacon.xkdeco.client.renderer;
 
 import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.blockentity.ItemDisplayBlockEntity;
+import org.teacon.xkdeco.util.XKDBlockEntityRenderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -25,25 +25,12 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity, ItemDisplayRenderState> {
+public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlockEntity, ItemDisplayRenderState>, XKDBlockEntityRenderer<ItemDisplayBlockEntity> {
 	private final ItemModelResolver itemModelResolver;
 	private final RandomSource random = RandomSource.create();
 
 	public ItemDisplayRenderer(BlockEntityRendererProvider.Context context) {
 		this.itemModelResolver = context.itemModelResolver();
-	}
-
-	@Override
-	public boolean shouldRender(ItemDisplayBlockEntity pBlockEntity, Vec3 pCameraPos) {
-		return pBlockEntity.isProjector()
-				? Vec3.atCenterOf(pBlockEntity.getBlockPos()).closerThan(
-				pCameraPos,
-				Minecraft.getInstance().options.getEffectiveRenderDistance() * 16)
-				: BlockEntityRenderer.super.shouldRender(pBlockEntity, pCameraPos);
-	}
-
-	public boolean shouldRenderOffScreen(ItemDisplayBlockEntity be) {
-		return be.isProjector();
 	}
 
 	@Override
@@ -175,5 +162,10 @@ public final class ItemDisplayRenderer implements BlockEntityRenderer<ItemDispla
 		}
 
 		return i;
+	}
+
+	@Override
+	public AABB xkdeco$getRenderBoundingBox(ItemDisplayBlockEntity be) {
+		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
 	}
 }

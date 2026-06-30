@@ -51,9 +51,6 @@ class BlockDefinitionProvider(TableDataProvider):
             templateId = Identifier(templateId)
             if templateId in self.templateTags:
                 tags.update(self.templateTags[templateId])
-            
-            if str(templateId) == 'minecraft:leaves': # workaround, remove it when new Kiwi is ready
-                data['template'] = 'xkdeco:leaves'
 
         properties = BlockPropertiesReader.read(self, row)
         data.update(properties)

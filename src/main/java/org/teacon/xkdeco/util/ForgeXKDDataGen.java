@@ -26,7 +26,7 @@ public class ForgeXKDDataGen {
 				event.validate());
 		var registries = event.getLookupProvider();
 
-		event.addProvider(new KiwiLanguageProvider(output, XKDeco.ID, registries));
+		event.addProvider(new KiwiLanguageProvider(output, registries));
 		event.addProvider(new XKDItemTagsProvider(output, registries));
 		event.addProvider(new XKDBlockTagsProvider(output, registries));
 		event.addProvider(new XKDModelProvider(output));

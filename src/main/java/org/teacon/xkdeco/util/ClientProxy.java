@@ -7,6 +7,7 @@ import org.teacon.xkdeco.client.model.MimicWallModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.HologramRenderer;
 import org.teacon.xkdeco.client.renderer.ItemDisplayRenderer;
+import org.teacon.xkdeco.client.renderer.ItemProjectorRenderer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
@@ -24,7 +25,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 public final class ClientProxy {
 	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemDisplayRenderer::new);
+		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemProjectorRenderer::new);
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
 		event.registerBlockEntityRenderer(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
 	}
