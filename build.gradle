@@ -412,7 +412,9 @@ publishMods {
     curseforge {
         projectId = "497637"
         accessToken = providers.environmentVariable("CURSE_TOKEN")
-        minecraftVersions.add("26.1.2")
+        minecraftVersions.add(minecraft_version)
+        minecraftVersions.add("26.1")
+        minecraftVersions.add("26.1.1")
         requires("kiwi")
         requires("forgified-fabric-api")
         requires("cloth-config")
@@ -420,7 +422,9 @@ publishMods {
     modrinth {
         projectId = "XlwMlNhH"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        minecraftVersions.add("26.1.2")
+        minecraftVersions.add(minecraft_version)
+        minecraftVersions.add("26.1")
+        minecraftVersions.add("26.1.1")
         requires("kiwi")
         requires("forgified-fabric-api")
         requires("cloth-config")
