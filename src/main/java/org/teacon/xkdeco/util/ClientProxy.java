@@ -3,6 +3,7 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.client.model.AirDuctModel;
+import org.teacon.xkdeco.client.model.MimicWallItemModel;
 import org.teacon.xkdeco.client.model.MimicWallModel;
 import org.teacon.xkdeco.client.renderer.BlockDisplayRenderer;
 import org.teacon.xkdeco.client.renderer.HologramRenderer;
@@ -20,6 +21,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterItemModelsEvent;
 
 @Mod(value = XKDeco.ID, dist = Dist.CLIENT)
 public final class ClientProxy {
@@ -32,6 +34,7 @@ public final class ClientProxy {
 
 	public ClientProxy(IEventBus modEventBus) {
 		modEventBus.addListener(ClientProxy::setEntityRenderers);
+		modEventBus.addListener(ClientProxy::registerItemModels);
 
 		CustomUnbakedBlockStateModel.register(AirDuctModel.ID, AirDuctModel.MAP_CODEC);
 		ModelLoadingPlugin.register(ctx -> {
@@ -41,6 +44,10 @@ public final class ClientProxy {
 				ctx.registerBlockStateResolver(block, ClientProxy::resolveMimicWall);
 			}
 		});
+	}
+
+	private static void registerItemModels(RegisterItemModelsEvent event) {
+		event.register(MimicWallItemModel.ID, MimicWallItemModel.Unbaked.MAP_CODEC);
 	}
 
 	private static void resolveAirDuct(BlockStateResolver.Context context) {

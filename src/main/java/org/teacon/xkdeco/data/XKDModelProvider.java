@@ -22,6 +22,7 @@ import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.HologramBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
+import org.teacon.xkdeco.client.model.MimicWallItemModel;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 
 import com.google.common.collect.ImmutableMap;
@@ -330,12 +331,9 @@ public class XKDModelProvider extends ModelProvider {
 		LEGACY_ITEM_MODEL_BLOCKS.forEach(block -> generators.registerSimpleItemModel(
 				block,
 				ModelLocationUtils.getModelLocation(block.asItem())));
-		MimicWallsLoader.mimicWalls().forEach(mimicWall -> {
-			Identifier delegateModel = BuiltInRegistries.BLOCK.getKey(mimicWall.getWallDelegate())
-					.withPrefix("block/")
-					.withSuffix("_inventory");
-			generators.registerSimpleItemModel(mimicWall, delegateModel);
-		});
+		MimicWallsLoader.mimicWalls().forEach(mimicWall -> generators.itemModelOutput.accept(
+				mimicWall.asItem(),
+				new MimicWallItemModel.Unbaked()));
 
 		var originalBlockStateOutput = generators.blockStateOutput;
 		generators.blockStateOutput = generator -> {

@@ -1,6 +1,5 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "xkdeco:block/mahogany_column_wall_inventory"
+    "type": "xkdeco:mimic_wall"
   }
 }

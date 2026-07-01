@@ -24,18 +24,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.WallSide;
 
 public final class MimicWallBakedModel implements BlockStateModel, FabricBlockStateModel {
-	private static final EnumProperty<WallSide>[] WALL_SIDE_PROPERTIES = makeWallSideProperties();
-
-	@SuppressWarnings("unchecked")
-	private static EnumProperty<WallSide>[] makeWallSideProperties() {
-		EnumProperty<WallSide>[] array = new EnumProperty[4];
-		array[Direction.SOUTH.get2DDataValue()] = BlockStateProperties.SOUTH_WALL;
-		array[Direction.WEST.get2DDataValue()] = BlockStateProperties.WEST_WALL;
-		array[Direction.NORTH.get2DDataValue()] = BlockStateProperties.NORTH_WALL;
-		array[Direction.EAST.get2DDataValue()] = BlockStateProperties.EAST_WALL;
-		return array;
-	}
-
 	private final WallBlock base;
 
 	public MimicWallBakedModel(WallBlock base) {
@@ -80,14 +68,24 @@ public final class MimicWallBakedModel implements BlockStateModel, FabricBlockSt
 	@Nullable
 	private static BlockState neighborArmState(BlockState neighborState, Direction direction) {
 		if (neighborState.getBlock() instanceof WallBlock && neighborState.is(BlockTags.WALLS)) {
-			WallSide wallSide = neighborState.getValue(WALL_SIDE_PROPERTIES[direction.get2DDataValue()]);
+			WallSide wallSide = neighborState.getValue(wallSideProperty(direction.getOpposite()));
 			if (wallSide != WallSide.NONE) {
 				return neighborState.getBlock().defaultBlockState()
 						.setValue(WallBlock.UP, false)
-						.setValue(WALL_SIDE_PROPERTIES[direction.getOpposite().get2DDataValue()], wallSide);
+						.setValue(wallSideProperty(direction), wallSide);
 			}
 		}
 		return null;
+	}
+
+	private static EnumProperty<WallSide> wallSideProperty(Direction direction) {
+		return switch (direction) {
+			case NORTH -> BlockStateProperties.NORTH_WALL;
+			case EAST -> BlockStateProperties.EAST_WALL;
+			case SOUTH -> BlockStateProperties.SOUTH_WALL;
+			case WEST -> BlockStateProperties.WEST_WALL;
+			default -> throw new IllegalArgumentException("No wall side property for " + direction);
+		};
 	}
 
 	@Override
