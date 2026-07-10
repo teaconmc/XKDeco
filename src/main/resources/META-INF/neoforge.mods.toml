@@ -33,15 +33,3 @@ versionRange = "[26.1.2,26.2)"
 modId = "kiwi"
 type = "required"
 versionRange = "[26.0.8,)"
-
-[[dependencies.xkdeco]]
-modId = "jei"
-type = "optional"
-versionRange = "*"
-referralUrl = "https://www.curseforge.com/minecraft/mc-mods/jei"
-
-[[dependencies.xkdeco]]
-modId = "roughlyenoughitems"
-type = "optional"
-versionRange = "*"
-referralUrl = "https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items"

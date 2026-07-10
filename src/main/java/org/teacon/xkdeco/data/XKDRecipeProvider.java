@@ -8,19 +8,20 @@ import java.util.concurrent.CompletableFuture;
 
 import org.teacon.xkdeco.XKDeco;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.criterion.ChangeDimensionTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.flag.FeatureFlags;
@@ -28,6 +29,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import snownee.kiwi.AbstractModule;
@@ -93,7 +95,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 				Items.WAXED_OXIDIZED_COPPER);
 		SingleItemRecipeBuilder.stonecutting(copperBlock, BUILDING_BLOCKS, i("copper_tiles"), 1)
 				.unlockedBy("has_item", has(Items.COPPER_INGOT))
-				.save(output, "copper_tiles_from_copper_block");
+				.save(output, recipeKey("copper_tiles_from_copper_block"));
 
 		shapedSurroundedBy4(BUILDING_BLOCKS, i("mud_wall_block"), Items.CLAY, Items.BONE_MEAL, 4);
 		shaped(BUILDING_BLOCKS, i("cyan_bricks"), 6)
@@ -656,13 +658,24 @@ public class XKDRecipeProvider extends RecipeProvider {
 				.requires(input1)
 				.requires(input2)
 				.unlockedBy("has_item", has(input1))
-				.save(output, name);
+				.save(output, recipeKey(name));
 	}
 
 	private void smokingRecipe(ItemLike result, ItemLike material) {
 		SimpleCookingRecipeBuilder.smoking(Ingredient.of(material), BUILDING_BLOCKS, result, 0.1f, 100)
 				.unlockedBy("has_item", has(material))
-				.save(output, BuiltInRegistries.ITEM.getKey(result.asItem()).getPath() + "_from_smoking");
+				.save(output, recipeKey(BuiltInRegistries.ITEM.getKey(result.asItem()).getPath() + "_from_smoking"));
+	}
+
+	private static ResourceKey<Recipe<?>> recipeKey(String path) {
+		return ResourceKey.create(Registries.RECIPE, XKDeco.id(path));
+	}
+
+	@Override
+	protected void stonecutterResultFromBase(RecipeCategory category, ItemLike result, ItemLike base, int count) {
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(base), category, result, count)
+				.unlockedBy(getHasName(base), has(base))
+				.save(output, recipeKey(getConversionRecipeName(result, base) + "_stonecutting"));
 	}
 
 	private void coloredTiles(String color, ItemLike terracotta) {
@@ -685,8 +698,8 @@ public class XKDRecipeProvider extends RecipeProvider {
 		return BuiltInRegistries.ITEM.getOptional(resourceLocation).orElseThrow();
 	}
 
-	public static class Runner extends FabricRecipeProvider {
-		public Runner(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+	public static class Runner extends RecipeProvider.Runner {
+		public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 			super(output, registriesFuture);
 		}
 

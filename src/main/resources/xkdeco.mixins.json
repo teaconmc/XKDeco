@@ -4,12 +4,10 @@
 	"plugin": "org.teacon.xkdeco.mixin.MixinPlugin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"MappedRegistryMixin",
 		"WallBlockMixin",
 		"air_duct.EntityMixin",
 		"air_duct.LivingEntityMixin",
-		"air_duct.PlayerMixin",
-		"rei.DefaultCraftingDisplayMixin"
+		"air_duct.PlayerMixin"
 	],
 	"client": [
 		"client.MinecraftMixin"

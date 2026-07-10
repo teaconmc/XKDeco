@@ -7,9 +7,7 @@ import org.teacon.xkdeco.block.XKDStateProperties;
 
 import com.google.common.collect.Lists;
 
-import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -17,8 +15,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 
-public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStateModel {
+public final class AirDuctBakedModel implements DynamicBlockStateModel {
 	private final List<BlockStateModelPart> straight;
 	private final List<BlockStateModelPart> corner;
 	private final List<BlockStateModelPart> cover;

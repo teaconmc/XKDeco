@@ -1,7 +1,11 @@
 {
   "variants": {
     "": {
-      "model": "xkdeco:block/air_duct"
+      "type": "xkdeco:air_duct",
+      "corner": "xkdeco:block/furniture/air_duct_corner",
+      "cover": "xkdeco:block/furniture/air_duct_cover",
+      "frame": "xkdeco:block/furniture/air_duct_frame",
+      "straight": "xkdeco:block/furniture/air_duct"
     }
   }
 }

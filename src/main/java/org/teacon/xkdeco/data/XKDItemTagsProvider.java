@@ -2,15 +2,17 @@ package org.teacon.xkdeco.data;
 
 import java.util.concurrent.CompletableFuture;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
-import net.minecraft.core.HolderLookup;
+import org.teacon.xkdeco.XKDeco;
 
-public class XKDItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.common.data.ItemTagsProvider;
+
+public class XKDItemTagsProvider extends ItemTagsProvider {
 	public XKDItemTagsProvider(
-			FabricPackOutput output,
+			PackOutput output,
 			CompletableFuture<HolderLookup.Provider> registriesFuture) {
-		super(output, registriesFuture);
+		super(output, registriesFuture, XKDeco.ID);
 	}
 
 	@Override

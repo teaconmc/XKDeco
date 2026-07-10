@@ -179,24 +179,12 @@ repositories {
             includeGroup "dev.latvian.mods"
         }
     }
-    maven { url = "https://maven.shedaniel.me/" }
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.dev"
-    }
     maven {
         url = "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
-    maven { url = 'https://maven.blamejared.com' }
     maven { url = "https://maven.theillusivec4.top/" }
     mavenLocal() // YES
     flatDir {
@@ -209,18 +197,6 @@ dependencies {
     // https://modrinth.com/mod/kiwi/versions
     implementation(annotationProcessor("maven.modrinth:kiwi:${kiwi_version}+neoforge"))
 
-    // === Config: Cloth Config (26.1) ======================================
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
-
-    // === Optional integrations =============================================
-    // -- JEI: https://modrinth.com/mod/jei/versions
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    implementation "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-    // -- Architectury / REI: https://linkie.shedaniel.dev/dependencies?loader=neoforge
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
-    implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
-    compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.0.93"
     // -- Jade: https://modrinth.com/mod/jade/versions
 //    implementation "maven.modrinth:jade:15.10.0+neoforge"
     // -- DebugUtils / ModernFix / FerriteCore / Suggestion Tweaker
@@ -412,7 +388,6 @@ publishMods {
         minecraftVersions.add("26.1")
         minecraftVersions.add("26.1.1")
         requires("kiwi")
-        requires("cloth-config")
     }
     modrinth {
         projectId = "XlwMlNhH"
@@ -421,6 +396,5 @@ publishMods {
         minecraftVersions.add("26.1")
         minecraftVersions.add("26.1.1")
         requires("kiwi")
-        requires("cloth-config")
     }
 }

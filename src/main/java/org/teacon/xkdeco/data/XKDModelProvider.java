@@ -22,8 +22,7 @@ import org.teacon.xkdeco.block.BlockDisplayBlock;
 import org.teacon.xkdeco.block.HangingFasciaBlock;
 import org.teacon.xkdeco.block.HologramBlock;
 import org.teacon.xkdeco.block.ItemDisplayBlock;
-import org.teacon.xkdeco.client.model.MimicWallItemModel;
-import org.teacon.xkdeco.init.MimicWallsLoader;
+import org.teacon.xkdeco.client.model.AirDuctModel;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -31,7 +30,6 @@ import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quadrant;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -56,6 +54,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -67,6 +66,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
+import net.neoforged.neoforge.client.model.generators.blockstate.CustomBlockStateModelBuilder;
 import snownee.kiwi.customization.block.KBlockSettings;
 import snownee.kiwi.customization.block.component.LayeredComponent;
 import snownee.kiwi.customization.block.loader.KBlockComponents;
@@ -159,7 +159,7 @@ public class XKDModelProvider extends ModelProvider {
 	private final Identifier snowySlabDouble = Identifier.withDefaultNamespace("block/grass_block_snow");
 	private final Identifier snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
-	public XKDModelProvider(FabricPackOutput output) {
+	public XKDModelProvider(PackOutput output) {
 		super(output, XKDeco.ID);
 	}
 
@@ -331,10 +331,6 @@ public class XKDModelProvider extends ModelProvider {
 		LEGACY_ITEM_MODEL_BLOCKS.forEach(block -> generators.registerSimpleItemModel(
 				block,
 				ModelLocationUtils.getModelLocation(block.asItem())));
-		MimicWallsLoader.mimicWalls().forEach(mimicWall -> generators.itemModelOutput.accept(
-				mimicWall.asItem(),
-				new MimicWallItemModel.Unbaked()));
-
 		var originalBlockStateOutput = generators.blockStateOutput;
 		generators.blockStateOutput = generator -> {
 			generated.add(generator.block());
@@ -492,7 +488,14 @@ public class XKDModelProvider extends ModelProvider {
 		createTreatedWood("varnished");
 		createTreatedWood("ebony");
 		createTreatedWood("mahogany");
-		createBlockStateOnly("air_duct", false);
+		AirDuctModel airDuctModel = new AirDuctModel(
+				XKDeco.id("block/furniture/air_duct"),
+				XKDeco.id("block/furniture/air_duct_corner"),
+				XKDeco.id("block/furniture/air_duct_cover"),
+				XKDeco.id("block/furniture/air_duct_frame"));
+		generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(
+				block("air_duct"),
+				MultiVariant.of(new CustomBlockStateModelBuilder.Simple(airDuctModel))));
 		generators.registerSimpleItemModel(block("air_duct"), XKDeco.id("block/furniture/air_duct_corner"));
 		createHorizontalShift("air_duct_oblique", "air_duct_oblique", null, false);
 		generators.blockStateOutput.accept(BlockModelGenerators.createWall(
