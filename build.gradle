@@ -212,10 +212,6 @@ dependencies {
     // === Config: Cloth Config (26.1) ======================================
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
 
-    // === Forgified Fabric API ==============================================
-    implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${ffapi_version}"
-    compileOnly "org.sinytra:forgified-fabric-loader:${ffloader_version}"
-
     // === Optional integrations =============================================
     // -- JEI: https://modrinth.com/mod/jei/versions
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
@@ -416,7 +412,6 @@ publishMods {
         minecraftVersions.add("26.1")
         minecraftVersions.add("26.1.1")
         requires("kiwi")
-        requires("forgified-fabric-api")
         requires("cloth-config")
     }
     modrinth {
@@ -426,7 +421,6 @@ publishMods {
         minecraftVersions.add("26.1")
         minecraftVersions.add("26.1.1")
         requires("kiwi")
-        requires("forgified-fabric-api")
         requires("cloth-config")
     }
 }

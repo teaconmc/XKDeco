@@ -45,10 +45,3 @@ modId = "roughlyenoughitems"
 type = "optional"
 versionRange = "*"
 referralUrl = "https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items"
-
-[[dependencies.xkdeco]]
-modId = "fabric_api"
-type = "required"
-versionRange = "[0.152.1,)"
-reason = "Forgified Fabric API is required for this mod to work."
-referralUrl = "https://www.curseforge.com/minecraft/mc-mods/forgified-fabric-api"
