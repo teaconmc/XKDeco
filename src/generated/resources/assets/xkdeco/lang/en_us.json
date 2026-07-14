@@ -4,6 +4,7 @@
   "item.xkdeco.mimic_wall": "Mimic %s",
   "modmenu.descriptionTranslation.xkdeco": "Models and textures are created by XeKr: https://github.com/XeKr",
   "modmenu.nameTranslation.xkdeco": "XeKr's Decoration",
+  "tip.xkdeco.block_unlocked": "%s has been unlocked.",
   "xkdeco.config.mimicWalls": "Mimic Walls",
   "xkdeco.config.mimicWalls.desc": "",
   "xkdeco.mimic_walls": "Mimic Walls"

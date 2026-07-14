@@ -30,8 +30,6 @@ import snownee.kiwi.customization.placement.PlaceSlot;
 
 public class AirDuctBlock extends BasicBlock {
 
-	private static final Direction[] DIRECTIONS = Direction.values();
-
 	public AirDuctBlock(Properties pProperties) {
 		super(pProperties);
 		BlockState blockState = this.stateDefinition.any();
@@ -94,7 +92,7 @@ public class AirDuctBlock extends BasicBlock {
 		BlockPos pos = pContext.getClickedPos();
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayList();
-		for (Direction direction : DIRECTIONS) {
+		for (Direction direction : Block.UPDATE_SHAPE_ORDER) {
 			BlockState neighborState = level.getBlockState(mutable.setWithOffset(pos, direction));
 			if (isAirDuctSlot(neighborState, direction.getOpposite())) {
 				neighbors.add(direction);
@@ -128,7 +126,7 @@ public class AirDuctBlock extends BasicBlock {
 		}
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		List<Direction> neighbors = Lists.newArrayListWithExpectedSize(2);
-		for (Direction direction : DIRECTIONS) {
+		for (Direction direction : Block.UPDATE_SHAPE_ORDER) {
 			if (direction == pDirection) {
 				continue;
 			}
@@ -141,7 +139,7 @@ public class AirDuctBlock extends BasicBlock {
 			}
 		}
 		Direction theOtherDirection = neighbors.isEmpty() ? pDirection.getOpposite() : neighbors.getFirst();
-		for (Direction direction : DIRECTIONS) {
+		for (Direction direction : Block.UPDATE_SHAPE_ORDER) {
 			blockState = blockState.setValue(
 					DIRECTION_PROPERTIES.get(direction.get3DDataValue()),
 					direction == pDirection || direction == theOtherDirection);
