@@ -1,4 +1,5 @@
 {
     "block.xkdeco.mimic_wall": "%s（墙柱）",
-	"xkdeco.mimic_walls": "Mimic Walls"
+	"xkdeco.mimic_walls": "Mimic Walls",
+	"tip.xkdeco.block_unlocked": "%s已解锁。"
 }

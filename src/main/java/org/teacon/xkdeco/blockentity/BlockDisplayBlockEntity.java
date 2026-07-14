@@ -30,8 +30,6 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 		super(XKDecoEntityTypes.BLOCK_DISPLAY.get(), pWorldPosition, pBlockState);
 	}
 
-	// getRenderBoundingBox moved to BlockDisplayRenderer. See there for more info.
-
 	@Override
 	public int getMaxStackSize() {
 		return 1;
@@ -43,13 +41,13 @@ public final class BlockDisplayBlockEntity extends SingleSlotContainerBlockEntit
 	}
 
 	@Override
-	public void setItem(int pSlot, ItemStack pStack) {
-		if (pStack.getItem() instanceof BlockItem blockItem) {
+	public void setTheItem(ItemStack itemStack) {
+		super.setTheItem(itemStack);
+		if (itemStack.getItem() instanceof BlockItem blockItem) {
 			setStoredBlockState(blockItem.getBlock().defaultBlockState());
 		} else {
 			setStoredBlockState(EMPTY);
 		}
-		super.setItem(pSlot, pStack);
 	}
 
 	public BlockState getStoredBlockState() {
