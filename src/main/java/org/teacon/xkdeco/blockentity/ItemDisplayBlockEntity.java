@@ -23,17 +23,12 @@ public class ItemDisplayBlockEntity extends SingleSlotContainerBlockEntity {
 				blockState);
 	}
 
-	// getRenderBoundingBox moved to ItemDisplayRenderer. See there for more info.
-
 	public boolean isProjector() {
-		return XKDecoEntityTypes.ITEM_PROJECTOR.get() == this.getType();
+		return is(XKDecoEntityTypes.ITEM_PROJECTOR.get());
 	}
 
 	public float getSpin() {
-		if (hasFixedSpin()) {
-			return fixedSpin;
-		}
-		return level == null ? 0 : level.getGameTime();
+		return fixedSpin;
 	}
 
 	public boolean hasFixedSpin() {

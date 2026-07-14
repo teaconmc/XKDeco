@@ -7,6 +7,7 @@ import org.teacon.xkdeco.util.XKDBlockEntityRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -48,7 +49,7 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
 		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 		// borrowed from ItemEntityRenderer
 
-		ItemStack itemstack = blockEntity.getFirstItem();
+		ItemStack itemstack = blockEntity.getTheItem();
 		state.projector = blockEntity.isProjector();
 
 		if (itemstack.isEmpty()) {
@@ -57,9 +58,11 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
 			return;
 		}
 
-		float spin = blockEntity.getSpin();
-		if (!blockEntity.hasFixedSpin()) {
-			spin += partialTicks;
+		float spin;
+		if (blockEntity.hasFixedSpin()) {
+			spin = blockEntity.getSpin();
+		} else {
+			spin = Minecraft.getInstance().clientTickCount + partialTicks;
 		}
 		state.spin = spin * 0.05F;
 		state.amount = getRenderAmount(itemstack);

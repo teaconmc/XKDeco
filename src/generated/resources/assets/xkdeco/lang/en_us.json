@@ -1,5 +1,6 @@
 {
   "fml.menu.mods.info.description.xkdeco": "Models and textures are created by XeKr: https://github.com/XeKr",
   "modmenu.descriptionTranslation.xkdeco": "Models and textures are created by XeKr: https://github.com/XeKr",
-  "modmenu.nameTranslation.xkdeco": "XeKr's Decoration"
+  "modmenu.nameTranslation.xkdeco": "XeKr's Decoration",
+  "tip.xkdeco.block_unlocked": "%s has been unlocked."
 }

@@ -60,7 +60,7 @@ public class ItemDisplayBlock extends DisplayBlock {
 			@Nullable Orientation pOrientation,
 			boolean pIsMoving) {
 		if (!pLevel.isClientSide() && pState.getValue(POWERED) != pLevel.hasNeighborSignal(pPos)) {
-			pLevel.setBlock(pPos, pState.cycle(POWERED), 2);
+			pLevel.setBlock(pPos, pState.cycle(POWERED), Block.UPDATE_CLIENTS);
 		}
 	}
 
