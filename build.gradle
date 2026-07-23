@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id "me.shedaniel.unified-publishing" version "0.1.+"
+    id "me.modmuss50.mod-publish-plugin" version "2.+"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -291,39 +291,30 @@ publishing {
     }
 }
 
-unifiedPublishing {
-    project {
-        displayName = "[Forge $project.supported_version] $project.mod_version"
-        version = realVersion // Optional, Inferred from project by default
-        changelog = file("CHANGELOG.md").exists() ? file("CHANGELOG.md").text : ""
-        releaseType = project.release_type // Optional, use "release", "beta" or "alpha"
-        gameVersions = ["1.20.1"]
-        gameLoaders = ["forge", "neoforge"]
+publishMods {
+    file = tasks.jar.archiveFile
+    changelog = file('CHANGELOG.md').exists() ? file('CHANGELOG.md').text : ''
+    type = ['release': STABLE, 'beta': BETA, 'alpha': ALPHA][project.release_type]
+    modLoaders.add("forge")
+    modLoaders.add("neoforge")
+    displayName = "[Forge ${project.supported_version}] ${project.mod_version}"
+    version = realVersion
 
-        mainPublication tasks.jar // Declares the publicated jar
+    curseforge {
+        projectId = "497637"
+        client = true
+        server = true
+        accessToken = providers.environmentVariable("CURSE_TOKEN")
+        minecraftVersions.add("1.20.1")
+        requires("kiwi")
+        requires("forgified-fabric-api")
+    }
 
-        if (System.getenv("CURSE_TOKEN") != null) {
-            curseforge {
-                token = System.getenv("CURSE_TOKEN")
-                id = "497637" // Required, must be a string, ID of CurseForge project
-
-                relations { // Optional, Inferred from the relations above by default
-                    depends "kiwi"
-                    depends "forgified-fabric-api"
-                }
-            }
-        }
-
-        if (System.getenv("MODRINTH_TOKEN") != null) {
-            modrinth {
-                token = System.getenv("MODRINTH_TOKEN")
-                id = "XlwMlNhH" // Required, must be a string, ID of Modrinth project
-
-                relations { // Optional, Inferred from the relations above by default
-                    depends "kiwi"
-                    depends "forgified-fabric-api"
-                }
-            }
-        }
+    modrinth {
+        projectId = "XlwMlNhH"
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add("1.20.1")
+        requires("kiwi")
+        requires("forgified-fabric-api")
     }
 }
