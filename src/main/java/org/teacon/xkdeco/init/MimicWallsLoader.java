@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.teacon.xkdeco.XKDeco;
+import org.teacon.xkdeco.XKDecoCommonConfig;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.util.CommonProxy;
@@ -55,7 +56,8 @@ public final class MimicWallsLoader {
 	}
 
 	public static void newBlockAdded(ResourceLocation id, Block block) {
-		if (block instanceof WallBlock wall && !(block instanceof MimicWallBlock) && !block.defaultBlockState().hasBlockEntity() &&
+		if (XKDecoCommonConfig.mimicWalls && block instanceof WallBlock wall && !(block instanceof MimicWallBlock) &&
+				!block.defaultBlockState().hasBlockEntity() &&
 				id.getPath().endsWith("_wall") &&
 				block.getStateDefinition().getProperties().size() == Blocks.COBBLESTONE_WALL.getStateDefinition().getProperties().size()) {
 			MimicWallBlock mimicWall = new MimicWallBlock(wall);
@@ -83,6 +85,9 @@ public final class MimicWallsLoader {
 			Map<ResourceLocation, Collection<Holder<T>>> tags,
 			TagKey<T> key,
 			List<Holder<T>> holders) {
+		if (holders.isEmpty()) {
+			return;
+		}
 		List<Holder<T>> list = Lists.newArrayList(tags.getOrDefault(key.location(), List.of()));
 		list.addAll(holders);
 		tags.put(key.location(), list);

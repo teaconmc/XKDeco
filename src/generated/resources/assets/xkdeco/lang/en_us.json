@@ -1,4 +1,6 @@
 {
   "block.xkdeco.mimic_wall": "Mimic %s",
+  "xkdeco.config.mimicWalls": "Mimic Walls",
+  "xkdeco.config.mimicWalls.desc": "",
   "xkdeco.mimic_walls": "Mimic Walls"
 }
