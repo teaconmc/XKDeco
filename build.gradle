@@ -131,6 +131,7 @@ processResources {
         if (!System.getProperty('idea.active')) {
             filter { String line ->
                 line.replace('"org.teacon.xkdeco.data.XKDDataGen"', "")
+                        .replace('"xkdeco.data.mixins.json",', "")
             }
         }
     }
