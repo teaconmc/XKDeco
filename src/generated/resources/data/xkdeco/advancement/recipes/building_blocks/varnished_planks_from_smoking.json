@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:varnished_planks_from_smoking"
+        "recipe": "xkdeco:varnished_planks_from_smoking"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:varnished_planks_from_smoking"
+      "xkdeco:varnished_planks_from_smoking"
     ]
   }
 }

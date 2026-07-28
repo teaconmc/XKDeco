@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cherry_blossom_leaves"
+        "recipe": "xkdeco:cherry_blossom_leaves"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cherry_blossom_leaves"
+      "xkdeco:cherry_blossom_leaves"
     ]
   }
 }

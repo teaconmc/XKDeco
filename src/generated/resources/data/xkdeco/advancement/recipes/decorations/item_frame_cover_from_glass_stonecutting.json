@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:item_frame_cover_from_glass_stonecutting"
+        "recipe": "xkdeco:item_frame_cover_from_glass_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:item_frame_cover_from_glass_stonecutting"
+      "xkdeco:item_frame_cover_from_glass_stonecutting"
     ]
   }
 }

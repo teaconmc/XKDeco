@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:steel_filings_from_steel_block_stonecutting"
+        "recipe": "xkdeco:steel_filings_from_steel_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:steel_filings_from_steel_block_stonecutting"
+      "xkdeco:steel_filings_from_steel_block_stonecutting"
     ]
   }
 }

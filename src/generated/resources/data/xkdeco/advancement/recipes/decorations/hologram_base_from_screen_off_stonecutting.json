@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:hologram_base_from_screen_off_stonecutting"
+        "recipe": "xkdeco:hologram_base_from_screen_off_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:hologram_base_from_screen_off_stonecutting"
+      "xkdeco:hologram_base_from_screen_off_stonecutting"
     ]
   }
 }

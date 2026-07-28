@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:quartz_wall_from_quartz_block_stonecutting"
+        "recipe": "xkdeco:quartz_wall_from_quartz_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:quartz_wall_from_quartz_block_stonecutting"
+      "xkdeco:quartz_wall_from_quartz_block_stonecutting"
     ]
   }
 }

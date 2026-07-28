@@ -2,12 +2,16 @@ plugins {
     id 'fabric-loom' version "${loom_version}"
     id 'idea'
     id 'maven-publish'
-    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
+    id "me.modmuss50.mod-publish-plugin" version "2.+"
 }
 
 version = project.minecraft_version + "-Fabric-" + project.mod_version
 group = project.mod_base_package
 var realVersion = mod_version + '+fabric'
+
+base {
+    archivesName = project.mod_name
+}
 
 fabricApi {
     configureDataGeneration() {
@@ -97,7 +101,7 @@ dependencies {
     // https://modrinth.com/mod/kiwi/versions
 //    modImplementation fileTree(dir: "libs", include: ["*.jar"])
 //    annotationProcessor fileTree(dir: "libs", include: ["*.jar"])
-    modImplementation(annotationProcessor("maven.modrinth:kiwi:15.8.3+fabric"))
+    modImplementation(annotationProcessor("maven.modrinth:kiwi:15.8.8+fabric"))
 
     modImplementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
     // https://modrinth.com/mod/jade/versions
@@ -117,6 +121,18 @@ dependencies {
 processResources {
     from('src/main/java') {
         include '**/*.json'
+    }
+
+    inputs.property "version", realVersion
+
+    filesMatching("fabric.mod.json") {
+        expand "version": realVersion
+
+        if (!System.getProperty('idea.active')) {
+            filter { String line ->
+                line.replace('"org.teacon.xkdeco.data.XKDDataGen"', "")
+            }
+        }
     }
 
     doLast {
@@ -191,11 +207,14 @@ publishMods {
     changelog = file('CHANGELOG.md').exists() ? file('CHANGELOG.md').text : ''
     type = ['release': STABLE, 'beta': BETA, 'alpha': ALPHA][release_type]
     modLoaders.add("fabric")
+    modLoaders.add("quilt")
     displayName = "[Fabric ${supported_version}] ${mod_version}"
     version = realVersion
 
     curseforge {
         projectId = "497637"
+        client = true
+        server = true
         accessToken = providers.environmentVariable("CURSE_TOKEN")
         minecraftVersions.add(minecraft_version)
         requires("kiwi-fabric")

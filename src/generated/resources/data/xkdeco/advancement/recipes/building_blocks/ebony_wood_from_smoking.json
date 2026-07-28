@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:ebony_wood_from_smoking"
+        "recipe": "xkdeco:ebony_wood_from_smoking"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:ebony_wood_from_smoking"
+      "xkdeco:ebony_wood_from_smoking"
     ]
   }
 }

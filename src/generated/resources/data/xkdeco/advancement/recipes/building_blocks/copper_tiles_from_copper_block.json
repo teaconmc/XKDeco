@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:copper_tiles_from_copper_block"
+        "recipe": "xkdeco:copper_tiles_from_copper_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:copper_tiles_from_copper_block"
+      "xkdeco:copper_tiles_from_copper_block"
     ]
   }
 }

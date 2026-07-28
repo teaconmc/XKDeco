@@ -1,23 +1,19 @@
 package org.teacon.xkdeco.mixin.data;
 
-import java.util.function.Consumer;
-
-import net.minecraft.data.recipes.RecipeOutput;
-
-import net.minecraft.world.flag.FeatureFlagSet;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.data.BlockFamily;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.Block;
 
 @Mixin(RecipeProvider.class)
 public class RecipeProviderMixin {
-	@Inject(method = "lambda$generateRecipes$22", at = @At("HEAD"), cancellable = true)
+	@Inject(method = {"lambda$generateRecipes$22", "method_33534"}, at = @At("HEAD"), cancellable = true)
 	private static void xkdeco$generateRecipes(
 			FeatureFlagSet requiredFeatures,
 			BlockFamily blockFamily,

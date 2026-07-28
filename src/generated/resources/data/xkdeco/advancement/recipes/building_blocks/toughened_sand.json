@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:toughened_sand"
+        "recipe": "xkdeco:toughened_sand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:toughened_sand"
+      "xkdeco:toughened_sand"
     ]
   }
 }
