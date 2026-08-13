@@ -4,7 +4,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.141'
-    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
+    id "me.modmuss50.mod-publish-plugin" version "2.+"
 }
 
 java {
@@ -214,7 +214,7 @@ dependencies {
 
     // === Forgified Fabric API ==============================================
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${ffapi_version}"
-    compileOnly "org.sinytra:forgified-fabric-loader:${ffloader_version}"
+//    compileOnly "org.sinytra:forgified-fabric-loader:${ffloader_version}"
 
     // === Optional integrations =============================================
     // -- JEI: https://modrinth.com/mod/jei/versions
@@ -287,15 +287,17 @@ tasks.named('classes') {
     dependsOn(tasks.named('mergeXKDecoLang'))
 }
 
-def removeDevEnvMixinConfig = {
-    def modFile = file("${layout.buildDirectory.get().asFile}/resources/main/META-INF/neoforge.mods.toml")
-    def toRemove = '{ config = "xkdeco.data.mixins.json" },'
-    modFile.text = modFile.text.replace(toRemove, '')
-}
-
 processResources {
     from('src/main/java') {
         include '**/*.json'
+    }
+
+    inputs.property('idea.active', System.getProperty('idea.active') != null)
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        if (!System.getProperty('idea.active')) {
+            filter { line -> line.contains('xkdeco.data.mixins.json') ? null : line }
+        }
     }
 
     doLast {
@@ -304,8 +306,6 @@ processResources {
         if (System.getProperty('idea.active')) {
             return
         }
-
-        removeDevEnvMixinConfig()
 
         def jsonMinifyStart = System.currentTimeMillis()
         def jsonMinified = 0
@@ -412,6 +412,8 @@ publishMods {
     curseforge {
         projectId = "497637"
         accessToken = providers.environmentVariable("CURSE_TOKEN")
+        client = true
+        server = true
         minecraftVersions.add(minecraft_version)
         minecraftVersions.add("26.1")
         minecraftVersions.add("26.1.1")
