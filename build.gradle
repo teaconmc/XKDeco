@@ -190,12 +190,6 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
-    maven {
-        url = "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
     maven { url = 'https://maven.blamejared.com' }
     maven { url = "https://maven.theillusivec4.top/" }
     mavenLocal() // YES
@@ -226,12 +220,14 @@ dependencies {
     implementation "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.0.93"
     // -- Jade: https://modrinth.com/mod/jade/versions
-//    implementation "maven.modrinth:jade:15.10.0+neoforge"
-    // -- DebugUtils / ModernFix / FerriteCore / Suggestion Tweaker
-//    implementation "maven.modrinth:debugutils:TvU10aNN"
-//    implementation "maven.modrinth:modernfix:ZKnJCu6a"
-//    implementation "maven.modrinth:ferrite-core:7.0.2-neoforge"
-//    implementation "maven.modrinth:suggestion-tweaker:1.20.6-1.5.2+neoforge"
+    implementation "maven.modrinth:jade:26.1.11+neoforge"
+    // -- DebugUtils / ModernFix / FerriteCore
+    implementation "maven.modrinth:debugutils:26.1.2-1.0.9-neoforge"
+    implementation "maven.modrinth:modernfix:5.27.22+mc26.1.2"
+    implementation "maven.modrinth:ferrite-core:9.0.0-neoforge"
+
+    // https://modrinth.com/mod/polytone/versions
+    implementation "maven.modrinth:polytone:x0yjEtvl"
 }
 
 def mergeXKDecoLangFiles = {
@@ -420,6 +416,7 @@ publishMods {
         requires("kiwi")
         requires("forgified-fabric-api")
         requires("cloth-config")
+        optional("polytone")
     }
     modrinth {
         projectId = "XlwMlNhH"
@@ -430,5 +427,6 @@ publishMods {
         requires("kiwi")
         requires("forgified-fabric-api")
         requires("cloth-config")
+        optional("polytone")
     }
 }

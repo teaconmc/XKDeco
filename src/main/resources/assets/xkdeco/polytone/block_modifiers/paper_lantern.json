@@ -1,0 +1,16 @@
+{
+    "sound_emitters": [
+        {
+            "sound": "minecraft:block.candle.ambient",
+            "chance": 0.17,
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "volume": "1.0 + r.rand()",
+            "pitch": "0.3 + r.rand() * 0.7",
+            "state_predicate": {
+                "predicate_type": "minecraft:always_true"
+            }
+        }
+    ]
+}
