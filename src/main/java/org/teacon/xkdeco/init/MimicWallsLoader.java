@@ -13,6 +13,7 @@ import org.teacon.xkdeco.util.CommonProxy;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -50,9 +51,13 @@ public final class MimicWallsLoader {
 	}
 
 	public static void addMimicWalls() {
+		// Scan the walls that are already registered, then keep listening for any wall registered afterwards.
+		// This makes the mimic set independent of when this runs relative to other mods' registrations.
 		for (var holder : BuiltInRegistries.BLOCK.asHolderIdMap()) {
 			newBlockAdded(holder.unwrapKey().orElseThrow().location(), holder.value());
 		}
+		RegistryEntryAddedCallback.event(BuiltInRegistries.BLOCK)
+				.register((rawId, id, block) -> newBlockAdded(id, block));
 	}
 
 	public static void newBlockAdded(ResourceLocation id, Block block) {
