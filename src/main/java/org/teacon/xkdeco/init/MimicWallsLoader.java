@@ -9,10 +9,12 @@ import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoCommonConfig;
 import org.teacon.xkdeco.block.MimicWallBlock;
 import org.teacon.xkdeco.block.XKDBlock;
+import org.teacon.xkdeco.util.CommonProxy;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -48,23 +50,27 @@ public final class MimicWallsLoader {
 		return MIMIC_WALLS;
 	}
 
-	public static void addMimicWalls(RegisterEvent event) {
+	public static void addMimicWalls() {
 		if (!XKDecoCommonConfig.mimicWalls) {
 			return;
 		}
+		// Scan the walls that are already registered, then keep listening for any wall registered afterwards.
+		// This makes the mimic set independent of when this runs relative to other mods' registrations.
 		for (var holder : ImmutableList.copyOf(BuiltInRegistries.BLOCK.asHolderIdMap())) {
-			newBlockAdded(event, holder.unwrapKey().orElseThrow().identifier(), holder.value());
+			newBlockAdded(holder.unwrapKey().orElseThrow().identifier(), holder.value());
 		}
+		RegistryEntryAddedCallback.event(BuiltInRegistries.BLOCK)
+				.register((rawId, id, block) -> newBlockAdded(id, block));
 	}
 
-	public static void newBlockAdded(RegisterEvent event, Identifier id, Block block) {
-		if (XKDecoCommonConfig.mimicWalls && block instanceof WallBlock wall && !(block instanceof MimicWallBlock) &&
+	public static void newBlockAdded(Identifier id, Block block) {
+		if (block instanceof WallBlock wall && !(block instanceof MimicWallBlock) &&
 				!block.defaultBlockState().hasBlockEntity() &&
 				id.getPath().endsWith("_wall") &&
 				block.getStateDefinition().getProperties().size() == Blocks.COBBLESTONE_WALL.getStateDefinition().getProperties().size()) {
 			Identifier mimicId = XKDeco.id(MimicWallBlock.toMimicId(id));
 			MimicWallBlock mimicWall = new MimicWallBlock(wall, ResourceKey.create(Registries.BLOCK, mimicId));
-			event.register(Registries.BLOCK, mimicId, () -> mimicWall);
+			CommonProxy.registerBlock(mimicId, mimicWall);
 			PENDING_MIMIC_WALLS.add(mimicWall);
 		}
 	}

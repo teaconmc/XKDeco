@@ -44,7 +44,7 @@ public class CommonProxy {
 		modEventBus.addListener(
 				EventPriority.LOWEST, (RegisterEvent event) -> {
 					if (XKDecoCommonConfig.mimicWalls && event.getRegistryKey().equals(Registries.BLOCK)) {
-						MimicWallsLoader.addMimicWalls(event);
+						MimicWallsLoader.addMimicWalls();
 					} else if (XKDecoCommonConfig.mimicWalls && event.getRegistryKey().equals(Registries.ITEM)) {
 						MimicWallsLoader.addMimicWallItems(event);
 					}
