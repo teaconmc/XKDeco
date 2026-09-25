@@ -1,8 +1,11 @@
 package org.teacon.xkdeco.init;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoCommonConfig;
@@ -33,6 +36,8 @@ import snownee.kiwi.util.NotNullByDefault;
 public final class MimicWallsLoader {
 	private static ImmutableList<MimicWallBlock> MIMIC_WALLS = ImmutableList.of();
 	private static final List<MimicWallBlock> PENDING_MIMIC_WALLS = Lists.newArrayList();
+	private static final Set<Block> PROCESSED_WALLS = Collections.newSetFromMap(new IdentityHashMap<>());
+	private static boolean LISTENING_WALL_REGISTRATION = false;
 
 	public static final ResourceKey<CreativeModeTab> STRUCTURE_TAB_KEY = ResourceKey.create(
 			Registries.CREATIVE_MODE_TAB,
@@ -50,13 +55,23 @@ public final class MimicWallsLoader {
 	}
 
 	public static void addMimicWalls() {
+		// Scan the walls that are already registered, then keep listening for any wall registered afterwards.
+		// This makes the mimic set independent of when this runs relative to other mods' registrations.
 		for (var holder : BuiltInRegistries.BLOCK.asHolderIdMap()) {
 			newBlockAdded(holder.unwrapKey().orElseThrow().location(), holder.value());
 		}
+		LISTENING_WALL_REGISTRATION = true;
+	}
+
+	public static boolean isListeningWallRegistration() {
+		return LISTENING_WALL_REGISTRATION;
 	}
 
 	public static void newBlockAdded(ResourceLocation id, Block block) {
-		if (XKDecoCommonConfig.mimicWalls && block instanceof WallBlock wall && !(block instanceof MimicWallBlock) &&
+		if (!XKDecoCommonConfig.mimicWalls || !PROCESSED_WALLS.add(block)) {
+			return;
+		}
+		if (block instanceof WallBlock wall && !(block instanceof MimicWallBlock) &&
 				!block.defaultBlockState().hasBlockEntity() &&
 				id.getPath().endsWith("_wall") &&
 				block.getStateDefinition().getProperties().size() == Blocks.COBBLESTONE_WALL.getStateDefinition().getProperties().size()) {

@@ -11,6 +11,7 @@
 		"air_duct.LivingEntityMixin",
 		"air_duct.PlayerMixin",
 		"forge.FenceGateBlockAccess",
+		"forge.ForgeRegistryMixin",
 		"rei.DefaultCraftingDisplayMixin"
 	],
 	"client": [
