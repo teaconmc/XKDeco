@@ -1,0 +1,39 @@
+{
+    "particle_emitters": [
+        {
+            "particle": "minecraft:small_flame",
+            "spawn_location": "lower_corner",
+            "state_predicate": {
+                "predicate_type": "minecraft:always_true"
+            },
+            "x": 0.5,
+            "y": 0.453125,
+            "z": 0.5
+        },
+        {
+            "particle": "minecraft:smoke",
+            "chance": 0.2,
+            "spawn_location": "lower_corner",
+            "state_predicate": {
+                "predicate_type": "minecraft:always_true"
+            },
+            "x": 0.5,
+            "y": 0.453125,
+            "z": 0.5
+        }
+    ],
+    "sound_emitters": [
+        {
+            "sound": "minecraft:block.candle.ambient",
+            "chance": 0.17,
+            "x": 0,
+            "y": -0.046875,
+            "z": 0,
+            "volume": "1.0 + r.rand()",
+            "pitch": "0.3 + r.rand() * 0.7",
+            "state_predicate": {
+                "predicate_type": "minecraft:always_true"
+            }
+        }
+    ]
+}
