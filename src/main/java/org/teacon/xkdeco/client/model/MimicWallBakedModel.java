@@ -2,9 +2,11 @@ package org.teacon.xkdeco.client.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
 
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -43,16 +45,17 @@ public final class MimicWallBakedModel implements BlockStateModel, FabricBlockSt
 	}
 
 	@Override
-	public void collectParts(
+	public void emitQuads(
+			QuadEmitter emitter,
 			BlockAndTintGetter level,
 			BlockPos pos,
 			BlockState state,
 			RandomSource random,
-			List<BlockStateModelPart> parts) {
+			Predicate<@Nullable Direction> cullTest) {
 		long seed = random.nextLong();
 		BlockState delegateState = delegateState();
 		random.setSeed(seed);
-		delegateModel().collectParts(level, pos, delegateState, random, parts);
+		delegateModel().emitQuads(emitter, level, pos, delegateState, random, cullTest);
 
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -60,7 +63,7 @@ public final class MimicWallBakedModel implements BlockStateModel, FabricBlockSt
 			BlockState armState = neighborArmState(neighborState, direction);
 			if (armState != null) {
 				random.setSeed(seed);
-				models().get(armState).collectParts(level, pos, armState, random, parts);
+				models().get(armState).emitQuads(emitter, level, pos, armState, random, cullTest);
 			}
 		}
 	}
@@ -155,7 +158,7 @@ public final class MimicWallBakedModel implements BlockStateModel, FabricBlockSt
 
 	@Override
 	@BakedQuad.MaterialFlags
-	public int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state) {
-		return delegateModel().materialFlags(level, pos, delegateState());
+	public int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
+		return delegateModel().materialFlags(level, pos, delegateState(), random);
 	}
 }

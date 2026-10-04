@@ -171,4 +171,10 @@ public class ItemDisplayRenderer implements BlockEntityRenderer<ItemDisplayBlock
 	public AABB xkdeco$getRenderBoundingBox(ItemDisplayBlockEntity be) {
 		return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(be.getBlockPos().above()));
 	}
+
+	@Override
+	public boolean shouldRender(ItemDisplayBlockEntity blockEntity, Vec3 cameraPosition) {
+		double viewDistance = getViewDistance();
+		return xkdeco$getRenderBoundingBox(blockEntity).distanceToSqr(cameraPosition) < viewDistance * viewDistance;
+	}
 }

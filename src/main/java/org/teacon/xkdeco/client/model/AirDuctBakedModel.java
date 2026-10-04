@@ -1,12 +1,15 @@
 package org.teacon.xkdeco.client.model;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
 import org.teacon.xkdeco.block.XKDStateProperties;
 
 import com.google.common.collect.Lists;
 
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -48,9 +51,9 @@ public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStat
 		return mask;
 	}
 
-	private void collectForMask(int mask, List<BlockStateModelPart> parts) {
+	private void collectForMask(int mask, Consumer<BlockStateModelPart> consumer) {
 		if (mask < 0) {
-			parts.add(straight.getFirst());
+			consumer.accept(straight.getFirst());
 			return;
 		}
 		List<Direction> trueDirections = Lists.newArrayListWithExpectedSize(6);
@@ -63,7 +66,7 @@ public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStat
 			var direction1 = trueDirections.get(0);
 			var direction2 = trueDirections.get(1);
 			if (direction1.getOpposite() == direction2) {
-				parts.add(straight.get(direction1.getAxis().ordinal()));
+				consumer.accept(straight.get(direction1.getAxis().ordinal()));
 			} else {
 				int index;
 				if (direction1 == Direction.DOWN) {
@@ -77,26 +80,27 @@ public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStat
 				} else {
 					index = direction2.getCounterClockWise().get2DDataValue();
 				}
-				parts.add(corner.get(index));
+				consumer.accept(corner.get(index));
 			}
 			return;
 		}
-		parts.add(frame);
+		consumer.accept(frame);
 		for (int i = 0; i < 6; i++) {
 			if ((mask & (1 << i)) == 0) {
-				parts.add(cover.get(i));
+				consumer.accept(cover.get(i));
 			}
 		}
 	}
 
 	@Override
-	public void collectParts(
+	public void emitQuads(
+			QuadEmitter emitter,
 			BlockAndTintGetter level,
 			BlockPos pos,
 			BlockState state,
 			RandomSource random,
-			List<BlockStateModelPart> parts) {
-		collectForMask(connectionMask(state), parts);
+			Predicate<@Nullable Direction> cullTest) {
+		collectForMask(connectionMask(state), part -> part.emitQuads(emitter, cullTest));
 	}
 
 	@Override
@@ -115,7 +119,7 @@ public final class AirDuctBakedModel implements BlockStateModel, FabricBlockStat
 	@Override
 	@Deprecated
 	public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
-		collectForMask(-1, output);
+		collectForMask(-1, output::add);
 	}
 
 	@Override

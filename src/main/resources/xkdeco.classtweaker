@@ -1,0 +1,45 @@
+classTweaker v1 official
+
+mutable field net/minecraft/client/data/models/BlockModelGenerators blockStateOutput Ljava/util/function/Consumer;
+mutable field net/minecraft/client/data/models/BlockModelGenerators modelOutput Ljava/util/function/BiConsumer;
+mutable field net/minecraft/client/data/models/BlockModelGenerators itemModelOutput Lnet/minecraft/client/data/models/ItemModelOutput;
+accessible field net/minecraft/client/data/models/BlockModelGenerators TEXTURED_MODELS Ljava/util/Map;
+mutable field net/minecraft/client/data/models/BlockModelGenerators TEXTURED_MODELS Ljava/util/Map;
+accessible field net/minecraft/client/data/models/BlockModelGenerators SHAPE_CONSUMERS Ljava/util/Map;
+mutable field net/minecraft/client/data/models/BlockModelGenerators SHAPE_CONSUMERS Ljava/util/Map;
+
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_HORIZONTAL_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_HORIZONTAL_FACING_ALT Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+
+accessible class net/minecraft/client/data/models/BlockModelGenerators$WoodProvider
+accessible field net/minecraft/client/data/models/BlockModelGenerators$WoodProvider logMapping Lnet/minecraft/client/data/models/model/TextureMapping;
+
+accessible class net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider
+accessible field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider fullBlock Lnet/minecraft/client/renderer/block/dispatch/Variant;
+mutable field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider fullBlock Lnet/minecraft/client/renderer/block/dispatch/Variant;
+accessible field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider mapping Lnet/minecraft/client/data/models/model/TextureMapping;
+accessible field net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider family Lnet/minecraft/data/BlockFamily;
+accessible method net/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider fullBlockVariant (Lnet/minecraft/world/level/block/Block;)Lnet/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider;
+
+accessible method net/minecraft/client/data/models/model/TextureSlot create (Ljava/lang/String;)Lnet/minecraft/client/data/models/model/TextureSlot;
+accessible method net/minecraft/client/data/models/model/TextureSlot create (Ljava/lang/String;Lnet/minecraft/client/data/models/model/TextureSlot;)Lnet/minecraft/client/data/models/model/TextureSlot;
+
+accessible method net/minecraft/client/data/models/model/TexturedModel <init> (Lnet/minecraft/client/data/models/model/TextureMapping;Lnet/minecraft/client/data/models/model/ModelTemplate;)V
+
+accessible method net/minecraft/world/level/block/NyliumBlock canBeNylium (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z
+accessible method net/minecraft/world/level/block/SpreadingSnowyBlock canStayAlive (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z
+accessible method net/minecraft/world/level/block/SnowyBlock isSnowySetting (Lnet/minecraft/world/level/block/state/BlockState;)Z
+
+accessible field net/minecraft/world/level/block/state/properties/IntegerProperty min I
+accessible field net/minecraft/world/level/block/state/properties/IntegerProperty max I
+
+accessible field net/minecraft/client/Minecraft clientTickCount J
+
+accessible field net/minecraft/world/level/block/FenceGateBlock type Lnet/minecraft/world/level/block/state/properties/WoodType;
+
+accessible field net/minecraft/client/renderer/item/ItemModels ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+
+accessible class net/minecraft/client/resources/model/ModelBakery$ModelBakerImpl
+
+accessible method net/minecraft/client/renderer/item/CuboidItemModelWrapper <init> (Ljava/util/List;Lnet/minecraft/client/resources/model/geometry/QuadCollection;Lnet/minecraft/client/renderer/item/ModelRenderProperties;Lorg/joml/Matrix4fc;)V

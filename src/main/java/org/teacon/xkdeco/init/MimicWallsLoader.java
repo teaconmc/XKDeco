@@ -28,7 +28,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
-import net.neoforged.neoforge.registries.RegisterEvent;
 import snownee.kiwi.item.ModBlockItem;
 
 public final class MimicWallsLoader {
@@ -64,6 +63,9 @@ public final class MimicWallsLoader {
 	}
 
 	public static void newBlockAdded(Identifier id, Block block) {
+		if (!XKDecoCommonConfig.mimicWalls) {
+			return;
+		}
 		if (block instanceof WallBlock wall && !(block instanceof MimicWallBlock) &&
 				!block.defaultBlockState().hasBlockEntity() &&
 				id.getPath().endsWith("_wall") &&
@@ -71,20 +73,9 @@ public final class MimicWallsLoader {
 			Identifier mimicId = XKDeco.id(MimicWallBlock.toMimicId(id));
 			MimicWallBlock mimicWall = new MimicWallBlock(wall, ResourceKey.create(Registries.BLOCK, mimicId));
 			CommonProxy.registerBlock(mimicId, mimicWall);
-			PENDING_MIMIC_WALLS.add(mimicWall);
-		}
-	}
-
-	public static void addMimicWallItems(RegisterEvent event) {
-		if (!XKDecoCommonConfig.mimicWalls) {
-			return;
-		}
-		for (MimicWallBlock mimicWall : mimicWalls()) {
-			Identifier mimicId = BuiltInRegistries.BLOCK.getResourceKey(mimicWall)
-					.orElseThrow(() -> new IllegalStateException("Mimic wall was not registered: " + mimicWall))
-					.identifier();
-			event.register(Registries.ITEM, mimicId, () -> new ModBlockItem(
+			CommonProxy.registerItem(mimicId, new ModBlockItem(
 					mimicWall, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, mimicId))));
+			PENDING_MIMIC_WALLS.add(mimicWall);
 		}
 	}
 

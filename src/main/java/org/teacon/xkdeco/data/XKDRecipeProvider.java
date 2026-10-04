@@ -67,7 +67,7 @@ public class XKDRecipeProvider extends RecipeProvider {
 	}
 
 	@Override
-	protected void buildRecipes() {
+	public void buildRecipes() {
 		XKDBlockFamilies.getAllFamilies().forEach(family -> {
 			if (family.getBaseBlock().asItem() == Items.AIR) {
 				return;

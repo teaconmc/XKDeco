@@ -1,5 +1,7 @@
 package org.teacon.xkdeco.compat.jei;
 
+import java.util.List;
+
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.recipe.MimicWallRecipe;
 
@@ -26,7 +28,7 @@ public class XKDecoJEIPlugin implements IModPlugin {
 		registration.getCraftingCategory().addExtension(
 				MimicWallRecipe.class, new ICraftingCategoryExtension<>() {
 					@Override
-					public java.util.List<SlotDisplay> getIngredients(RecipeHolder<MimicWallRecipe> recipeHolder) {
+					public List<SlotDisplay> getIngredients(RecipeHolder<MimicWallRecipe> recipeHolder) {
 						return recipeHolder.value().getIngredientDisplays();
 					}
 
@@ -37,8 +39,7 @@ public class XKDecoJEIPlugin implements IModPlugin {
 							ICraftingGridHelper craftingGridHelper,
 							IFocusGroup focuses) {
 						MimicWallRecipe recipe = recipeHolder.value();
-						craftingGridHelper.createAndSetOutputs(
-								builder, recipe.getResultDisplay());
+						craftingGridHelper.createAndSetOutputs(builder, recipe.getResultDisplay());
 						craftingGridHelper.createAndSetIngredientsFromDisplays(builder, getIngredients(recipeHolder), 0, 0);
 					}
 				});

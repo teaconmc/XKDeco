@@ -12,31 +12,27 @@ import org.teacon.xkdeco.client.renderer.ItemProjectorRenderer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
 import org.teacon.xkdeco.init.XKDecoEntityTypes;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.ItemModels;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterItemModelsEvent;
 
-@Mod(value = XKDeco.ID, dist = Dist.CLIENT)
-public final class ClientProxy {
-	public static void setEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemProjectorRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
-		event.registerBlockEntityRenderer(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
-	}
+public final class ClientProxy implements ClientModInitializer {
 
-	public ClientProxy(IEventBus modEventBus) {
-		modEventBus.addListener(ClientProxy::setEntityRenderers);
-		modEventBus.addListener(ClientProxy::registerItemModels);
+	public static void init() {
+		BlockEntityRenderers.register(XKDecoEntityTypes.ITEM_DISPLAY.getOrCreate(), ItemDisplayRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.ITEM_PROJECTOR.getOrCreate(), ItemProjectorRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.BLOCK_DISPLAY.getOrCreate(), BlockDisplayRenderer::new);
+		BlockEntityRenderers.register(XKDecoEntityTypes.HOLOGRAM.getOrCreate(), HologramRenderer::new);
 
 		CustomUnbakedBlockStateModel.register(AirDuctModel.ID, AirDuctModel.MAP_CODEC);
+		ItemModels.ID_MAPPER.put(MimicWallItemModel.ID, MimicWallItemModel.Unbaked.MAP_CODEC);
+
 		ModelLoadingPlugin.register(ctx -> {
 			BuiltInRegistries.BLOCK.getOptional(XKDeco.id("air_duct"))
 					.ifPresent(block -> ctx.registerBlockStateResolver(block, ClientProxy::resolveAirDuct));
@@ -44,10 +40,6 @@ public final class ClientProxy {
 				ctx.registerBlockStateResolver(block, ClientProxy::resolveMimicWall);
 			}
 		});
-	}
-
-	private static void registerItemModels(RegisterItemModelsEvent event) {
-		event.register(MimicWallItemModel.ID, MimicWallItemModel.Unbaked.MAP_CODEC);
 	}
 
 	private static void resolveAirDuct(BlockStateResolver.Context context) {
@@ -66,5 +58,10 @@ public final class ClientProxy {
 		for (BlockState blockState : context.block().getStateDefinition().getPossibleStates()) {
 			context.setModel(blockState, model);
 		}
+	}
+
+	@Override
+	public void onInitializeClient() {
+		init();
 	}
 }

@@ -31,12 +31,12 @@ import com.google.common.collect.Sets;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quadrant;
 
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -73,7 +73,7 @@ import snownee.kiwi.customization.block.loader.KBlockComponents;
 import snownee.kiwi.util.GameObjectLookup;
 
 @SuppressWarnings("SameParameterValue")
-public class XKDModelProvider extends ModelProvider {
+public class XKDModelProvider extends FabricModelProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Identifier ROOF_INNER_TEXTURE = XKDeco.id("block/roof_inner");
 	private static final Set<Block> ROTATED_PILLARS = Set.of(
@@ -160,17 +160,7 @@ public class XKDModelProvider extends ModelProvider {
 	private final Identifier snowySlabTop = XKDeco.id("block/snowy_slab_top");
 
 	public XKDModelProvider(FabricPackOutput output) {
-		super(output, XKDeco.ID);
-	}
-
-	@Override
-	protected Stream<? extends Holder<Block>> getKnownBlocks() {
-		return Stream.empty();
-	}
-
-	@Override
-	protected Stream<? extends Holder<Item>> getKnownItems() {
-		return super.getKnownItems();
+		super(output);
 	}
 
 	private static MultiVariant plainVariant(Identifier model) {
@@ -321,13 +311,8 @@ public class XKDModelProvider extends ModelProvider {
 	}
 
 	@Override
-	protected void registerModels(BlockModelGenerators generators, ItemModelGenerators itemModelGenerators) {
+	public void generateBlockStateModels(BlockModelGenerators generators) {
 		this.generators = generators;
-		BuiltInRegistries.ITEM.listElements()
-				.map(Holder::value)
-				.filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(XKDeco.ID))
-				.filter(item -> !(item instanceof BlockItem))
-				.forEach(itemModelGenerators::declareCustomModelItem);
 		LEGACY_ITEM_MODEL_BLOCKS.forEach(block -> generators.registerSimpleItemModel(
 				block,
 				ModelLocationUtils.getModelLocation(block.asItem())));
@@ -623,6 +608,15 @@ public class XKDModelProvider extends ModelProvider {
 		}
 	}
 
+	@Override
+	public void generateItemModels(ItemModelGenerators itemModelGenerators) {
+		BuiltInRegistries.ITEM.listElements()
+				.map(Holder::value)
+				.filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(XKDeco.ID))
+				.filter(item -> !(item instanceof BlockItem))
+				.forEach(itemModelGenerators::declareCustomModelItem);
+	}
+
 	private void registerColorProviderItemModels() {
 		ItemTintSource foliageTint = foliageItemTint();
 		ItemTintSource grassTint = new GrassColorSource();
@@ -632,7 +626,10 @@ public class XKDModelProvider extends ModelProvider {
 		WATER_TINTED_ITEM_MODELS.forEach(id -> registerTintedBlockItemModel(id, "furniture/", waterTint));
 	}
 
-	private static void slabWithGrassTintedItem(BlockModelGenerators.BlockFamilyProvider provider, Block slab, BlockModelGenerators generators) {
+	private static void slabWithGrassTintedItem(
+			BlockModelGenerators.BlockFamilyProvider provider,
+			Block slab,
+			BlockModelGenerators generators) {
 		if (!isGrassFamilyTintedItemModel(slab)) {
 			provider.slab(slab);
 			return;
@@ -641,11 +638,18 @@ public class XKDModelProvider extends ModelProvider {
 		Identifier bottom = ModelLocationUtils.getModelLocation(slab);
 		Identifier top = ModelLocationUtils.getModelLocation(slab, "_top");
 		Identifier full = XKDeco.id(path.substring(0, path.length() - "_slab".length())).withPrefix("block/");
-		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(slab, plainVariant(bottom), plainVariant(top), plainVariant(full)));
+		generators.blockStateOutput.accept(BlockModelGenerators.createSlab(
+				slab,
+				plainVariant(bottom),
+				plainVariant(top),
+				plainVariant(full)));
 		generators.registerSimpleTintedItemModel(slab, bottom, new GrassColorSource());
 	}
 
-	private static void stairsWithGrassTintedItem(BlockModelGenerators.BlockFamilyProvider provider, Block stairs, BlockModelGenerators generators) {
+	private static void stairsWithGrassTintedItem(
+			BlockModelGenerators.BlockFamilyProvider provider,
+			Block stairs,
+			BlockModelGenerators generators) {
 		if (!isGrassFamilyTintedItemModel(stairs)) {
 			provider.stairs(stairs);
 			return;

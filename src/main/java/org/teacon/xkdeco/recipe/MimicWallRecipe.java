@@ -81,7 +81,12 @@ public class MimicWallRecipe extends CustomRecipe {
 				nonEmptyItems.add(item);
 			}
 		}
-		return net.neoforged.neoforge.common.util.RecipeMatcher.findMatches(nonEmptyItems, List.of(wall, another)) != null;
+		if (nonEmptyItems.size() != 2) {
+			return false;
+		}
+		ItemStack first = nonEmptyItems.get(0);
+		ItemStack second = nonEmptyItems.get(1);
+		return (wall.test(first) && another.test(second)) || (wall.test(second) && another.test(first));
 	}
 
 	@Override

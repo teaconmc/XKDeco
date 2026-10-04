@@ -1,0 +1,11 @@
+configs:
+- target: org.teacon.xkdeco.XKDecoCommonConfig
+modules:
+- target: org.teacon.xkdeco.init.XKDecoEntityTypes
+  data:
+    value: entity_types
+- target: org.teacon.xkdeco.init.XKDecoRecipes
+  data:
+    value: recipes
+packets:
+- target: org.teacon.xkdeco.network.CClickDisplayPacket
