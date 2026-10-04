@@ -52,10 +52,10 @@ public abstract class MappedRegistryMixin<T> {
 			ensurePendingTag(pendingTagsBuilder, pendingContents, cast(BlockTags.WALLS));
 			ensurePendingTag(pendingTagsBuilder, pendingContents, cast(BlockTags.MINEABLE_WITH_PICKAXE));
 			ensurePendingTag(pendingTagsBuilder, pendingContents, cast(XKDBlock.NON_DIAGONAL_WALLS));
-			MimicWallsLoader.addMimicWallBlockPendingTags(castMap(pendingContents));
+			MimicWallsLoader.addMimicWallBlockTags(castMap(pendingContents));
 		} else if (this.key.equals(Registries.ITEM)) {
 			ensurePendingTag(pendingTagsBuilder, pendingContents, cast(ItemTags.WALLS));
-			MimicWallsLoader.addMimicWallItemPendingTags(castMap(pendingContents));
+			MimicWallsLoader.addMimicWallItemTags(castMap(pendingContents));
 		}
 	}
 

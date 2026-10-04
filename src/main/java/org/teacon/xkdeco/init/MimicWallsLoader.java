@@ -1,6 +1,5 @@
 package org.teacon.xkdeco.init;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -73,49 +72,26 @@ public final class MimicWallsLoader {
 			Identifier mimicId = XKDeco.id(MimicWallBlock.toMimicId(id));
 			MimicWallBlock mimicWall = new MimicWallBlock(wall, ResourceKey.create(Registries.BLOCK, mimicId));
 			CommonProxy.registerBlock(mimicId, mimicWall);
-			CommonProxy.registerItem(mimicId, new ModBlockItem(
-					mimicWall, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, mimicId))));
+			CommonProxy.registerItem(
+					mimicId, new ModBlockItem(
+							mimicWall, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, mimicId))));
 			PENDING_MIMIC_WALLS.add(mimicWall);
 		}
 	}
 
-	public static void addMimicWallBlockTags(Map<Identifier, Collection<Holder<Block>>> tags) {
+	public static void addMimicWallBlockTags(Map<TagKey<Block>, List<Holder<Block>>> tags) {
 		List<Holder<Block>> walls = mimicWalls().stream().map(BuiltInRegistries.BLOCK::wrapAsHolder).toList();
 		appendTagValues(tags, BlockTags.WALLS, walls);
 		appendTagValues(tags, BlockTags.MINEABLE_WITH_PICKAXE, walls);
 		appendTagValues(tags, XKDBlock.NON_DIAGONAL_WALLS, walls);
 	}
 
-	public static void addMimicWallItemTags(Map<Identifier, Collection<Holder<Item>>> tags) {
+	public static void addMimicWallItemTags(Map<TagKey<Item>, List<Holder<Item>>> tags) {
 		List<Holder<Item>> walls = mimicWalls().stream().map(Block::asItem).map(BuiltInRegistries.ITEM::wrapAsHolder).toList();
 		appendTagValues(tags, ItemTags.WALLS, walls);
 	}
 
-	public static void addMimicWallBlockPendingTags(Map<TagKey<Block>, List<Holder<Block>>> tags) {
-		List<Holder<Block>> walls = mimicWalls().stream().map(BuiltInRegistries.BLOCK::wrapAsHolder).toList();
-		appendPendingTagValues(tags, BlockTags.WALLS, walls);
-		appendPendingTagValues(tags, BlockTags.MINEABLE_WITH_PICKAXE, walls);
-		appendPendingTagValues(tags, XKDBlock.NON_DIAGONAL_WALLS, walls);
-	}
-
-	public static void addMimicWallItemPendingTags(Map<TagKey<Item>, List<Holder<Item>>> tags) {
-		List<Holder<Item>> walls = mimicWalls().stream().map(Block::asItem).map(BuiltInRegistries.ITEM::wrapAsHolder).toList();
-		appendPendingTagValues(tags, ItemTags.WALLS, walls);
-	}
-
 	private static <T> void appendTagValues(
-			Map<Identifier, Collection<Holder<T>>> tags,
-			TagKey<T> key,
-			List<Holder<T>> holders) {
-		if (holders.isEmpty()) {
-			return;
-		}
-		List<Holder<T>> list = Lists.newArrayList(tags.getOrDefault(key.location(), List.of()));
-		list.addAll(holders);
-		tags.put(key.location(), list);
-	}
-
-	private static <T> void appendPendingTagValues(
 			Map<TagKey<T>, List<Holder<T>>> tags,
 			TagKey<T> key,
 			List<Holder<T>> holders) {

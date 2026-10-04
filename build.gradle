@@ -119,18 +119,65 @@ dependencies {
     runtimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 }
 
+def mergeXKDecoLangFiles = { File langDir ->
+    def langSourceDirs = [
+            file("src/kiwi_generated/resources/assets/${project.mod_id}_extra/lang"),
+            file("src/generated/resources/assets/${project.mod_id}/lang"),
+            file("src/main/resources/assets/${project.mod_id}/lang")
+    ]
+    def langNames = new TreeSet<String>()
+    langSourceDirs.findAll { it.isDirectory() }.each { dir ->
+        dir.eachFileMatch(~/.*\.json/) { langNames.add(it.name) }
+    }
+    langNames.each { langName ->
+        def merged = [:]
+        langSourceDirs.each { dir ->
+            def sourceLang = new File(dir, langName)
+            if (sourceLang.isFile()) {
+                merged.putAll(new groovy.json.JsonSlurper().parse(sourceLang) as Map)
+            }
+        }
+        def blockLangPrefix = "block.${project.mod_id}."
+        def itemLangPrefix = "item.${project.mod_id}."
+        merged.findAll { key, ignored -> key.startsWith(blockLangPrefix) }.each { key, value ->
+            def itemKey = itemLangPrefix + key.substring(blockLangPrefix.length())
+            if (!merged.containsKey(itemKey)) {
+                merged[itemKey] = value
+            }
+        }
+        def targetLang = new File(langDir, langName)
+        targetLang.parentFile.mkdirs()
+        targetLang.text = groovy.json.JsonOutput.toJson(merged)
+    }
+}
+
 processResources {
     from('src/main/java') {
         include '**/*.json'
     }
 
     inputs.property "version", realVersion
+    inputs.files(
+            fileTree(dir: "src/kiwi_generated/resources/assets/${project.mod_id}_extra/lang", include: '*.json'),
+            fileTree(dir: "src/generated/resources/assets/${project.mod_id}/lang", include: '*.json'),
+            fileTree(dir: "src/main/resources/assets/${project.mod_id}/lang", include: '*.json'))
 
     filesMatching("fabric.mod.json") {
         expand "version": realVersion
+
+        // Data mixins and the datagen entrypoint are dev/datagen-only; remove them from the
+        // packaged fabric.mod.json.
+        if (!System.getProperty('idea.active')) {
+            filter { String line ->
+                line.replace('"org.teacon.xkdeco.data.XKDDataGen"', "")
+                        .replace('"xkdeco.data.mixins.json",', "")
+            }
+        }
     }
 
     doLast {
+        mergeXKDecoLangFiles(new File(outputs.files.asPath, "assets/${project.mod_id}/lang"))
+
         if (System.getProperty('idea.active')) {
             return
         }

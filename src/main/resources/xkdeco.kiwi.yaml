@@ -1,6 +1,9 @@
 configs:
 - target: org.teacon.xkdeco.XKDecoCommonConfig
 modules:
+- target: org.teacon.xkdeco.init.XKDecoCodecs
+  data:
+    value: codecs
 - target: org.teacon.xkdeco.init.XKDecoEntityTypes
   data:
     value: entity_types

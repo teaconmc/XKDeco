@@ -3,10 +3,7 @@ package org.teacon.xkdeco.util;
 import org.teacon.xkdeco.XKDeco;
 import org.teacon.xkdeco.XKDecoCommonConfig;
 import org.teacon.xkdeco.block.AirDuctBlock;
-import org.teacon.xkdeco.block.ItemDisplayBlock;
 import org.teacon.xkdeco.block.MimicWallBlock;
-import org.teacon.xkdeco.block.OneDirectionFenceGateBlock;
-import org.teacon.xkdeco.block.SpecialSlabBlock;
 import org.teacon.xkdeco.block.XKDBlock;
 import org.teacon.xkdeco.duck.XKDPlayer;
 import org.teacon.xkdeco.init.MimicWallsLoader;
@@ -33,14 +30,11 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import snownee.kiwi.Mod;
-import snownee.kiwi.customization.block.loader.BlockCodecs;
 
 @Mod(XKDeco.ID)
 public class CommonProxy implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		initCodecs();
-
 		if (XKDecoCommonConfig.mimicWalls) {
 			MimicWallsLoader.addMimicWalls();
 		}
@@ -52,13 +46,6 @@ public class CommonProxy implements ModInitializer {
 				}
 			}
 		});
-	}
-
-	public static void initCodecs() {
-		BlockCodecs.register(XKDeco.id("block"), Block.simpleCodec(XKDBlock::new));
-		BlockCodecs.register(XKDeco.id("special_slab"), SpecialSlabBlock.CODEC);
-		BlockCodecs.register(XKDeco.id("one_direction_fence_gate"), OneDirectionFenceGateBlock.CODEC);
-		BlockCodecs.register(XKDeco.id("item_display"), ItemDisplayBlock.CODEC);
 	}
 
 	public static boolean isLadder(BlockState blockState, LevelReader world, BlockPos pos) {
